@@ -188,19 +188,7 @@
 
   <div class="row">
 
-		<fieldset class="form-group col">
-		    <label for="for_contractual_condition">Calidad Contractual</label>
-        <select name="contractual_condition" class="form-control" id="contractual_condition" disabled>
-          <option value=""></option>
-          <option value="SUPLENTE" >SUPLENTE</option>
-          <option value="CONTRATA" >CONTRATA</option>
-          <option value="TITULAR" >TITULAR</option>
-          <!-- <option value="HONORARIO COVID" >HONORARIO COVID</option>
-					<option value="SUMA ALZADA" >SUMA ALZADA</option> -->
-        </select>
-		</fieldset>
-
-		<fieldset class="form-group col">
+		<!-- <fieldset class="form-group col">
 		    <label for="for_estate">Estamento al que corresponde CS</label>
 		    <select name="estate" class="form-control" required id="estate">
 					<option value=""></option>
@@ -212,8 +200,41 @@
           <option value="Odontólogo">Odontólogo</option>
 					<option value="Bioquímico">Bioquímico</option>
           <option value="Auxiliar">Auxiliar</option>
-          <!-- <option value="Otro (justificar)">Otro (justificar)</option> -->
         </select>
+		</fieldset> -->
+
+	  <fieldset class="form-group col">
+		    <label for="for_profession_id">Profesión</label>
+		    <select name="profession_id" class="form-control" required id="for_profession_id">
+					<option value=""></option>
+					@foreach($professions as $profession)
+          	<option value="{{$profession->id}}">{{$profession->name}}</option>
+					@endforeach
+        </select>
+		</fieldset>
+
+		<fieldset class="form-group col">
+		    <label for="for_working_day_type">Jornada de Trabajo</label>
+		    <select name="working_day_type" class="form-control" required id="working_day_type">
+					<option value=""></option>
+          <option value="DIURNO">DIURNO</option>
+          <option value="TERCER TURNO">TERCER TURNO</option>
+					<option value="TERCER TURNO - MODIFICADO">TERCER TURNO - MODIFICADO</option>
+          <option value="CUARTO TURNO">CUARTO TURNO</option>
+					<option value="CUARTO TURNO - MODIFICADO">CUARTO TURNO - MODIFICADO</option>
+
+					<option value="DIURNO PASADO A TURNO">DIURNO PASADO A TURNO</option>
+					<option value="HORA MÉDICA">HORA MÉDICA</option>
+          <option value="HORA EXTRA">HORA EXTRA</option>
+					<option value="TURNO EXTRA">TURNO EXTRA</option>
+
+		      <option value="TURNO DE REEMPLAZO">TURNO DE REEMPLAZO</option>
+        </select>
+		</fieldset>
+
+		<fieldset class="form-group col">
+		    <label for="for_working_day_type_other">Detalle Jornada Trabajo</label>
+		    <input type="text" class="form-control" id="for_working_day_type_other" placeholder="" name="working_day_type_other">
 		</fieldset>
 
 		<fieldset class="form-group col">
@@ -227,16 +248,6 @@
           <option value="11">11</option>
         </select>
 		</fieldset>
-
-		<fieldset class="form-group col">
-        <label for="for_establishment_id">Establecimiento</label>
-        <select name="establishment_id" class="form-control" required>
-          <option value=""></option>
-          @foreach($establishments as $key => $establishment)
-            <option value="{{$establishment->id}}" @if($establishment->id == 1) selected @endif>{{$establishment->name}}</option>
-          @endforeach
-        </select>
-    </fieldset>
 
     <!-- <fieldset class="form-group col">
 		    <label for="for_daily_hours">Horas Diurnas</label>
@@ -283,40 +294,57 @@
         </select>
 		</fieldset>
 
-    <fieldset class="form-group col">
+		<fieldset class="form-group col-3 col-md-3">
+				<label for="for_digera_strategy">Estrategia Digera Covid</label>
+				<select name="digera_strategy" class="form-control" id="digera_strategy" required>
+					<option value=""></option>
+					<option value="Camas MEDIAS Aperturadas" >Camas MEDIAS Aperturadas</option>
+					<option value="Camas MEDIAS Complejizadas" >Camas MEDIAS Complejizadas</option>
+					<option value="Camas UCI Aperturadas" >Camas UCI Aperturadas</option>
+					<option value="Camas UCI Complejizadas" >Camas UCI Complejizadas</option>
+					<option value="Camas UTI Aperturadas" >Camas UTI Aperturadas</option>
+					<option value="Camas UTI Complejizadas" >Camas UTI Complejizadas</option>
+					<option value="Cupos Hosp. Domiciliaria" >Cupos Hosp. Domiciliaria</option>
+					<option value="Refuerzo Anatomía Patologica" >Refuerzo Anatomía Patologica</option>
+					<option value="Refuerzo Laboratorio" >Refuerzo Laboratorio</option>
+					<option value="Refuerzo SAMU" >Refuerzo SAMU</option>
+					<option value="Refuerzo UEH" >Refuerzo UEH</option>
+					@if(Auth::user()->organizationalUnit->establishment_id == 1)
+						<option value="Migración Colchane" >Migración Colchane</option>
+					@endif
+				</select>
+		</fieldset>
+
+    <!-- <fieldset class="form-group col">
 		    <label for="for_estate_other">Detalle estamento</label>
 		    <input type="text" class="form-control" id="for_estate_other" placeholder="" name="estate_other">
-		</fieldset>
+		</fieldset> -->
 
-    <fieldset class="form-group col">
-		    <label for="for_working_day_type">Jornada de Trabajo</label>
-		    <select name="working_day_type" class="form-control" required id="working_day_type">
-					<option value=""></option>
-          <option value="DIURNO">DIURNO</option>
-          <option value="TERCER TURNO">TERCER TURNO</option>
-					<option value="TERCER TURNO - MODIFICADO">TERCER TURNO - MODIFICADO</option>
-          <option value="CUARTO TURNO">CUARTO TURNO</option>
-					<option value="CUARTO TURNO - MODIFICADO">CUARTO TURNO - MODIFICADO</option>
-
-					<option value="DIURNO PASADO A TURNO">DIURNO PASADO A TURNO</option>
-					<option value="HORA MÉDICA">HORA MÉDICA</option>
-          <option value="HORA EXTRA">HORA EXTRA</option>
-					<option value="TURNO EXTRA">TURNO EXTRA</option>
-
-		      <option value="TURNO DE REEMPLAZO">TURNO DE REEMPLAZO</option>
-					<!-- <option value="OTRO">OTRO</option> -->
+		<fieldset class="form-group col">
+        <label for="for_establishment_id">Establecimiento</label>
+        <select name="establishment_id" class="form-control" required>
+          <option value=""></option>
+          @foreach($establishments as $key => $establishment)
+            <option value="{{$establishment->id}}" @if($establishment->id == 1) selected @endif>{{$establishment->name}}</option>
+          @endforeach
         </select>
+    </fieldset>
 
-		</fieldset>
-
-    <fieldset class="form-group col">
-		    <label for="for_working_day_type_other">Otro</label>
-		    <input type="text" class="form-control" id="for_working_day_type_other" placeholder="" name="working_day_type_other">
+		<fieldset class="form-group col">
+		    <label for="for_contractual_condition">Calidad Contractual</label>
+        <select name="contractual_condition" class="form-control" id="contractual_condition" disabled>
+          <option value=""></option>
+          <option value="SUPLENTE" >SUPLENTE</option>
+          <option value="CONTRATA" >CONTRATA</option>
+          <option value="TITULAR" >TITULAR</option>
+          <!-- <option value="HONORARIO COVID" >HONORARIO COVID</option>
+					<option value="SUMA ALZADA" >SUMA ALZADA</option> -->
+        </select>
 		</fieldset>
 
   </div>
 
-	<div class="row">
+	<!-- <div class="row">
 		<fieldset class="form-group col-3 col-md-3">
 				<label for="for_rrhh_team">Equipo RRHH*</label>
 				<select name="rrhh_team" class="form-control" id="rrhh_team" required>
@@ -354,27 +382,8 @@
 				</select>
 		</fieldset>
 
-		<fieldset class="form-group col-3 col-md-3">
-				<label for="for_digera_strategy">Estrategia Digera Covid</label>
-				<select name="digera_strategy" class="form-control" id="digera_strategy" required>
-					<option value=""></option>
-					<option value="Camas MEDIAS Aperturadas" >Camas MEDIAS Aperturadas</option>
-					<option value="Camas MEDIAS Complejizadas" >Camas MEDIAS Complejizadas</option>
-					<option value="Camas UCI Aperturadas" >Camas UCI Aperturadas</option>
-					<option value="Camas UCI Complejizadas" >Camas UCI Complejizadas</option>
-					<option value="Camas UTI Aperturadas" >Camas UTI Aperturadas</option>
-					<option value="Camas UTI Complejizadas" >Camas UTI Complejizadas</option>
-					<option value="Cupos Hosp. Domiciliaria" >Cupos Hosp. Domiciliaria</option>
-					<option value="Refuerzo Anatomía Patologica" >Refuerzo Anatomía Patologica</option>
-					<option value="Refuerzo Laboratorio" >Refuerzo Laboratorio</option>
-					<option value="Refuerzo SAMU" >Refuerzo SAMU</option>
-					<option value="Refuerzo UEH" >Refuerzo UEH</option>
-					@if(Auth::user()->organizationalUnit->establishment_id == 1)
-						<option value="Migración Colchane" >Migración Colchane</option>
-					@endif
-				</select>
-		</fieldset>
-	</div>
+
+	</div> -->
 
 	<button type="submit" id="principal_form" class="btn btn-primary">Crear</button>
 

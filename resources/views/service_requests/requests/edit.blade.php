@@ -311,19 +311,7 @@
 
   <div class="form-row">
 
-    <fieldset class="form-group col">
-		    <label for="for_contractual_condition">Calidad Contractual</label>
-        <select name="contractual_condition" class="form-control">
-          <option value=""></option>
-          <option value="SUPLENTE" @if($serviceRequest->contractual_condition == 'SUPLENTE') selected @endif >SUPLENTE</option>
-          <option value="CONTRATA" @if($serviceRequest->contractual_condition == 'CONTRATA') selected @endif>CONTRATA</option>
-          <option value="TITULAR" @if($serviceRequest->contractual_condition == 'TITULAR') selected @endif>TITULAR</option>
-          <!-- <option value="HONORARIO COVID" @if($serviceRequest->contractual_condition == 'HONORARIO COVID') selected @endif>HONORARIO COVID</option>
-          <option value="SUMA ALZADA" @if($serviceRequest->contractual_condition == 'SUMA ALZADA') selected @endif>SUMA ALZADA</option> -->
-        </select>
-		</fieldset>
-
-    <fieldset class="form-group col col-md">
+    <!-- <fieldset class="form-group col col-md">
 		    <label for="for_estate">Estamento al que corresponde CS</label>
 		    <select name="estate" class="form-control" required>
           <option value="Profesional Médico" @if($serviceRequest->estate == 'Profesional Médico') selected @endif >Profesional Médico</option>
@@ -336,6 +324,43 @@
           <option value="Auxiliar" @if($serviceRequest->estate == 'Auxiliar') selected @endif >Auxiliar</option>
           <option value="Otro (justificar)" @if($serviceRequest->estate == 'Otro (justificar)') selected @endif >Otro (justificar)</option>
         </select>
+		</fieldset> -->
+
+    <fieldset class="form-group col">
+		    <label for="for_profession_id">Profesión</label>
+		    <select name="profession_id" class="form-control" required id="for_profession_id">
+					<option value=""></option>
+					@foreach($professions as $profession)
+          	<option value="{{$profession->id}}" @if($serviceRequest->profession_id == $profession->id) selected @endif>{{$profession->name}}</option>
+					@endforeach
+        </select>
+		</fieldset>
+
+    <fieldset class="form-group col-6 col-md-3">
+		    <label for="for_working_day_type">Jornada de Trabajo</label>
+		    <select name="working_day_type" class="form-control" required>
+          <!-- <option value="08:00 a 16:48 hrs (L-M-M-J-V)" @if($serviceRequest->working_day_type == '08:00 a 16:48 hrs (L-M-M-J-V)') selected @endif >08:00 a 16:48 hrs (L-M-M-J-V)</option> -->
+          <option value="DIURNO" @if($serviceRequest->working_day_type == 'DIURNO') selected @endif >DIURNO</option>
+          <option value="TERCER TURNO" @if($serviceRequest->working_day_type == 'TERCER TURNO') selected @endif >TERCER TURNO</option>
+          <option value="TERCER TURNO - MODIFICADO" @if($serviceRequest->working_day_type == 'TERCER TURNO - MODIFICADO') selected @endif >TERCER TURNO - MODIFICADO</option>
+          <option value="CUARTO TURNO" @if($serviceRequest->working_day_type == 'CUARTO TURNO') selected @endif >CUARTO TURNO</option>
+          <option value="CUARTO TURNO - MODIFICADO" @if($serviceRequest->working_day_type == 'CUARTO TURNO - MODIFICADO') selected @endif >CUARTO TURNO - MODIFICADO</option>
+
+          <option value="DIURNO PASADO A TURNO" @if($serviceRequest->working_day_type == 'DIURNO PASADO A TURNO') selected @endif >DIURNO PASADO A TURNO</option>
+          <option value="HORA MÉDICA" @if($serviceRequest->working_day_type == 'HORA MÉDICA') selected @endif >HORA MÉDICA</option>
+          <option value="HORA EXTRA" @if($serviceRequest->working_day_type == 'HORA EXTRA') selected @endif>HORA EXTRA</option>
+					<option value="TURNO EXTRA" @if($serviceRequest->working_day_type == 'TURNO EXTRA') selected @endif>TURNO EXTRA</option>
+
+          <option value="TURNO DE REEMPLAZO" @if($serviceRequest->working_day_type == 'TURNO DE REEMPLAZO') selected @endif>TURNO DE REEMPLAZO</option>
+
+          <option value="OTRO" @if($serviceRequest->working_day_type == 'OTRO') selected @endif >OTRO</option>
+        </select>
+
+		</fieldset>
+
+    <fieldset class="form-group col-6 col-md-3">
+		    <label for="for_working_day_type_other">Detalle Jornada Trabajo</label>
+		    <input type="text" class="form-control" id="for_working_day_type_other" placeholder="" name="working_day_type_other" value="{{ $serviceRequest->working_day_type_other }}">
 		</fieldset>
 
     <fieldset class="form-group col col-md">
@@ -349,16 +374,6 @@
           <option value="11" @if($serviceRequest->weekly_hours == 11) selected @endif>11</option>
         </select>
 		</fieldset>
-
-    <fieldset class="form-group col col-md">
-        <label for="for_establishment_id">Establecimiento</label>
-        <select name="establishment_id" class="form-control" required>
-          <option value=""></option>
-          @foreach($establishments as $key => $establishment)
-            <option value="{{$establishment->id}}" @if($serviceRequest->establishment_id == $establishment->id) selected @endif>{{$establishment->name}}</option>
-          @endforeach
-        </select>
-    </fieldset>
 
   </div>
 
@@ -396,42 +411,54 @@
         </select>
 		</fieldset>
 
-    <fieldset class="form-group col-12 col-md-3">
+    <fieldset class="form-group col-3 col-md-3">
+        <label for="for_digera_strategy">Estrategia Digera Covid</label>
+        <select name="digera_strategy" class="form-control" id="digera_strategy">
+          <option value=""></option>
+          <option value="Camas MEDIAS Aperturadas" @if($serviceRequest->digera_strategy == "Camas MEDIAS Aperturadas") selected @endif>Camas MEDIAS Aperturadas</option>
+          <option value="Camas MEDIAS Complejizadas" @if($serviceRequest->digera_strategy == "Camas MEDIAS Complejizadas") selected @endif>Camas MEDIAS Complejizadas</option>
+          <option value="Camas UCI Aperturadas" @if($serviceRequest->digera_strategy == "Camas UCI Aperturadas") selected @endif>Camas UCI Aperturadas</option>
+          <option value="Camas UCI Complejizadas" @if($serviceRequest->digera_strategy == "Camas UCI Complejizadas") selected @endif>Camas UCI Complejizadas</option>
+          <option value="Camas UTI Aperturadas" @if($serviceRequest->digera_strategy == "Camas UTI Aperturadas") selected @endif>Camas UTI Aperturadas</option>
+          <option value="Camas UTI Complejizadas" @if($serviceRequest->digera_strategy == "Camas UTI Complejizadas") selected @endif>Camas UTI Complejizadas</option>
+          <option value="Cupos Hosp. Domiciliaria" @if($serviceRequest->digera_strategy == "Cupos Hosp. Domiciliaria") selected @endif>Cupos Hosp. Domiciliaria</option>
+          <option value="Refuerzo Anatomía Patologica" @if($serviceRequest->digera_strategy == "Refuerzo Anatomía Patologica") selected @endif>Refuerzo Anatomía Patologica</option>
+          <option value="Refuerzo Laboratorio" @if($serviceRequest->digera_strategy == "Refuerzo Laboratorio") selected @endif>Refuerzo Laboratorio</option>
+          <option value="Refuerzo SAMU" @if($serviceRequest->digera_strategy == "Refuerzo SAMU") selected @endif>Refuerzo SAMU</option>
+          <option value="Refuerzo UEH" @if($serviceRequest->digera_strategy == "Refuerzo UEH") selected @endif>Refuerzo UEH</option>
+          <option value="Migración Colchane" @if($serviceRequest->digera_strategy == "Migración Colchane") selected @endif>Migración Colchane</option>
+        </select>
+    </fieldset>
+
+    <!-- <fieldset class="form-group col-12 col-md-3">
 		    <label for="for_estate_other">Detalle estamento</label>
 		    <input type="text" class="form-control" id="for_estate_other" placeholder="" name="estate_other" value="{{ $serviceRequest->estate_other }}">
-		</fieldset>
+		</fieldset> -->
 
-    <fieldset class="form-group col-6 col-md-3">
-		    <label for="for_working_day_type">Jornada de Trabajo</label>
-		    <select name="working_day_type" class="form-control" required>
-          <!-- <option value="08:00 a 16:48 hrs (L-M-M-J-V)" @if($serviceRequest->working_day_type == '08:00 a 16:48 hrs (L-M-M-J-V)') selected @endif >08:00 a 16:48 hrs (L-M-M-J-V)</option> -->
-          <option value="DIURNO" @if($serviceRequest->working_day_type == 'DIURNO') selected @endif >DIURNO</option>
-          <option value="TERCER TURNO" @if($serviceRequest->working_day_type == 'TERCER TURNO') selected @endif >TERCER TURNO</option>
-          <option value="TERCER TURNO - MODIFICADO" @if($serviceRequest->working_day_type == 'TERCER TURNO - MODIFICADO') selected @endif >TERCER TURNO - MODIFICADO</option>
-          <option value="CUARTO TURNO" @if($serviceRequest->working_day_type == 'CUARTO TURNO') selected @endif >CUARTO TURNO</option>
-          <option value="CUARTO TURNO - MODIFICADO" @if($serviceRequest->working_day_type == 'CUARTO TURNO - MODIFICADO') selected @endif >CUARTO TURNO - MODIFICADO</option>
-
-          <option value="DIURNO PASADO A TURNO" @if($serviceRequest->working_day_type == 'DIURNO PASADO A TURNO') selected @endif >DIURNO PASADO A TURNO</option>
-          <option value="HORA MÉDICA" @if($serviceRequest->working_day_type == 'HORA MÉDICA') selected @endif >HORA MÉDICA</option>
-          <option value="HORA EXTRA" @if($serviceRequest->working_day_type == 'HORA EXTRA') selected @endif>HORA EXTRA</option>
-					<option value="TURNO EXTRA" @if($serviceRequest->working_day_type == 'TURNO EXTRA') selected @endif>TURNO EXTRA</option>
-
-          <option value="TURNO DE REEMPLAZO" @if($serviceRequest->working_day_type == 'TURNO DE REEMPLAZO') selected @endif>TURNO DE REEMPLAZO</option>
-
-          <option value="OTRO" @if($serviceRequest->working_day_type == 'OTRO') selected @endif >OTRO</option>
+    <fieldset class="form-group col col-md">
+        <label for="for_establishment_id">Establecimiento</label>
+        <select name="establishment_id" class="form-control" required>
+          <option value=""></option>
+          @foreach($establishments as $key => $establishment)
+            <option value="{{$establishment->id}}" @if($serviceRequest->establishment_id == $establishment->id) selected @endif>{{$establishment->name}}</option>
+          @endforeach
         </select>
+    </fieldset>
 
-		</fieldset>
-
-    <fieldset class="form-group col-6 col-md-3">
-		    <label for="for_working_day_type_other">Otro</label>
-		    <input type="text" class="form-control" id="for_working_day_type_other" placeholder="" name="working_day_type_other" value="{{ $serviceRequest->working_day_type_other }}">
+    <fieldset class="form-group col">
+		    <label for="for_contractual_condition">Calidad Contractual</label>
+        <select name="contractual_condition" class="form-control">
+          <option value=""></option>
+          <option value="SUPLENTE" @if($serviceRequest->contractual_condition == 'SUPLENTE') selected @endif >SUPLENTE</option>
+          <option value="CONTRATA" @if($serviceRequest->contractual_condition == 'CONTRATA') selected @endif>CONTRATA</option>
+          <option value="TITULAR" @if($serviceRequest->contractual_condition == 'TITULAR') selected @endif>TITULAR</option>
+        </select>
 		</fieldset>
 
   </div>
 
   <div class="row">
-    <fieldset class="form-group col-3 col-md-3">
+    <!-- <fieldset class="form-group col-3 col-md-3">
         <label for="for_rrhh_team">Equipo RRHH</label>
         <select name="rrhh_team" class="form-control">
 
@@ -472,28 +499,9 @@
     </fieldset>
 
     <fieldset class="form-group col-3 col-md-3">
-        <label for="for_digera_strategy">Estrategia Digera Covid</label>
-        <select name="digera_strategy" class="form-control" id="digera_strategy">
-          <option value=""></option>
-          <option value="Camas MEDIAS Aperturadas" @if($serviceRequest->digera_strategy == "Camas MEDIAS Aperturadas") selected @endif>Camas MEDIAS Aperturadas</option>
-          <option value="Camas MEDIAS Complejizadas" @if($serviceRequest->digera_strategy == "Camas MEDIAS Complejizadas") selected @endif>Camas MEDIAS Complejizadas</option>
-          <option value="Camas UCI Aperturadas" @if($serviceRequest->digera_strategy == "Camas UCI Aperturadas") selected @endif>Camas UCI Aperturadas</option>
-          <option value="Camas UCI Complejizadas" @if($serviceRequest->digera_strategy == "Camas UCI Complejizadas") selected @endif>Camas UCI Complejizadas</option>
-          <option value="Camas UTI Aperturadas" @if($serviceRequest->digera_strategy == "Camas UTI Aperturadas") selected @endif>Camas UTI Aperturadas</option>
-          <option value="Camas UTI Complejizadas" @if($serviceRequest->digera_strategy == "Camas UTI Complejizadas") selected @endif>Camas UTI Complejizadas</option>
-          <option value="Cupos Hosp. Domiciliaria" @if($serviceRequest->digera_strategy == "Cupos Hosp. Domiciliaria") selected @endif>Cupos Hosp. Domiciliaria</option>
-          <option value="Refuerzo Anatomía Patologica" @if($serviceRequest->digera_strategy == "Refuerzo Anatomía Patologica") selected @endif>Refuerzo Anatomía Patologica</option>
-          <option value="Refuerzo Laboratorio" @if($serviceRequest->digera_strategy == "Refuerzo Laboratorio") selected @endif>Refuerzo Laboratorio</option>
-          <option value="Refuerzo SAMU" @if($serviceRequest->digera_strategy == "Refuerzo SAMU") selected @endif>Refuerzo SAMU</option>
-          <option value="Refuerzo UEH" @if($serviceRequest->digera_strategy == "Refuerzo UEH") selected @endif>Refuerzo UEH</option>
-          <option value="Migración Colchane" @if($serviceRequest->digera_strategy == "Migración Colchane") selected @endif>Migración Colchane</option>
-        </select>
-    </fieldset>
-
-    <fieldset class="form-group col-3 col-md-3">
         <label for="for_digera_strategy">Observaciones</label>
         <input type="text" class="form-control" name="observation" value="{{$serviceRequest->observation}}">
-    </fieldset>
+    </fieldset> -->
 
     <fieldset class="form-group col-3 col-md-3">
         <label for="for_digera_strategy"><br></label>

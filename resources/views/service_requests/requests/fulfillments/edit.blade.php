@@ -71,7 +71,7 @@
 
   <fieldset class="form-group col-3 col-md-3">
       <label for="for_end_date">Estamento</label>
-      <input type="text" class="form-control" value="{{$serviceRequest->estate}}" disabled>
+      <input type="text" class="form-control" value="{{$serviceRequest->profession->name}}" disabled>
   </fieldset>
 
 </div>
