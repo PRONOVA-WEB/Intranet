@@ -1,8 +1,3 @@
-# Autoría
-Sistema desarrollado el Departamento TIC del Servicio de Salud de Iquique.
-
-sistemas.ssi@redsalud.gob.cl
-
 ## Cambio de rama de master a main
 ```
 git branch -m master main
@@ -23,8 +18,8 @@ git remote set-head origin -a
 
 ## Ejecutar en un terminal los siguientes comandos
 ```
-git clone http://github.com/cl-ssi/ionline
-cd ionline
+git clone https://github.com/PRONOVA-WEB/intranet
+cd intranet
 composer install
 cp .env.example .env
 php artisan key:generate
