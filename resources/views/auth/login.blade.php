@@ -12,6 +12,7 @@
         rel="stylesheet">
     <!-- Custom styles for this template-->
     <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/intranet.css') }}" rel="stylesheet">
     <script src="https://kit.fontawesome.com/7c4f606aba.js" SameSite="None" crossorigin="anonymous"></script>
     <link href="{{ asset('css/cu.min.css') }}" rel="stylesheet">
     <style>
@@ -25,6 +26,13 @@
             display: inline-block;
             font-size: 16px;
         }
+
+        .bg-gradient-primary {
+            @switch(env('APP_ENV')) @case('local') background-color: rgb(73, 17, 82); @break @case('testing') background-color: rgb(2, 82, 0); @break @case('production')@if (env('APP_DEBUG') == true)background-color: rgb(255, 0, 0);
+            @endif@break;
+            @endswitch background-image: none;
+        }
+
     </style>
 </head>
 
@@ -64,7 +72,7 @@
                                         <label for="id">{{ __('RUN') }}</label>
                                         <div class="col-md-12">
                                             <input id="id" type="text"
-                                                class="form-control form-control-user @error('id') is-invalid @enderror" name="id"
+                                                class="identificacion form-control form-control-user @error('id') is-invalid @enderror" name="id"
                                                 value="{{ old('id') }}" required autofocus>
 
                                             @error('id')
@@ -132,6 +140,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
         integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous">
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 
     <!-- Custom scripts-->
     <script type="text/javascript">
@@ -139,6 +148,10 @@
             $("#local_login").toggleClass('d-none');
             $("#login_botones").toggleClass('offset-3');
         });
+        $('.identificacion').mask('00000000-A', {
+            onKeyPress: function (value, event) {
+                event.currentTarget.value = value.toUpperCase();
+        }});
     </script>
 </body>
 
