@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Servicio de Salud') }} @yield('title')</title>
+    <title>{{ config('app.name', 'Intranet') }} @yield('title')</title>
 
     <link href="{{ asset('favicon-'. env('APP_ENV') .'.ico') }}"
         rel="icon" type="image/x-icon">
