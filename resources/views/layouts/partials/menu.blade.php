@@ -3,6 +3,9 @@
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('home') }}">
+        <div class="sidebar-brand-icon">
+            <img src="{{ asset('images/logo_pronova.jpg') }}" class="img-fluid">
+        </div>
         <div class="sidebar-brand-text mx-3">{{ env('APP_NAME') }}</div>
     </a>
 
@@ -237,11 +240,13 @@
         ])
         <li class="nav-item {{ active('pharmacies.*') }}">
             <a class="nav-link" href="{{ route('pharmacies.index') }}">
-                @canany(['Pharmacy: SSI (id:1)', 'Pharmacy: REYNO (id:2)']) <i class="fas fa-prescription-bottle-alt"></i>
+                <span>
+                @canany(['Pharmacy: SSI (id:1)', 'Pharmacy: REYNO (id:2)']) <i class="fas fa-prescription-bottle-alt fa-fw "></i>
                 Droguería @endcan
-                @can('Pharmacy: APS (id:3)') <i class="fas fa-list-ul"></i> Bodega APS @endcan
-                @can('Pharmacy: Servicios generales (id:4)') <i class="fas fa-list-ul"></i> Bodega Servicios Generales
+                @can('Pharmacy: APS (id:3)') <i class="fas fa-list-ul fa-fw "></i> Bodega APS @endcan
+                @can('Pharmacy: Servicios generales (id:4)') <i class="fas fa-list-ul fa-fw "></i> Bodega Servicios Generales
                 @endcan
+                </span>
             </a>
         </li>
     @endcan

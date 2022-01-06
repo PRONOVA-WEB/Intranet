@@ -63,6 +63,7 @@ use App\Http\Controllers\ServiceRequests\DenominationFormulaController;
 
 use App\Http\Controllers\Parameters\ProfessionController;
 use App\Http\Controllers\Pharmacies\PurchaseController;
+use App\Http\Controllers\Settings\SettingController;
 use App\Pharmacies\Purchase;
 use App\User;
 use App\Http\Controllers\TestController;
@@ -1552,10 +1553,17 @@ Route::prefix('suitability')->as('suitability.')->middleware('auth')->group(func
     // Route::post('livewire/message/rrhh.change-shift-day-status', [\App\Livewire\Rrhh\ChangeShiftDayStatus::class]);+
 
 
-
 });
 
-
+//settings module
+Route::prefix('/settings')->as('settings.')->middleware('auth')->group(function () {
+    Route::get('/', [SettingController::class, 'index'])->name('index');
+    Route::get('/create', [SettingController::class, 'create'])->name('create');
+    Route::post('/store', [SettingController::class, 'store'])->name('store');
+    Route::get('/{settings}/edit', [SettingController::class, 'edit'])->name('edit');
+    Route::delete('/{settings}/destroy', [SettingController::class, 'destroy'])->name('destroy');
+});
+// Route::resource('/settings', SettingController::class)->middleware('auth');
 Route::view('/some', 'some');
 
 Route::get('/test-getip',[TestController::class,'getIp']);
