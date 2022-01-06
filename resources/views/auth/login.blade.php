@@ -28,7 +28,7 @@
         }
 
         .bg-gradient-primary {
-            @switch(env('APP_ENV')) @case('local') background-color: rgb(73, 17, 82); @break @case('testing') background-color: rgb(2, 82, 0); @break @case('production')@if (env('APP_DEBUG') == true)background-color: rgb(255, 0, 0);
+            @switch(env('APP_ENV')) @case('local') background-color: rgb(109, 108, 108 ); @break @case('testing') background-color: rgb(2, 82, 0); @break @case('production')@if (env('APP_DEBUG') == true)background-color: rgb(255, 0, 0);
             @endif@break;
             @endswitch background-image: none;
         }
@@ -47,6 +47,7 @@
                                 <div class="p-5">
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">{{ env('APP_NAME') }}</h1>
+                                        <img src="{{ asset('images/logo_pronova.jpg') }}" class="img-fluid">
                                     </div>
                                     <div class="row justify-content-center d-block mt-5">
                                         <a class="btn-cu btn-l btn-fw btn-color-estandar"

@@ -51,5 +51,9 @@ class DatabaseSeeder extends Seeder
         $this->call(BudgetItemSeeder::class);
         $this->call(PurchaseUnitSeeder::class);
 
+        /* SEED PARA SETTINGS DEL SITIO  */
+        $this->call(SettingSeeder::class);
+
+
     }
 }

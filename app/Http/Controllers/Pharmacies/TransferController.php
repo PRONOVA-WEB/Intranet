@@ -40,7 +40,7 @@ class TransferController extends Controller
                                     ->where('program_id', 46) //APS ORTESIS
                                     ->whereNotIn('id', [1185, 1186, 1231])
                                     ->orderBy('name','ASC')->get();
-            
+
             $establishments = Establishment::where('pharmacy_id',session('pharmacy_id'))
                                             ->whereNotIn('id', [148, 128])
                                             ->orderBy('name','ASC')->get();
@@ -79,7 +79,7 @@ class TransferController extends Controller
         $pending_deliveries = Deliver::with('establishment:id,name', 'product:id,name')
                                         ->where('remarks', 'PENDIENTE')
                                         ->where('establishment_id', $filter)->get();
-        
+
         $pendings_by_product = $pending_deliveries->groupBy('product_id')->map(function($row){
                 return $row->sum('quantity');
         });
@@ -143,7 +143,7 @@ class TransferController extends Controller
     }
 
     public function auth($establishment_id)
-    {     
+    {
         $filterAATT = function($q){
             $q->where('pharmacy_id',session('pharmacy_id'))
               ->where('program_id', 46) //APS ORTESIS
@@ -151,19 +151,19 @@ class TransferController extends Controller
               ->orderBy('name', 'ASC');
         };
         $establishment = Establishment::with(['products' => $filterAATT])->whereHas('products', $filterAATT)->find($establishment_id);
-        
+
         $pending_deliveries = Deliver::with('establishment:id,name', 'product:id,name')
                                         ->where('remarks', 'PENDIENTE')
                                         ->where('establishment_id', $establishment_id)
                                         ->doesntHave('document')->get();
-        
+
         $pendings_by_product = $pending_deliveries->groupBy('product_id')->map(function($row){
             return $row->sum('quantity');
         });
         $pendings_by_product->toArray();
 
         $style = "border: 1px solid black; border-collapse: collapse; padding: 5px; font-family: Arial, Helvetica, sans-serif; font-size: 0.8rem;";
-        
+
         $content = "<p style='font-family: Arial, Helvetica, sans-serif; font-size: 0.8rem;'>Mediante el presente documento y en marco a los problemas de <b>salud 36, piloto GES y decreto 22</b>, y a la evaluación de información de solicitud y entrega de ayudas técnicas ingresada por su establecimiento en plataforma i.saludiquique.cl, mediante el presente se informa a usted que las siguientes ayudas técnicas de encuentran disponible para ser retiradas en bodega del Servicio de Salud Iquique:</p>
         <p style='font-family: Arial, Helvetica, sans-serif; font-size: 0.8rem;'>Entrega para establecimiento <b>{$establishment->name}</b></p>
 
@@ -202,7 +202,7 @@ class TransferController extends Controller
         </ul>";
 
         // return $content;
-        
+
         // return view('pharmacies.products.transfer.auth', compact('establishment', 'pendings_by_product'));
         $document = new Document();
         $document->content = $content;
@@ -243,7 +243,7 @@ class TransferController extends Controller
         // $establishment = Establishment::with(['products' => $filterAATT])
         //                                           ->whereHas('products', $filterAATT)
         //                                           ->find($filter);
-        
+
         $establishment = Establishment::with('products')->find($filter);
 
         $establishments = Establishment::where('pharmacy_id',session('pharmacy_id'))
@@ -260,7 +260,7 @@ class TransferController extends Controller
             $stock = new Product;
             $stock->id = $product->id;
             $stock->name = $product->name;
-                
+
             if($establishment->products->contains($product)){
                 $stock->stock = $establishment->products->where('id', $product->id)->first()->pivot->stock;
                 $stock->critic_stock = $establishment->products->where('id', $product->id)->first()->pivot->critic_stock;

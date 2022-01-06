@@ -39,7 +39,7 @@
             <select name="type" id="formType" class="form-control" required>
                 <option value="">Seleccione tipo</option>
                 <option value="Memo" @if($document->type == 'Memo') selected @endif>Memo</option>
-                <option value="Oficio" @if($document->type == 'Oficio') selected @endif>Oficio</option>             
+                <option value="Oficio" @if($document->type == 'Oficio') selected @endif>Oficio</option>
                 <!-- <option value="Ordinario" @if($document->type == 'Ordinario') selected @endif>Ordinario</option> -->
                 <option value="Reservado" @if($document->type == 'Reservado') selected @endif>Reservado</option>
                 <option value="Circular" @if($document->type == 'Circular') selected @endif>Circular</option>
@@ -67,7 +67,7 @@
         <div class="form-group col-7">
             <div class="form-group ">
                 <label for="forFrom">De:*</label>
-                <input type="text" class="form-control" id="forFrom" name="from"                    
+                <input type="text" class="form-control" id="forFrom" name="from"
                     placeholder="Nombre/Funcion" required
                     {!! $document->from ? 'value="' . $document->from .'"' : '' !!}>
             </div>
