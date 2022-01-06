@@ -4,13 +4,6 @@
 
 @section('content')
 
-<style>
-    .jumbotron {
-    background-image: url("{{ asset('images/new-year.webp') }}");
-    background-size: cover;
-    /* opacity: 0.5; */
-}
-</style>
 <div class="jumbotron mt-4 text-light">
     <div class="row">
         <div class="col-6">
@@ -22,7 +15,7 @@
 
                 <br><br><br><br><br><br>
             </p>
-            
+
             <hr class="my-4">
 
             <p>Contacto:
