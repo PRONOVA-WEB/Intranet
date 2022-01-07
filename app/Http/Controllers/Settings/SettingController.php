@@ -26,7 +26,7 @@ class SettingController extends Controller
      */
     public function create()
     {
-        //
+        return view('settings.create');
     }
 
     /**
@@ -37,7 +37,16 @@ class SettingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'key' => 'required|unique:settings',
+            'display_name' => 'required',
+            'type' => 'required',
+        ]);
+
+        $setting = new Setting($request->All());
+        $setting->save();
+
+        return redirect()->route('settings.index')->with('success','Parámetro creado exitosamente');
     }
 
     /**

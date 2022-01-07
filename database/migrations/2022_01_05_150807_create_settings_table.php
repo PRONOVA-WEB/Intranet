@@ -21,6 +21,7 @@ class CreateSettingsTable extends Migration
             $table->text('details')->nullable()->default(null);
             $table->string('type');
             $table->integer('order')->default('1');
+            $table->timestamps();
         });
     }
 
