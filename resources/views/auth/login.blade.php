@@ -145,6 +145,10 @@
 
     <!-- Custom scripts-->
     <script type="text/javascript">
+        @if ($errors->any())
+            $("#login_botones").toggleClass('offset-3');
+            $("#local_login").toggleClass('d-none');
+        @endif
         $("#show_local_login").click(function() {
             $("#local_login").toggleClass('d-none');
             $("#login_botones").toggleClass('offset-3');
