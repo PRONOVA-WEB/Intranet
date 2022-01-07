@@ -46,8 +46,8 @@
                             <div class="col-lg-6 offset-3 d-none d-lg-block" id="login_botones">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">{{ env('APP_NAME') }}</h1>
-                                        <img src="{{ asset('images/logo_pronova.jpg') }}" class="img-fluid">
+                                        <h1 class="h4 text-gray-900 mb-4">@settings(site.title)</h1>
+                                        <img src="@settings(site.logo)" class="img-fluid">
                                     </div>
                                     <div class="row justify-content-center d-block mt-5">
                                         <a class="btn-cu btn-l btn-fw btn-color-estandar"
