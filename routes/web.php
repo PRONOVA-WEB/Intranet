@@ -1567,5 +1567,5 @@ Route::prefix('/settings')->as('settings.')->middleware('auth')->group(function 
 Route::view('/some', 'some');
 
 Route::get('/test-getip',[TestController::class,'getIp']);
-
+Route::get('/ous',[TestController::class,'ous']);
 Route::get('/test-mercado-publico-api/{date}', [TestController::class, 'getMercadoPublicoTender']);

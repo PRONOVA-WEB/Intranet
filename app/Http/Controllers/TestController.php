@@ -5,11 +5,22 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Storage;
+use App\Rrhh\OrganizationalUnit;
+use Illuminate\Support\Facades\DB;
 use App\Models\WebService\MercadoPublico;
 use Carbon\Carbon;
 
 class TestController extends Controller
 {
+    public function ous()
+    {
+        //$ous = OrganizationalUnit::all();
+        $ous = OrganizationalUnit::pluck('id','name');
+        // $ous = OrganizationalUnit::select(DB::raw('id','name'))->get();
+        // debug($ous);
+        return true;
+    }
+
     public function getIp()
     {
 
