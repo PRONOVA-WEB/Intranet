@@ -31,9 +31,9 @@ class SettingSeeder extends Seeder
                 'id' => 2,
                 'key' => 'site.description',
                 'display_name' => 'Descripción del sitio',
-                'value' => 'Gestión de datos',
+                'value' => '',
                 'details' => '',
-                'type' => 'text_area',
+                'type' => 'rich_text_box',
                 'order' => 2,
             ),
             2 =>
@@ -41,20 +41,10 @@ class SettingSeeder extends Seeder
                 'id' => 3,
                 'key' => 'site.logo',
                 'display_name' => 'Logo del sitio',
-                'value' => 'settings\\December2021\\DtnF2rxpNB5RmtEJFZDP.png',
+                'value' => '',
                 'details' => '',
                 'type' => 'image',
                 'order' => 4,
-            ),
-            2 =>
-            array(
-                'id' => 4,
-                'key' => 'site.detalle',
-                'display_name' => 'Texto Enriquecido',
-                'value' => 'settings\\December2021\\DtnF2rxpNB5RmtEJFZDP.png',
-                'details' => '',
-                'type' => 'rich_text_box',
-                'order' => 5,
             )
         ));
     }

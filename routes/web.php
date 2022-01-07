@@ -1556,14 +1556,13 @@ Route::prefix('suitability')->as('suitability.')->middleware('auth')->group(func
 });
 
 //settings module
-Route::prefix('/settings')->as('settings.')->middleware('auth')->group(function () {
+Route::prefix('/settings')->as('settings.')->middleware(['auth', 'role:god'])->group(function () {
     Route::get('/', [SettingController::class, 'index'])->name('index');
     Route::get('/create', [SettingController::class, 'create'])->name('create');
     Route::post('/store', [SettingController::class, 'store'])->name('store');
-    Route::get('/{settings}/edit', [SettingController::class, 'edit'])->name('edit');
-    Route::delete('/{settings}/destroy', [SettingController::class, 'destroy'])->name('destroy');
+    Route::post('/store_values', [SettingController::class, 'storeValues'])->name('store.values');
+    Route::delete('/{setting}/destroy', [SettingController::class, 'destroy'])->name('destroy');
 });
-// Route::resource('/settings', SettingController::class)->middleware('auth');
 Route::view('/some', 'some');
 
 Route::get('/test-getip',[TestController::class,'getIp']);

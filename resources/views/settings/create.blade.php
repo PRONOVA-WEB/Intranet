@@ -18,13 +18,13 @@
                 </div>
                 <div class="form-group col-lg-6">
                     <label for="name">Nombre a mostrar*</label>
-                    <input type="text" class="form-control" id="display_name" name="display_name" required="required">
+                    <input type="text" class="form-control" id="display_name" name="display_name" >
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-lg-6">
-                    <label for="name">Descripción*</label>
-                    <input type="text" class="form-control" id="detail" name="detail" required="required">
+                    <label for="name">Descripción</label>
+                    <input type="text" class="form-control" id="details" name="details" required="required">
                 </div>
                 <div class="form-group col-lg-6">
                     <label for="name">Tipo*</label>
