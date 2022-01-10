@@ -4,9 +4,9 @@
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('home') }}">
         <div class="sidebar-brand-icon">
-            <img src="{{ asset('images/logo_pronova.jpg') }}" class="img-fluid">
+            <img src="@settings(site.logo)" class="img-fluid">
         </div>
-        <div class="sidebar-brand-text mx-3">{{ env('APP_NAME') }}</div>
+        <div class="sidebar-brand-text mx-3">@settings(site.title)</div>
     </a>
 
     <!-- Divider -->
@@ -326,6 +326,7 @@
                     <a class="collapse-item" href="{{ route('parameters.permissions.index', 'external') }}">
                         <i class="fas fa-external-link-alt"></i> Externos
                     </a>
+                    <hr>
                     <a class="collapse-item" href="{{ route('parameters.holidays.index') }}">
                         <i class="fas fa-suitcase"></i> Feriados</a>
                     <a class="collapse-item" href="{{ route('parameters.roles.index') }}">
@@ -357,6 +358,12 @@
                         <i class="fas fa-shopping-cart"></i> Unidades de Compra</a>
                 </div>
             </div>
+        </li>
+        <li class="nav-item {{ active('settings.*') }}">
+            <a class="nav-link" href="{{ route('settings.index') }}">
+                <i class="fas fa-wrench"></i>
+                <span>Parámetros</span>
+            </a>
         </li>
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ env('APP_NAME') }}</title>
+    <title>@settings(site.title) | @yield('title')</title>
     <meta content="Pronova" name="author" />
     <!-- Scripts -->
     <!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
@@ -52,7 +52,7 @@
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; {{ env('APP_NAME') }} 2021</span>
+                    <span>Copyright &copy; @settings(site.title) {{ date('Y') }}</span>
                 </div>
             </div>
         </footer>

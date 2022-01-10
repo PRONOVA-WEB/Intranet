@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Settings;
 use App\Models\Setting;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class SettingController extends Controller
 {
@@ -26,7 +27,7 @@ class SettingController extends Controller
      */
     public function create()
     {
-        //
+        return view('settings.create');
     }
 
     /**
@@ -37,41 +38,52 @@ class SettingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'key' => 'required|unique:settings',
+            'display_name' => 'required',
+            'type' => 'required',
+        ]);
+
+        $setting = new Setting();
+        $setting->key = 'site.' . $request->key;
+        $setting->display_name = $request->display_name;
+        $setting->type = $request->type;
+        $setting->save();
+
+        return redirect()->route('settings.index')->with('success', 'Parámetro creado exitosamente');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    // Almacenar los datos de los parámetros
+    public function storeValues(Request $request)
     {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+        foreach ($request->except('_token') as $key => $parametro) {
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+            if (!empty($parametro)) {
+                $setting = Setting::find($key);
+                if ($setting->type == 'image') {
+                    $extensions = ['jpg','jpeg','png','gif','svg'];
+                    $isImage = $request->{$key}->getClientOriginalExtension();
+
+                    if (in_array($isImage , $extensions)) {
+
+                        if (!empty($setting->value)) {
+                            if (\File::exists('storage/' . $setting->value)) {
+                                \File::delete('storage/' . $setting->value);
+                            }
+                        }
+
+                        $imageName = \Str::random(20) . '.' . $request->{$key}->extension();
+                        $request->file($key)->storeAS('public/settings/images', $imageName);
+                        $parametro = 'settings\\images\\' . $imageName;
+                    }
+                }
+                $setting->value = $parametro;
+                $setting->save();
+            }
+        }
+        \Artisan::call('view:clear');
+        return redirect()->back()->with('success', 'Parámetros actualizados exitosamente');
     }
 
     /**
@@ -82,6 +94,13 @@ class SettingController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $setting = Setting::find($id);
+        if ($setting->type == 'image' && !empty($setting->value)) {
+            if (\File::exists('storage/' . $setting->value)) {
+                \File::delete('storage/' . $setting->value);
+            }
+        }
+        $setting->delete();
+        return redirect()->back()->with('success', 'Parámetro eliminado');
     }
 }
