@@ -62,20 +62,20 @@ class SettingController extends Controller
             if (!empty($parametro)) {
                 $setting = Setting::find($key);
                 if ($setting->type == 'image') {
-                    $extensions = ['jpg','jpeg','png','gif','svg'];
-                    $isImage = $request->{$key}->getClientOriginalExtension();
-
-                    if (in_array($isImage , $extensions)) {
-
+                    $extensions = ['jpg', 'jpeg', 'png', 'gif', 'svg'];
+                    $typeImage  = $request->{$key}->getClientOriginalExtension();
+                    $isImage    = in_array($typeImage, $extensions);
+                    if ($isImage) {
                         if (!empty($setting->value)) {
                             if (\File::exists('storage/' . $setting->value)) {
                                 \File::delete('storage/' . $setting->value);
                             }
                         }
-
                         $imageName = \Str::random(20) . '.' . $request->{$key}->extension();
                         $request->file($key)->storeAS('public/settings/images', $imageName);
                         $parametro = 'settings\\images\\' . $imageName;
+                    } else {
+                        $parametro = $setting->value;
                     }
                 }
                 $setting->value = $parametro;
