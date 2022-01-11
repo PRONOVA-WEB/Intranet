@@ -156,7 +156,13 @@
 
                     @canany(['OrganizationalUnits: create', 'OrganizationalUnits: edit', 'OrganizationalUnits: delete'])
                         <a class="collapse-item" href="{{ route('rrhh.organizational-units.index') }}">
-                            <i class="fas fa-sitemap fa-fw"></i> Unidades organizacionales
+                            <i class="fas fa-sitemap fa-fw"></i> Unidades<br> organizacionales
+                        </a>
+                    @endcan
+
+                    @canany(['Authorities: view', 'Authorities: create'])
+                        <a class="collapse-item" href="{{ route('rrhh.authorities.index') }}">
+                            <i class="fas fa-chess-king fa-fw"></i> Autoridades
                         </a>
                     @endcan
 
@@ -168,7 +174,7 @@
 
                     @canany(['Service Request', 'Service Request: report excel'])
                         <a class="collapse-item" href="{{ route('rrhh.service-request.home') }}">
-                            <i class="fas fa-child fa-fw"></i> Contratación Honorarios
+                            <i class="fas fa-child fa-fw"></i> Contratación<br>  Honorarios
                         </a>
                     @endcan
 

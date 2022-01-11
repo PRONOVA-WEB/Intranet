@@ -4,6 +4,8 @@ namespace App\Documents;
 
 use Illuminate\Database\Eloquent\Model;
 
+use function PHPUnit\Framework\isNull;
+
 class Correlative extends Model
 {
     /**
@@ -17,13 +19,15 @@ class Correlative extends Model
 
     public static function getCorrelativeFromType($type) {
         /* Obtener el objeto correlativo según el tipo */
-        $correlative = Correlative::Where('type',"$type")->first();
-        /* Almacenar el número del correlativo  */
-        $number = $correlative->correlative;
-        /* Aumentar el correlativo y guardarlo */
-        $correlative->correlative = $correlative->correlative + 1;
-        $correlative->save();
+        $correlative = Correlative::Where('type',$type)->orderBy('correlative','desc')->first();
 
+        $correlativeNew = new Correlative();
+        $correlativeNew->correlative = ($correlative) ? $correlative->correlative + 1 : 1;
+
+        $correlativeNew->type  = $type;
+        $correlativeNew->year  = date('Y');
+        $correlativeNew->save();
+        $number = $correlativeNew->correlative;
         /* Retornar el número actial */
         return $number;
     }

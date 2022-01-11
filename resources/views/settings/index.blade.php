@@ -16,7 +16,7 @@
             <div class="row">
                 @foreach ($settings as $setting)
                     <div class="col-lg-12">
-                        <div class="card shadow mb-4">
+                        <div class="card mb-4">
                             <div class="card-header py-3 ">
                                 <h6 class="m-0 font-weight-bold">{{ $setting->display_name }}</h6>
                                 <code>{{ $setting->key }}</code>

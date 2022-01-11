@@ -181,7 +181,7 @@ bottom: 5px;
             <span class="ml-3">
             Documentos asociados:
             @foreach($event->documents as $document)
-                <a href="{{ route('documents.download', $document->id) }}" target="_blank">
+                <a href="{{ route( ($document->file) ? 'documents.download' : 'documents.show', $document->id ) }}" target="_blank">
                     <i class="far fa-file-alt"></i> {{ $document->subject }}
                 </a>
             @endforeach
