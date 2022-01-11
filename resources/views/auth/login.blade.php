@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
-    <title>{{ env('APP_NAME') }}</title>
+    <title>@settings(site.title)</title>
     <meta content="Pronova" name="author" />
     <!-- Custom fonts for this template-->
     <link

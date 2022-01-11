@@ -44,12 +44,4 @@
     </li>
     @endcan
 
-    @can('be god')
-    <li class="nav-item">
-        <a class="nav-link"
-            href="{{ route('documents.partes.admin') }}">
-            <i class="fas fa-cog"></i> Admin
-        </a>
-    </li>
-    @endcan
 </ul>
