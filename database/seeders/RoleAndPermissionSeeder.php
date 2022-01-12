@@ -28,6 +28,7 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'Users: edit']);
         Permission::create(['name' => 'Users: delete']);
         Permission::create(['name' => 'Users: assign permission']);
+        Permission::create(['name' => 'Users: service requests']);
 
         Permission::create(['name' => 'OrganizationalUnits: create']);
         Permission::create(['name' => 'OrganizationalUnits: edit']);

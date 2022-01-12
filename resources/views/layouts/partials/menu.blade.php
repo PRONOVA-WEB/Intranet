@@ -166,11 +166,11 @@
                         </a>
                     @endcan
 
-                    @can('Suitability: ssi')
+                    {{-- @can('Suitability: ssi')
                         <a class="collapse-item" href="{{ route('suitability.own') }}">
                             <i class="fas fa-chalkboard-teacher"></i> Idoneidad
                         </a>
-                    @endcan
+                    @endcan --}}
 
                     @canany(['Service Request', 'Service Request: report excel'])
                         <a class="collapse-item" href="{{ route('rrhh.service-request.home') }}">
@@ -178,15 +178,15 @@
                         </a>
                     @endcan
 
-                    @canany(['Shift Management: view'])
+                    {{-- @canany(['Shift Management: view'])
                         <a class="collapse-item" href="{{ route('rrhh.shiftManag.index') }}">
                             <i class="fa fa-calendar fa-fw"></i> Modulo Turnos
                         </a>
-                    @endcan
+                    @endcan --}}
 
                     @canany(['Users: service requests'])
                         <a class="collapse-item" href="{{ route('rrhh.users.service_requests.index') }}">
-                            <i class="fas fa-user fa-fw"></i> Usuarios - Contrat. de Servicios
+                            <i class="fas fa-user fa-fw"></i> Usuarios -<br> Contrat. de Servicios
                         </a>
                     @endcan
 
