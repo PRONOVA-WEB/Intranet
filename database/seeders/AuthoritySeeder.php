@@ -13,10 +13,10 @@ class AuthoritySeeder extends Seeder
      *
      * @return void
      */
-    
+
     public function run()
     {
-        
+
         //DB::table('rrhh_authorities')->insert([
         Authority::create([
             'user_id' => '12345678',
@@ -32,88 +32,88 @@ class AuthoritySeeder extends Seeder
         ]);
 
         Authority::create([
-            'user_id' => '15287582',
+            'user_id' => '98765432',
             'from' => carbon::now()->toDateString(),
             'to' => carbon::now()->addYear()->toDateString(),
             'position' => 'Director',
             'type' => 'manager',
             'organizational_unit_id' => '1',
-            'creator_id' => '15287582',
+            'creator_id' => '98765432',
             'created_at' => carbon::now(),
             'updated_at' => carbon::now()
         ]);
 
         Authority::create([
-            'user_id' => '15287582',
+            'user_id' => '98765432',
             'from' => carbon::now()->toDateString(),
             'to' => carbon::now()->addYear()->toDateString(),
             'position' => 'Jefe',
             'type' => 'manager',
             'organizational_unit_id' => '2',
-            'creator_id' => '15287582',
+            'creator_id' => '98765432',
             'created_at' => carbon::now(),
             'updated_at' => carbon::now()
         ]);
 
         Authority::create([
-            'user_id' => '15287582',
+            'user_id' => '98765432',
             'from' => carbon::now()->toDateString(),
             'to' => carbon::now()->addYear()->toDateString(),
             'position' => 'Jefe',
             'type' => 'manager',
             'organizational_unit_id' => '24',
-            'creator_id' => '15287582',
+            'creator_id' => '98765432',
             'created_at' => carbon::now(),
             'updated_at' => carbon::now()
         ]);
 
         Authority::create([
-            'user_id' => '15287582',
+            'user_id' => '98765432',
             'from' => carbon::now()->toDateString(),
             'to' => carbon::now()->addYear()->toDateString(),
             'position' => 'Jefe',
             'type' => 'manager',
             'organizational_unit_id' => '40',
-            'creator_id' => '15287582',
+            'creator_id' => '98765432',
             'created_at' => carbon::now(),
             'updated_at' => carbon::now()
         ]);
 
         Authority::create([
-            'user_id' => '15287582',
+            'user_id' => '98765432',
             'from' => carbon::now()->toDateString(),
             'to' => carbon::now()->addYear()->toDateString(),
             'position' => 'Jefe',
             'type' => 'manager',
             'organizational_unit_id' => '44',
-            'creator_id' => '15287582',
+            'creator_id' => '98765432',
             'created_at' => carbon::now(),
             'updated_at' => carbon::now()
         ]);
 
         Authority::create([
-            'user_id' => '15287582',
+            'user_id' => '98765432',
             'from' => carbon::now()->toDateString(),
             'to' => carbon::now()->addYear()->toDateString(),
             'position' => 'Jefe',
             'type' => 'manager',
             'organizational_unit_id' => '59',
-            'creator_id' => '15287582',
+            'creator_id' => '98765432',
             'created_at' => carbon::now(),
             'updated_at' => carbon::now()
         ]);
 
         Authority::create([
-            'user_id' => '15287582',
+            'user_id' => '98765432',
             'from' => carbon::now()->toDateString(),
             'to' => carbon::now()->addYear()->toDateString(),
             'position' => 'Subdirector',
             'type' => 'manager',
             'organizational_unit_id' => '1',
-            'creator_id' => '15287582',
+            'creator_id' => '98765432',
             'created_at' => carbon::now(),
             'updated_at' => carbon::now()
         ]);
-        
+
     }
 }

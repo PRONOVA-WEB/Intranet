@@ -161,7 +161,7 @@ class UserController extends Controller
                 $user->organizationalunit()->dissociate();
             }
         }
-    
+
         if ($user->isDirty('email_personal')) {
             // dd('full cocaina');
             $user->email_verified_at = null;

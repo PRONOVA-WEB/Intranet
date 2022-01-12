@@ -24,7 +24,7 @@
     <link href="{{ asset('css/intranet.css') }}" rel="stylesheet">
     <style media="screen">
         .bg-gradient-primary {
-            @switch(env('APP_ENV')) @case('local') background-color: rgb(109, 108, 108 ); @break @case('testing') background-color: rgb(2, 82, 0); @break @case('production')@if (env('APP_DEBUG') == true)background-color: rgb(255, 0, 0);
+            @switch(env('APP_ENV')) @case('local') background-color: rgb(109, 108, 108 ); @break @case('testing') background-color: rgb(38, 83, 212, 0); @break @case('production')@if (env('APP_DEBUG') == true)background-color: rgb(255, 0, 0);
             @endif@break;
         @endswitch background-image: none;
     }
