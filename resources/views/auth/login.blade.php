@@ -41,18 +41,34 @@
         <div class="row justify-content-center">
             <div class="col-xl-10 col-lg-12 col-md-9">
                 <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-header">
+                        @isset($url)
+                            <a href="{{ route('login') }}"><i class="fa fa-undo" aria-hidden="true"></i> Intranet</a>
+                        @else
+                            <a href="{{ route('login.external') }}"><i class="fa fa-repeat" aria-hidden="true"></i> Portal externos</a>
+                        @endif
+                    </div>
                     <div class="card-body p-0">
                         <div class="row">
                             <div class="col-lg-6 offset-3 d-none d-lg-block" id="login_botones">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">@settings(site.title)</h1>
+                                        <h1 class="text-gray-900 mb-2">@settings(site.title)</h1>
+                                        @isset($url)
+                                        <h2 class="mb-4 text-gray-100 bg-gray-600">Login externos </h2>
+                                        @endif
                                         <img src="@settings(site.logo)" class="img-fluid">
                                     </div>
                                     <div class="row justify-content-center d-block mt-5">
-                                        <a class="btn-cu btn-l btn-fw btn-color-estandar"
-                                        href="{{ route('claveunica.autenticar') }}?redirect=L2NsYXZldW5pY2EvbG9naW4="
-                                        title="Este es el botón Iniciar sesión de ClaveÚnica">
+                                        @isset($url)
+                                            <a class="btn-cu btn-l btn-fw btn-color-estandar"
+                                            href="{{ route('claveunica.autenticar') }}?redirect=L2NsYXZldW5pY2EvbG9naW4tZXh0ZXJuYWw="
+                                            title="Este es el botón Iniciar sesión de ClaveÚnica">
+                                        @else
+                                            <a class="btn-cu btn-l btn-fw btn-color-estandar"
+                                            href="{{ route('claveunica.autenticar') }}?redirect=L2NsYXZldW5pY2EvbG9naW4="
+                                            title="Este es el botón Iniciar sesión de ClaveÚnica">
+                                        @endif
                                         <span class="cl-claveunica"></span>
                                         <span class="texto">Iniciar sesión</span>
                                         </a>
@@ -67,7 +83,11 @@
                             </div>
                             <div class="col-lg-6 d-none p-5" id="local_login">
                                 <h1 class="h4 text-gray-900 mb-4 text-center">{{ __('Sing In').' sin clave única' }}</h1>
-                                <form method="POST"  action="{{ route('login') }}">
+                                @isset($url)
+                                <form method="POST" action='{{ url("login/$url") }}'>
+                                @else
+                                <form method="POST" action="{{ route('login') }}">
+                                @endisset
                                     @csrf
                                     <div class="form-group">
                                         <label for="id">{{ __('RUN') }}</label>

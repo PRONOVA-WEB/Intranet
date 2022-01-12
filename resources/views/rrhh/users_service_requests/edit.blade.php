@@ -53,7 +53,6 @@
 			<input type="text" class="form-control" id="forPosition" placeholder="Cargo/Funcion" name="position"
 			value="{{ $user->position }}">
 		</fieldset>
-
 		<fieldset class="form-group col-md-8">
 			<label for="forOrganizationalUnit">Unidad Organizacional</label>
 			<!-- <select class="custom-select" id="forOrganizationalUnit" name="organizationalunit"> -->
@@ -100,7 +99,7 @@
 			<button class="btn btn-sm btn-danger"><span class="fas fa-trash" aria-hidden="true"></span> Eliminar</button>
 		</form>
 
-		
+
 
 	</div>
 
