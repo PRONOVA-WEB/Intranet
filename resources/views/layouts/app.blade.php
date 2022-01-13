@@ -28,8 +28,7 @@
             @endif@break;
         @endswitch background-image: none;
     }
-
-</style>
+    </style>
 @yield('custom_css')
 @livewireStyles
 </head>

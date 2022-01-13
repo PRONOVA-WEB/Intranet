@@ -49,7 +49,7 @@ class AppServiceProvider extends ServiceProvider
             if ($setting->value) {
                 $valor = $setting->value;
                 if ($setting->type == 'image' && \File::exists('storage/' . $setting->value)) {
-                    $valor = \Storage::url($setting->value);
+                    $valor = env('APP_URL').'/storage/' . $setting->value;
                 }
                 return $valor;
             } else {
