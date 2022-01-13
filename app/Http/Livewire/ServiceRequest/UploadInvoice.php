@@ -13,7 +13,7 @@ class UploadInvoice extends Component
 
     public $invoiceFile;
     public $fulfillment;
-    public $storage_path = '/ionline/service_request/invoices/';
+    public $storage_path = '/service_request/invoices/';
 
     public function save()
     {
@@ -22,16 +22,16 @@ class UploadInvoice extends Component
         ]);
 
         $this->invoiceFile->storeAs(
-            $this->storage_path, 
+            $this->storage_path,
             $this->fulfillment->id.'.pdf',
-            'gcs'
+            'public'
         );
 
         $this->fulfillment->update(['has_invoice_file' => true]);
     }
 
     public function delete() {
-        Storage::disk('gcs')->delete($this->storage_path.$this->fulfillment->id.'.pdf');
+        Storage::disk('public')->delete($this->storage_path.$this->fulfillment->id.'.pdf');
         $this->fulfillment->update(['has_invoice_file' => false]);
     }
 

@@ -39,25 +39,25 @@ class AttachmentController extends Controller
      */
     public function store(Request $request, Fulfillment $var)
     {
-        //        
+        //
         $files = $request->file('file');
 
         $i = 1;
 
         foreach ($files as $key_file => $file) {
-            $attachment = new Attachment();            
+            $attachment = new Attachment();
             $file_name = $var->id.'_'.$i;
             $attachment->fulfillment_id = $var->id;
-            $attachment->file = $file->storeAs('/ionline/service_request/fulfiments_attachment', $file_name.'.'.$file->extension(), 'gcs');
+            $attachment->file = $file->storeAs('/service_request/fulfiments_attachment', $file_name.'.'.$file->extension(), 'public');
             foreach ($request->name as $req) {
                 $attachment->name = $request->input('name.'.$key_file.'');
                 $attachment->save();
             }
-            
+
             $i++;
 
         }
-        
+
         session()->flash('success', 'Su Adunto ha sido agregado exitosamente');
         return redirect()->back();
     }
@@ -71,22 +71,22 @@ class AttachmentController extends Controller
      * @param  \App\Models\ServiceRequests\Attachment  $attachment
      * @return \Illuminate\Http\Response
      * public function show_file(ReplacementStaff $replacementStaff)
-    
+
      */
     public function show(Attachment $attachment)
     {
         //
 
-        return Storage::disk('gcs')->response($attachment->file);
-        
+        return Storage::disk('public')->response($attachment->file);
+
     }
 
     public function download(Attachment $attachment)
     {
         //
 
-        return Storage::disk('gcs')->download($attachment->file);
-        
+        return Storage::disk('public')->download($attachment->file);
+
     }
 
     /**
@@ -120,9 +120,9 @@ class AttachmentController extends Controller
      */
     public function destroy(Attachment $attachment)
     {
-        //        
+        //
         $attachment->delete();
-        Storage::disk('gcs')->delete($attachment->file);
+        Storage::disk('public')->delete($attachment->file);
 
         session()->flash('danger', 'Su Archivo adjunto ha sido eliminado.');
         return redirect()->back();

@@ -424,7 +424,7 @@ class FulfillmentController extends Controller
           //$file_name = $fulfillment->year.'_'.$fulfillment->month.'_'.$fulfillment->ServiceRequest->employee->name;
           $file_name = $fulfillment->year.'_'.$fulfillment->month.'_'.$fulfillment->id;
           $file = $request->file('backup_assistance');
-          $fulfillment->backup_assistance = $file->storeAs('/ionline/service_request/backup_assistance', $file_name.'.'.$file->extension(), 'gcs');
+          $fulfillment->backup_assistance = $file->storeAs('service_request/backup_assistance', $file_name.'.'.$file->extension(), 'public');
           $fulfillment->save();
 
 
@@ -673,28 +673,28 @@ class FulfillmentController extends Controller
 
     public function downloadInvoice(Fulfillment $fulfillment)
     {
-        $storage_path = '/ionline/service_request/invoices/';
+        $storage_path = 'service_request/invoices/';
         $file =  $storage_path . $fulfillment->id . '.pdf';
-        return Storage::disk('gcs')->response($file, mb_convert_encoding($fulfillment->id.'.pdf', 'ASCII'));
+        return Storage::disk('public')->response($file, mb_convert_encoding($fulfillment->id.'.pdf', 'ASCII'));
     }
     public function downloadResolution(ServiceRequest $serviceRequest)
     {
-        $storage_path = '/ionline/service_request/resolutions/';
+        $storage_path = 'service_request/resolutions/';
         $file =  $storage_path . $serviceRequest->id . '.pdf';
-        return Storage::disk('gcs')->response($file, mb_convert_encoding($serviceRequest->id.'.pdf', 'ASCII'));
+        return Storage::disk('public')->response($file, mb_convert_encoding($serviceRequest->id.'.pdf', 'ASCII'));
         /* Para google storage */
-        //return Storage::disk('gcs')->response($file, mb_convert_encoding($serviceRequest->id.'.pdf', 'ASCII'));
+        //return Storage::disk('public')->response($file, mb_convert_encoding($serviceRequest->id.'.pdf', 'ASCII'));
     }
     // public function downloadAssistance(Fulfillment $fulfillment)
     // {
-    //     $storage_path = '/ionline/service_request/backup_assistance/';
+    //     $storage_path = 'service_request/backup_assistance/';
     //     $file =  $storage_path . $fulfillment->id . '.pdf';
-    //     return Storage::disk('gcs')->response($file, mb_convert_encoding($fulfillment->id.'.pdf', 'ASCII'));
+    //     return Storage::disk('public')->response($file, mb_convert_encoding($fulfillment->id.'.pdf', 'ASCII'));
     // }
 
     public function signedCertificatePDF(Fulfillment $fulfillment)
     {
-        return Storage::disk('gcs')->response($fulfillment->signedCertificate->signed_file);
+        return Storage::disk('public')->response($fulfillment->signedCertificate->signed_file);
 //        header('Content-Type: application/pdf');
 //        if (isset($fulfillment->signedCertificate)) {
 //            echo base64_decode($fulfillment->signedCertificate->signed_file);
@@ -703,8 +703,8 @@ class FulfillmentController extends Controller
 
     public function deletesignedCertificatePDF(Fulfillment $fulfillment)
     {
-      //return Storage::disk('gcs')->delete($fulfillment->signedCertificate->signed_file);
-      Storage::disk('gcs')->delete($fulfillment->signedCertificate->signed_file);
+      //return Storage::disk('public')->delete($fulfillment->signedCertificate->signed_file);
+      Storage::disk('public')->delete($fulfillment->signedCertificate->signed_file);
       $fulfillment->signatures_file_id = null;
       $fulfillment->save();
       session()->flash('success', 'Se ha borrado exitosamente el certificado de cumplimiento.');
