@@ -191,7 +191,6 @@
                     @endcan
 
                     @if (Auth::user()->hasRole('Replacement Staff: admin'))
-
                         <a class="collapse-item" href="{{ route('replacement_staff.request.index') }}">
                             <i class="far fa-id-card"></i> Solicitudes de<br> Contratación
                         </a>
