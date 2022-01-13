@@ -48,8 +48,8 @@ class AppServiceProvider extends ServiceProvider
             $setting = optional(\App\Models\Setting::where('key', $key)->first());
             if ($setting->value) {
                 $valor = $setting->value;
-                if ($setting->type == 'image' && \File::exists('storage/' . $setting->value)) {
-                    $valor = env('APP_URL').'/storage/' . $setting->value;
+                if ($setting->type == 'image' && \Storage::disk('public')->exists($setting->value)) {
+                    $valor = \Storage::url($setting->value);
                 }
                 return $valor;
             } else {

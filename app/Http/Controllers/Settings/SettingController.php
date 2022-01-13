@@ -67,8 +67,8 @@ class SettingController extends Controller
                     $isImage    = in_array($typeImage, $extensions);
                     if ($isImage) {
                         if (!empty($setting->value)) {
-                            if (\File::exists('storage/' . $setting->value)) {
-                                \File::delete('storage/' . $setting->value);
+                            if (\Storage::disk('public')->exists($setting->value)) {
+                                \Storage::disk('public')->delete($setting->value);
                             }
                         }
                         $imageName = \Str::random(20) . '.' . $request->{$key}->extension();

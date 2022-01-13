@@ -191,21 +191,20 @@
                     @endcan
 
                     @if (Auth::user()->hasRole('Replacement Staff: admin'))
-
                         <a class="collapse-item" href="{{ route('replacement_staff.request.index') }}">
-                            <i class="far fa-id-card"></i> Solicitudes de Contratación
+                            <i class="far fa-id-card"></i> Solicitudes de<br> Contratación
                         </a>
                     @endif
 
                     @if (Auth::user()->hasRole('Replacement Staff: user rys'))
                         <a class="collapse-item" href="{{ route('replacement_staff.request.assign_index') }}">
-                            <i class="far fa-id-card"></i> Solicitudes de Contratación
+                            <i class="far fa-id-card"></i> Solicitudes de<br> Contratación
                         </a>
                     @endif
 
                     @if (Auth::user()->hasRole('Replacement Staff: user') || App\Rrhh\Authority::getAmIAuthorityFromOu(Carbon\Carbon::now(), 'manager', Auth::user()->id))
                         <a class="collapse-item" href="{{ route('replacement_staff.request.own_index') }}">
-                            <i class="far fa-id-card"></i> Solicitudes de Contratación
+                            <i class="far fa-id-card"></i> Solicitudes de<br> Contratación
                             @if (App\Models\ReplacementStaff\RequestReplacementStaff::getPendingRequestToSign() > 0)
                                 <span
                                     class="badge badge-secondary">{{ App\Models\ReplacementStaff\RequestReplacementStaff::getPendingRequestToSign() }}
