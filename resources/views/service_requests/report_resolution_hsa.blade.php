@@ -173,7 +173,7 @@
         Ley N° 19.880 de Bases de Procedimiento Administrativo, Art. 23° letra f) del Decreto N° 38, de 2005 que
         Aprueba Reglamento Orgánico de los Establecimientos de Salud de Menor Complejidad y de los Establecimientos
         de Autogestión en Red todas del Ministerio de Salud;
-        {{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->decree}},
+        {{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->decree}},
         del Servicio de Salud Iquique, Gabinete Presidencial N° 02, de 2018 de la Presidencia de la República,
         Ley N° 21.289, de 2020 del Ministerio de Hacienda, que Aprueba Presupuesto del Sector Público año 2020;
         Resoluciones N° 18, de 2017 y N° 6, de 2019 ambas de la Contraloría General de la República.<br>
@@ -241,9 +241,9 @@
 
       @if($ServiceRequest->responsabilityCenter->establishment_id == 1)
       <p class="justify">
-        En Iquique, a {{$inputs['Fecha']}}, comparece por una parte el <b>HOSPITAL ERNESTO TORRES GALDAMES</b>, persona jurídica de derecho público, RUT. 62.000.530-4 , con domicilio en calle Av.héroes de la concepcion N 502 de la ciudad de Iquique, representado por su {{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->position}}
-        <b>{{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->user->FullNameUpper}}</b>,
-        chileno, Cédula Nacional de Identidad N°{{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->user->runFormat()}}, del mismo domicilio del servicio público que representa, en
+        En Iquique, a {{$inputs['Fecha']}}, comparece por una parte el <b>HOSPITAL ERNESTO TORRES GALDAMES</b>, persona jurídica de derecho público, RUT. 62.000.530-4 , con domicilio en calle Av.héroes de la concepcion N 502 de la ciudad de Iquique, representado por su {{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->position}}
+        <b>{{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->user->FullNameUpper}}</b>,
+        chileno, Cédula Nacional de Identidad N°{{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->user->runFormat()}}, del mismo domicilio del servicio público que representa, en
         adelante , "El Director del Hospital Ernesto Torres Galdames", y por la otra don <b>{{$ServiceRequest->employee->getFullNameAttribute()}}</b>@if($ServiceRequest->profession), {{$ServiceRequest->profession->name}}@endif, RUT:{{$ServiceRequest->employee->id}}-{{$ServiceRequest->employee->dv}}, chileno,
         con domicilio en {{$ServiceRequest->address}}, de la ciudad de Iquique, en adelante “El Profesional” y exponen lo siguiente:
       </p>
@@ -258,7 +258,7 @@
       @endif
       @if($ServiceRequest->responsabilityCenter->establishment_id == 1)
       <strong>PRIMERO:</strong>
-      Don {{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->user->FullNameUpper}}, en su calidad de {{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->position}} del Hospital Ernesto Torres Galdames, contrata los servicios a honorarios a suma alzada de {{$ServiceRequest->employee->getFullNameAttribute()}},
+      Don {{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->user->FullNameUpper}}, en su calidad de {{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->position}} del Hospital Ernesto Torres Galdames, contrata los servicios a honorarios a suma alzada de {{$ServiceRequest->employee->getFullNameAttribute()}},
       @if($ServiceRequest->profession){{$ServiceRequest->profession->name}},@endif apoyo a {{$ServiceRequest->responsabilityCenter->name}} de la Dirección del Hospital Ernesto Torres Galdames.
       @else
       <p class="justify">
@@ -499,10 +499,10 @@
           @if($ServiceRequest->responsabilityCenter->establishment_id == 1)
           <strong>
             <span class="uppercase">
-              {{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->user->FullNameUpper}}
+              {{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->user->FullNameUpper}}
             </span>
             <br>
-              <span style="text-transform:uppercase">{{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->position}}</span>
+              <span style="text-transform:uppercase">{{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->position}}</span>
             <br>
             HOSPITAL DR ERNESTO TORRES GALDÁMEZ<br>
           </strong>

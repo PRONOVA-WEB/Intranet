@@ -204,12 +204,12 @@ class RequestReplacementStaffController extends Controller
         if($request->hasFile('job_profile_file')){
             $file = $request->file('job_profile_file');
             $file_name = $now.'_job_profile';
-            $request_replacement->job_profile_file = $file->storeAs('/ionline/replacement_staff/request_job_profile/', $file_name.'.'.$file->extension(), 'gcs');
+            $request_replacement->job_profile_file = $file->storeAs('/replacement_staff/request_job_profile/', $file_name.'.'.$file->extension(), 'public');
         }
 
         $file_verification = $request->file('request_verification_file');
         $file_name_verification = $now.'_request_verification';
-        $request_replacement->request_verification_file = $file_verification->storeAs('/ionline/replacement_staff/request_verification_file/', $file_name_verification.'.'.$file_verification->extension(), 'gcs');
+        $request_replacement->request_verification_file = $file_verification->storeAs('/replacement_staff/request_verification_file/', $file_name_verification.'.'.$file_verification->extension(), 'public');
 
         $request_replacement->save();
 

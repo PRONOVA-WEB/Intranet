@@ -400,7 +400,7 @@ class UserController extends Controller
      */
     public function edit_sr(User $user)
     {
-        $ouRoot = OrganizationalUnit::find(84);
+        $ouRoot = OrganizationalUnit::find(1);
         return view('rrhh.users_service_requests.edit')
             ->withUser($user)
             ->withOuRoot($ouRoot);
