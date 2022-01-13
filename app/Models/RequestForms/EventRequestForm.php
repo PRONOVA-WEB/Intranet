@@ -55,7 +55,7 @@ class EventRequestForm extends Model
         $event->requestForm()->associate($requestForm);
         $event->save();
 
-        if($requestForm->superior_chief == 1){
+        if($requestForm->superior_chief == 1 && $requestForm->userOrganizationalUnit->level > 1){
             $event                      =   new EventRequestForm();
             $event->ou_signer_user      =   $requestForm->userOrganizationalUnit->father->id;
             $event->cardinal_number     =   2;
