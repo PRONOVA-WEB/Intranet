@@ -46,10 +46,15 @@ class UserSeeder extends Seeder
         $user->assignRole('god', 'dev');
         $user->givePermissionTo(Permission::all());
 
+        //44(Subdirección de Recursos Humanos) = para que sea líder de RRHH
         $user = User::Create(['id'=>12121212, 'dv'=>1, 'name'=>'Jorge', 'fathers_family'=>'Galleguillos', 'mothers_family' => 'Möller',
-            'email'=>'jgalleguillos@pronova.cl','password'=>bcrypt('admin'), 'position'=>'Gerente de Proyectos y Operaciones', 'organizational_unit_id'=>$ou->id]);
+            'email'=>'jgalleguillos@pronova.cl','password'=>bcrypt('admin'), 'position'=>'Gerente', 'organizational_unit_id'=>'44']);
         $user->assignRole('dev');
         $user->givePermissionTo(Permission::all());
 
+        //48(Unidad de Reclutamiento y Selección de Personal) ->para asignar los requerimientos -> usuario tipo RYS (userrys)
+        $user = User::Create(['id'=>32323232, 'dv'=>1, 'name'=>'Usuario', 'fathers_family'=>'Reclutamiento', 'mothers_family' => 'Selección',
+            'email'=>'rys@pronova.cl','password'=>bcrypt('admin'), 'position'=>'Gerente', 'organizational_unit_id'=>'48']);
+        $user->assignRole('Replacement Staff: user rys');
     }
 }

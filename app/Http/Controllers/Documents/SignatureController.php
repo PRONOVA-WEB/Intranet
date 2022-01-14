@@ -127,7 +127,7 @@ class SignatureController extends Controller
 
             $filePath = 'signatures/original/' . $signaturesFileDocumentId . '.pdf';
             $signaturesFile->update(['file' => $filePath,]);
-            Storage::disk('public')->put($filePath, $documentFile);
+            Storage::disk('gcs')->put($filePath, $documentFile);
 
             if ($request->annexed) {
                 foreach ($request->annexed as $key => $annexed) {
@@ -141,7 +141,7 @@ class SignatureController extends Controller
                     $documentFile = $annexed->openFile()->fread($documentFile->getSize());
                     $filePath = 'signatures/original/' . $signaturesFile->id . '.pdf';
                     $signaturesFile->update(['file' => $filePath,]);
-                    Storage::disk('public')->put($filePath, $documentFile);
+                    Storage::disk('gcs')->put($filePath, $documentFile);
                 }
             }
 
@@ -308,12 +308,12 @@ class SignatureController extends Controller
             $signatureFileDocumento = $signature->signaturesFiles->where('file_type', 'documento')->first();
 //            $signatureFileDocumento->file = base64_encode(file_get_contents($request->file('document')->getRealPath()));
 
-            Storage::disk('public')->delete($signatureFileDocumento->file);
+            Storage::disk('gcs')->delete($signatureFileDocumento->file);
             $documentFile = file_get_contents($request->file('document')->getRealPath());
             $filePath = 'signatures/original/' . $signatureFileDocumento->id . '.pdf';
 //            $signatureFileDocumento->update(['file' => $filePath,]);
 
-            Storage::disk('public')->put($filePath, $documentFile);
+            Storage::disk('gcs')->put($filePath, $documentFile);
 
             $signatureFileDocumento->save();
         }
@@ -321,7 +321,7 @@ class SignatureController extends Controller
         if ($request->annexed) {
             if ($signature->signaturesFiles->where('file_type', 'anexo')->count() > 0) {
                 foreach ($signature->signaturesFiles->where('file_type', 'anexo') as $anexo) {
-                    Storage::disk('public')->delete($anexo->file);
+                    Storage::disk('gcs')->delete($anexo->file);
                     $anexo->delete();
                 }
             }
@@ -338,7 +338,7 @@ class SignatureController extends Controller
                 $documentFile = $annexed->openFile()->fread($documentFile->getSize());
                 $filePath = 'signatures/original/' . $signaturesFile->id . '.pdf';
                 $signaturesFile->update(['file' => $filePath,]);
-                Storage::disk('public')->put($filePath, $documentFile);
+                Storage::disk('gcs')->put($filePath, $documentFile);
             }
         }
 
@@ -405,11 +405,11 @@ class SignatureController extends Controller
                 }
 
                 if ($signaturesFile->file) {
-                    Storage::disk('public')->delete($signaturesFile->file);
+                    Storage::disk('gcs')->delete($signaturesFile->file);
                 }
 
                 if ($signaturesFile->signed_file) {
-                    Storage::disk('public')->delete($signaturesFile->signed_file);
+                    Storage::disk('gcs')->delete($signaturesFile->signed_file);
                 }
 
                 // borro partes files y partes
@@ -437,12 +437,12 @@ class SignatureController extends Controller
     {
         if ($signaturesFile->file_type == 'documento') {
             if ($signaturesFile->signed_file) {
-                return Storage::disk('public')->response($signaturesFile->signed_file);
+                return Storage::disk('gcs')->response($signaturesFile->signed_file);
             } else {
-                return Storage::disk('public')->response($signaturesFile->file);
+                return Storage::disk('gcs')->response($signaturesFile->file);
             }
         } else {
-            return Storage::disk('public')->response($signaturesFile->file);
+            return Storage::disk('gcs')->response($signaturesFile->file);
         }
 
 
@@ -466,7 +466,7 @@ class SignatureController extends Controller
 
     public function showPdfAnexo(SignaturesFile $anexo)
     {
-        return Storage::disk('public')->response($anexo->file);
+        return Storage::disk('gcs')->response($anexo->file);
     }
 
 
@@ -475,7 +475,7 @@ class SignatureController extends Controller
         if ($request->id && $request->verification_code) {
             $signaturesFile = SignaturesFile::find($request->id);
             if ($signaturesFile->verification_code == $request->verification_code) {
-                return Storage::disk('public')->response($signaturesFile->signed_file);
+                return Storage::disk('gcs')->response($signaturesFile->signed_file);
 //                header('Content-Type: application/pdf');
 //                echo base64_decode($signaturesFile->signed_file);
             } else {

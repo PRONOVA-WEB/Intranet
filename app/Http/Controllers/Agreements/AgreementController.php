@@ -35,8 +35,8 @@ class AgreementController extends Controller
     {
         return collect([
             ['id' => 1, 'name' => '1 cuota', 'percentages' => '100', 'quotas' => 1],
-            ['id' => 2, 'name' => '2 cuotas, 70% y 30% respectivamente', 'percentages' => '70,30', 'quotas' => 2], 
-            ['id' => 3, 'name' => '3 cuotas, 50%, 20% y 30% respectivamente', 'percentages' => '50,20,30', 'quotas' => 3], 
+            ['id' => 2, 'name' => '2 cuotas, 70% y 30% respectivamente', 'percentages' => '70,30', 'quotas' => 2],
+            ['id' => 3, 'name' => '3 cuotas, 50%, 20% y 30% respectivamente', 'percentages' => '50,20,30', 'quotas' => 3],
             ['id' => 4, 'name' => '3 cuotas, 50%, 25% y 25% respectivamente', 'percentages' => '50,25,25', 'quotas' => 3],
             ['id' => 5, 'name' => '12 cuotas', 'percentages' => null, 'quotas' => 12]
         ]);
@@ -50,7 +50,7 @@ class AgreementController extends Controller
     public function index(Request $request)
     {
         $agreements = Agreement::with('commune','program','agreement_amounts.program_component')->where('period', $request->period ? $request->period : date('Y'))->latest()->paginate(50);
-        
+
         return view('agreements/agreements/index', compact('agreements'));
     }
 
@@ -104,18 +104,18 @@ class AgreementController extends Controller
         $quota_option_selected = $quota_options->firstWhere('id', $request->quota_id);
         $agreement->quotas = $quota_option_selected['quotas'];
         $agreement->save();
-        
+
         foreach($agreement->program->components as $component) {
             $agreement->agreement_amounts()->create(['subtitle' => null, 'amount'=>0, 'program_component_id'=>$component->id]);
         }
-        
+
         $months = array (1 => 'Enero', 2 => 'Febrero', 3 => 'Marzo', 4 => 'Abril', 5 => 'Mayo', 6 => 'Junio', 7 => 'Julio', 8 => 'Agosto', 9 => 'Septiembre', 10 => 'Octubre', 11 => 'Noviembre', 12 => 'Diciembre');
         $quota_percentages = explode(',', $quota_option_selected['percentages']);
-        
+
         if($quota_option_selected['quotas'] == 1)
             $agreement->agreement_quotas()->create(['description' => 'Descripción 1', 'amount' => 0]);
         elseif($quota_option_selected['quotas'] == 12)
-            for($i = 1; $i <= 12; $i++) 
+            for($i = 1; $i <= 12; $i++)
                 $agreement->agreement_quotas()->create(['description' => $months[$i], 'amount' => 0]);
         else
             for($i = 0; $i < $quota_option_selected['quotas']; $i++)
@@ -184,7 +184,7 @@ class AgreementController extends Controller
             Storage::delete($agreement->file);
             $agreement->file = $request->file('file')->store('resolutions');
         }
- 
+
         if($request->hasFile('fileResEnd')){
             Storage::delete($agreement->fileResEnd);
             $agreement->fileResEnd = $request->file('fileResEnd')->store('resolutions');
@@ -272,12 +272,12 @@ class AgreementController extends Controller
         $Stage->date_addendum = $request->date_addendum;
         $Stage->dateEnd_addendum = $request->dateEnd_addendum;
         $Stage->observation = $request->observation;
-        
+
         if($request->hasFile('file')){
             Storage::delete($Stage->file);
             $Stage->file = $request->file('file')->store('agg_stage');
         }
-           
+
         $Stage->save();
         return redirect()->back();
     }
@@ -296,7 +296,7 @@ class AgreementController extends Controller
         return redirect()->route('agreements.index');
     }
 
-  
+
     public function download(Agreement $file)
     {
         return Storage::response($file->file, mb_convert_encoding($file->name,'ASCII'));
@@ -305,8 +305,8 @@ class AgreementController extends Controller
     public function preview(Agreement $agreement)
     {
         $filename = 'tmp_files/'.$agreement->file;
-        if(!Storage::disk('public')->exists($filename))
-            Storage::disk('public')->put($filename, Storage::disk('local')->get($agreement->file));
+        if(!Storage::disk('gcs')->exists($filename))
+            Storage::disk('gcs')->put($filename, Storage::disk('local')->get($agreement->file));
         return Redirect::away('https://view.officeapps.live.com/op/embed.aspx?src='.asset('storage/'.$filename));
     }
 
@@ -363,7 +363,7 @@ class AgreementController extends Controller
             $visadores = collect([$agreement->referrer]); //referente tecnico
             foreach(array(15683706, 6811637, 9994426, 14104369) as $user_id) //resto de visadores por cadena de responsabilidad
                 $visadores->add(User::find($user_id));
-            
+
             foreach($visadores as $key => $visador){
                 $signaturesFlow = new SignaturesFlow();
                 $signaturesFlow->type = 'visador';
@@ -375,7 +375,7 @@ class AgreementController extends Controller
         }
 
         $signature->signaturesFiles->add($signaturesFile);
-        
+
         $users = User::orderBy('name', 'ASC')->get();
         $organizationalUnits = OrganizationalUnit::orderBy('id', 'asc')->get();
         return view('documents.signatures.create', compact('signature', 'users', 'organizationalUnits'));
