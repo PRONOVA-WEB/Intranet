@@ -28,6 +28,7 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'Users: edit']);
         Permission::create(['name' => 'Users: delete']);
         Permission::create(['name' => 'Users: assign permission']);
+        Permission::create(['name' => 'Users: service requests']);
 
         Permission::create(['name' => 'OrganizationalUnits: create']);
         Permission::create(['name' => 'OrganizationalUnits: edit']);
@@ -140,6 +141,8 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'Replacement Staff: manage']);
         Permission::create(['name' => 'Replacement Staff: technical evaluation']);
         Permission::create(['name' => 'Replacement Staff: assign request']);
+        Permission::create(['name' => 'Replacement Staff: view requests']);
+        Permission::create(['name' => 'Programming: view']);
 
         // @role(
         //   'Replacement Staff: admin |
@@ -191,5 +194,14 @@ class RoleAndPermissionSeeder extends Seeder
 
         $role = Role::create(['name' => 'Tickets: admin']);
         $role->givePermissionTo(['Tickets: create', 'Tickets: manage','Tickets: TI']);
+
+        $role = Role::create(['name' => 'Replacement Staff: admin']);
+        $role->givePermissionTo(['Replacement Staff: manage', 'Replacement Staff: list rrhh','Replacement Staff: assign request','Replacement Staff: create request']);
+
+        $role = Role::create(['name' => 'Replacement Staff: view requests']);
+        $role->givePermissionTo(['Replacement Staff: view requests','Replacement Staff: list rrhh','Replacement Staff: assign request']);
+
+        $role = Role::create(['name' => 'Replacement Staff: user rys']);
+
     }
 }

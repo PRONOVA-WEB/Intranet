@@ -4,7 +4,7 @@
 
 @section('content')
 
-<h3 class="inline mt-3">Usuarios
+<h3 class="inline mt-3">Usuarios del Sistema de Contratación Honorarios
 	<a href="{{ route('rrhh.users.service_requests.create') }}" class="btn btn-primary">Crear</a>
 </h3>
 

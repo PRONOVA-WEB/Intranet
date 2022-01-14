@@ -16,7 +16,7 @@
             <div class="row">
                 @foreach ($settings as $setting)
                     <div class="col-lg-12">
-                        <div class="card shadow mb-4">
+                        <div class="card mb-4">
                             <div class="card-header py-3 ">
                                 <h6 class="m-0 font-weight-bold">{{ $setting->display_name }}</h6>
                                 <code>{{ $setting->key }}</code>
@@ -36,8 +36,8 @@
                                         name="{{ $setting->id }}">{{ $setting->value ?? '' }}</textarea>
                                 @elseif($setting->type == "image")
                                     @if($setting->value !== null && Storage::disk('public')->exists($setting->value))
-                                        <a href="{{ Storage::url($setting->value) }}" target="_blank">
-                                            <img src="{{ Storage::url($setting->value) }}" width="200px" class="img-fluid">
+                                        <a href="{{ \Storage::url($setting->value) }}" target="_blank">
+                                            <img src="{{ \Storage::url($setting->value) }}" width="200px" class="img-fluid">
                                         </a>
                                     @endif
                                     <input type="file" name="{{ $setting->id }}" value="Cambiar Imágen">

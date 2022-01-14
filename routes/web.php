@@ -99,7 +99,7 @@ Route::prefix('webservices')->name('webservices.')->group(function () {
 
 Auth::routes(['register' => false, 'logout' => false, 'reset' => false]);
 
-Route::get('/login/external', [LoginController::class,'showExternalLoginForm']);
+Route::get('/login/external', [LoginController::class,'showExternalLoginForm'])->name('login.external');
 Route::post('/login/external', [LoginController::class,'externalLogin']);
 
 

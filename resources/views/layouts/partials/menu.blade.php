@@ -4,9 +4,9 @@
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('home') }}">
         <div class="sidebar-brand-icon">
-            <img src="@settings(site.logo)" class="img-fluid">
+            <img src="{{ settings('site.logo') }}" class="img-fluid">
         </div>
-        <div class="sidebar-brand-text mx-3">@settings(site.title)</div>
+        <div class="sidebar-brand-text mx-3">{{ settings('site.title') }}</div>
     </a>
 
     <!-- Divider -->
@@ -156,50 +156,55 @@
 
                     @canany(['OrganizationalUnits: create', 'OrganizationalUnits: edit', 'OrganizationalUnits: delete'])
                         <a class="collapse-item" href="{{ route('rrhh.organizational-units.index') }}">
-                            <i class="fas fa-sitemap fa-fw"></i> Unidades organizacionales
+                            <i class="fas fa-sitemap fa-fw"></i> Unidades<br> organizacionales
                         </a>
                     @endcan
 
-                    @can('Suitability: ssi')
+                    @canany(['Authorities: view', 'Authorities: create'])
+                        <a class="collapse-item" href="{{ route('rrhh.authorities.index') }}">
+                            <i class="fas fa-chess-king fa-fw"></i> Autoridades
+                        </a>
+                    @endcan
+
+                    {{-- @can('Suitability: ssi')
                         <a class="collapse-item" href="{{ route('suitability.own') }}">
                             <i class="fas fa-chalkboard-teacher"></i> Idoneidad
                         </a>
-                    @endcan
+                    @endcan --}}
 
                     @canany(['Service Request', 'Service Request: report excel'])
                         <a class="collapse-item" href="{{ route('rrhh.service-request.home') }}">
-                            <i class="fas fa-child fa-fw"></i> Contratación Honorarios
+                            <i class="fas fa-child fa-fw"></i> Contratación<br>  Honorarios
                         </a>
                     @endcan
 
-                    @canany(['Shift Management: view'])
+                    {{-- @canany(['Shift Management: view'])
                         <a class="collapse-item" href="{{ route('rrhh.shiftManag.index') }}">
                             <i class="fa fa-calendar fa-fw"></i> Modulo Turnos
                         </a>
-                    @endcan
+                    @endcan --}}
 
                     @canany(['Users: service requests'])
                         <a class="collapse-item" href="{{ route('rrhh.users.service_requests.index') }}">
-                            <i class="fas fa-user fa-fw"></i> Usuarios - Contrat. de Servicios
+                            <i class="fas fa-user fa-fw"></i> Usuarios -<br> Contrat. de Servicios
                         </a>
                     @endcan
 
                     @if (Auth::user()->hasRole('Replacement Staff: admin'))
-
                         <a class="collapse-item" href="{{ route('replacement_staff.request.index') }}">
-                            <i class="far fa-id-card"></i> Solicitudes de Contratación
+                            <i class="far fa-id-card"></i> Solicitudes de<br> Contratación
                         </a>
                     @endif
 
                     @if (Auth::user()->hasRole('Replacement Staff: user rys'))
                         <a class="collapse-item" href="{{ route('replacement_staff.request.assign_index') }}">
-                            <i class="far fa-id-card"></i> Solicitudes de Contratación
+                            <i class="far fa-id-card"></i> Solicitudes de<br> Contratación
                         </a>
                     @endif
 
                     @if (Auth::user()->hasRole('Replacement Staff: user') || App\Rrhh\Authority::getAmIAuthorityFromOu(Carbon\Carbon::now(), 'manager', Auth::user()->id))
                         <a class="collapse-item" href="{{ route('replacement_staff.request.own_index') }}">
-                            <i class="far fa-id-card"></i> Solicitudes de Contratación
+                            <i class="far fa-id-card"></i> Solicitudes de<br> Contratación
                             @if (App\Models\ReplacementStaff\RequestReplacementStaff::getPendingRequestToSign() > 0)
                                 <span
                                     class="badge badge-secondary">{{ App\Models\ReplacementStaff\RequestReplacementStaff::getPendingRequestToSign() }}

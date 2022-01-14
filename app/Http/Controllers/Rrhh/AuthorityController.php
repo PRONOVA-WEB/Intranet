@@ -47,11 +47,11 @@ class AuthorityController extends Controller
 
             for($i = $begin; $i <= $end; $i->modify('+1 day')){
                 $calendar[] = [
-                    'date' => $i->format("Y-m-d"), 
-                    'manager' => Authority::getAuthorityFromDate($request->ou, $i->format("Y-m-d"),'manager'), 
-                    'delegate' => Authority::getAuthorityFromDate($request->ou, $i->format("Y-m-d"),'delegate'), 
+                    'date' => $i->format("Y-m-d"),
+                    'manager' => Authority::getAuthorityFromDate($request->ou, $i->format("Y-m-d"),'manager'),
+                    'delegate' => Authority::getAuthorityFromDate($request->ou, $i->format("Y-m-d"),'delegate'),
                     'secretary' => Authority::getAuthorityFromDate($request->ou, $i->format("Y-m-d"),'secretary')
-                ]; 
+                ];
                 // $calendar[$i->format("Y-m-d")] = Authority::getAuthorityFromDate($request->ou, $i->format("Y-m-d"),'manager');
                 // echo $i->format("Y-m-d"). '
                 // ';
@@ -145,12 +145,14 @@ class AuthorityController extends Controller
      */
     public function edit(Authority $authority)
     {
+        dd($authority->organizationalUnit);
         switch($authority->organizationalUnit->level) {
             case 4: $ouTopLevel = $authority->organizationalUnit->father->father->father; break;
             case 3: $ouTopLevel = $authority->organizationalUnit->father->father; break;
             case 2: $ouTopLevel = $authority->organizationalUnit->father; break;
-            case 1: $ouTopLevel = $authority->organizationalUnit; break; 
+            case 1: $ouTopLevel = $authority->organizationalUnit; break;
         }
+
         return view('rrhh.authorities.edit', compact('ouTopLevel','authority'));
     }
 

@@ -43,10 +43,10 @@ class ServiceRequestSeeder extends Seeder
             'digera_strategy' => 'Camas MEDIAS Aperturadas',
             'rrhh_team' => 'Residencia Médica',
             'signature_page_break' => '0',
-            'user_id' => '15287582',
+            'user_id' => '98765432',
             'created_at' => carbon::now(),
             'updated_at' => carbon::now(),
-            'creator_id' => '15287582'
+            'creator_id' => '98765432'
         ]);
     }
 }

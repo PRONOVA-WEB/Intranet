@@ -112,7 +112,7 @@
                     {{-- <span class="fas fa-file" aria-hidden="true"></span>--}}
                     {{-- </a>--}}
 
-                <a href="https://storage.googleapis.com/{{env('APP_ENV') === 'production' ? 'saludiquique-storage' : 'saludiquique-dev'}}/{{ $pendingSignaturesFlow->signaturesFile->signed_file ?? $pendingSignaturesFlow->signaturesFile->file }}"
+                <a href={{ env("APP_URL").'/storage/' }}{{ $pendingSignaturesFlow->signaturesFile->signed_file ?? $pendingSignaturesFlow->signaturesFile->file }}"
                     class="btn btn-sm btn-outline-secondary" target="_blank" title="Ver documento">
                     <span class="fas fa-file" aria-hidden="true"></span>
                 </a>
@@ -231,7 +231,7 @@
                             <span class="fas fa-file" aria-hidden="true"></span>
                         </a> -->
 
-                <a href="https://storage.googleapis.com/{{env('APP_ENV') === 'production' ? 'saludiquique-storage' : 'saludiquique-dev'}}/{{$signedSignaturesFlow->signaturesFile->signed_file}}"
+                <a href="{{ env("APP_URL").'/storage/' }}{{$signedSignaturesFlow->signaturesFile->signed_file}}"
                     class="btn btn-sm btn-outline-secondary" target="_blank" title="Ver documento">
                     <span class="fas fa-file" aria-hidden="true"></span>
                 </a>
@@ -289,8 +289,7 @@
                 @else Pendiente</p> @endif
             </td>
             <td>
-
-                <a href="https://storage.googleapis.com/{{env('APP_ENV') === 'production' ? 'saludiquique-storage' : 'saludiquique-dev'}}/{{$signature->signaturesFileDocument->signed_file ?? $signature->signaturesFileDocument->file}}"
+                <a href="{{ env("APP_URL").'/storage/' }}{{$signature->signaturesFileDocument->signed_file ?? $signature->signaturesFileDocument->file}}"
                     class="btn btn-sm btn-outline-secondary" target="_blank" title="Ver documento">
                     <span class="fas fa-file" aria-hidden="true"></span>
                 </a>

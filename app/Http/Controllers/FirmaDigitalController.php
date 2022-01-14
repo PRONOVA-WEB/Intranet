@@ -35,7 +35,7 @@ class FirmaDigitalController extends Controller
     const modoDesatendidoProduccion = 3;
 
     /**
-     * Se utiliza para firmar docs que no se crean en el modulo de solicitud de firmas. Recibe pdf a firmar desde url o archivo, 
+     * Se utiliza para firmar docs que no se crean en el modulo de solicitud de firmas. Recibe pdf a firmar desde url o archivo,
      * lo firma llamando a signPdfApi y guarda NUEVO registro SignaturesFile.
      * @param Request $request
      * @return string
@@ -92,10 +92,10 @@ class FirmaDigitalController extends Controller
         $signaturesFile->verification_code = $verificationCode;
         $signaturesFile->save();
 
-        //Se guarda en gcs
-        $filePath = 'ionline/signatures/signed/' . $signaturesFile->id . '.pdf';
+        //Se guarda en storage
+        $filePath = '/signatures/signed/' . $signaturesFile->id . '.pdf';
         $signaturesFile->update(['signed_file' => $filePath]);
-        Storage::disk('gcs')->put($filePath, base64_decode($responseArray['content']));
+        Storage::disk('public')->put($filePath, base64_decode($responseArray['content']));
 
         return redirect()->route($callbackRoute, ['message' => "El documento $modelId se ha firmado correctamente.",
             'modelId' => $modelId,
@@ -122,9 +122,9 @@ class FirmaDigitalController extends Controller
 
         foreach ($pendingSignaturesFlows as $signaturesFlow) {
             if ($signaturesFlow->signaturesFile->signed_file)
-                $pdfbase64 = base64_encode(Storage::disk('gcs')->get($signaturesFlow->signaturesFile->signed_file));
+                $pdfbase64 = base64_encode(Storage::disk('public')->get($signaturesFlow->signaturesFile->signed_file));
             else
-                $pdfbase64 = base64_encode(Storage::disk('gcs')->get($signaturesFlow->signaturesFile->file));
+                $pdfbase64 = base64_encode(Storage::disk('public')->get($signaturesFlow->signaturesFile->file));
 
             $checksum_pdf = $signaturesFlow->signaturesFile->md5_file;
             $type = $signaturesFlow->type;
@@ -205,13 +205,13 @@ class FirmaDigitalController extends Controller
 
 
                 foreach ($dest_vec as $dest) {
-                    if ($dest == 'director.ssi@redsalud.gob.cl' or $dest == 'director.ssi@redsalud.gov.cl' or $dest == 'director.ssi1@redsalud.gob.cl'and $cont===0) 
+                    if ($dest == 'director.ssi@redsalud.gob.cl' or $dest == 'director.ssi@redsalud.gov.cl' or $dest == 'director.ssi1@redsalud.gob.cl'and $cont===0)
                     {
                         $cont=$cont+1;
                         $tipo = null;
                         $generador = $signaturesFlow->signature->responsable->fullname;
                         $unidad = $signaturesFlow->signature->organizationalUnit->name;
-        
+
                         switch ($signaturesFlow->signature->document_type) {
                             case 'Memorando':
                                 $this->tipo = 'Memo';
@@ -223,7 +223,7 @@ class FirmaDigitalController extends Controller
                                 $this->tipo = $signaturesFlow->signature->document_type;
                                 break;
                         }
-        
+
                         $parte = Parte::create([
                             'entered_at' => Carbon::now(),
                             'type' => $this->tipo,
@@ -231,7 +231,7 @@ class FirmaDigitalController extends Controller
                             'subject' => $signaturesFlow->signature->subject,
                             'origin' => $unidad . ' (Parte generado desde Solicitud de Firma N°' . $signaturesFlow->signature->id . ' por ' . $generador . ')',
                         ]);
-        
+
                         $distribucion = SignaturesFile::where('signature_id', $signaturesFlow->signature->id)->where('file_type', 'documento')->get();
                         ParteFile::create([
                             'parte_id' => $parte->id,
@@ -239,7 +239,7 @@ class FirmaDigitalController extends Controller
                             'name' => $distribucion->first()->id . '.pdf',
                             'signature_file_id' => $distribucion->first()->id,
                         ]);
-        
+
                         $signaturesFiles = SignaturesFile::where('signature_id', $signaturesFlow->signature->id)->where('file_type', 'anexo')->get();
                         foreach ($signaturesFiles as $key => $sf) {
                             ParteFile::create([

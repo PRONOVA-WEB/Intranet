@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@settings(site.title) | @yield('title')</title>
+    <title>{{ settings('site.title') }} | @yield('title')</title>
     <meta content="Pronova" name="author" />
     <!-- Scripts -->
     <!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
@@ -24,12 +24,11 @@
     <link href="{{ asset('css/intranet.css') }}" rel="stylesheet">
     <style media="screen">
         .bg-gradient-primary {
-            @switch(env('APP_ENV')) @case('local') background-color: rgb(109, 108, 108 ); @break @case('testing') background-color: rgb(2, 82, 0); @break @case('production')@if (env('APP_DEBUG') == true)background-color: rgb(255, 0, 0);
+            @switch(env('APP_ENV')) @case('local') background-color: rgb(109, 108, 108 ); @break @case('testing') background-color: rgb(38, 83, 212); @break @case('production')@if (env('APP_DEBUG') == true)background-color: rgb(255, 0, 0);
             @endif@break;
         @endswitch background-image: none;
     }
-
-</style>
+    </style>
 @yield('custom_css')
 @livewireStyles
 </head>
@@ -52,7 +51,7 @@
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; @settings(site.title) {{ date('Y') }}</span>
+                    <span>Copyright &copy; {{ settings('site.title') }} {{ date('Y') }}</span>
                 </div>
             </div>
         </footer>

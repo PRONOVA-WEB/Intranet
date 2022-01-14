@@ -17,19 +17,10 @@ class TelephoneSeeder extends Seeder
     {
         //
         $telephone = Telephone::Create(['number'=>572406984, 'minsal'=>576984]);
-        $telephone->users()->attach(User::find(15287582));
+        $telephone->users()->attach(User::find(12121212));
 
         $telephone = Telephone::Create(['number'=>572539004, 'minsal'=>579004]);
-        $telephone->users()->attach(User::find(10278387));
-
-        $telephone = Telephone::Create(['number'=>572539008, 'minsal'=>579008]);
-        $telephone->users()->attach(User::find(14107361));
-
-        $telephone = Telephone::Create(['number'=>572539009, 'minsal'=>579009]);
-        $telephone->users()->attach(User::find(15924400));
-
-        $telephone = Telephone::Create(['number'=>572539518, 'minsal'=>579518]);
-        $telephone->users()->attach(User::find(16966444));
+        $telephone->users()->attach(User::find(98765432));
 
         /**
          * Create 10 random telephones.

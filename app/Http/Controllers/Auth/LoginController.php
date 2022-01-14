@@ -74,7 +74,7 @@ class LoginController extends Controller
         if(Auth::guard('external')->check()) // significa que es un usuario externo
         {
             Auth::guard('external')->logout();
-            
+
             return redirect()->route('welcome');
         }
 
@@ -101,31 +101,28 @@ class LoginController extends Controller
 
     public function externalLogin(Request $request)
     {
-        
+
         $credentials = $request->only('id', 'password');
         $credentials['id'] = str_replace('.','',$credentials['id']);
         $credentials['id'] = str_replace('-','',$credentials['id']);
         $credentials['id'] = substr($credentials['id'], 0, -1);
-
-        
-
 
         if (Auth::guard('external')->attempt($credentials, $request->filled('remember'))) {
             // Authentication passed...
             return redirect()->intended('/external');
         }
         return back()->withInput($request->only('email', 'remember'));
-        
+
     }
 
 
 
     public function LogoutExternal(Request $request)
     {
-        
+
         dd('llegue');
         Auth::guard('external')->logout();
-        
+
         $request->session()->flush();
         $request->session()->regenerate();
         request()->session()->invalidate();
@@ -135,7 +132,7 @@ class LoginController extends Controller
         $url_redirect = "https://i.saludiquique.cl/logout";
         $url = $url_logout.urlencode($url_redirect);
         return redirect()->to($url)->send();
-        
+
     }
 
 }
