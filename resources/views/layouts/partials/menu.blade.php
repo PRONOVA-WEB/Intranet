@@ -94,7 +94,7 @@
                     <i class="fas fa-file-alt"></i> Acreditación de Calidad
                 </a>
 
-                <a class="collapse-item" href="{{ route('health_plan.index', ['iquique']) }}">
+                <a class="collapse-item" href="{{ route('health_plan.index', ['Santiago']) }}">
                     <i class="fas fa-file-powerpoint"></i> Planes Comunales
                 </a>
 
@@ -130,8 +130,7 @@
         'Users: edit',
         'Users: delete',
         'OrganizationalUnits: create',
-        'OrganizationalUnits:
-        edit',
+        'OrganizationalUnits: edit',
         'OrganizationalUnits: delete',
         'Authorities: view',
         'Authorities: create',
@@ -308,7 +307,6 @@
         <div class="sidebar-heading">
             Configuración
         </div>
-
         <!-- Nav Item - Mantenedor -->
         <li class="nav-item {{ active('parameters.*') }}">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMantenedor"
@@ -369,6 +367,10 @@
                 <i class="fas fa-wrench"></i>
                 <span>Parámetros</span>
             </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('parameters.logs.index') }}">
+                <i class="fas fa-bomb fa-fw"></i> <span>Log de errores</span></a>
         </li>
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">

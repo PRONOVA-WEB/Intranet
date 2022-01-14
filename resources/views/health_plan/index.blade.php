@@ -7,76 +7,18 @@
 <h3 class="mb-3">Planes Comunales</h3>
 
 <h6 class="mb-3">
-    Comuna:
-    @switch($comuna)
-        @case('alto_hospicio')
-            Alto Hospicio.
-            @break
-        @case('camina')
-            Camiña.
-            @break
-        @case('colchane')
-            Colchane.
-            @break
-        @case('huara')
-            Huara.
-            @break
-        @case('iquique')
-            Iquique.
-            @break
-        @case('pica')
-            Pica.
-            @break
-        @case('pozo_almonte')
-            Pozo Almonte.
-            @break
-    @endswitch
+    Comuna: {{ ucfirst($comuna) }}
 </h6>
 
 <ul class="nav nav-tabs mb-3">
-    <li class="nav-item">
-        <a class="nav-link {{ ($comuna == 'alto_hospicio')?'active':'' }}"
-            href="{{ route('health_plan.index', ['alto_hospicio']) }}">
-            Alto Hospicio
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link {{ ($comuna == 'camina')?'active':'' }}"
-            href="{{ route('health_plan.index', ['camina']) }}">
-            Camiña
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link {{ ($comuna == 'colchane')?'active':'' }}"
-            href="{{ route('health_plan.index', ['colchane']) }}">
-            Colchane
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link {{ ($comuna == 'huara')?'active':'' }}"
-            href="{{ route('health_plan.index', ['huara']) }}">
-            Huara
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link {{ ($comuna == 'iquique')?'active':'' }}"
-            href="{{ route('health_plan.index', ['iquique']) }}">
-            Iquique
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link {{ ($comuna == 'pica')?'active':'' }}"
-            href="{{ route('health_plan.index', ['pica']) }}">
-            Pica
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link {{ ($comuna == 'pozo_almonte')?'active':'' }}"
-            href="{{ route('health_plan.index', ['pozo_almonte']) }}">
-            Pozo Almonte
-        </a>
-    </li>
-
+    @foreach ($comunnes as $comunne)
+        <li class="nav-item">
+            <a class="nav-link {{ ($comuna == $comunne->name)?'active':'' }}"
+                href="{{ route('health_plan.index', [$comunne->name]) }}">
+                {{ $comunne->name }}
+            </a>
+        </li>
+    @endforeach
 </ul>
 
 <table class="table table-condensed table-hover table-bordered table-sm small">

@@ -44,6 +44,12 @@
                     <a class="dropdown-item" href="{{ route('parameters.index') }}">
                         <i class="fas fa-cog fa-fw"></i> Mantenedores
                     </a>
+                    <a class="dropdown-item" href="{{ route('settings.index') }}">
+                        <i class="fas fa-wrench"></i> <span>Parámetros</span>
+                    </a>
+                    <a class="dropdown-item" href="{{ route('parameters.logs.index') }}">
+                        <i class="fas fa-bomb fa-fw"></i> <span>Log de errores</span>
+                    </a>
                 @endrole
 
 
