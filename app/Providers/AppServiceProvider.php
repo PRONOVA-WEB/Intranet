@@ -44,19 +44,6 @@ class AppServiceProvider extends ServiceProvider
             return "<?php echo number_format($numero, 0, '.', '.'); ?>";
         });
 
-        Blade::directive('settings', function ($key) {
-            $setting = optional(\App\Models\Setting::where('key', $key)->first());
-            if ($setting->value) {
-                $valor = $setting->value;
-                if ($setting->type == 'image' && \Storage::disk('public')->exists($setting->value)) {
-                    $valor = \Storage::url($setting->value);
-                }
-                return $valor;
-            } else {
-                return null;
-            }
-        });
-
         Paginator::useBootstrap();
     }
 }

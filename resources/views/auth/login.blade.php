@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
-    <title>@settings(site.title)</title>
+    <title>{{ settings('site.title') }}</title>
     <meta content="Pronova" name="author" />
     <!-- Custom fonts for this template-->
     <link
@@ -53,11 +53,11 @@
                             <div class="col-lg-6 offset-3 d-none d-lg-block" id="login_botones">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="text-gray-900 mb-2">@settings(site.title)</h1>
+                                        <h1 class="text-gray-900 mb-2">{{ settings('site.title') }}</h1>
                                         @isset($url)
                                         <h2 class="mb-4 text-gray-100 bg-gray-600">Login externos </h2>
                                         @endif
-                                        <img src="@settings(site.logo)" class="img-fluid">
+                                        <img src="{{ settings('site.logo') }}" class="img-fluid">
                                     </div>
                                     <div class="row justify-content-center d-block mt-5">
                                         @isset($url)
