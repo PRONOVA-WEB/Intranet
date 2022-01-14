@@ -95,7 +95,7 @@ class FirmaDigitalController extends Controller
         //Se guarda en storage
         $filePath = '/signatures/signed/' . $signaturesFile->id . '.pdf';
         $signaturesFile->update(['signed_file' => $filePath]);
-        Storage::disk('public')->put($filePath, base64_decode($responseArray['content']));
+        Storage::disk('gcs')->put($filePath, base64_decode($responseArray['content']));
 
         return redirect()->route($callbackRoute, ['message' => "El documento $modelId se ha firmado correctamente.",
             'modelId' => $modelId,
@@ -122,9 +122,9 @@ class FirmaDigitalController extends Controller
 
         foreach ($pendingSignaturesFlows as $signaturesFlow) {
             if ($signaturesFlow->signaturesFile->signed_file)
-                $pdfbase64 = base64_encode(Storage::disk('public')->get($signaturesFlow->signaturesFile->signed_file));
+                $pdfbase64 = base64_encode(Storage::disk('gcs')->get($signaturesFlow->signaturesFile->signed_file));
             else
-                $pdfbase64 = base64_encode(Storage::disk('public')->get($signaturesFlow->signaturesFile->file));
+                $pdfbase64 = base64_encode(Storage::disk('gcs')->get($signaturesFlow->signaturesFile->file));
 
             $checksum_pdf = $signaturesFlow->signaturesFile->md5_file;
             $type = $signaturesFlow->type;

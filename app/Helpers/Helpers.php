@@ -24,7 +24,7 @@ if (!function_exists('settings')) {
         if ($setting->value) {
             $valor = $setting->value;
             if ($setting->type == 'image' && \Storage::disk('public')->exists($setting->value)) {
-                $valor = \Storage::url($setting->value);
+                $valor = \Storage::disk('public')->url($setting->value);
             }
             return $valor;
         } else {

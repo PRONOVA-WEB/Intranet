@@ -93,7 +93,7 @@ class AddendumController extends Controller
             $addendum->representative_rut = $municipality->rut_representative_surrogate;
             $addendum->representative_decree = $municipality->decree_representative_surrogate;
         }
-        
+
         if($request->hasFile('file')){
             Storage::delete($addendum->file);
             $addendum->file = $request->file('file')->store('resolutions');
@@ -158,8 +158,8 @@ class AddendumController extends Controller
     public function preview(Addendum $addendum)
     {
         $filename = 'tmp_files/'.$addendum->file;
-        if(!Storage::disk('public')->exists($filename))
-            Storage::disk('public')->put($filename, Storage::disk('local')->get($addendum->file));
+        if(!Storage::disk('gcs')->exists($filename))
+            Storage::disk('gcs')->put($filename, Storage::disk('local')->get($addendum->file));
         return Redirect::away('https://view.officeapps.live.com/op/embed.aspx?src='.asset('storage/'.$filename));
     }
 
@@ -205,7 +205,7 @@ class AddendumController extends Controller
             $visadores = collect([$addendum->referrer]); //referente tecnico
             foreach(array(15683706, 6811637, 9994426, 14104369) as $user_id) //resto de visadores por cadena de responsabilidad
                 $visadores->add(User::find($user_id));
-            
+
             foreach($visadores as $key => $visador){
                 $signaturesFlow = new SignaturesFlow();
                 $signaturesFlow->type = 'visador';
@@ -217,7 +217,7 @@ class AddendumController extends Controller
         }
 
         $signature->signaturesFiles->add($signaturesFile);
-        
+
         $users = User::orderBy('name', 'ASC')->get();
         $organizationalUnits = OrganizationalUnit::orderBy('id', 'asc')->get();
         return view('documents.signatures.create', compact('signature', 'users', 'organizationalUnits'));

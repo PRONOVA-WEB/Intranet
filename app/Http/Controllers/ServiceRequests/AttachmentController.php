@@ -77,7 +77,7 @@ class AttachmentController extends Controller
     {
         //
 
-        return Storage::disk('public')->response($attachment->file);
+        return Storage::disk('gcs')->response($attachment->file);
 
     }
 
@@ -85,7 +85,7 @@ class AttachmentController extends Controller
     {
         //
 
-        return Storage::disk('public')->download($attachment->file);
+        return Storage::disk('gcs')->download($attachment->file);
 
     }
 
@@ -122,7 +122,7 @@ class AttachmentController extends Controller
     {
         //
         $attachment->delete();
-        Storage::disk('public')->delete($attachment->file);
+        Storage::disk('gcs')->delete($attachment->file);
 
         session()->flash('danger', 'Su Archivo adjunto ha sido eliminado.');
         return redirect()->back();

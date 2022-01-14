@@ -188,7 +188,7 @@ class DocumentController extends Controller
      */
     public function deleteFile(Document $document)
     {
-        Storage::disk('public')->delete($document->file);
+        Storage::disk('gcs')->delete($document->file);
 
         $document->file = null;
         $document->save();
@@ -216,7 +216,7 @@ class DocumentController extends Controller
                 $document->type . '_' .
                 $document->number . '.' .
                 $request->file->getClientOriginalExtension();
-            $document->file = $request->file->storeAs('/documents/documents', $filename, ['disk' => 'public']);
+            $document->file = $request->file->storeAs('/documents/documents', $filename, ['disk' => 'gcs']);
         }
         $document->save();
         //unset($document->number);
@@ -259,7 +259,7 @@ class DocumentController extends Controller
             File::extension($document->file);
 
         //return Storage::download($document->file, $filename);
-        return Storage::disk('public')->response($document->file, $filename);
+        return Storage::disk('gcs')->response($document->file, $filename);
     }
 
     public function report()
@@ -328,7 +328,7 @@ class DocumentController extends Controller
     public function signedDocumentPdf($id)
     {
         $document = Document::find($id);
-        return Storage::disk('public')->response($document->fileToSign->signed_file);
+        return Storage::disk('gcs')->response($document->fileToSign->signed_file);
         //        header('Content-Type: application/pdf');
         //        if (isset($document->fileToSign)) {
         //            echo base64_decode($document->fileToSign->signed_file);

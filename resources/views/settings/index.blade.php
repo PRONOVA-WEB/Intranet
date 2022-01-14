@@ -36,8 +36,8 @@
                                         name="{{ $setting->id }}">{{ $setting->value ?? '' }}</textarea>
                                 @elseif($setting->type == "image")
                                     @if($setting->value !== null && Storage::disk('public')->exists($setting->value))
-                                        <a href="{{ \Storage::url($setting->value) }}" target="_blank">
-                                            <img src="{{ \Storage::url($setting->value) }}" width="200px" class="img-fluid">
+                                        <a href="{{ Storage::url($setting->value) }}" target="_blank">
+                                            <img src="{{ Storage::disk('public')->url($setting->value) }}" width="200px" class="img-fluid">
                                         </a>
                                     @endif
                                     <input type="file" name="{{ $setting->id }}" value="Cambiar Imágen">

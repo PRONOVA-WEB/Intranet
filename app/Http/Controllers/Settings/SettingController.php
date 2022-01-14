@@ -96,8 +96,8 @@ class SettingController extends Controller
     {
         $setting = Setting::find($id);
         if ($setting->type == 'image' && !empty($setting->value)) {
-            if (\File::exists('storage/' . $setting->value)) {
-                \File::delete('storage/' . $setting->value);
+            if (\Storage::disk('public')->exists($setting->value)) {
+                \Storage::disk('public')->delete($setting->value);
             }
         }
         $setting->delete();
