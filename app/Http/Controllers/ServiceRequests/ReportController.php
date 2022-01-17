@@ -22,6 +22,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ComplianceExport;
 use App\Exports\PayedExport;
 use App\Exports\ContractExport;
+use App\User;
+use App\Models\Parameters\Profession;
 
 
 class ReportController extends Controller
@@ -698,6 +700,50 @@ class ReportController extends Controller
     return view('service_requests.reports.duplicate_contracts', compact('request', 'serviceRequests'));
   }
 
+  public function overlappingContracts(Request $request)
+  {
+
+    //se
+///$users = User::with(['posts' => function ($query) {
+//   $query->orderBy('created_at', 'desc');
+// }])->get();
+
+
+    $users = User::with(['serviceRequests'
+    => function ($query) {
+        $query->orderBy('start_date', 'asc');
+      }])
+    ->has('serviceRequests', '>=', 2)->get('id');
+    foreach($users as $user)
+    {
+
+      foreach($user->serviceRequests as $sr)
+      {
+        //dd($sr);
+        foreach($user->serviceRequests as $srtemporal)
+        if($sr != $srtemporal)
+        {
+         if ($srtemporal->start_date >= $sr->start_date and $srtemporal->end_date <= $sr->end_date)
+         {
+          //dd("encontre algo ".$sr->user_id);
+          if ($sr->srsolapados != null) {
+            $sr->srsolapados->push($srtemporal);
+            dd($sr->srsolapados);
+          }
+         }
+
+        }
+
+      }
+
+    }
+
+
+
+    }
+
+
+
   	public function contract(Request $request)
   	{
     	$responsabilityCenters = OrganizationalUnit::where('establishment_id', Auth::user()->organizationalUnit->establishment_id)->orderBy('name', 'ASC')->get();
@@ -705,6 +751,7 @@ class ReportController extends Controller
 
 		$srs = array();
 		$total_srs = 0;
+    $profession_id = $request->profession_id;
 
 		if(isset($request->option))
 		{
@@ -757,6 +804,10 @@ class ReportController extends Controller
         ->orderBy('start_date');
 			}
 
+      $srs->when($profession_id != NULL, function ($q) use ($profession_id) {
+        return $q->where('profession_id', $profession_id);
+      });
+
 			$total_srs = $srs->count();
 
 			$srs = $srs->paginate(100);
@@ -764,8 +815,11 @@ class ReportController extends Controller
 			$request->flash(); // envía los inputs de regreso
 
 		}
+
+    $professions = Profession::orderBy('name', 'ASC')->get();
+
     	return view('service_requests.reports.contract',
-			compact('request', 'responsabilityCenters','srs','total_srs'));
+			compact('request', 'responsabilityCenters','srs','total_srs','professions'));
   	}
 
   public function export_sirh_txt(Request $request)
@@ -1215,6 +1269,8 @@ class ReportController extends Controller
   }
 
   public function service_request_continuity(Request $request){
+
+    $results = array();
     if ($request->from != null && $request->to != null) {
       $serviceRequests = ServiceRequest::where('program_contract_type','Mensual')
                                       ->where('type','Covid')
@@ -1226,7 +1282,7 @@ class ReportController extends Controller
 
                                       // dd($serviceRequests[0]);
 
-      $results = array();
+
       // dd($serviceRequests->count());
       if ($serviceRequests->count()>0) {
 

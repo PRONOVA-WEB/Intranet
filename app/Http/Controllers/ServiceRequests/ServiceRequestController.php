@@ -448,19 +448,6 @@ class ServiceRequestController extends Controller
 
 
 
-    //guarda control de turnos
-    if ($request->shift_start_date != null) {
-      foreach ($request->shift_start_date as $key => $shift_start_date) {
-        $shiftControl = new ShiftControl($request->All());
-        // $shiftControl->service_request_id = $serviceRequest->id;
-        $shiftControl->fulfillment_id = $fulfillment->id;
-        $shiftControl->start_date = $shift_start_date . " " . $request->shift_start_hour[$key];
-        $shiftControl->end_date = $request->shift_end_date[$key] . " " . $request->shift_end_hour[$key];
-        $shiftControl->observation = $request->shift_observation[$key];
-        $shiftControl->save();
-      }
-    }
-
     //get responsable_id organization in charge
     $authorities = Authority::getAmIAuthorityFromOu(Carbon::today(), 'manager', $request->responsable_id);
     $employee = User::find($request->responsable_id)->position;
@@ -516,6 +503,21 @@ class ServiceRequestController extends Controller
       }
     }
 
+    //guarda control de turnos
+    if ($request->shift_start_date) {
+      if ($request->shift_start_date != null) {
+        foreach ($request->shift_start_date as $key => $shift_start_date) {
+          $shiftControl = new ShiftControl($request->All());
+          // $shiftControl->service_request_id = $serviceRequest->id;
+          $shiftControl->fulfillment_id = $fulfillment->id;
+          $shiftControl->start_date = $shift_start_date . " " . $request->shift_start_hour[$key];
+          $shiftControl->end_date = $request->shift_end_date[$key] . " " . $request->shift_end_hour[$key];
+          $shiftControl->observation = $request->shift_observation[$key];
+          $shiftControl->save();
+        }
+      }
+    }
+
     //send emails (2 flow position)
     if (env('APP_ENV') == 'production') {
       $email = $serviceRequest->SignatureFlows->where('sign_position', 2)->first()->user->email;
@@ -562,6 +564,13 @@ class ServiceRequestController extends Controller
         return redirect()->route('rrhh.service-request.index');
       }
     }
+
+    if($serviceRequest->SignatureFlows->isEmpty())
+    {
+      /* Envío al log de errores el id para su chequeo */
+      logger("El ServiceRequest no tiene signature flows creados", ['id' => $serviceRequest->id]);
+    }
+
 
     $users = User::orderBy('name', 'ASC')->get();
     $establishments = Establishment::orderBy('name', 'ASC')->get();

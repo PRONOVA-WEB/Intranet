@@ -9,19 +9,18 @@
 
     @if (count($my_requests) > 0 || count($my_pending_requests) > 0)
 
-        <fieldset class="form-group">
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
-                </div>
-                <input type="text" class="form-control" id="forsearch" onkeyup="filter(1)"
-                    placeholder="Buscar un número de formulario" name="search" required="">
-                <div class="input-group-append">
-                    <a class="btn btn-primary" href="{{ route('request_forms.create') }}"><i class="fas fa-plus"></i>
-                        Nuevo Formulario</a>
-                </div>
+    <fieldset class="form-group">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
             </div>
-        </fieldset>
+            <input type="text" class="form-control" id="forsearch" onkeyup="filter(1)" placeholder="Buscar un número de formulario" name="search" required="">
+            <div class="input-group-append">
+                <a class="btn btn-primary" href="{{ route('request_forms.create') }}"><i class="fas fa-plus"></i> Nuevo Formulario</a>
+            </div>
+        </div>
+    </fieldset> -->
+
 
         @if (count($my_pending_requests) > 0)
 

@@ -55,20 +55,28 @@
 
 		<fieldset class="form-group col-6 col-md-4">
 			<label for="for_users">Responsable</label>
+			@if($serviceRequest->SignatureFlows->isNotEmpty())
 			<select name="responsable_id" id="responsable_id" class="form-control selectpicker" data-live-search="true" required="" data-size="5" disabled>
 				@foreach($users as $key => $user)
 					<option value="{{$user->id}}" @if($user->id == $serviceRequest->SignatureFlows->where('sign_position',1)->first()->responsable_id) selected @endif >{{$user->getFullNameAttribute()}}</option>
 				@endforeach
 			</select>
+			@else
+			<span class="form-control is-invalid">Error en la creacion: contacte a informática</span>
+			@endif
 		</fieldset>
 
 		<fieldset class="form-group col-6 col-md-4">
 			<label for="for_users">Supervisor</label>
+			@if($serviceRequest->SignatureFlows->isNotEmpty())
 			<select name="users[]" id="users" class="form-control selectpicker" data-live-search="true" required="" data-size="5" disabled>
 				@foreach($users as $key => $user)
 					<option value="{{$user->id}}" @if($user->id == $serviceRequest->SignatureFlows->where('sign_position',2)->first()->responsable_id) selected @endif >{{$user->getFullNameAttribute()}}</option>
 				@endforeach
 			</select>
+			@else
+			<span class="form-control is-invalid">Error en la creacion: contacte a informática</span>
+			@endif
 		</fieldset>
 
     <fieldset class="form-group col-6 col-md-4">
@@ -329,7 +337,7 @@
 
 				<option value="ADP DIRECTOR" @if($serviceRequest->programm_name == 'ADP DIRECTOR') selected @endif>ADP DIRECTOR</option>
 				<option value="SENDA" @if($serviceRequest->programm_name == 'SENDA') selected @endif>SENDA</option>
-				<option value="SENDA LEY ALCOHOLES" @if($serviceRequest->programm_name == 'SENDA LEY ALCOHOLES') selected @endif>SENDA LEY ALCOHOLES</option>
+				<option value="LEY DE ALCOHOL" @if($serviceRequest->programm_name == 'LEY DE ALCOHOL') selected @endif>LEY DE ALCOHOL</option>
 				<option value="SENDA UHCIP" @if($serviceRequest->programm_name == 'SENDA UHCIP') selected @endif>SENDA UHCIP</option>
 				<option value="SENDA PSIQUIATRIA ADULTO" @if($serviceRequest->programm_name == 'SENDA PSIQUIATRIA ADULTO') selected @endif>SENDA PSIQUIATRIA ADULTO</option>
 				<option value="SENADIS" @if($serviceRequest->programm_name == 'SENADIS') selected @endif>SENADIS</option>
@@ -1187,7 +1195,7 @@
 
 				$("#programm_name option[value='ADP DIRECTOR']").hide();
 				$("#programm_name option[value='SENDA']").hide();
-				$("#programm_name option[value='SENDA LEY ALCOHOLES']").hide();
+				$("#programm_name option[value='LEY DE ALCOHOL']").hide();
 				$("#programm_name option[value='SENDA UHCIP']").hide();
 				$("#programm_name option[value='SENDA PSIQUIATRIA ADULTO']").hide();
 				$("#programm_name option[value='SENADIS']").hide();
@@ -1214,7 +1222,7 @@
 
 				$("#programm_name option[value='ADP DIRECTOR']").show();
 				$("#programm_name option[value='SENDA']").show();
-				$("#programm_name option[value='SENDA LEY ALCOHOLES']").show();
+				$("#programm_name option[value='LEY DE ALCOHOL']").show();
 				$("#programm_name option[value='SENDA UHCIP']").show();
 				$("#programm_name option[value='SENDA PSIQUIATRIA ADULTO']").show();
 				$("#programm_name option[value='SENADIS']").show();
