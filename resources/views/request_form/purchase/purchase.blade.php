@@ -80,7 +80,7 @@
             @include('request_form.purchase.modals.select_purchase_mechanism')
 
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#requestBudget" @if($isBudgetEventSignPending) disabled @endif >
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#requestBudget" @if($isBudgetEventSignPending) disabled @endif disabled >
                 Solicitar presupuesto
             </button>
 
@@ -156,6 +156,11 @@
                 <form method="POST" class="form-horizontal" action="{{ route('request_forms.supply.create_fund_to_be_settled', $requestForm) }}">
                 @endif
             @endif
+
+            @if($requestForm->purchase_mechanism_id == 4)
+            <form method="POST" class="form-horizontal" action="{{ route('request_forms.supply.create_tender', $requestForm) }}">
+            @endif
+
             @csrf
             @method('POST')
 
@@ -258,17 +263,32 @@
 
 @endif
 
-<!-- Menores a 3 UTM -->
+<!-- LICITACIÓN PUBLICA -->
 @if($requestForm->purchase_mechanism_id == 4)
-    @if($requestForm->purchase_type_id == 12)
-      @include('request_form.purchase.partials.tender_form')
-    @endif
+    @include('request_form.purchase.partials.tender_form')
 @endif
 
 <br>
 
-@if($requestForm->purchasingProcess && $requestForm->purchasingProcess->details->count() > 0)
+<!--Observaciones al proceso de compra -->
+@if($requestForm->purchasingProcess)
+<h6><i class="fas fa-eye"></i> Observaciones al proceso de compra</h6>
+<div class="row">
+    <div class="col-sm">
+        <form action="">
+        <div class="form-group">
+            <textarea name="observation" class="form-control form-control-sm" rows="3">{{ old('observation', $requestForm->purchasingProcess->observation ?? '') }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary float-right" id="save_btn" disabled>
+            <i class="fas fa-save"></i> Guardar
+        </button>
+        </form>
+    </div>
+</div>
+<br>
+@endif
 
+@if($requestForm->purchasingProcess && $requestForm->purchasingProcess->details->count() > 0)
 <div class="row">
     <div class="col-sm">
         <div class="table-responsive">
@@ -408,7 +428,8 @@ function calculateAmount(checked = false) {
     var total = 0;
     $('input[type="checkbox"]' + (checked ? ':checked' : '')).each(function(){
         var val = Math.round($(this).parents("tr").find('input[name="item_total[]"]').val());
-        total += val;
+        if(!isNaN(val))
+            total += val;
     });
 
     $(checked ? '#for_amount' : '#total_amount').val(total);

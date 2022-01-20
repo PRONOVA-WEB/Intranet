@@ -21,7 +21,7 @@ class RequestFormCreate extends Component
 {
     use WithFileUploads;
 
-    public $article, $unitOfMeasurement, $technicalSpecifications, $quantity, $typeOfCurrency, $articleFile,
+    public $article, $unitOfMeasurement, $technicalSpecifications, $quantity, $typeOfCurrency, $articleFile, $subtype,
             $unitValue, $taxes, $fileItem, $totalValue, $lstUnitOfMeasurement, $title, $edit, $key;
 
     public $name, $contractManagerId, $superiorChief, $purchaseMechanism, $messagePM,
@@ -59,7 +59,7 @@ class RequestFormCreate extends Component
     ];
 
     public function mount($requestForm){
-      $this->isRFItems = request()->route()->getName() == 'request_forms.items.create' || ($requestForm && $requestForm->type_form == 'Bienes y/o Servicios');
+      $this->isRFItems = request()->route()->getName() == 'request_forms.items.create' || ($requestForm && $requestForm->type_form == 'bienes y/o servicios');
       $this->purchaseMechanism      = "";
       $this->totalDocument          = 0;
       $this->items                  = array();
@@ -97,6 +97,7 @@ class RequestFormCreate extends Component
     }
 
     private function setRequestForm(){
+      $this->subtype            =   $this->requestForm->subtype;
       $this->name               =   $this->requestForm->name;
       $this->contractManagerId  =   $this->requestForm->contract_manager_id;
       $this->superiorChief      =   $this->requestForm->superior_chief;
@@ -152,71 +153,6 @@ class RequestFormCreate extends Component
       ];
     }
 
-    // public function deleteRequestService($key){
-    //   if($this->editRF && array_key_exists('id',$this->items[$key]))
-    //     $this->deletedItems[]=$this->items[$key]['id'];
-    //   unset($this->items[$key]);
-    //   $this->totalForm();
-    //   $this->cancelRequestService();
-    // }
-
-    // public function editRequestService($key){
-    //   $this->resetErrorBag();
-    //   $this->title                    = "Editar Item Nro ". ($key+1);
-    //   $this->edit                     = true;
-    //   $this->article                  = $this->items[$key]['article'];
-    //   $this->unitOfMeasurement        = $this->items[$key]['unitOfMeasurement'];
-    //   $this->technicalSpecifications  = $this->items[$key]['technicalSpecifications'];
-    //   $this->quantity                 = $this->items[$key]['quantity'];
-    //   $this->unitValue                = $this->items[$key]['unitValue'];
-    //   $this->taxes                    = $this->items[$key]['taxes'];
-    //   //$this->budget_item_id           = $this->items[$key]['budget_item_id'];
-    //   $this->key                      = $key;
-    // }
-
-    // public function updateRequestService(){
-    //   $this->validate();
-    //   $this->edit                                         = false;
-    //   $this->items[$this->key]['article']                 = $this->article;
-    //   $this->items[$this->key]['unitOfMeasurement']       = $this->unitOfMeasurement;
-    //   $this->items[$this->key]['technicalSpecifications'] = $this->technicalSpecifications;
-    //   $this->items[$this->key]['quantity']                = $this->quantity;
-    //   $this->items[$this->key]['unitValue']               = $this->unitValue;
-    //   $this->items[$this->key]['taxes']                   = $this->taxes;
-    //   //$this->items[$this->key]['budget_item_id']          = $this->budget_item_id;
-    //   $this->items[$this->key]['totalValue']              = $this->quantity * $this->unitValue;
-    //   $this->totalForm();
-    //   $this->cancelRequestService();
-    // }
-
-    // public function addRequestService(){
-    //   $this->validate();
-    //   $this->items[]=[
-    //         'id'                       => null,
-    //         'article'                  => $this->article,
-    //         'unitOfMeasurement'        => $this->unitOfMeasurement,
-    //         'technicalSpecifications'  => $this->technicalSpecifications,
-    //         'quantity'                 => $this->quantity,
-    //         'unitValue'                => $this->unitValue,
-    //         'taxes'                    => $this->taxes,
-    //         //'budget_item_id'           => $this->budget_item_id,
-    //         'totalValue'               => $this->quantity * $this->unitValue,
-    //         'typeOfCurrency'           => $this->typeOfCurrency,
-    //         'articleFile'              => $this->articleFile,
-    //   ];
-    //   // dd($this->items);
-    //   $this->totalForm();
-    //   $this->cancelRequestService();
-    // }
-
-    // public function cancelRequestService(){
-    //   $this->title = "Agregar Item";
-    //   $this->edit  = false;
-    //   $this->resetErrorBag();
-    //   $this->article=$this->technicalSpecifications=$this->quantity=$this->unitValue="";
-    //   $this->taxes=$this->budget_item_id=$this->unitOfMeasurement="";
-    // }
-
    public function messageMechanism(){
       $this->messagePM = array();
       switch ($this->purchaseMechanism) {
@@ -270,6 +206,7 @@ class RequestFormCreate extends Component
       $this->validate(
         [ 'name'                         =>  'required',
           'contractManagerId'            =>  'required',
+          'subtype'                      =>  'required',
           'purchaseMechanism'            =>  'required',
           'program'                      =>  'required',
           'justify'                      =>  'required',
@@ -278,6 +215,7 @@ class RequestFormCreate extends Component
         ],
         [ 'name.required'                =>  'Debe ingresar un nombre a este formulario.',
           'contractManagerId.required'   =>  'Debe ingresar un Administrador de Contrato.',
+          'subtype.required'             =>  'Seleccione el tipo para este formulario.',
           'purchaseMechanism.required'   =>  'Seleccione un Mecanismo de Compra.',
           'program.required'             =>  'Ingrese un Programa Asociado.',
           'fileRequests.required'        =>  'Debe agregar los archivos solicitados',
@@ -293,12 +231,13 @@ class RequestFormCreate extends Component
             'id'                    =>  $this->idRF,
           ],
           [
+            'subtype'               =>  $this->subtype,
             'contract_manager_id'   =>  $this->contractManagerId,
             'contract_manager_ou_id' => User::with('organizationalUnit')->find($this->contractManagerId)->organizationalUnit->id,
             'name'                  =>  $this->name,
             'superior_chief'        =>  $this->superiorChief,
             'justification'         =>  $this->justify,
-            'type_form'             =>  $this->isRFItems ? 'Bienes y/o Servicios' : 'Pasajes Aéreos',
+            'type_form'             =>  $this->isRFItems ? 'bienes y/o servicios' : 'pasajes aéreos',
             'request_user_id'       =>  Auth()->user()->id,
             'request_user_ou_id'    =>  Auth()->user()->organizationalUnit->id,
             'estimated_expense'     =>  $this->totalForm(),
@@ -324,7 +263,7 @@ class RequestFormCreate extends Component
                 'unit_value'            =>      $item['unitValue'],
                 'tax'                   =>      $item['taxes'],
                 'expense'               =>      $item['totalValue'],
-                // 'article_file'          =>      $item['articleFile'] ? $item['articleFile']->storeAs('/ionline/request_forms_dev/item_files/', $file_name.'.'.pathinfo($item['articleFile'], PATHINFO_EXTENSION), 'gcs') : null
+                // 'article_file'          =>      $item['articleFile'] ? $item['articleFile']->storeAs('/ionline/request_forms/item_files/', $file_name.'.'.pathinfo($item['articleFile'], PATHINFO_EXTENSION), 'gcs') : null
             ]);
           }
         } else {
@@ -371,15 +310,15 @@ class RequestFormCreate extends Component
         // Se guarda los archivos del form req cuando ya todo lo anteior se guardó exitosamente
         foreach($this->fileRequests as $nFiles => $fileRequest){
           $reqFile = new RequestFormFile();
-          if(env('APP_ENV') == 'local' || env('APP_ENV') == 'testing'){
+          // if(env('APP_ENV') == 'local' || env('APP_ENV') == 'testing'){
               $now = Carbon::now()->format('Y_m_d_H_i_s');
               $file_name = $now.'_req_file_'.$nFiles;
               $reqFile->name = $fileRequest->getClientOriginalName();
-              $reqFile->file = $fileRequest->storeAs('/ionline/request_forms_dev/request_files/', $file_name.'.'.$fileRequest->extension(), 'gcs');
+              $reqFile->file = $fileRequest->storeAs('/ionline/request_forms/request_files', $file_name.'.'.$fileRequest->extension(), 'gcs');
               $reqFile->request_form_id = $req->id;
               $reqFile->user_id = Auth()->user()->id;
               $reqFile->save();
-          }
+          // }
       }
 
       });
@@ -390,58 +329,6 @@ class RequestFormCreate extends Component
     public function btnCancelRequestForm(){
       return redirect()->to('/request_forms/my_forms');
     }
-
-    // private function saveItem($item, $id){
-    //     // dd($item['articleFile']);
-    //     // if($item['articleFile']) $item['articleFile'] = new TemporaryUploadedFile($item['articleFile'], config('filesystems.default'));
-    //     $now = Carbon::now()->format('Y_m_d_H_i_s');
-    //     $file_name = $now.'item_file_'.$id;
-    //     ItemRequestForm::updateOrCreate(
-    //       [
-    //         'id'                    =>      $item['id'],
-    //       ],
-    //       [
-    //         'request_form_id'       =>      $id,
-    //         'article'               =>      $item['article'],
-    //         'unit_of_measurement'   =>      $item['unitOfMeasurement'],
-    //         'specification'         =>      $item['technicalSpecifications'],
-    //         'quantity'              =>      $item['quantity'],
-    //         'unit_value'            =>      $item['unitValue'],
-    //         'tax'                   =>      $item['taxes'],
-    //         'expense'               =>      $item['totalValue'],
-    //         // 'article_file'          =>      $item['articleFile'] ? $item['articleFile']->storeAs('/ionline/request_forms_dev/item_files/', $file_name.'.'.pathinfo($item['articleFile'], PATHINFO_EXTENSION), 'gcs') : null
-    //     ]);
-    //   return;
-    // }
-
-    // private function savePassenger($passenger, $id){
-    //     $now = Carbon::now()->format('Y_m_d_H_i_s');
-    //     $file_name = $now.'art_file_'.$id;
-    //     $req = Passenger::updateOrCreate(
-    //         [
-    //           'id'                =>  $passenger['id'],
-    //         ],
-    //         [
-    //           'user_id'           =>  Auth()->user()->id,
-    //           'run'               =>  $passenger['run'],
-    //           'dv'                =>  $passenger['dv'],
-    //           'name'              =>  $passenger['name'],
-    //           'fathers_family'    =>  $passenger['fathers_family'],
-    //           'mothers_family'    =>  $passenger['mothers_family'],
-    //           'birthday'          =>  $passenger['birthday'],
-    //           'phone_number'      =>  $passenger['phone_number'],
-    //           'email'             =>  $passenger['email'],
-    //           'round_trip'        =>  $passenger['round_trip'],
-    //           'origin'            =>  $passenger['origin'],
-    //           'destination'       =>  $passenger['destination'],
-    //           'departure_date'    =>  $passenger['departure_date'],
-    //           'return_date'       =>  $passenger['return_date'],
-    //           'baggage'           =>  $passenger['baggage'],
-    //           'unit_value'        =>  $passenger['unitValue'],
-    //           'request_form_id'   =>  $id
-    //         ]);
-    //   return;
-    // }
 
     public function destroyFile($id)
     {
@@ -457,9 +344,4 @@ class RequestFormCreate extends Component
         $users = User::where('organizational_unit_id', Auth::user()->organizational_unit_id)->orderBy('name', 'ASC')->get();
         return view('livewire.request-form.request-form-create', compact('users'));
     }
-
-  //   public function searchedUser(User $user){
-  //     $this->searchedUser = $user;
-  //     $this->contractManagerId = $user->id;
-  // }
 }
