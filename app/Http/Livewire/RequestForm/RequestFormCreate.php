@@ -16,13 +16,17 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Livewire\TemporaryUploadedFile;
+use App\Rrhh\Authority;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NewRequestFormNotification;
+use App\Mail\RequestFormSignNotification;
 
 class RequestFormCreate extends Component
 {
     use WithFileUploads;
 
     public $article, $unitOfMeasurement, $technicalSpecifications, $quantity, $typeOfCurrency, $articleFile, $subtype,
-            $unitValue, $taxes, $fileItem, $totalValue, $lstUnitOfMeasurement, $title, $edit, $key;
+            $unitValue, $taxes, $fileItem, $totalValue, $lstUnitOfMeasurement, $title, $edit, $key, $request_form_id;
 
     public $name, $contractManagerId, $superiorChief, $purchaseMechanism, $messagePM,
             $program, $fileRequests = [], $justify, $totalDocument;
@@ -97,6 +101,7 @@ class RequestFormCreate extends Component
     }
 
     private function setRequestForm(){
+      $this->request_form_id    =   $this->requestForm->request_form_id;
       $this->subtype            =   $this->requestForm->subtype;
       $this->name               =   $this->requestForm->name;
       $this->contractManagerId  =   $this->requestForm->contract_manager_id;
@@ -205,7 +210,7 @@ class RequestFormCreate extends Component
       // dd($this->items);
       $this->validate(
         [ 'name'                         =>  'required',
-          'contractManagerId'            =>  'required',
+          //'contractManagerId'            =>  'required',
           'subtype'                      =>  'required',
           'purchaseMechanism'            =>  'required',
           'program'                      =>  'required',
@@ -214,7 +219,7 @@ class RequestFormCreate extends Component
           ($this->isRFItems ? 'items' : 'passengers') => 'required'
         ],
         [ 'name.required'                =>  'Debe ingresar un nombre a este formulario.',
-          'contractManagerId.required'   =>  'Debe ingresar un Administrador de Contrato.',
+          //'contractManagerId.required'   =>  'Debe ingresar un Administrador de Contrato.',
           'subtype.required'             =>  'Seleccione el tipo para este formulario.',
           'purchaseMechanism.required'   =>  'Seleccione un Mecanismo de Compra.',
           'program.required'             =>  'Ingrese un Programa Asociado.',
@@ -226,6 +231,8 @@ class RequestFormCreate extends Component
 
       DB::transaction(function () {
 
+        //dd("chequear por jefatura");
+
         $req = RequestForm::updateOrCreate(
           [
             'id'                    =>  $this->idRF,
@@ -233,7 +240,10 @@ class RequestFormCreate extends Component
           [
             'subtype'               =>  $this->subtype,
             'contract_manager_id'   =>  $this->contractManagerId,
-            'contract_manager_ou_id' => User::with('organizationalUnit')->find($this->contractManagerId)->organizationalUnit->id,
+            //contractManagerId
+            //'contract_manager_id'   =>  Authority::getBossFromUser$this->contractManagerId,
+            //'contract_manager_ou_id' => User::with('organizationalUnit')->find($this->contractManagerId)->organizationalUnit->id,
+            'contract_manager_ou_id' => Authority::getBossFromUser($this->contractManagerId,Carbon::now())->organizational_unit_id,
             'name'                  =>  $this->name,
             'superior_chief'        =>  $this->superiorChief,
             'justification'         =>  $this->justify,
@@ -304,6 +314,38 @@ class RequestFormCreate extends Component
           EventRequestform::createPreFinanceEvent($req);
           EventRequestform::createFinanceEvent($req);
           EventRequestform::createSupplyEvent($req);
+
+          //Envío de notificación a Adm de Contrato y abastecimiento.
+          $mail_contract_manager = User::select('email')
+            ->where('id', $req->contract_manager_id)
+            ->first();
+
+          if($mail_contract_manager){
+              $emails = [$mail_contract_manager];
+              Mail::to($emails)
+                ->cc(env('APP_RF_MAIL'))
+                ->send(new NewRequestFormNotification($req));
+          }
+          //---------------------------------------------------------
+
+          //Envío de notificación para visación.
+          $now = Carbon::now();
+          //manager
+          $type = 'manager';
+          $mail_notification_ou_manager = Authority::getAuthorityFromDate($req->eventRequestForms->first()->ou_signer_user, Carbon::now(), $type);
+          //secretary
+          $type_adm = 'secretary';
+          $mail_notification_ou_secretary = Authority::getAuthorityFromDate($req->eventRequestForms->first()->ou_signer_user, Carbon::now(), $type_adm);
+
+          $emails = [$mail_notification_ou_manager->user->email, $mail_notification_ou_secretary->user->email];
+
+          if($mail_notification_ou_secretary && $mail_notification_ou_secretary){
+              Mail::to($emails)
+                ->cc(env('APP_RF_MAIL'))
+                ->send(new RequestFormSignNotification($req));
+          }
+          //---------------------------------------------------------
+
           session()->flash('info', 'Formulario de requrimiento N° '.$req->id.' fue creado con exito.');
         }
 
@@ -319,7 +361,7 @@ class RequestFormCreate extends Component
               $reqFile->user_id = Auth()->user()->id;
               $reqFile->save();
           // }
-      }
+        }
 
       });
 
@@ -341,7 +383,10 @@ class RequestFormCreate extends Component
 
     public function render(){
         $this->messageMechanism();
-        $users = User::where('organizational_unit_id', Auth::user()->organizational_unit_id)->orderBy('name', 'ASC')->get();
+        // $users = User::where('organizational_unit_id', Auth::user()->organizational_unit_id)->orderBy('name', 'ASC')->get();
+        $users = User::where('external', 0)
+          ->orderBy('name', 'ASC')
+          ->get(['id', 'name', 'fathers_family', 'mothers_family']); //get specific columns equals best perfomance bench
         return view('livewire.request-form.request-form-create', compact('users'));
     }
 }

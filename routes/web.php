@@ -68,7 +68,7 @@ use App\Pharmacies\Purchase;
 use App\User;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\Parameters\LogController;
-
+use App\Http\Controllers\RequestForms\AttachedFilesController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
@@ -514,6 +514,7 @@ Route::prefix('rrhh')->as('rrhh.')->group(function () {
 
     Route::prefix('service-request')->name('service-request.')->middleware('auth')->group(function () {
         // Rutas de service request
+        Route::get('/test', [ServiceRequestController::class, 'test'])->name('test');
         Route::get('/home', function () { return view('service_requests.home'); })->name('home');
 
         Route::match(['get', 'post'],'/user', [ServiceRequestController::class, 'user'])->name('user');
@@ -901,12 +902,6 @@ Route::prefix('documents')->as('documents.')->middleware('auth')->group(function
 Route::resource('documents', 'Documents\DocumentController')->middleware('auth');
 
 Route::prefix('requirements')->as('requirements.')->middleware('auth')->group(function () {
-    Route::get('/', 'Requirements\RequirementController@outbox')->name('index');
-    Route::get('/create', 'Requirements\RequirementController@show')->name('create');
-    Route::post('/', 'Requirements\RequirementController@store')->name('store');
-    Route::get('/{requirement}', 'Requirements\RequirementController@show')->name('show');
-    Route::delete('/{requirement}', 'Requirements\RequirementController@destroy')->name('destroy');
-
     /** Custom routes */
     Route::get('download/{file}',  'Requirements\EventController@download')->name('download');
     Route::get('inbox', 'Requirements\RequirementController@inbox')->name('inbox');
@@ -921,6 +916,12 @@ Route::prefix('requirements')->as('requirements.')->middleware('auth')->group(fu
     Route::resource('events', 'Requirements\EventController');
     Route::get('report1', 'Requirements\RequirementController@report1')->name('report1');
     // Route::get('report_reqs_by_org', 'Requirements\RequirementController@report_reqs_by_org')->name('report_reqs_by_org');
+
+    Route::get('/', 'Requirements\RequirementController@outbox')->name('index');
+    Route::get('/create', 'Requirements\RequirementController@show')->name('create');
+    Route::post('/', 'Requirements\RequirementController@store')->name('store');
+    Route::get('/{requirement}', 'Requirements\RequirementController@show')->name('show');
+    Route::delete('/{requirement}', 'Requirements\RequirementController@destroy')->name('destroy');
 });
 //Route::resource('requirements', 'Requirements\RequirementController')->middleware('auth');
 
@@ -1354,6 +1355,7 @@ Route::prefix('request_forms')->as('request_forms.')->middleware('auth')->group(
     Route::get('/my_forms', [RequestFormController::class, 'my_forms'])->name('my_forms');
     Route::get('/pending_forms', [RequestFormController::class, 'pending_forms'])->name('pending_forms');
     Route::get('/create', [RequestFormController::class, 'create'])->name('create');
+    Route::get('/{requestForm}/create_provision', [RequestFormController::class, 'create_provision'])->name('create_provision');
     Route::get('/{requestForm}/sign/{eventType}', [RequestFormController::class, 'sign'])->name('sign');
     Route::get('/callback-sign-request-form/{message}/{modelId}/{signaturesFile?}', [RequestFormController::class, 'callbackSign'])->name('callbackSign');
     Route::get('/signed-request-form-pdf/{requestForm}', [RequestFormController::class, 'signedRequestFormPDF'])->name('signedRequestFormPDF');
@@ -1376,6 +1378,7 @@ Route::prefix('request_forms')->as('request_forms.')->middleware('auth')->group(
         Route::post('{requestForm}/create_new_budget', [RequestFormController::class, 'create_new_budget'])->name('create_new_budget');
         Route::get('/petty_cash/{pettyCash}/download', [PettyCashController::class, 'download'])->name('petty_cash.download');
         Route::get('/fund_to_be_settled/{fundToBeSettled}/download', [FundToBeSettledController::class, 'download'])->name('fund_to_be_settled.download');
+        Route::get('/attached_file/{attachedFile}/download', [AttachedFilesController::class, 'download'])->name('attached_file.download');
         Route::post('/{requestForm}/create_tender', [PurchasingProcessController::class, 'create_tender'])->name('create_tender');
     });
 

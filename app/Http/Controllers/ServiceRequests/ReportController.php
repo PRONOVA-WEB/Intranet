@@ -419,6 +419,7 @@ class ReportController extends Controller
 
   public function resolutionPDF(ServiceRequest $ServiceRequest)
   {
+    
     $formatter = new NumeroALetras();
     $ServiceRequest->gross_amount_description = $formatter->toWords($ServiceRequest->gross_amount, 0);
 
@@ -431,7 +432,7 @@ class ReportController extends Controller
     $pdf = app('dompdf.wrapper');
     if ($ServiceRequest->responsabilityCenter->establishment_id == 1  and $ServiceRequest->start_date >= "2022-01-01 00:00:00" and $ServiceRequest->programm_name = "Covid 2022") {
       $pdf->loadView('service_requests.report_resolution_covid_2022_hetg', compact('ServiceRequest'));
-    } 
+    }
     else {
       $pdf->loadView('service_requests.report_resolution', compact('ServiceRequest'));
     }
@@ -457,16 +458,20 @@ class ReportController extends Controller
     $pdf = app('dompdf.wrapper');
 
     if ($ServiceRequest->working_day_type == "DIARIO") {
+
       $pdf->loadView('service_requests.report_resolution_diary', compact('ServiceRequest'));
     } else {
+
       //$pdf->loadView('service_requests.report_resolution_hsa', compact('ServiceRequest'));
-      if ($ServiceRequest->start_date >= "2022-01-01 00:00:00" and $ServiceRequest->programm_name != "Covid 2022") {
+      if ($ServiceRequest->responsabilityCenter->establishment_id == 1  and $ServiceRequest->start_date >= "2022-01-01 00:00:00" and $ServiceRequest->programm_name != "Covid 2022") {
+
         $pdf->loadView('service_requests.report_resolution_hsa_2022', compact('ServiceRequest'));
-      } 
-      if ($ServiceRequest->responsabilityCenter->establishment_id == 1  and $ServiceRequest->start_date >= "2022-01-01 00:00:00" and $ServiceRequest->programm_name = "Covid 2022") {
+      }
+      else if ($ServiceRequest->responsabilityCenter->establishment_id == 1  and $ServiceRequest->start_date >= "2022-01-01 00:00:00" and $ServiceRequest->programm_name = "Covid 2022") {
+
         $pdf->loadView('service_requests.report_resolution_covid_2022_hetg', compact('ServiceRequest'));
       }
-      
+
       else {
         $pdf->loadView('service_requests.report_resolution_hsa', compact('ServiceRequest'));
       }
@@ -1276,13 +1281,19 @@ class ReportController extends Controller
   {
 
     $results = array();
+    //dd($request->type);
     if ($request->from != null && $request->to != null) {
       $serviceRequests = ServiceRequest::where('program_contract_type', 'Mensual')
-        ->where('type', 'Covid')
+        //->where('type', 'Covid')
         ->where('start_date', '<=', $request->from)
         ->where('end_date', '>', $request->from)
+        ->where('end_date', '>', $request->from)
+
+        ->when($request->type != null, function ($q) use ($request) {
+          return $q->where('type',  $request->type);
+        })
         ->orderBy('start_date', 'asc')
-        ->get(['user_id', 'id', 'start_date', 'end_date'])
+        ->get(['user_id', 'id', 'start_date', 'end_date','type'])
         ->unique('user_id');
 
       // dd($serviceRequests[0]);
@@ -1316,8 +1327,9 @@ class ReportController extends Controller
               $user_id = $serviceRequest_aux->user_id;
               $start_date = $serviceRequest_aux->start_date;
               $end_date = $serviceRequest_aux->end_date;
+              $type = $serviceRequest_aux->type;
 
-              $results[$serviceRequest->employee->getFullNameAttribute()][$start_date->format('Y-m-d') . " - " . $end_date->format('Y-m-d')] = $serviceRequest_aux;
+              $results[$serviceRequest->employee->getFullNameAttribute()][$start_date->format('Y-m-d') . " - " . $end_date->format('Y-m-d')."(".($type).")"] = $serviceRequest_aux;
 
               // print_r($serviceRequest->employee->getFullNameAttribute() ." - ". $end_date."<br>");
             } else {

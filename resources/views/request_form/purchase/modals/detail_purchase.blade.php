@@ -98,6 +98,66 @@
                 <object type="application/pdf" data="{{ route('request_forms.supply.fund_to_be_settled.download', $detail->pivot->fundToBeSettled->id) }}" width="100%" height="400" style="height: 85vh;"><a href="{{ route('request_forms.supply.fund_to_be_settled.download', $detail->pivot->fundToBeSettled->id) }}" target="_blank">
                               <i class="fas fa-file"></i> Ver documento</a></object>
             @endif
+
+            @if($detail->pivot->tender)
+                <div class="table-responsive">
+                    <table class="table table-sm table-striped table-bordered">
+                        <tbody>
+                            <tr>
+                                <th class="table-active" style="width: 33%">Fecha creacion</th>
+                                <td>{{ $detail->pivot->tender->created_at->format('d-m-Y H:i') }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" style="width: 33%">ID de la licitación</th>
+                                <td>{{ $detail->pivot->tender->tender_number }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" style="width: 33%">Descripción de la licitación</th>
+                                <td>{{ $detail->pivot->tender->description }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" scope="row">Nº Resol. de las Bases Administrativas</th>
+                                <td>{{ $detail->pivot->tender->resol_administrative_bases }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" style="width: 33%">Nº Resol. de Adjudicación</th>
+                                <td>{{ $detail->pivot->tender->resol_adjudication }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" style="width: 33%">Nº Resol. Desierta</th>
+                                <td>{{ $detail->pivot->tender->resol_deserted }}</td>
+                            </tr>
+                            <!-- Licitacion LP/LQ -->
+                            @if(in_array($detail->pivot->tender->purchase_type_id, [14,15,16,17,18]))
+                            <tr>
+                                <th class="table-active" style="width: 33%">Nº Resol. de Contrato</th>
+                                <td>{{ $detail->pivot->tender->resol_contract }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" style="width: 33%">Nº Boleta de Garantía</th>
+                                <td>{{ $detail->pivot->tender->guarantee_ticket }}</td>
+                            </tr>
+                            @endif
+                            <!-- Licitacion LR MAYOR-->
+                            @if(in_array($detail->pivot->tender->purchase_type_id, [16,17,18]))
+                            <tr>
+                                <th class="table-active" style="width: 33%">Cuenta con Toma de razón</th>
+                                <td>{{ $detail->pivot->tender->has_taking_of_reason ? 'SÍ' : 'NO' }}</td>
+                            </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+                <h6><i class="fas fas fa-paperclip" aria-hidden="true"></i> Anexos</h6>
+                <div class="list-group">
+                    @forelse($detail->pivot->tender->attachedFiles as $attachedFile)
+                    <a href="{{ route('request_forms.supply.attached_file.download', $attachedFile) }}" class="list-group-item list-group-item-action py-2" target="_blank">
+                        <i class="fas fa-file"></i> {{ $attachedFile->document_type }} </a>
+                    @empty
+                    <p>No existen archivos adjuntos a esta licitación.</p>
+                    @endforelse
+                </div>
+            @endif
             </div>
         </div>
     </div>

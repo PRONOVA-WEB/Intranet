@@ -45,12 +45,20 @@ class RequestForm extends Model implements Auditable
     */
 
     protected $fillable = [
-        'estimated_expense', 'program', 'contract_manager_id',
+        'request_form_id', 'estimated_expense', 'program', 'contract_manager_id',
         'name', 'subtype', 'justification', 'superior_chief',
         'type_form', 'bidding_number', 'request_user_id',
         'request_user_ou_id', 'contract_manager_ou_id', 'status', 'sigfe',
         'purchase_unit_id', 'purchase_type_id', 'purchase_mechanism_id', 'type_of_currency'
     ];
+
+    public function father(){
+      return $this->belongsTo(RequestForm::class, 'request_form_id');
+    }
+
+    public function children(){
+      return $this->hasMany(RequestForm::class);
+    }
 
     public function user() {
       return $this->belongsTo(User::class, 'request_user_id');
@@ -136,22 +144,41 @@ class RequestForm extends Model implements Auditable
     }
 
     public function getStatus(){
-      switch ($this->status) {
-          case "pending":
-              return 'Pendiente';
-              break;
-          case "rejected":
-              return 'Rechazado';
-              break;
-          case "approved":
-              return 'Aprobado';
-              break;
-          case "closed":
-              return 'Cerado';
-              break;
-      }
+        switch ($this->status) {
+            case "pending":
+                return 'Pendiente';
+                break;
+            case "rejected":
+                return 'Rechazado';
+                break;
+            case "approved":
+                return 'Aprobado';
+                break;
+            case "closed":
+                return 'Cerado';
+                break;
+        }
     }
 
+    public function getSubtypeValueAttribute(){
+        switch ($this->subtype) {
+            case "bienes ejecución inmediata":
+                return 'Bienes Ejecución Inmediata';
+                break;
+
+            case "bienes ejecución tiempo":
+                return 'Bienes Ejecución En Tiempo';
+                break;
+
+            case "servicios ejecución inmediata":
+                return 'Servicios Ejecución Inmediata';
+                break;
+
+            case "servicios ejecución tiempo":
+                return 'Servicios Ejecución En Tiempo';
+                break;
+        }
+    }
 
     /*Regresa Icono del estado de firma de Eventos [argumento:  tipo de Evento]*/
     public function eventSign($event_type) {
