@@ -47,14 +47,30 @@ class UserSeeder extends Seeder
         $user->givePermissionTo(Permission::all());
 
         //44(Subdirección de Recursos Humanos) = para que sea líder de RRHH
-        $user = User::Create(['id'=>12121212, 'dv'=>1, 'name'=>'Jorge', 'fathers_family'=>'Galleguillos', 'mothers_family' => 'Möller',
-            'email'=>'jgalleguillos@pronova.cl','password'=>bcrypt('admin'), 'position'=>'Gerente', 'organizational_unit_id'=>'44']);
+        $user = User::Create(['id'=>56565656, 'dv'=>1, 'name'=>'Subdirección', 'fathers_family'=>'Recursos', 'mothers_family' => 'Humanos',
+            'email'=>'rrhh@pronova.cl','password'=>bcrypt('admin'), 'position'=>'Gerente', 'organizational_unit_id'=>'44']);
         $user->assignRole('dev');
         $user->givePermissionTo(Permission::all());
 
         //48(Unidad de Reclutamiento y Selección de Personal) ->para asignar los requerimientos -> usuario tipo RYS (userrys)
-        $user = User::Create(['id'=>32323232, 'dv'=>1, 'name'=>'Usuario', 'fathers_family'=>'Reclutamiento', 'mothers_family' => 'Selección',
+        $user = User::Create(['id'=>32323232, 'dv'=>1, 'name'=>'Reclutamiento', 'fathers_family'=>'Reclutamiento', 'mothers_family' => 'Selección',
             'email'=>'rys@pronova.cl','password'=>bcrypt('admin'), 'position'=>'Gerente', 'organizational_unit_id'=>'48']);
         $user->assignRole('Replacement Staff: user rys');
+
+        /* FIRMANTES MÓDULO DE ABASTECIMIENTO */
+        //37 Departamento Gestión de abastecimiento y logistica
+        $user = User::Create(['id'=>98989898, 'dv'=>1, 'name'=>'Departamento', 'fathers_family'=>'Abastecimiento', 'mothers_family' => 'Logística',
+                'email'=>'abastecimiento@pronova.cl','password'=>bcrypt('admin'), 'position'=>'Director', 'organizational_unit_id'=>'37']);
+        $user->assignRole('dev');
+
+        //40 Departamento Gestión finaciera
+        $user = User::Create(['id'=>43434343, 'dv'=>1, 'name'=>'Departamento', 'fathers_family'=>'Gestión', 'mothers_family' => 'Financiera',
+            'email'=>'finanzas@pronova.cl','password'=>bcrypt('admin'), 'position'=>'Director', 'organizational_unit_id'=>'40']);
+        $user->assignRole('dev');
+        //manager gestión financiera
+        $user = User::Create(['id'=>12121212, 'dv'=>1, 'name'=>'Autoridad', 'fathers_family'=>'Gestión', 'mothers_family' => 'Financiera',
+        'email'=>'managerfinanzas@pronova.cl','password'=>bcrypt('admin'), 'position'=>'Gerente', 'organizational_unit_id'=>'40']);
+        $user->assignRole('dev');
+        $user->givePermissionTo(Permission::all());
     }
 }

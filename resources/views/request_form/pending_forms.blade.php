@@ -22,7 +22,7 @@
     </fieldset>
 
     @if(count($my_pending_forms_to_signs) > 0)
-    </div>
+
         <div class="col">
             <h6><i class="fas fa-inbox"></i> Formularios pendientes de firma</h6>
             <div class="table-responsive">
@@ -96,7 +96,7 @@
             </div>
         </div>
     @else
-        </div>
+
         <div class="col">
             <h6><i class="fas fa-inbox"></i> Formularios pendientes de firma</h6>
             <div class="card mb-3 bg-light">
@@ -110,7 +110,7 @@
     @if($event_type == 'finance_event')
 
     @if(count($approved_forms_pending_to_sign) > 0)
-    </div>
+
         <div class="col">
             <h6><i class="fas fa-inbox"></i> Formularios aprobados pendiente de firma digital</h6>
             <div class="table-responsive">
@@ -181,7 +181,6 @@
             </div>
         </div>
     @else
-        </div>
         <div class="col">
             <h6><i class="fas fa-inbox"></i> Formularios aprobados pendiente de firma digital</h6>
             <div class="card mb-3 bg-light">
@@ -190,10 +189,9 @@
               </div>
             </div>
         </div>
-    @endif                                      
+    @endif
 
     @if(count($new_budget_pending_to_sign) > 0)
-    </div>
         <div class="col">
             <h6><i class="fas fa-inbox"></i> Formularios con nuevo presupuesto pendiente de firma</h6>
             <div class="table-responsive">
@@ -254,7 +252,6 @@
             </div>
         </div>
     @else
-        </div>
         <div class="col">
             <h6><i class="fas fa-inbox"></i> Formularios con nuevo presupuesto pendiente de firma</h6>
             <div class="card mb-3 bg-light">
@@ -269,7 +266,6 @@
     @endif
 
     @if(count($my_forms_signed) > 0)
-    </div>
         <div class="col">
             <h6><i class="fas fa-archive"></i> Formularios aprobados, cerrados o rechazados</h6>
             <div class="table-responsive">
@@ -360,7 +356,6 @@
           </div>
         </div>
     @else
-        </div>
         <div class="col">
             <h6><i class="fas fa-inbox"></i> Formularios firmados o rechazados</h6>
             <div class="card mb-3 bg-light">
