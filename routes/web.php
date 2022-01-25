@@ -849,10 +849,10 @@ Route::prefix('parameters')->as('parameters.')->middleware('auth')->group(functi
 
     Route::prefix('suppliers')->as('suppliers.')->group(function () {
         Route::get('/', 'Parameters\SupplierController@index')->name('index');
-        // Route::get('/create', 'Parameters\UnitOfMeasurementController@create')->name('create');
-        // Route::get('/edit/{measurement}', 'Parameters\UnitOfMeasurementController@edit')->name('edit');
-        // Route::put('/update/{measurement}', 'Parameters\UnitOfMeasurementController@update')->name('update');
-        // Route::post('/store', 'Parameters\UnitOfMeasurementController@store')->name('store');
+        Route::get('/create', 'Parameters\SupplierController@create')->name('create');
+        Route::post('/store', 'Parameters\SupplierController@store')->name('store');
+        Route::get('/edit/{supplier}', 'Parameters\SupplierController@edit')->name('edit');
+        Route::put('/update/{supplier}', 'Parameters\SupplierController@update')->name('update');
     });
 
     Route::prefix('logs')->name('logs.')->middleware('auth')->group(function () {
@@ -1375,6 +1375,7 @@ Route::prefix('request_forms')->as('request_forms.')->middleware('auth')->group(
         Route::post('/{requestForm}/create_petty_cash', [PurchasingProcessController::class, 'create_petty_cash'])->name('create_petty_cash');
         Route::post('/{requestForm}/create_fund_to_be_settled', [PurchasingProcessController::class, 'create_fund_to_be_settled'])->name('create_fund_to_be_settled');
         Route::post('/{requestForm}/create_tender', [PurchasingProcessController::class, 'create_tender'])->name('create_tender');
+        Route::post('/{requestForm}/create_oc', [PurchasingProcessController::class, 'create_oc'])->name('create_oc');
         Route::post('{requestForm}/create_new_budget', [RequestFormController::class, 'create_new_budget'])->name('create_new_budget');
         Route::get('/petty_cash/{pettyCash}/download', [PettyCashController::class, 'download'])->name('petty_cash.download');
         Route::get('/fund_to_be_settled/{fundToBeSettled}/download', [FundToBeSettledController::class, 'download'])->name('fund_to_be_settled.download');

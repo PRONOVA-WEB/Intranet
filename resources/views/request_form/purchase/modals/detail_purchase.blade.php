@@ -158,6 +158,55 @@
                     @endforelse
                 </div>
             @endif
+
+            @if($detail->pivot->immediatePurchase)
+            <div class="table-responsive">
+                    <table class="table table-sm table-striped table-bordered">
+                        <tbody>
+                            <tr>
+                                <th class="table-active" style="width: 33%">ID OC</th>
+                                <td>{{ $detail->pivot->immediatePurchase->po_id }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" scope="row">Descripción</th>
+                                <td>{{ $detail->pivot->immediatePurchase->description }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" style="width: 33%">RUT proveedor</th>
+                                <td>{{ number_format($detail->pivot->immediatePurchase->supplier->run,0,",",".") }}-{{ $detail->pivot->immediatePurchase->supplier->dv }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" style="width: 33%">Nombre proveedor</th>
+                                <td>{{ $detail->pivot->immediatePurchase->supplier->name }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" style="width: 33%">Fecha OC enviada a proveedor</th>
+                                <td>{{ $detail->pivot->immediatePurchase->po_sent_date->format('d-m-Y') ?? '' }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" scope="row">Fecha OC aceptada</th>
+                                <td>{{ $detail->pivot->immediatePurchase->po_accepted_date->format('d-m-Y') ?? '' }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" scope="row">Fecha estimada entrega</th>
+                                <td>{{ $detail->pivot->immediatePurchase->estimated_delivery_date->format('d-m-Y') ?? '' }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" scope="row">Fecha OC recepción conforme</th>
+                                <td>{{ $detail->pivot->immediatePurchase->po_with_confirmed_receipt_date->format('d-m-Y') ?? '' }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" style="width: 33%">Monto total</th>
+                                <td>${{ number_format($detail->pivot->immediatePurchase->po_amount,0,",",".") }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" style="width: 33%">Registrado por</th>
+                                <td>{{ $detail->pivot->user->fullName ?? '' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            @endif
             </div>
         </div>
     </div>

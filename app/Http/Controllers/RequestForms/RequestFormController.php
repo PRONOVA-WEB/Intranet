@@ -22,8 +22,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\File;
 use PDF;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Str;
 use App\User;
+use App\Mail\PurchaserNotification;
 
 class RequestFormController extends Controller {
 
@@ -147,7 +148,7 @@ class RequestFormController extends Controller {
         $requestForm->load('itemRequestForms');
 
         $title = 'Formularios de Requerimiento - Autorización ' . $eventTitles[$eventType];
-        $manager              = Authority::getAuthorityFromDate($requestForm->userOrganizationalUnit->id, Carbon::now(), 'manager');
+        $manager              = Authority::getAuthorityFromDate(Auth::user()->organizationalUnit->id, Carbon::now(), 'manager');
         $position             = $manager->position;
         $organizationalUnit   = $manager->organizationalUnit->name;
         if(is_null($manager))
@@ -231,6 +232,15 @@ class RequestFormController extends Controller {
         }
         $requestForm->signatures_file_id = $signaturesFile->id;
         $requestForm->save();
+
+        //Envío de notificación para comprador.
+        if($requestForm->purchasers->first()->email){
+            Mail::to($requestForm->purchasers->first()->email)
+              ->cc(env('APP_RF_MAIL'))
+              ->send(new PurchaserNotification($requestForm));
+        }
+        //--------------------------------------
+
         session()->flash('success', $message);
         return redirect()->route('request_forms.pending_forms');
     }
@@ -248,7 +258,7 @@ class RequestFormController extends Controller {
         $newRequestForm->request_user_id = Auth::id();
         $newRequestForm->request_user_ou_id = Auth::user()->organizationalUnit->id;
         $newRequestForm->estimated_expense = 0;
-        $newRequestForm->subtype = 'suministros';
+        $newRequestForm->subtype = Str::contains($requestForm->subtype, 'bienes') ? 'bienes ejecución inmediata' : 'servicios ejecución inmediata';
         $newRequestForm->sigfe = null;
         $newRequestForm->status = 'pending';
         $newRequestForm->signatures_file_id = null;
