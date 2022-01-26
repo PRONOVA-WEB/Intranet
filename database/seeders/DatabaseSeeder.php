@@ -53,7 +53,7 @@ class DatabaseSeeder extends Seeder
 
         /* SEED PARA MODULO DROGUERÍA DEL SITIO  */
         $this->call(PharmaciesSeeder::class);
-        $this->call(SuppliersSeeder::class);
+        $this->call(PharmacySuppliersSeeder::class);
         $this->call(ProductUnitSeeder::class);
         $this->call(ProductCategorySeeder::class);
         $this->call(ProductProgramSeeder::class);
@@ -62,6 +62,10 @@ class DatabaseSeeder extends Seeder
         /* SEED PARA SETTINGS DEL SITIO  */
         $this->call(SettingSeeder::class);
 
+        /* SEED PARA SGR DEL SITIO  */
+        $this->call(ReqCategoriesSeeder::class);
 
+        /* DIRECTORIO PARA BIBLIOTECA DE ARCHIVOS PÚBLICOS */
+        \Storage::makeDirectory('library');
     }
 }

@@ -32,12 +32,6 @@
     </li>
 
     <li class="nav-item">
-        <a class="nav-link {{active('parameters.holidays.index')}}"
-            href="{{ route('parameters.holidays.index') }}">
-            <i class="fas fa-suitcase"></i> Feriados</a>
-    </li>
-
-    <li class="nav-item">
         <a class="nav-link {{ Request::is('parameters/roles*') ? 'active' : ''}}"
             href="{{ route('parameters.roles.index') }}">
             <i class="fas fa-chalkboard-teacher"></i> Roles</a>
@@ -53,12 +47,6 @@
         <a class="nav-link {{active('parameters.places.index')}}"
             href="{{ route('parameters.places.index') }}">
             <i class="fas fa-map-marker-alt"></i> Lugares</a>
-    </li>
-
-    <li class="nav-item">
-        <a class="nav-link {{active('parameters.phrases.index')}}"
-            href="{{ route('parameters.phrases.index') }}">
-            <i class="fas fa-smile-beam"></i> Frases del día</a>
     </li>
 
     <li class="nav-item">

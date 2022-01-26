@@ -1,28 +1,29 @@
 <?php
 
-namespace App\Http\Controllers\QualityAps;
+namespace App\Http\Controllers\Library;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 
-class QualityApsController extends Controller
+class LibraryController extends Controller
 {
     public function index()
     {
-        $relative_path = "../storage/app/quality_aps/";
-
+        $relative_path = "../storage/app/library/";
+        $tree = [];
         $it = new \RecursiveTreeIterator(
                 new \RecursiveDirectoryIterator($relative_path, \RecursiveDirectoryIterator::SKIP_DOTS)
             );
+
         foreach($it as $path => $element) {
             $tree[] = pathinfo($element)+
                     array('path'=>urlencode(str_replace('../storage/app/','',$path)))+
                     array('depth'=>$it->getDepth())+
                     array('type'=>(is_file($path)==1)?'file':'dir');
         }
-        return view('quality_aps.index', compact('tree'));
+        return view('library.index', compact('tree'));
     }
 
     public function download($file)

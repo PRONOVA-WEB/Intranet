@@ -3,10 +3,9 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Pharmacies\Suplplier;
 use App\Pharmacies\Supplier;
 
-class SuppliersSeeder extends Seeder
+class PharmacySuppliersSeeder extends Seeder
 {
     /**
      * Run the database seeds.

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Directorio Telefónico')
+@section('title', 'Libreta de contactos')
 
 @section('content')
 
@@ -22,7 +22,7 @@
 
 <div class="clearfix">
 
-	<div class="float-left"><h3>Directorio Telefónico</h3></div>
+	<div class="float-left"><h3>Libreta de contactos</h3></div>
 
 	<div class="float-right">
 		<form class="form-inline" method="GET" action="{{ route('rrhh.users.directory') }}">
@@ -65,7 +65,7 @@
 		@foreach($users as $user)
 
 		<address class="border p-2 mb-3">
-		
+
 			<span class="raya_azul">━━━</span><span class="raya_rojo">━━━━━</span><br>
 
 			<span class="small"><strong>{{ $user->fullName }}</strong></span>
@@ -83,7 +83,7 @@
 					@endif
 				</span>
 			@endif
-			
+
 			@if($user->organizationalunit)
 				<br>
 				<span class="small">{{ $user->organizationalunit->name }}</span>
@@ -92,7 +92,7 @@
 
 			@foreach($user->telephones as $telephone)
 				<br>
-				<span class="small">Teléfono: <a href="tel:+56{{ $telephone->number }}">+56 {{ $telephone->number }}</a> /  
+				<span class="small">Teléfono: <a href="tel:+56{{ $telephone->number }}">+56 {{ $telephone->number }}</a> /
 				Anexo: {{ $telephone->minsal }}</span>
 			@endforeach
 

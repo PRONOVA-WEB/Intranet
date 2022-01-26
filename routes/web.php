@@ -1271,8 +1271,8 @@ Route::prefix('drugs')->as('drugs.')->middleware('auth')->group(function () {
 Route::get('health_plan/{comuna}', 'HealthPlan\HealthPlanController@index')->middleware('auth')->name('health_plan.index');
 Route::get('health_plan/{comuna}/{file}',  'HealthPlan\HealthPlanController@download')->middleware('auth')->name('health_plan.download');
 
-Route::get('quality_aps', 'QualityAps\QualityApsController@index')->middleware('auth')->name('quality_aps.index');
-Route::get('quality_aps/{file}', 'QualityAps\QualityApsController@download')->middleware('auth')->name('quality_aps.download');
+Route::get('biblioteca', 'Library\LibraryController@index')->middleware('auth')->name('biblioteca.index');
+Route::get('biblioteca/{file}', 'Library\LibraryController@download')->middleware('auth')->name('biblioteca.download');
 
 /* Bodega de Farmacia */
 Route::prefix('pharmacies')->as('pharmacies.')->middleware('auth')->group(function () {

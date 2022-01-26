@@ -39,7 +39,7 @@ class ParteController extends Controller
     public function outbox(Request $request)
     {
         $documents = Document::Search($request)
-                             ->where('type',['Ordinario','Circular'])
+                             //->where('type',['Ordinario','Circular'])
                              ->latest()
                              ->paginate('100');
         $users = User::orderBy('name')->orderBy('fathers_family')->get();

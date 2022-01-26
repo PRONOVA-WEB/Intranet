@@ -29,34 +29,68 @@ class SettingSeeder extends Seeder
             1 =>
             array(
                 'id' => 2,
-                'key' => 'site.description',
-                'display_name' => 'Descripción del sitio',
-                'value' => '<h2>What is Lorem Ipsum?</h2>
-                <p><strong>Lorem Ipsum</strong>&nbsp;</p>
-                <p>Is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>',
-                'details' => '',
-                'type' => 'rich_text_box',
-                'order' => 2,
-            ),
-            2 =>
-            array(
-                'id' => 3,
                 'key' => 'site.logo',
                 'display_name' => 'Logo del sitio',
                 'value' => '/images/logo_pronova.jpg',
                 'details' => '',
                 'type' => 'image',
-                'order' => 4,
+                'order' => 2,
+            ),
+            2 =>
+            array(
+                'id' => 3,
+                'key' => 'site.description',
+                'display_name' => 'Descripción del sitio',
+                'value' => '<h2>Intranet</h2>
+                <p>Sistema para gesti&oacute;n de actividades propias de una organizaci&oacute;n de salud. Permite la compartici&oacute;n de recursos digitales entre los miembros de la organizaci&oacute;n, todo bajo un<strong>&nbsp;esquema de seguridad y control</strong> <strong>de acceso</strong>&nbsp;que asegura que cada persona puede ver &uacute;nicamente lo que le corresponde.</p>',
+                'details' => '',
+                'type' => 'rich_text_box',
+                'order' => 3,
             ),
             3 =>
             array(
                 'id' => 4,
+                'key' => 'site.phrase_day',
+                'display_name' => 'Frase del día',
+                'value' => 'Hoy es el día',
+                'details' => '',
+                'type' => 'text',
+                'order' => 4,
+            ),
+            4 =>
+            array(
+                'id' => 5,
                 'key' => 'site.external_description',
                 'display_name' => 'Descripción de módulo externo',
-                'value' => '',
+                'value' => '<div class="mt-3">
+                <h1>Reclutamiento y Selecci&oacute;n</h1>
+                <div>
+                <div>Ingresa tus antecedentes curriculares para postular al <strong>Staff de Reemplazos</strong> de la Unidad de Reclutamiento y Selecci&oacute;n.</div>
+                </div>
+                </div>',
                 'details' => 'Texto que se muestra en el home del sitio para externos',
                 'type' => 'rich_text_box',
-                'order' => 4,
+                'order' => 5,
+            ),
+            5 =>
+            array(
+                'id' => 6,
+                'key' => 'site.organization',
+                'display_name' => 'Nombre de la organización',
+                'value' => 'Organización',
+                'details' => 'Nombre de la organización',
+                'type' => 'text',
+                'order' => 6,
+            ),
+            6 =>
+            array(
+                'id' => 7,
+                'key' => 'site.phone',
+                'display_name' => 'Teléfono de contacto',
+                'value' => '+56 999999999',
+                'details' => 'Teléfono de contacto',
+                'type' => 'text',
+                'order' => 7,
             )
         ));
     }

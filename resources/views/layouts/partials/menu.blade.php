@@ -90,8 +90,8 @@
                     </a>
                 @endcan
 
-                <a class="collapse-item" href="{{ route('quality_aps.index') }}">
-                    <i class="fas fa-file-alt"></i> Acreditación de Calidad
+                <a class="collapse-item" href="{{ route('biblioteca.index') }}">
+                    <i class="fas fa-file-alt"></i> Biblioteca
                 </a>
 
                 <a class="collapse-item" href="{{ route('health_plan.index', ['Santiago']) }}">
