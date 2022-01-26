@@ -14,7 +14,7 @@
 	@canany(['Pharmacy: transfer view ortesis'])
 	<a class="btn btn-primary" href="{{route('pharmacies.products.transfer.edit', $filter)}}" role="button"><i class="fas fa-clipboard-list"></i> Actualizar stock</a>
 	@endcan
-	<button type="button" class="btn btn-outline-success" href="" onclick="tableToExcel('tabla_stock', 'Listado de stock')">
+	<button type="button" class="btn btn-outline-success" href="" onclick="$('#tabla_stock').tblToExcel();">
 		Descargar <i class="fas fa-download"></i>
 	</button>
 </div>
@@ -36,7 +36,7 @@
 					<tr>
 						<td><a href="#" id="{{$product->id}}" class="ref-product">{{$product->name}}</a></td>
 						<td class="text-right">
-							@if($product->quantity != 0) 
+							@if($product->quantity != 0)
 								<a href="#" id="{{$product->id}}" rel="popover" class="popover-item">{{$product->quantity}}</a>
 								<div class="popover-list-content" style="display:none;">
 									<ul class="list-group list-group-flush">
@@ -156,7 +156,7 @@
 <h3>Listado de Traslados</h3>
 
 <div class="mb-3">
-	<button type="button" class="btn btn-outline-success" href="" onclick="tableToExcel('tabla_transfers', 'Traslados')">
+	<button type="button" class="btn btn-outline-success" href="" onclick="$('#tabla_transfers').tblToExcel();">
 		Descargar <i class="fas fa-download"></i>
 	</button>
 </div>
@@ -193,22 +193,9 @@
 @endsection
 
 @section('custom_js')
-<script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
-<script src="{{ asset('js/show_hide_tab.js') }}"></script>
+<script src="{{ asset('js/jquery.tableToExcel.js') }}"></script>
 <script>
-	var tableToExcel = (function() {
-			var uri = 'data:application/vnd.ms-excel;base64,'
-			, template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta http-equiv="Content-Type" content="text/html;charset=utf-8"></head><body><table>{table}</table></body></html>'
-			, base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
-			, format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
-			return function(table, name) {
-			if (!table.nodeType) table = document.getElementById(table)
-			var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
-			window.location.href = uri + base64(format(template, ctx))
-			}
-		})()
-
-	$(document).ready(function() {
+    $(document).ready(function() {
 		$('.popover-item').popover({
 			html: true,
 			trigger: 'hover',

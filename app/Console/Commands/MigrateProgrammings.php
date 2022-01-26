@@ -40,7 +40,6 @@ class MigrateProgrammings extends Command
      */
     public function handle()
     {
-      $communes = Commune::whereHas('communeFiles')->get();
       foreach ($communes as $commune) {
           echo "\n";
           echo "ID de Comuna: ".$commune->id."\n";

@@ -289,7 +289,7 @@
                 @else Pendiente</p> @endif
             </td>
             <td>
-                <a href="{{ env("APP_URL").'/storage/' }}{{$signature->signaturesFileDocument->signed_file ?? $signature->signaturesFileDocument->file}}"
+                <a href="{{ route('documents.signatures.download', $signature->signaturesFileDocument->id) }} "
                     class="btn btn-sm btn-outline-secondary" target="_blank" title="Ver documento">
                     <span class="fas fa-file" aria-hidden="true"></span>
                 </a>

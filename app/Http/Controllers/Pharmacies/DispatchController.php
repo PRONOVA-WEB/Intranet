@@ -315,31 +315,24 @@ class DispatchController extends Controller
     {
       //obtiene cabecera
       $array_dispatch = $dispatch->toArray();
-      $array_dispatch = array_add($array_dispatch, 'pharmacy', $dispatch->pharmacy->name);
-      $array_dispatch = array_add($array_dispatch, 'establishment', $dispatch->establishment->name);
-      $array_dispatch = array_add($array_dispatch, 'user', $dispatch->user->getFullNameAttribute());;
+      $array_dispatch = \Arr::add($array_dispatch, 'pharmacy', $dispatch->pharmacy->name);
+      $array_dispatch = \Arr::add($array_dispatch, 'establishment', $dispatch->establishment->name);
+      $array_dispatch = \Arr::add($array_dispatch, 'user', $dispatch->user->getFullNameAttribute());;
 
       //obtiene detalles
       $flag = 0;
       $array_dispatchItems = $dispatch->dispatchItems->toArray();
       foreach ($dispatch->dispatchItems as $key => $dispatchItem) {
         //verificar si es epp
-        if($dispatchItem->product->category->id == 6){
-          //verificar si es CENABAST 41, MERCADO PUBLICO 39, CAMPAÑA INVIERNO 24, nCOVID-19 35, DONACIÓN 38
-          if($dispatchItem->product->program->id == 41 || $dispatchItem->product->program->id == 39 || $dispatchItem->product->program->id == 24 ||
-             $dispatchItem->product->program->id == 35 || $dispatchItem->product->program->id == 38){
             $flag = 1;
-            $array_dispatchItems[$key] = array_add($array_dispatchItems[$key], 'product', $dispatchItem->product->name);
-          }else{unset($array_dispatchItems[$key]);} //se elimina producto
-        }else{unset($array_dispatchItems[$key]);} //se elimina producto
+            $array_dispatchItems[$key] = \Arr::add($array_dispatchItems[$key], 'product', $dispatchItem->product->name);
       }
 
-      //dd($flag, $array_dispatch, $array_dispatchItems);
 
       if($flag == 1){
         //envia información a servidor
         // $url_base = "http://127.0.0.1:80/endpoint/receiveDispatchC19";
-        $url_base = "https://i.saludiquique.cl/monitor/endpoint/receiveDispatchC19";
+        $url_base = "http://monitor.pronova/endpoint/receiveDispatchC19";
         $client = new \GuzzleHttp\Client();
         $request = $client->get($url_base, [
                                 'query' => ['dispatch' => urldecode(json_encode($array_dispatch, true)),
@@ -386,7 +379,7 @@ class DispatchController extends Controller
           $filename = $file->getClientOriginalName();
           $fileModel = New File();
           //$fileModel->file = $file->store('pharmacies');
-          $fileModel->file = $file->store('ionline/pharmacies',['disk' => 'gcs']);
+          $fileModel->file = $file->store('/pharmacies',['disk' => 'gcs']);
           $fileModel->name = $filename;
           $fileModel->dispatch_id = $dispatch->id;
           $fileModel->save();

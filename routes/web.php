@@ -898,6 +898,7 @@ Route::prefix('documents')->as('documents.')->middleware('auth')->group(function
     Route::get('signatures/signModal/{pendingSignaturesFlowId}', 'Documents\SignatureController@signModal')->name('signatures.signModal');
     Route::get('signatures/massSignModal/{pendingSignaturesFlowIds}', 'Documents\SignatureController@massSignModal')->name('signatures.massSignModal');
     Route::get('/callback_firma/{message}/{modelId}/{signaturesFile?}', 'Documents\SignatureController@callbackFirma')->name('callbackFirma');
+    Route::get('signatures/download/{file}',  'Documents\SignatureController@download')->name('signatures.download');
 });
 Route::resource('documents', 'Documents\DocumentController')->middleware('auth');
 

@@ -26,7 +26,7 @@
         Menú
     </div>
     <!-- Nav Item -  Estadísticas -->
-    <li class="nav-item {{ active(['indicators.*']) }}">
+    {{-- <li class="nav-item {{ active(['indicators.*']) }}">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEstadisticas"
             aria-expanded="true" aria-controls="collapseEstadisticas">
             <i class="fas fa-chart-line"></i>
@@ -55,7 +55,7 @@
 
             </div>
         </div>
-    </li>
+    </li> --}}
     <!-- Nav Item - Documentos -->
     <li class="nav-item {{ active(['documents.*']) }}">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDocumentos"
@@ -235,21 +235,12 @@
         </li>
     @endcan
 
-    @canany([
-        'Pharmacy: SSI (id:1)',
-        'Pharmacy: REYNO (id:2)',
-        'Pharmacy: APS (id:3)',
-        'Pharmacy: Servicios generales
-        (id:4)',
-        ])
+    @can('Pharmacy: manager')
         <li class="nav-item {{ active('pharmacies.*') }}">
             <a class="nav-link" href="{{ route('pharmacies.index') }}">
+                <i class="fas fa-prescription-bottle-alt fa-fw "></i>
                 <span>
-                @canany(['Pharmacy: SSI (id:1)', 'Pharmacy: REYNO (id:2)']) <i class="fas fa-prescription-bottle-alt fa-fw "></i>
-                Droguería @endcan
-                @can('Pharmacy: APS (id:3)') <i class="fas fa-list-ul fa-fw "></i> Bodega APS @endcan
-                @can('Pharmacy: Servicios generales (id:4)') <i class="fas fa-list-ul fa-fw "></i> Bodega Servicios Generales
-                @endcan
+                    Droguería
                 </span>
             </a>
         </li>
