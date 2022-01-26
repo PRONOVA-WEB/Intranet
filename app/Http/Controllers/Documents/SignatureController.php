@@ -534,4 +534,9 @@ class SignatureController extends Controller
         return view('documents.signatures.partials.mass_sign_modal_content', compact('pendingSignaturesFlows'));
     }
 
+    public function download(SignaturesFile $file)
+    {
+        return Storage::disk('gcs')->response($file->file, mb_convert_encoding($file->name,'ASCII'));
+    }
+
 }

@@ -15,17 +15,9 @@ class PharmacyController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->can('Pharmacy: SSI (id:1)')){
+
+        if(Auth::user()->can('Pharmacy: admin')){
             session(['pharmacy_id' => 1]);
-        }
-        if(Auth::user()->can('Pharmacy: REYNO (id:2)')){
-            session(['pharmacy_id' => 2]);
-        }
-        if(Auth::user()->can('Pharmacy: APS (id:3)')){
-            session(['pharmacy_id' => 3]);
-        }
-        if(Auth::user()->can('Pharmacy: Servicios generales (id:4)')){
-            session(['pharmacy_id' => 4]);
         }
 
         return view('pharmacies.index');

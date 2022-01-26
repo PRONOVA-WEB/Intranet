@@ -41,10 +41,9 @@
                   class="btn btn-primary btn-sm float-right" title="Formulario" target="_blank">
                   Orden de Compra <i class="fas fa-file-alt"></i>
                 </a>
+            @endif
 
-                @endif
-
-                @if($detail->pivot->pettyCash)
+            @if($detail->pivot->pettyCash)
                 <div class="table-responsive">
                     <table class="table table-sm table-striped table-bordered">
                         <tbody>
@@ -73,11 +72,11 @@
                 </div>
                 @if($detail->pivot->pettyCash->file)
                 <object type="application/pdf" data="{{ route('request_forms.supply.petty_cash.download', $detail->pivot->pettyCash->id) }}" width="100%" height="400" style="height: 85vh;"><a href="{{ route('request_forms.supply.petty_cash.download', $detail->pivot->pettyCash->id) }}" target="_blank">
-                              <i class="fas fa-file"></i> Ver documento</a></object>
+                            <i class="fas fa-file"></i> Ver documento</a></object>
                 @endif
-                @endif
+            @endif
 
-                @if($detail->pivot->fundToBeSettled)
+            @if($detail->pivot->fundToBeSettled)
                 <div class="table-responsive">
                     <table class="table table-sm table-striped table-bordered">
                         <tbody>
@@ -98,6 +97,116 @@
                 </div>
                 <object type="application/pdf" data="{{ route('request_forms.supply.fund_to_be_settled.download', $detail->pivot->fundToBeSettled->id) }}" width="100%" height="400" style="height: 85vh;"><a href="{{ route('request_forms.supply.fund_to_be_settled.download', $detail->pivot->fundToBeSettled->id) }}" target="_blank">
                               <i class="fas fa-file"></i> Ver documento</a></object>
+            @endif
+
+            @if($detail->pivot->tender)
+                <div class="table-responsive">
+                    <table class="table table-sm table-striped table-bordered">
+                        <tbody>
+                            <tr>
+                                <th class="table-active" style="width: 33%">Fecha creacion</th>
+                                <td>{{ $detail->pivot->tender->created_at->format('d-m-Y H:i') }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" style="width: 33%">ID de la licitación</th>
+                                <td>{{ $detail->pivot->tender->tender_number }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" style="width: 33%">Descripción de la licitación</th>
+                                <td>{{ $detail->pivot->tender->description }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" scope="row">Nº Resol. de las Bases Administrativas</th>
+                                <td>{{ $detail->pivot->tender->resol_administrative_bases }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" style="width: 33%">Nº Resol. de Adjudicación</th>
+                                <td>{{ $detail->pivot->tender->resol_adjudication }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" style="width: 33%">Nº Resol. Desierta</th>
+                                <td>{{ $detail->pivot->tender->resol_deserted }}</td>
+                            </tr>
+                            <!-- Licitacion LP/LQ -->
+                            @if(in_array($detail->pivot->tender->purchase_type_id, [14,15,16,17,18]))
+                            <tr>
+                                <th class="table-active" style="width: 33%">Nº Resol. de Contrato</th>
+                                <td>{{ $detail->pivot->tender->resol_contract }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" style="width: 33%">Nº Boleta de Garantía</th>
+                                <td>{{ $detail->pivot->tender->guarantee_ticket }}</td>
+                            </tr>
+                            @endif
+                            <!-- Licitacion LR MAYOR-->
+                            @if(in_array($detail->pivot->tender->purchase_type_id, [16,17,18]))
+                            <tr>
+                                <th class="table-active" style="width: 33%">Cuenta con Toma de razón</th>
+                                <td>{{ $detail->pivot->tender->has_taking_of_reason ? 'SÍ' : 'NO' }}</td>
+                            </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+                <h6><i class="fas fas fa-paperclip" aria-hidden="true"></i> Anexos</h6>
+                <div class="list-group">
+                    @forelse($detail->pivot->tender->attachedFiles as $attachedFile)
+                    <a href="{{ route('request_forms.supply.attached_file.download', $attachedFile) }}" class="list-group-item list-group-item-action py-2" target="_blank">
+                        <i class="fas fa-file"></i> {{ $attachedFile->document_type }} </a>
+                    @empty
+                    <p>No existen archivos adjuntos a esta licitación.</p>
+                    @endforelse
+                </div>
+            @endif
+
+            @if($detail->pivot->immediatePurchase)
+            <div class="table-responsive">
+                    <table class="table table-sm table-striped table-bordered">
+                        <tbody>
+                            <tr>
+                                <th class="table-active" style="width: 33%">ID OC</th>
+                                <td>{{ $detail->pivot->immediatePurchase->po_id }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" scope="row">Descripción</th>
+                                <td>{{ $detail->pivot->immediatePurchase->description }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" style="width: 33%">RUT proveedor</th>
+                                <td>{{ number_format($detail->pivot->immediatePurchase->supplier->run,0,",",".") }}-{{ $detail->pivot->immediatePurchase->supplier->dv }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" style="width: 33%">Nombre proveedor</th>
+                                <td>{{ $detail->pivot->immediatePurchase->supplier->name }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" style="width: 33%">Fecha OC enviada a proveedor</th>
+                                <td>{{ $detail->pivot->immediatePurchase->po_sent_date->format('d-m-Y') ?? '' }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" scope="row">Fecha OC aceptada</th>
+                                <td>{{ $detail->pivot->immediatePurchase->po_accepted_date->format('d-m-Y') ?? '' }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" scope="row">Fecha estimada entrega</th>
+                                <td>{{ $detail->pivot->immediatePurchase->estimated_delivery_date->format('d-m-Y') ?? '' }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" scope="row">Fecha OC recepción conforme</th>
+                                <td>{{ $detail->pivot->immediatePurchase->po_with_confirmed_receipt_date->format('d-m-Y') ?? '' }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" style="width: 33%">Monto total</th>
+                                <td>${{ number_format($detail->pivot->immediatePurchase->po_amount,0,",",".") }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" style="width: 33%">Registrado por</th>
+                                <td>{{ $detail->pivot->user->fullName ?? '' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            @endif
             </div>
         </div>
     </div>

@@ -51,6 +51,15 @@ class DatabaseSeeder extends Seeder
         $this->call(BudgetItemSeeder::class);
         $this->call(PurchaseUnitSeeder::class);
 
+        /* SEED PARA MODULO DROGUERÍA DEL SITIO  */
+        $this->call(PharmaciesSeeder::class);
+        $this->call(SuppliersSeeder::class);
+        $this->call(ProductUnitSeeder::class);
+        $this->call(ProductCategorySeeder::class);
+        $this->call(ProductProgramSeeder::class);
+
+
+
         /* SEED PARA SETTINGS DEL SITIO  */
         $this->call(SettingSeeder::class);
 

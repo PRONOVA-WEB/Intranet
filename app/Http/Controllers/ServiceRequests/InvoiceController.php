@@ -51,8 +51,6 @@ class InvoiceController extends Controller
 
         //$fulfillment = Fulfillment::whereHas('ServiceRequest', function($query, use $user_id) { $query->where('user_id',$user_id);})->orderBy('payment_date')->get();
 
-
-
         $fulfillments = Fulfillment::whereHas('ServiceRequest', function($query) use ($user_id) {
             $query->where('user_id',$user_id);}
             )->orderBy('year', 'DESC')->orderBy('month', 'DESC')->get();
@@ -61,7 +59,8 @@ class InvoiceController extends Controller
 
         $user = User::find($user_id);
 
-
+        if(!$user)  logger("Invocie Login: No existe el usuario en la bd ", ['user_id' => $user_id]);
+        
         return view('service_requests.invoice.show', compact('fulfillments','bankaccount','user'));
     }
 

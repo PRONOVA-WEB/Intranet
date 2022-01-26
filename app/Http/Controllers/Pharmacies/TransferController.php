@@ -32,17 +32,17 @@ class TransferController extends Controller
                 $q->whereNotIn('establishment_id', [148, 128]);
             }])
             ->where('pharmacy_id',session('pharmacy_id'))
-            ->where('program_id', 46) //APS ORTESIS
-            ->whereNotIn('id', [1185, 1186, 1231])
+            //->where('program_id', 46) //APS ORTESIS
+            //->whereNotIn('id', [1185, 1186, 1231])
             ->orderBy('name','ASC')->paginate(15, ['*'], 'p1');
 
             $product_ortesis_list = Product::where('pharmacy_id',session('pharmacy_id'))
-                                    ->where('program_id', 46) //APS ORTESIS
-                                    ->whereNotIn('id', [1185, 1186, 1231])
+                                    // ->where('program_id', 46) //APS ORTESIS
+                                    // ->whereNotIn('id', [1185, 1186, 1231])
                                     ->orderBy('name','ASC')->get();
 
             $establishments = Establishment::where('pharmacy_id',session('pharmacy_id'))
-                                            ->whereNotIn('id', [148, 128])
+                                            //->whereNotIn('id', [148, 128])
                                             ->orderBy('name','ASC')->get();
 
             $filter = $request->get('filter') != null ? $request->get('filter') : $establishments->first()->id;
@@ -53,8 +53,8 @@ class TransferController extends Controller
             $products_by_establishment = Product::whereHas('establishments', $filterEstablishment)
                                             ->with(['establishments' => $filterEstablishment])
                                             ->where('pharmacy_id',session('pharmacy_id'))
-                                            ->where('program_id', 46) //APS ORTESIS
-                                            ->whereNotIn('id', [1185, 1186, 1231])
+                                            // ->where('program_id', 46) //APS ORTESIS
+                                            // ->whereNotIn('id', [1185, 1186, 1231])
                                             ->orderBy('name', 'ASC')->paginate(15, ['*'], 'p2');
 
             $transfers = Transfer::with('establishment_from:id,name', 'establishment_to:id,name', 'product:id,name', 'user:id,name,fathers_family')->orderBy('id','DESC')->paginate(15, ['*'], 'p3');
@@ -156,8 +156,8 @@ class TransferController extends Controller
 
         $filterAATT = function($q){
             $q->where('pharmacy_id',session('pharmacy_id'))
-              ->where('program_id', 46) //APS ORTESIS
-              ->whereNotIn('product_id', [1185, 1186, 1231])
+            //   ->where('program_id', 46) //APS ORTESIS
+            //   ->whereNotIn('product_id', [1185, 1186, 1231])
               ->orderBy('name', 'ASC');
         };
         $establishment = Establishment::with(['products' => $filterAATT])->whereHas('products', $filterAATT)->find($establishment_id);
@@ -262,12 +262,12 @@ class TransferController extends Controller
         $establishment = Establishment::with('products')->find($filter);
 
         $establishments = Establishment::where('pharmacy_id',session('pharmacy_id'))
-                                       ->whereNotIn('id', [148, 128]) //SS BODEGA IQUIQUE
+                                       //->whereNotIn('id', [148, 128]) //SS BODEGA IQUIQUE
                                        ->orderBy('name','ASC')->get();
 
         $products_ortesis = Product::where('pharmacy_id',session('pharmacy_id'))
-                                    ->where('program_id', 46) //APS ORTESIS
-                                    ->whereNotIn('id', [1185, 1186, 1231])
+                                    //->where('program_id', 46) //APS ORTESIS
+                                    //->whereNotIn('id', [1185, 1186, 1231])
                                     ->orderBy('name','ASC')->get();
 
         $stocks = collect();

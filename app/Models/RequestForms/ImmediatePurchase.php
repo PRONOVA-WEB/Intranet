@@ -2,6 +2,8 @@
 
 namespace App\Models\RequestForms;
 
+use App\Models\Parameters\PurchaseType;
+use App\Models\Parameters\Supplier;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,8 +16,8 @@ class ImmediatePurchase extends Model implements Auditable
     use SoftDeletes;
 
     protected $fillable = [
-        'po_date', 'po_sent_date', 'po_accepted_date', 'po_with_confirmed_receipt_date',
-        'po_amount', 'estimated_delivery_date', 'supplier_id'
+        'purchase_type_id', 'po_id', 'po_date', 'po_sent_date', 'po_accepted_date', 'po_with_confirmed_receipt_date',
+        'po_amount', 'estimated_delivery_date', 'description', 'supplier_id', 'tender_id'
     ];
 
     public $dates = [
@@ -24,4 +26,19 @@ class ImmediatePurchase extends Model implements Auditable
     ];
 
     protected $table = 'arq_immediate_purchases';
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
+    }
+
+    public function tender()
+    {
+        return $this->belongsTo(Tender::class);
+    }
+
+    public function purchaseType()
+    {
+        return $this->belongsTo(PurchaseType::class, 'purchase_type_id');
+    }
 }

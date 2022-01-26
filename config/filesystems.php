@@ -67,8 +67,8 @@ return [
 
         'gcs' => [
             'driver' => 'local',
-            'root' => storage_path('app/archivos'),
-            'url' => env('APP_URL').'/storage/archivos/',
+            'root' => storage_path('app'),
+            'url' => env('APP_URL').'/storage',
         ],
 
 

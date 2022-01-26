@@ -37,7 +37,7 @@
 				<th scope="col">Establecimiento</th>
 				<th scope="col">Notas</th>
 				<th nowrap scope="col"></th>
-				@cannot('Pharmacy: APS (id:3)') <th nowrap scope="col">C-19</th> @endcannot
+				{{-- @cannot('Pharmacy: APS (id:3)') <th nowrap scope="col">C-19</th> @endcannot --}}
 			</tr>
 		</thead>
 		<tbody>
@@ -80,7 +80,7 @@
 					@endif
 					{{-- @endcan --}}
 				</td>
-				@cannot('Pharmacy: APS (id:3)')
+				{{-- @cannot('Pharmacy: APS (id:3)')
 				<td nowrap>
 					@if($dispatch->sendC19 == 0)
 						<form method="POST" action="{{ route('pharmacies.products.dispatch.sendC19', $dispatch) }}" class="d-inline">
@@ -104,7 +104,7 @@
 						</form>
 					@endif
 				</td>
-				@endcannot
+				@endcannot --}}
 			</tr>
 			@endforeach
 		</tbody>
@@ -113,20 +113,4 @@
 
 {{ $dispatchs->links() }}
 
-@endsection
-
-@section('custom_js')
-<script type="text/javascript">
-	var tableToExcel = (function() {
-	    var uri = 'data:application/vnd.ms-excel;base64,'
-	    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta http-equiv="Content-Type" content="text/html;charset=utf-8"></head><body><table>{table}</table></body></html>'
-	    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
-	    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
-	    return function(table, name) {
-	    if (!table.nodeType) table = document.getElementById(table)
-	    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
-	    window.location.href = uri + base64(format(template, ctx))
-	    }
-	})()
-</script>
 @endsection

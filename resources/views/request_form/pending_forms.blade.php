@@ -22,7 +22,7 @@
     </fieldset>
 
     @if(count($my_pending_forms_to_signs) > 0)
-    </div>
+
         <div class="col">
             <h6><i class="fas fa-inbox"></i> Formularios pendientes de firma</h6>
             <div class="table-responsive">
@@ -59,7 +59,7 @@
                                     @endswitch
                                 </td>
                                 <td>{{ $requestForm->created_at->format('d-m-Y H:i') }}</td>
-                                <td>{{ $requestForm->type_form }}</td>
+                                <td>{{ $requestForm->SubtypeValue }}</td>
                                 <td>{{ $requestForm->name }}</td>
                                 <td>{{ $requestForm->user->FullName }}<br>
                                     {{ $requestForm->userOrganizationalUnit->name }}
@@ -96,7 +96,7 @@
             </div>
         </div>
     @else
-        </div>
+
         <div class="col">
             <h6><i class="fas fa-inbox"></i> Formularios pendientes de firma</h6>
             <div class="card mb-3 bg-light">
@@ -110,7 +110,7 @@
     @if($event_type == 'finance_event')
 
     @if(count($approved_forms_pending_to_sign) > 0)
-    </div>
+
         <div class="col">
             <h6><i class="fas fa-inbox"></i> Formularios aprobados pendiente de firma digital</h6>
             <div class="table-responsive">
@@ -134,7 +134,7 @@
                             <tr>
                                 <td>{{ $requestForm->id }}</td>
                                 <td>{{ $requestForm->created_at->format('d-m-Y H:i') }}</td>
-                                <td>{{ $requestForm->type_form }}</td>
+                                <td>{{ $requestForm->SubtypeValue }}</td>
                                 <td>{{ $requestForm->name }}</td>
                                 <td>{{ $requestForm->user->FullName }}<br>
                                     {{ $requestForm->userOrganizationalUnit->name }}
@@ -160,6 +160,9 @@
                                   @endforeach
                               </td>
                               <td>
+                                    <a href="{{ route('request_forms.show', $requestForm->id) }}"
+                                        class="btn btn-outline-secondary btn-sm" title="ir"><i class="fas fa-eye"></i>
+                                    </a>
                                     {{--modal firmador--}}
                                     @php $idModelModal = $requestForm->id;
                                 				$routePdfSignModal = "/request_forms/create_form_document/$idModelModal/";
@@ -169,7 +172,7 @@
                                     @include('documents.signatures.partials.sign_file')
 
                                     <button type="button" data-toggle="modal" class="btn btn-outline-info btn-sm"
-                                        title="Firmar Certificado de Disponibilidad Presupuestaria"
+                                        title="Firma Digital"
                                         data-target="#signPdfModal{{$idModelModal}}" title="Firmar">
                                           Firmar Form. <i class="fas fa-signature"></i>
                                     </button>
@@ -181,7 +184,6 @@
             </div>
         </div>
     @else
-        </div>
         <div class="col">
             <h6><i class="fas fa-inbox"></i> Formularios aprobados pendiente de firma digital</h6>
             <div class="card mb-3 bg-light">
@@ -190,10 +192,9 @@
               </div>
             </div>
         </div>
-    @endif                                      
+    @endif
 
     @if(count($new_budget_pending_to_sign) > 0)
-    </div>
         <div class="col">
             <h6><i class="fas fa-inbox"></i> Formularios con nuevo presupuesto pendiente de firma</h6>
             <div class="table-responsive">
@@ -217,7 +218,7 @@
                             <tr>
                                 <td>{{ $requestForm->id }}</td>
                                 <td>{{ $requestForm->created_at->format('d-m-Y H:i') }}</td>
-                                <td>{{ $requestForm->type_form }}</td>
+                                <td>{{ $requestForm->SubtypeValue }}</td>
                                 <td>{{ $requestForm->name }}</td>
                                 <td>{{ $requestForm->user->FullName }}<br>
                                     {{ $requestForm->userOrganizationalUnit->name }}
@@ -254,7 +255,6 @@
             </div>
         </div>
     @else
-        </div>
         <div class="col">
             <h6><i class="fas fa-inbox"></i> Formularios con nuevo presupuesto pendiente de firma</h6>
             <div class="card mb-3 bg-light">
@@ -269,7 +269,6 @@
     @endif
 
     @if(count($my_forms_signed) > 0)
-    </div>
         <div class="col">
             <h6><i class="fas fa-archive"></i> Formularios aprobados, cerrados o rechazados</h6>
             <div class="table-responsive">
@@ -314,14 +313,14 @@
                                 @endswitch
                             </th>
                             <td>{{ $requestForm->created_at->format('d-m-Y H:i') }}</td>
-                            <td>{{ $requestForm->type_form }}</td>
+                            <td>{{ $requestForm->SubtypeValue }}</td>
                             <td>{{ $requestForm->name }}</td>
                             <td>{{ $requestForm->user ? $requestForm->user->FullName : 'Usuario eliminado' }}<br>
                                 {{ $requestForm->userOrganizationalUnit ? $requestForm->userOrganizationalUnit->name : 'Usuario eliminado' }}
                             </td>
                             <td>{{ $requestForm->purchaseMechanism->name }}</td>
                             <td align="center">{{ $requestForm->quantityOfItems() }}</td>
-                            <td align="center">{{ $requestForm->getElapsedTime() }}</td>
+                            <td align="center">{{ $requestForm->created_at->diffForHumans() }}</td>
                             <td class="text-center">
                                 @foreach($requestForm->eventRequestForms as $sign)
                                     @if($sign->status == 'pending' || $sign->status == NULL)
@@ -351,6 +350,12 @@
                                         target="_blank" title="Certificado">
                                           <i class="fas fa-file-contract"></i>
                                     </a>
+                                @else
+                                    @if($requestForm->status == 'approved')
+                                    <a href="{{ route('request_forms.create_form_document', $requestForm) }}" class="btn btn-outline-secondary btn-sm" title="Formulario" target="_blank">
+                                        <i class="fas fa-file-alt"></i>
+                                    </a>
+                                    @endif
                                 @endif
                             </td>
                         </tr>
@@ -360,7 +365,6 @@
           </div>
         </div>
     @else
-        </div>
         <div class="col">
             <h6><i class="fas fa-inbox"></i> Formularios firmados o rechazados</h6>
             <div class="card mb-3 bg-light">

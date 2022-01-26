@@ -80,7 +80,7 @@
             @include('request_form.purchase.modals.select_purchase_mechanism')
 
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#requestBudget" @if($isBudgetEventSignPending) disabled @endif >
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#requestBudget" @if($isBudgetEventSignPending) disabled @endif disabled >
                 Solicitar presupuesto
             </button>
 
@@ -95,6 +95,15 @@
                 <i class="fas fa-file"></i> {{ $requestFormFile->name }} -
                 <i class="fas fa-calendar-day"></i> {{ $requestFormFile->created_at->format('d-m-Y H:i') }}</a>
             @endforeach
+
+            @if($requestForm->father)
+                @foreach($requestForm->father->requestFormFiles as $requestFormFile)
+                  <a href="{{ route('request_forms.show_file', $requestFormFile) }}" class="list-group-item list-group-item-action py-2 small" target="_blank">
+                    <i class="fas fa-file"></i> {{ $requestFormFile->name }} -
+                    <i class="fas fa-calendar-day"></i> {{ $requestFormFile->created_at->format('d-m-Y H:i') }}</a>
+                @endforeach
+            @endif
+
         </div>
     </div>
 </div>
@@ -156,6 +165,15 @@
                 <form method="POST" class="form-horizontal" action="{{ route('request_forms.supply.create_fund_to_be_settled', $requestForm) }}">
                 @endif
             @endif
+
+            @if($requestForm->purchase_mechanism_id == 4)
+                @if($requestForm->father)
+                <form method="POST" class="form-horizontal" action="{{ route('request_forms.supply.create_oc', $requestForm) }}">
+                @else
+                <form method="POST" class="form-horizontal" action="{{ route('request_forms.supply.create_tender', $requestForm) }}" enctype="multipart/form-data">
+                @endif
+            @endif
+
             @csrf
             @method('POST')
 
@@ -258,21 +276,52 @@
 
 @endif
 
-<!-- Menores a 3 UTM -->
-@if($requestForm->purchase_mechanism_id == 4)
-    @if($requestForm->purchase_type_id == 12)
-      @include('request_form.purchase.partials.tender_form')
-    @endif
+<!-- Trato Directo -->
+@if($requestForm->purchase_mechanism_id == 2)
+    @include('request_form.purchase.partials.convenio_marco_form')
+@endif
+
+<!-- Trato Directo -->
+@if($requestForm->purchase_mechanism_id == 3)
+    @include('request_form.purchase.partials.direct_deal_form')
+@endif
+
+<!-- LICITACIÓN PUBLICA -->
+@if($requestForm->purchase_mechanism_id == 4 && !$requestForm->father)
+    @include('request_form.purchase.partials.tender_form')
+@endif
+
+<!-- COMPRA INMEDIATA -->
+@if($requestForm->purchase_mechanism_id == 4 && $requestForm->father)
+    @include('request_form.purchase.partials.immediate_purchase_form')
 @endif
 
 <br>
 
-@if($requestForm->purchasingProcess && $requestForm->purchasingProcess->details->count() > 0)
+<!--Observaciones al proceso de compra -->
+@if($requestForm->purchasingProcess)
+<h6><i class="fas fa-eye"></i> Observaciones al proceso de compra</h6>
+<div class="row">
+    <div class="col-sm">
+        <form action="">
+        <div class="form-group">
+            <textarea name="observation" class="form-control form-control-sm" rows="3">{{ old('observation', $requestForm->purchasingProcess->observation ?? '') }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary float-right" id="save_btn" disabled>
+            <i class="fas fa-save"></i> Guardar
+        </button>
+        </form>
+    </div>
+</div>
+<br>
+@endif
 
+@if($requestForm->purchasingProcess && $requestForm->purchasingProcess->details->count() > 0)
 <div class="row">
     <div class="col-sm">
         <div class="table-responsive">
-            <h6><i class="fas fa-shopping-cart"></i> {{ $requestForm->purchaseUnit->name }} registradas al Proceso de Compra:</h6>
+            <h6><i class="fas fa-shopping-cart"></i> Historial de compras</h6>
+
 
             <table class="table table-sm table-striped table-bordered small">
                 <thead class="text-center">
@@ -346,7 +395,80 @@
 </div>
 @endif
 
-<br><br><br>
+<br>
+
+@if(Str::contains($requestForm->subtype, 'tiempo'))
+<div class="row">
+    <div class="col-sm">
+        <div class="table-responsive">
+            <h6><i class="fas fa-shopping-cart"></i> Historial de bienes y/o servicios ejecución inmediata</h6>
+            <table class="table table-sm table-striped table-bordered small">
+                <thead class="text-center">
+                    <tr>
+                        <th>Item</th>
+                        <th>ID</th>
+                        <th style="width: 7%">Fecha Creación</th>
+                        <th>Tipo</th>
+                        <th>Descripción</th>
+                        <th>Usuario Gestor</th>
+                        <th>Mecanismo de Compra</th>
+                        <th>Items</th>
+                        <th>Monto</th>
+                        <!-- <th>Estado</th> -->
+                        <!-- <th></th>  -->
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($requestForm->children as $key => $child)
+                    <tr>
+                        <td>{{ $key+1 }}</td>
+                        <td>@if($child->status == 'approved')<a href="{{ route('request_forms.supply.purchase', $child) }}">{{ $child->id }}</a> @else {{ $child->id }} @endif<br>
+                        @switch($child->getStatus())
+                                    @case('Pendiente')
+                                        <i class="fas fa-clock"></i>
+                                        @break
+
+                                    @case('Aprobado')
+                                        <span style="color: green;">
+                                          <i class="fas fa-check-circle" title="{{ $requestForm->getStatus() }}"></i>
+                                        </span>
+                                        @break
+
+                                    @case('Rechazado')
+                                        <a href="">
+                                            <span style="color: Tomato;">
+                                                <i class="fas fa-times-circle" title="{{ $requestForm->getStatus() }}"></i>
+                                            </span>
+                                        </a>
+                                        @break
+
+                                @endswitch
+                        </td>
+                        <td>{{ $child->created_at->format('d-m-Y H:i') }}</td>
+                        <td>{{ $child->SubtypeValue }}</td>
+                        <td>@if($child->status == 'approved')<a href="{{ route('request_forms.supply.purchase', $child) }}">{{ $child->name }}</a> @else {{ $child->name }} @endif</td>
+                        <td>{{ $child->user ? $child->user->FullName : 'Usuario eliminado' }}<br>
+                        {{ $child->userOrganizationalUnit ? $child->userOrganizationalUnit->name : 'Usuario eliminado' }}</td>
+                        <td>{{ $child->purchaseMechanism->name }}</td>
+                        <td align="center">{{ $child->quantityOfItems() }}</td>
+                        <td align="right">${{ number_format($child->estimated_expense,0,",",".") }}</td>
+                    </tr>
+                  @empty
+                    <tr><td colspan="100%" class="text-center">No existen bienes y/o servicios de ejecución inmediata asociados a este formulario de requerimiento.</td></tr>
+                  @endforelse
+                </tbody>
+                {{--<tfoot>
+                    <tr>
+                      <td colspan="10"></td>
+                      <th class="text-right">Valor Total</td>
+                      <th class="text-right">${{ number_format($requestForm->purchasingProcess->getExpense(),0,",",".") }}</td>
+                    </tr>
+                </tfoot>--}}
+            </table>
+        </div>
+    </div>
+</div>
+@endif
 
 
 @endsection
@@ -408,7 +530,8 @@ function calculateAmount(checked = false) {
     var total = 0;
     $('input[type="checkbox"]' + (checked ? ':checked' : '')).each(function(){
         var val = Math.round($(this).parents("tr").find('input[name="item_total[]"]').val());
-        total += val;
+        if(!isNaN(val))
+            total += val;
     });
 
     $(checked ? '#for_amount' : '#total_amount').val(total);

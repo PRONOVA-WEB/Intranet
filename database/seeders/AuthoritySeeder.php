@@ -129,7 +129,7 @@ class AuthoritySeeder extends Seeder
         ]);
 
         Authority::create([
-            'user_id' => '12121212',
+            'user_id' => '56565656',
             'from' => carbon::now()->toDateString(),
             'to' => carbon::now()->addYear()->toDateString(),
             'position' => 'Subdirector (S)',
@@ -159,6 +159,30 @@ class AuthoritySeeder extends Seeder
             'position' => 'Secretario',
             'type' => 'secretary',
             'organizational_unit_id' => '44',
+            'creator_id' => '98765432',
+            'created_at' => carbon::now(),
+            'updated_at' => carbon::now()
+        ]);
+//37 Departamento Gestión de abastecimiento y logistica
+        Authority::create([
+            'user_id' => '98989898',
+            'from' => carbon::now()->toDateString(),
+            'to' => carbon::now()->addYear()->toDateString(),
+            'position' => 'Jefe',
+            'type' => 'manager',
+            'organizational_unit_id' => '37',
+            'creator_id' => '98765432',
+            'created_at' => carbon::now(),
+            'updated_at' => carbon::now()
+        ]);
+       //40 Departamento Gestión finaciera
+        Authority::create([
+            'user_id' => '12121212',
+            'from' => carbon::now()->toDateString(),
+            'to' => carbon::now()->addYear()->toDateString(),
+            'position' => 'Jefe',
+            'type' => 'manager',
+            'organizational_unit_id' => '40',
             'creator_id' => '98765432',
             'created_at' => carbon::now(),
             'updated_at' => carbon::now()

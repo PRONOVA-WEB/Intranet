@@ -73,6 +73,14 @@
                 <i class="fas fa-file"></i> {{ $requestFormFile->name }} -
                 <i class="fas fa-calendar-day"></i> {{ $requestFormFile->created_at->format('d-m-Y H:i') }}</a>
             @endforeach
+
+            @if($requestForm->father)
+                @foreach($requestForm->father->requestFormFiles as $requestFormFile)
+                  <a href="{{ route('request_forms.show_file', $requestFormFile) }}" class="list-group-item list-group-item-action py-2 small" target="_blank">
+                    <i class="fas fa-file"></i> {{ $requestFormFile->name }} -
+                    <i class="fas fa-calendar-day"></i> {{ $requestFormFile->created_at->format('d-m-Y H:i') }}</a>
+                @endforeach
+            @endif
         </div>
     </div>
 </div>
@@ -125,7 +133,7 @@
 
 <br>
 
-@if($requestForm->type_form == 'Bienes y/o Servicios')
+@if($requestForm->type_form == 'bienes y/o servicios')
 
 
 

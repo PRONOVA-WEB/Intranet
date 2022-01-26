@@ -22,8 +22,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\File;
 use PDF;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Str;
 use App\User;
+use App\Mail\PurchaserNotification;
 
 class RequestFormController extends Controller {
 
@@ -53,11 +54,10 @@ class RequestFormController extends Controller {
         return view('request_form.my_forms', compact('my_requests', 'my_pending_requests'));
     }
 
-    public function pending_forms()
+    public function get_event_type_user()
     {
         $manager = Authority::getAuthorityFromDate(Auth::user()->organizationalUnit->id, Carbon::now(), 'manager');
         // return $manager;
-        $my_pending_forms_to_signs = $approved_forms_pending_to_sign = $new_budget_pending_to_sign = $my_forms_signed = collect();
 
         //superchief?
         $result = RequestForm::whereHas('eventRequestForms', function($q){
@@ -72,7 +72,14 @@ class RequestFormController extends Controller {
         elseif(Auth::user()->organizationalUnit->id == 37 && $manager->user_id == Auth::user()->id) $event_type = 'supply_event';
         else $event_type = null;
 
-        // return $event_type;
+        return $event_type;
+    }
+
+    public function pending_forms()
+    {
+        $my_pending_forms_to_signs = $approved_forms_pending_to_sign = $new_budget_pending_to_sign = $my_forms_signed = collect();
+
+        $event_type = $this->get_event_type_user();
 
         if($event_type){
             $prev_event_type = $event_type == 'supply_event' ? 'finance_event' : ($event_type == 'finance_event' ? 'pre_finance_event' : ($event_type == 'pre_finance_event' ? ['superior_leader_ship_event', 'leader_ship_event'] : ($event_type == 'superior_leader_ship_event' ? 'leader_ship_event' : null)));
@@ -130,10 +137,18 @@ class RequestFormController extends Controller {
 
     public function sign(RequestForm $requestForm, $eventType)
     {
-        $requestForm->load('itemRequestForms');
         $eventTitles = ['superior_leader_ship_event' => 'Dirección', 'leader_ship_event' => 'Jefatura', 'pre_finance_event' => 'Refrendación Presupuestaria', 'finance_event' => 'Finanzas', 'supply_event' => 'Abastecimiento', 'budget_event' => 'Nuevo presupuesto'];
+
+        $event_type_user = $this->get_event_type_user();
+        if($event_type_user != $eventType){
+            session()->flash('danger', 'Estimado Usuario/a: Ud. no tiene los permisos para la autorización como '.$eventTitles[$eventType].'.');
+            return redirect()->route('request_forms.my_forms');
+        }
+
+        $requestForm->load('itemRequestForms');
+
         $title = 'Formularios de Requerimiento - Autorización ' . $eventTitles[$eventType];
-        $manager              = Authority::getAuthorityFromDate($requestForm->userOrganizationalUnit->id, Carbon::now(), 'manager');
+        $manager              = Authority::getAuthorityFromDate(Auth::user()->organizationalUnit->id, Carbon::now(), 'manager');
         $position             = $manager->position;
         $organizationalUnit   = $manager->organizationalUnit->name;
         if(is_null($manager))
@@ -217,6 +232,15 @@ class RequestFormController extends Controller {
         }
         $requestForm->signatures_file_id = $signaturesFile->id;
         $requestForm->save();
+
+        //Envío de notificación para comprador.
+        if($requestForm->purchasers->first()->email){
+            Mail::to($requestForm->purchasers->first()->email)
+              ->cc(env('APP_RF_MAIL'))
+              ->send(new PurchaserNotification($requestForm));
+        }
+        //--------------------------------------
+
         session()->flash('success', $message);
         return redirect()->route('request_forms.pending_forms');
     }
@@ -224,5 +248,54 @@ class RequestFormController extends Controller {
     public function signedRequestFormPDF(RequestForm $requestForm)
     {
       return Storage::disk('gcs')->response($requestForm->signedRequestForm->signed_file);
+    }
+
+    public function create_provision(RequestForm $requestForm)
+    {
+        $requestForm->load('itemRequestForms');
+        $newRequestForm = $requestForm->replicate();
+        $newRequestForm->request_form_id = $requestForm->id;
+        $newRequestForm->request_user_id = Auth::id();
+        $newRequestForm->request_user_ou_id = Auth::user()->organizationalUnit->id;
+        $newRequestForm->estimated_expense = 0;
+        $newRequestForm->subtype = Str::contains($requestForm->subtype, 'bienes') ? 'bienes ejecución inmediata' : 'servicios ejecución inmediata';
+        $newRequestForm->sigfe = null;
+        $newRequestForm->status = 'pending';
+        $newRequestForm->signatures_file_id = null;
+        $newRequestForm->push();
+
+        $total = 0;
+        foreach($requestForm->getRelations() as $relation => $items){
+            foreach($items as $item){
+                unset($item->id);
+                $item->request_form_id = $newRequestForm->id;
+                $item->quantity = 1;
+                $item->expense = $this->totalValueWithTaxes($item->tax, $item->unit_value);
+                $total += $item->expense;
+                $newRequestForm->{$relation}()->create($item->toArray());
+            }
+        }
+
+        $newRequestForm->update(['estimated_expense' => $total]);
+
+        EventRequestform::createLeadershipEvent($newRequestForm);
+        EventRequestform::createPreFinanceEvent($newRequestForm);
+        EventRequestform::createFinanceEvent($newRequestForm);
+        EventRequestform::createSupplyEvent($newRequestForm);
+
+        session()->flash('info', 'Formulario de requerimiento N° '.$newRequestForm->id.' fue creado con éxito. <br>
+                                  Recuerde que es un formulario dependiente de ID N° '.$requestForm->id.'. <br>
+                                  Se solicita que modifique y guarde los cambios en los items para el nuevo gasto estimado de su formulario de requerimiento.');
+        return redirect()->route('request_forms.edit', $newRequestForm);
+    }
+
+    public function totalValueWithTaxes($tax, $value)
+    {
+        // Porcentaje retención boleta de honorarios según el año vigente
+        $withholding_tax = [2021 => 0.115, 2022 => 0.1225, 2023 => 0.13, 2024 => 0.1375, 2025 => 0.145, 2026 => 0.1525, 2027 => 0.16, 2028 => 0.17];
+
+        if($tax == 'iva') return $value * 1.19;
+        if($tax == 'bh') return isset($withholding_tax[date('Y')]) ? round($value / (1 - $withholding_tax[date('Y')])) : round($value / (1 - end($withholding_tax)));
+        return $value;
     }
 }

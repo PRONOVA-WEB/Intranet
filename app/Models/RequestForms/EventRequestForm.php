@@ -46,9 +46,32 @@ class EventRequestForm extends Model
       }
     }
 
+    public function getEventTypeValueAttribute(){
+        switch ($this->event_type) {
+            case "leader_ship_event":
+                return 'Firma Jefatura Directa';
+                break;
+            case "superior_leader_ship_event":
+                return 'Firma Jefatura Superior';
+                break;
+            case "pre_finance_event":
+                return 'Refrendación Presupuestaria';
+                break;
+            case "finance_event":
+                return 'Firma Finanzas';
+                break;
+            case "supply_event":
+                return 'Firma Abastecimiento';
+                break;
+            case "budget_event":
+                return 'Firma Solicitud Nuevo Presupuesto';
+                break;
+        }
+    }
+
     public static function createLeadershipEvent(RequestForm $requestForm){
         $event                      =   new EventRequestForm();
-        $event->ou_signer_user      =   $requestForm->request_user_ou_id;
+        $event->ou_signer_user      =   $requestForm->contract_manager_ou_id;
         $event->cardinal_number     =   1;
         $event->status              =   'pending';
         $event->event_type          =   'leader_ship_event';
@@ -57,7 +80,7 @@ class EventRequestForm extends Model
 
         if($requestForm->superior_chief == 1 && $requestForm->userOrganizationalUnit->level > 1){
             $event                      =   new EventRequestForm();
-            $event->ou_signer_user      =   $requestForm->userOrganizationalUnit->father->id;
+            $event->ou_signer_user      =   $requestForm->contractOrganizationalUnit->father->id;
             $event->cardinal_number     =   2;
             $event->status              =   'pending';
             $event->event_type          =   'superior_leader_ship_event';

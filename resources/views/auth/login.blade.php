@@ -15,6 +15,7 @@
     <link href="{{ asset('css/intranet.css') }}" rel="stylesheet">
     <script src="https://kit.fontawesome.com/7c4f606aba.js" SameSite="None" crossorigin="anonymous"></script>
     <link href="{{ asset('css/cu.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/show-password-toggle.min.css') }}">
     <style>
         .locallogin {
             background-color: #e7e7e7;
@@ -110,6 +111,9 @@
                                             <input id="password" type="password"
                                                 class="form-control form-control-user @error('password') is-invalid @enderror" name="password"
                                                 required autocomplete="current-password">
+                                            <button id="toggle-password" type="button" class="d-none"
+                                                aria-label="Show password as plain text. Warning: this will display your password on the screen.">
+                                            </button>
                                             @error('password')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -162,7 +166,7 @@
         integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous">
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
-
+    <script src="{{ asset('js/show-password-toggle.min.js') }}" async></script>
     <!-- Custom scripts-->
     <script type="text/javascript">
         @if ($errors->any())
