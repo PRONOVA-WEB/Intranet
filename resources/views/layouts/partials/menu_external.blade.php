@@ -4,9 +4,9 @@
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('home') }}">
         <div class="sidebar-brand-icon">
-            <img src="@settings(site.logo)" class="img-fluid">
+            <img src="{{ settings('site.logo') }}" class="img-fluid">
         </div>
-        <div class="sidebar-brand-text mx-3">@settings(site.title)</div>
+        <div class="sidebar-brand-text mx-3"> {{ settings('site.title') }}</div>
     </a>
 
     <!-- Divider -->

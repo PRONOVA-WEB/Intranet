@@ -47,6 +47,16 @@ class SettingSeeder extends Seeder
                 'details' => '',
                 'type' => 'image',
                 'order' => 4,
+            ),
+            3 =>
+            array(
+                'id' => 4,
+                'key' => 'site.external_description',
+                'display_name' => 'Descripción de módulo externo',
+                'value' => '',
+                'details' => 'Texto que se muestra en el home del sitio para externos',
+                'type' => 'rich_text_box',
+                'order' => 4,
             )
         ));
     }

@@ -57,8 +57,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ProductUnitSeeder::class);
         $this->call(ProductCategorySeeder::class);
         $this->call(ProductProgramSeeder::class);
-
-
+        $this->call(UserExternalSeeder::class);
 
         /* SEED PARA SETTINGS DEL SITIO  */
         $this->call(SettingSeeder::class);
