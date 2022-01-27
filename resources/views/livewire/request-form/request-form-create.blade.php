@@ -1,7 +1,7 @@
 <div>
     <div class="card">
         <div class="card-header">
-            </i> Formulario de Requerimiento</h6>
+            </i> Formulario de requerimiento</h6>
         </div>
         <div class="card-body">
             <div class="form-row">
@@ -126,6 +126,7 @@
     </div>
 
     <br>
+    <div wire:loading.remove>
     @if($isRFItems)
         @livewire('request-form.item.request-form-items', ['savedItems' => $requestForm->itemRequestForms ?? null])
     @else
@@ -142,7 +143,12 @@
             </button>
         </div>
     </div>
-
+    </div>
+    <div wire:loading>
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Procesando...</span>
+        </div>
+    </div>
     @if (count($errors) > 0 and ($errors->has('purchaseMechanism') or $errors->has('program') or $errors->has('justify') or $errors->has('items')))
       <div class="row justify-content-around mt-0">
          <div class="alert alert-danger col-6 mt-1">

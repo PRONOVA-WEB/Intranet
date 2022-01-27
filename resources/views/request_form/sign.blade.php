@@ -6,8 +6,8 @@
 @php($round_trips = ['round trip' => 'Ida y Vuelta', 'one-way only' => 'Solo Ida'])
 @php($baggages    = ['handbag' => 'Bolso de Mano', 'hand luggage' => 'Equipaje de Cabina', 'baggage' => 'Equipaje de Bodega', 'oversized baggage' => 'Equipaje Sobredimensionado'])
 <link href="{{ asset('css/bootstrap-select.min.css') }}" rel="stylesheet" type="text/css"/>
-<link href="{{ asset('css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" type="text/css"/>
-<link href="{{ asset('css/steps.css') }}" rel="stylesheet" type="text/css"/>
+{{-- <link href="{{ asset('css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" type="text/css"/>
+<link href="{{ asset('css/steps.css') }}" rel="stylesheet" type="text/css"/> --}}
 
 <h4 class="mb-3">{{$title}}</h4>
 

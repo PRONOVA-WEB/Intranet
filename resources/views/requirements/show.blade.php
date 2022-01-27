@@ -240,7 +240,6 @@ bottom: 5px;
 
        //preloader
        $('#category_id').on('change', function() {
-          $('#page-loader').fadeIn(500);
           document.forms['form'].submit();
        });
 

@@ -139,7 +139,7 @@ class Authorization extends Component
               if($mail_notification_ou_manager){
                 if($nextEvent->first()->event_type == 'pre_finance_event'){
                   Mail::to($emails)
-                    ->cc([env('APP_RF_MAIL'), 'yazmin.galleguillos@redsalud.gob.cl'])
+                    ->cc(env('APP_RF_MAIL'))
                     ->send(new RequestFormSignNotification($event->requestForm, $nextEvent->first()));
                 }
                 // elseif($nextEvent->event_type = 'supply_event'){

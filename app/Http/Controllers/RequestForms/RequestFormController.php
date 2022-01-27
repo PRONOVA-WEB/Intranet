@@ -147,7 +147,7 @@ class RequestFormController extends Controller {
 
         $requestForm->load('itemRequestForms');
 
-        $title = 'Formularios de Requerimiento - Autorización ' . $eventTitles[$eventType];
+        $title = 'Formularios de requerimiento - Autorización ' . $eventTitles[$eventType];
         $manager              = Authority::getAuthorityFromDate(Auth::user()->organizationalUnit->id, Carbon::now(), 'manager');
         $position             = $manager->position;
         $organizationalUnit   = $manager->organizationalUnit->name;

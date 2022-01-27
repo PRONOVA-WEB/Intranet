@@ -5,10 +5,10 @@
 @section('content')
 
 <link href="{{ asset('css/bootstrap-select.min.css') }}" rel="stylesheet" type="text/css"/>
-<link href="{{ asset('css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" type="text/css"/>
-<link href="{{ asset('css/steps.css') }}" rel="stylesheet" type="text/css"/>
+{{-- <link href="{{ asset('css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" type="text/css"/>
+<link href="{{ asset('css/steps.css') }}" rel="stylesheet" type="text/css"/> --}}
 
-<h3 class="mb-3">Formulario de Requerimiento.</h3>
+<h3 class="mb-3">Formulario de requerimiento.</h3>
 
 @include('request_form.nav')
 

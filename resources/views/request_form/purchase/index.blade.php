@@ -3,7 +3,7 @@
 @section('content')
 
 <link href="{{ asset('css/bootstrap-select.min.css') }}" rel="stylesheet" type="text/css"/>
-<h4 class="mb-3">Formularios de Requerimiento - Bandeja de Entrada Abastecimiento</h4>
+<h4 class="mb-3">Formularios de requerimiento - Bandeja de entrada abastecimiento</h4>
 
 @include('request_form.partials.nav')
 
@@ -11,7 +11,7 @@
 </div>
 <div class="col">
     <div class="table-responsive">
-        <h6><i class="fas fa-inbox"></i> Formularios En Espera</h6>
+        <h6><i class="fas fa-inbox"></i> Formularios en espera</h6>
         <table class="table table-sm table-striped table-bordered small">
             <thead>
                 <tr class="text-center">

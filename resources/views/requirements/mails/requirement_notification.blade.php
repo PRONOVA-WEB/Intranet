@@ -14,10 +14,6 @@
 
 @endsection
 
-@section('firmante', 'Servicio de Salud Iquique')
+@section('firmante', settings('site.organization'))
 
-@section('linea1', 'Anexo Minsal: 579502 - 579503')
-
-{{--@section('linea2', 'Teléfono: +56 (57) 409502 - 409503')--}}
-
-{{--@section('linea3', 'opartes.ssi@redsalud.gob.cl')--}}
+@section('linea1', settings('site.phone'))

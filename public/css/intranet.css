@@ -4,3 +4,6 @@ body {
 .table {
     color: #3a3b3d;
 }
+.error {
+    font-size: 1rem;
+}

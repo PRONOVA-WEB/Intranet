@@ -356,7 +356,7 @@ class RequestFormCreate extends Component
               $now = Carbon::now()->format('Y_m_d_H_i_s');
               $file_name = $now.'_req_file_'.$nFiles;
               $reqFile->name = $fileRequest->getClientOriginalName();
-              $reqFile->file = $fileRequest->storeAs('/ionline/request_forms/request_files', $file_name.'.'.$fileRequest->extension(), 'gcs');
+              $reqFile->file = $fileRequest->storeAs('/request_forms/request_files', $file_name.'.'.$fileRequest->extension(), 'gcs');
               $reqFile->request_form_id = $req->id;
               $reqFile->user_id = Auth()->user()->id;
               $reqFile->save();

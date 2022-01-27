@@ -7,9 +7,9 @@
             <div class="form-row">
                 <fieldset class="form-group col-2">
                     <label for="for_passengerType">Pasajero</label>
-                    <select wire:model="passengerType" name="passengerType" class="form-control" disabled>
+                    <select wire:model="passengerType" name="passengerType" class="form-control">
                         <option value="">Seleccione...</option>
-                        <option value="internal">SSI</option>
+                        <option value="internal">Interno</option>
                         <option value="external">Externo</option>
                     </select>
                 </fieldset>
