@@ -293,7 +293,7 @@
     @endcan
     <!-- Divider -->
     <hr class="sidebar-divider">
-    @role('god')
+    @role('superuser')
         <!-- Heading -->
         <div class="sidebar-heading">
             Configuración

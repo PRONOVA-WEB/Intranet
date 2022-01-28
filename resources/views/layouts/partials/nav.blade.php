@@ -335,14 +335,14 @@
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 
-                            @if(session()->has('god'))
-                                <a class="dropdown-item" href="{{ route('rrhh.users.switch', session('god')) }}">
+                            @if(session()->has('superuser'))
+                                <a class="dropdown-item" href="{{ route('rrhh.users.switch', session('superuser')) }}">
                                     <i class="fas fa-eye text-danger"></i> God Like
                                 </a>
                             @endif
 
 
-                            @role('god')
+                            @role('superuser')
                             <a class="dropdown-item"
                                href="{{ route('parameters.index') }}">
                                 <i class="fas fa-cog fa-fw"></i> Mantenedores

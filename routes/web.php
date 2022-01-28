@@ -709,6 +709,8 @@ Route::prefix('rrhh')->as('rrhh.')->group(function () {
         Route::get('autority/{ou_id?}', 'Rrhh\UserController@getAutorityFromOu')->name('get.autority.from.ou')->middleware('auth');
         Route::put('{user}/password', 'Rrhh\UserController@resetPassword')->name('password.reset')->middleware('auth');
         Route::get('{user}/switch', 'Rrhh\UserController@switch')->name('switch')->middleware('auth');
+        Route::get('/password', 'Rrhh\UserController@showPasswordForm')->name('show_form')->middleware('auth');
+        Route::put('/', 'Rrhh\UserController@updatePassword')->name('update_password')->middleware('auth');
         Route::get('directory', 'Rrhh\UserController@directory')->name('directory');
         Route::get('/', 'Rrhh\UserController@index')->name('index')->middleware('auth');
         Route::get('/create', 'Rrhh\UserController@create')->name('create')->middleware('auth');
@@ -1587,7 +1589,7 @@ Route::prefix('suitability')->as('suitability.')->middleware('auth')->group(func
 });
 
 //settings module
-Route::prefix('/settings')->as('settings.')->middleware(['auth', 'role:god'])->group(function () {
+Route::prefix('/settings')->as('settings.')->middleware(['auth', 'role:superuser'])->group(function () {
     Route::get('/', [SettingController::class, 'index'])->name('index');
     Route::get('/create', [SettingController::class, 'create'])->name('create');
     Route::post('/store', [SettingController::class, 'store'])->name('store');

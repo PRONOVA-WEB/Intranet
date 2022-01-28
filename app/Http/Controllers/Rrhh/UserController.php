@@ -252,13 +252,13 @@ class UserController extends Controller
 
 
     public function switch(User $user) {
-        if (session()->has('god')) {
+        if (session()->has('superuser')) {
             /* Clean session var */
-            session()->pull('god');
+            session()->pull('superuser');
         }
         else {
             /* set god session var = user_id */
-            session(['god' => Auth::id()]);
+            session(['superuser' => Auth::id()]);
         }
 
         Auth::login($user);
@@ -454,6 +454,16 @@ class UserController extends Controller
         session()->flash('success', 'El usuario '.$user->name.' ha sido eliminado');
 
         return redirect()->route('rrhh.users.service_requests.index');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showPasswordForm()
+    {
+        return view('rrhh.change_password');
     }
 
 

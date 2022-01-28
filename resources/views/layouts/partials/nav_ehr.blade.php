@@ -43,7 +43,7 @@
                         <span class="badge badge-pill badge-danger">Debug</span>
                     @endif
 
-                    @if(session()->has('god'))<i class="fas fa-eye text-danger"></i>@endif
+                    @if(session()->has('superuser'))<i class="fas fa-eye text-danger"></i>@endif
 
                     {{ Auth::user()->name }}
 
@@ -55,8 +55,8 @@
                     <a class="dropdown-item"
                         href="{{ route('password.edit') }}"><i class="fas fa-key fa-fw"></i> Cambiar Clave</a>
 
-                    @if(session()->has('god'))
-                        <a class="dropdown-item" href="{{ route('rrhh.users.switch', session('god')) }}">
+                    @if(session()->has('superuser'))
+                        <a class="dropdown-item" href="{{ route('rrhh.users.switch', session('superuser')) }}">
                             <i class="fas fa-eye text-danger"></i> God Like
                         </a>
                     @endif

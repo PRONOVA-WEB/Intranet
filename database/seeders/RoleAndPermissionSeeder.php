@@ -18,8 +18,9 @@ class RoleAndPermissionSeeder extends Seeder
         // Reset cached roles and permissions
         app()['cache']->forget('spatie.permission.cache');
 
-        Permission::create(['name' => 'be god']);
-        Permission::create(['name' => 'I play with madness']);
+        // Permission::create(['name' => 'be superuser']);
+        // Permission::create(['name' => 'I play with madness']);
+        Permission::create(['name' => 'be superuser']);
 
         // create permissions
         Permission::create(['name' => 'Users: must change password']);
@@ -53,21 +54,21 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'Drugs: manage courts']);
         Permission::create(['name' => 'Drugs: manage police units']);
         Permission::create(['name' => 'Drugs: delete destructions']);
-        Permission::create(['name' => 'Drugs: add results from ISP']);
+        //Permission::create(['name' => 'Drugs: add results from ISP']);
         Permission::create(['name' => 'Drugs: add protocols']);
 
 
-        Permission::create(['name' => 'Tickets: create']);
-        Permission::create(['name' => 'Tickets: manage']);
-        Permission::create(['name' => 'Tickets: TI']);
+        // Permission::create(['name' => 'Tickets: create']);
+        // Permission::create(['name' => 'Tickets: manage']);
+        // Permission::create(['name' => 'Tickets: TI']);
 
         Permission::create(['name' => 'Calendar: view']);
-        Permission::create(['name' => 'Calendar: aps']);
+        //Permission::create(['name' => 'Calendar: aps']);
 
-        Permission::create(['name' => 'Integrity: manage complaints']);
+        //Permission::create(['name' => 'Integrity: manage complaints']);
 
-        Permission::create(['name' => 'Indicators: view']);
-        Permission::create(['name' => 'Indicators: manager']);
+        // Permission::create(['name' => 'Indicators: view']);
+        // Permission::create(['name' => 'Indicators: manager']);
 
         Permission::create(['name' => 'Authorities: view', 'description' => 'Permite tener acceso al módulo de autoridades']);
         Permission::create(['name' => 'Authorities: create', 'description' => 'Permite crear una autoridad']);
@@ -153,7 +154,7 @@ class RoleAndPermissionSeeder extends Seeder
 
         // create roles and assign created permissions
         // GOD LIKE
-        $role = Role::create(['name' => 'god']);
+        $role = Role::create(['name' => 'superuser']);
         $role = Role::create(['name' => 'dev']);
         //$role->givePermissionTo(Permission::all());
 
@@ -168,7 +169,6 @@ class RoleAndPermissionSeeder extends Seeder
                                 'Drugs: manage courts',
                                 'Drugs: manage police units',
                                 'Drugs: delete destructions',
-                                'Drugs: add results from ISP',
                                 'Drugs: add protocols']);
 
         $role = Role::create(['name' => 'Drugs: receptionist']);
@@ -185,8 +185,7 @@ class RoleAndPermissionSeeder extends Seeder
         $role = Role::create(['name' => 'Drugs: basic']);
         $role->givePermissionTo(['Drugs: view receptions',
                                 'Drugs: destroy drugs',
-                                'Drugs: view reports',
-                                'Drugs: add results from ISP']);
+                                'Drugs: view reports']);
 
         $role = Role::create(['name' => 'RRHH: admin']);
         $role->givePermissionTo(['Users: create', 'Users: edit', 'Users: delete', 'Users: assign permission']);
@@ -194,8 +193,8 @@ class RoleAndPermissionSeeder extends Seeder
         $role = Role::create(['name' => 'Resources: admin']);
         $role->givePermissionTo(['Resources: create', 'Resources: edit', 'Resources: delete']);
 
-        $role = Role::create(['name' => 'Tickets: admin']);
-        $role->givePermissionTo(['Tickets: create', 'Tickets: manage','Tickets: TI']);
+        // $role = Role::create(['name' => 'Tickets: admin']);
+        // $role->givePermissionTo(['Tickets: create', 'Tickets: manage','Tickets: TI']);
 
         $role = Role::create(['name' => 'Replacement Staff: admin']);
         $role->givePermissionTo(['Replacement Staff: manage', 'Replacement Staff: list rrhh','Replacement Staff: assign request','Replacement Staff: create request']);
