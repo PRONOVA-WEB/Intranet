@@ -48,7 +48,7 @@ class AttachmentController extends Controller
             $attachment = new Attachment();
             $file_name = $var->id.'_'.$i;
             $attachment->fulfillment_id = $var->id;
-            $attachment->file = $file->storeAs('/service_request/fulfiments_attachment', $file_name.'.'.$file->extension(), 'public');
+            $attachment->file = $file->storeAs('/service_request/fulfiments_attachment', $file_name.'.'.$file->extension(), 'gcs');
             foreach ($request->name as $req) {
                 $attachment->name = $request->input('name.'.$key_file.'');
                 $attachment->save();

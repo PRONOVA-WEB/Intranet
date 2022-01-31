@@ -8,7 +8,7 @@
 
 <div class="row">
     <div class="col">
-        <h4 class="mb-3">Gestión de Solicitudes para aprobación: <small>{{ Auth::user()->organizationalUnit->name }}</small></h4>
+        <h4 class="mb-3">Gestión de solicitudes para aprobación: <small>{{ Auth::user()->organizationalUnit->name }}</small></h4>
     </div>
     <div class="col">
         <p>

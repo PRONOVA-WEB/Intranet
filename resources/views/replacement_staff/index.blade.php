@@ -8,7 +8,7 @@
 
 <div class="row">
     <div class="col-sm-5">
-        <h4 class="mb-3">Listado de RR.HH. para Reemplazo:</h4>
+        <h4 class="mb-3">Listado de candidados(STAFF):</h4>
     </div>
     <div class="col">
         <p>
@@ -53,8 +53,6 @@
           </div>
       </form>
   </div>
-</div>
-
 </div>
 
 <div class="col">

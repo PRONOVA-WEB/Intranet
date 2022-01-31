@@ -84,6 +84,7 @@ class RequestFormController extends Controller {
         if($event_type){
             $prev_event_type = $event_type == 'supply_event' ? 'finance_event' : ($event_type == 'finance_event' ? 'pre_finance_event' : ($event_type == 'pre_finance_event' ? ['superior_leader_ship_event', 'leader_ship_event'] : ($event_type == 'superior_leader_ship_event' ? 'leader_ship_event' : null)));
             // return $prev_event_type;
+
             $my_pending_forms_to_signs = RequestForm::where('status', 'pending')
                                                     ->whereHas('eventRequestForms', function($q) use ($event_type){
                                                         return $q->where('status', 'pending')->where('ou_signer_user', Auth::user()->organizationalUnit->id)->where('event_type', $event_type);
@@ -92,6 +93,7 @@ class RequestFormController extends Controller {
                                                             return is_array($prev_event_type) ? $f->whereIn('event_type', $prev_event_type)->where('status', 'pending') : $f->where('event_type', $prev_event_type)->where('status', 'pending');
                                                         });
                                                     })->get();
+
         }
 
         if($event_type == 'finance_event'){

@@ -70,7 +70,7 @@ class ReplacementStaffController extends Controller
         $now = Carbon::now()->format('Y_m_d_H_i_s');
         $file_name = $now.'_cv_'.$replacementStaff->run;
         $file = $request->file('cv_file');
-        $replacementStaff->cv_file = $file->storeAs('/replacement_staff/cv_docs/', $file_name.'.'.$file->extension(), 'public');
+        $replacementStaff->cv_file = $file->storeAs('/replacement_staff/cv_docs/', $file_name.'.'.$file->extension(), 'gcs');
         $replacementStaff->save();
 
         //SE GUARDA PERFIL OBLIGATORIO
@@ -120,7 +120,7 @@ class ReplacementStaffController extends Controller
             $now = Carbon::now()->format('Y_m_d_H_i_s');
             $file_name = $now.'_cv_'.$replacementStaff->run;
             $file = $request->file('cv_file');
-            $replacementStaff->cv_file = $file->storeAs('/replacement_staff/cv_docs/', $file_name.'.'.$file->extension(), 'public');
+            $replacementStaff->cv_file = $file->storeAs('/replacement_staff/cv_docs/', $file_name.'.'.$file->extension(), 'gcs');
             $replacementStaff->save();
         }
         else{

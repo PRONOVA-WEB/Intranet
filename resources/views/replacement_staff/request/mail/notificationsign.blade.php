@@ -28,7 +28,8 @@
 
   <br>
 
-  <p>Esto es un mensaje automatico de: {{ env('APP_NAME') }} -  {{ env('APP_SS') }}.</p>
+  <p>Esto es un mensaje automatico de: {{ settings('site.title') }} -  {{ settings('site.organization') }} .</p>
+
 
 
 

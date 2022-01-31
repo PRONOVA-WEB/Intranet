@@ -9,7 +9,7 @@
   <br>
 
   <p>A través del presente, se informa que se asignó formulario de requerimiento de compras
-    para gestión en {{ env('APP_NAME') }}, favor ingresar al módulo de <strong>Abastecimento</strong>
+    para gestión en {{ settings('site.organization') }}, favor ingresar al módulo de <strong>Abastecimento</strong>
     para iniciar compra.
   </p>
 
@@ -28,7 +28,7 @@
 
   <br>
 
-  <p>Esto es un mensaje automático de: {{ env('APP_NAME') }} -  {{ env('APP_SS') }}.</p>
+  <p>Esto es un mensaje automático de: {{ settings('site.title') }} -  {{ settings('site.organization') }}.</p>
 
 </div>
 

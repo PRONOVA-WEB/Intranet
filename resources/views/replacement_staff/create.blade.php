@@ -31,15 +31,15 @@
     <div class="form-row">
         <fieldset class="form-group col-3">
             <label for="for_name">Nombres</label>
-            <input type="text" class="form-control" name="name" id="for_name" value="{{ $userexternal->name }}" readonly>
+            <input type="text" class="form-control" name="name" id="for_name" value="{{ $userexternal->name }}" >
         </fieldset>
         <fieldset class="form-group col-3">
             <label for="for_name">Apellido Paterno</label>
-            <input type="text" class="form-control" name="fathers_family" id="for_fathers_family" value="{{ $userexternal->fathers_family }}" readonly>
+            <input type="text" class="form-control" name="fathers_family" id="for_fathers_family" value="{{ $userexternal->fathers_family }}" >
         </fieldset>
         <fieldset class="form-group col-3">
             <label for="for_name">Apellido Materno</label>
-            <input type="text" class="form-control" name="mothers_family" id="for_mothers_family" value="{{ $userexternal->mothers_family }}" readonly>
+            <input type="text" class="form-control" name="mothers_family" id="for_mothers_family" value="{{ $userexternal->mothers_family }}" >
         </fieldset>
         <fieldset class="form-group col-3">
             <label for="for_gender" >Género</label>
@@ -97,7 +97,7 @@
     <hr>
     <h5>Perfil Profesional</h5>
     <br>
-    
+
     @livewire('replacement-staff.profile')
 
     <button type="submit" class="btn btn-primary float-right"><i class="fas fa-save"></i> Guardar</button>
