@@ -467,4 +467,9 @@ class UserController extends Controller
     }
 
 
+    public function drugs()
+    {
+        $users = User::permission('Drugs')->get();
+        return view('drugs.users',compact('users'));
+    }
 }
