@@ -3,7 +3,7 @@
 @section('title', 'Agregar Autoridad')
 
 @section('content')
-<h3 class="mb-3">Agregar Autoridad del {{ $ouTopLevel->establishment->name }}</h3>
+<h3 class="mb-3">Agregar autoridad del {{ $ouTopLevel->establishment->name }}</h3>
 
 @can('Authorities: create')
 <form method="POST" class="form-horizontal" action="{{ route('rrhh.authorities.store') }}">
@@ -12,10 +12,10 @@
     <div class="form-row">
         <fieldset class="form-group col">
             <label for="for_organizational_unit_id">Unidad Organizacional*</label>
-            <select name="organizational_unit_id" 
-                id="for_organizational_unit_id" 
-                class="form-control" 
-                style="font-family:monospace; font-size: 15px;" 
+            <select name="organizational_unit_id"
+                id="for_organizational_unit_id"
+                class="form-control"
+                style="font-family:monospace; font-size: 15px;"
                 required>
                 <option value="{{ $ouTopLevel->id }}">{{ $ouTopLevel->name }}</option>
                 @foreach($ouTopLevel->childs as $child_level_1)
@@ -41,7 +41,7 @@
     <div class="form-row">
         <fieldset class="form-group col-6">
             <label for="for_user_id">Funcionario*</label>
-            @livewire('search-select-user') 
+            @livewire('search-select-user')
         </fieldset>
 
         <fieldset class="form-group col">
