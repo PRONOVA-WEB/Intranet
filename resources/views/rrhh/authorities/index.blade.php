@@ -30,7 +30,7 @@
                 @foreach($calendar as $item)
                     <div class="dia_calendario small p-2 text-center" {!! ($today->format('Y-m-d') == $item['date'])?'style="border: 2px solid black;"':'' !!}>
 
-                        {{ $item['date'] }}
+                        {{ \Carbon\Carbon::parse($item['date'])->format('d-m-Y') }}
 
                         @if($item['manager'])
                             <hr class="mt-1 mb-1" >
@@ -89,7 +89,7 @@
         @endcan
 
         <div class="row">
-            
+
             <div class="col-12">
                 <table class="table">
                     <thead>
