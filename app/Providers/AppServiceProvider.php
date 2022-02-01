@@ -27,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        setlocale(LC_ALL, 'es_MX', 'es', 'ES', 'es_MX.utf8');
         Blade::directive('active', function ($route) {
             //$route = array('home','login');
             if (is_array($route)) {

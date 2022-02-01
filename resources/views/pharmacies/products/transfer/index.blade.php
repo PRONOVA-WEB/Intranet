@@ -136,7 +136,7 @@
 			<label for="to">Destino</label>
 			<select name="to" class="form-control selectpicker" data-live-search="true" required="">
 				@foreach ($establishments as $key => $establishment)
-				<option value="{{$establishment->id}}" data-content="{{$establishment->name}}" @if($key == 0) disabled @endif></option>
+				<option value="{{$establishment->id}}" data-content="{{$establishment->name}}"></option>
 				@endforeach
 			</select>
 		</fieldset>

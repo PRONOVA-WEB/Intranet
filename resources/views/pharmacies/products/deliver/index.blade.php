@@ -6,9 +6,9 @@
 
 @include('pharmacies.nav')
 
-<h3>Listado de Entregas 
+<h3>Listado de Entregas
 	@canany(['Pharmacy: transfer view ortesis'])
-	por 
+	por
 	<form method="GET" action="{{route('pharmacies.products.deliver.index')}}" class="d-inline">
 	<select name="filter" onchange="this.form.submit()" class="selectpicker establishment" data-live-search="true" data-width="fit" data-style="btn btn-link">
 		<option value=" ">TODOS</option>
@@ -20,16 +20,12 @@
 	@endcan
 </h3>
 <div class="mb-3">
-	@cannot(['Pharmacy: transfer view ortesis'])
+	{{-- @cannot(['Pharmacy: transfer view ortesis']) --}}
 	<a class="btn btn-primary"
 		href="{{ route('pharmacies.products.deliver.create') }}">
 		<i class="fas fa-dolly"></i> Nueva entrega</a>
-	
-	<button type="button" class="btn btn-outline-success" href="" onclick="tableToExcel('tabla_stock', 'Listado de stock')">
-		Descargar <i class="fas fa-download"></i>
-	</button>
-	@endcan
-	
+	{{-- @endcan --}}
+
 </div>
 @cannot(['Pharmacy: transfer view ortesis'])
 <div class="row">
@@ -69,7 +65,7 @@
 @endcan
 
 <h3>Entregas pendientes</h3>
-<p><button type="button" class="btn btn-outline-success" href="" onclick="tableToExcel('tabla_pending_deliveries', 'Entregas pendientes')">
+<p><button type="button" class="btn btn-outline-success" href="" onclick="$('#tabla_pending_deliveries').tblToExcel();">
 		Descargar <i class="fas fa-download"></i>
 	</button></p>
 <div class="table-responsive">
@@ -188,7 +184,7 @@
 {{ $pending_deliveries->appends(Request::input())->links() }}
 
 <h3>Entregas confirmadas</h3>
-<p><button type="button" class="btn btn-outline-success" href="" onclick="tableToExcel('tabla_confirmed_deliveries', 'Entregas confirmadas')">
+<p><button type="button" class="btn btn-outline-success" href="" onclick="$('#tabla_confirmed_deliveries').tblToExcel();">
 		Descargar <i class="fas fa-download"></i>
 							</button></p>
 <div class="table-responsive">
@@ -208,7 +204,7 @@
 				<th scope="col" align="left">Folio</th>
 				<th scope="col" align="left">Observaciones</th>
 				@canany(['Pharmacy: transfer view ortesis']) <th scope="col" align="left">Acciones</th> @endcan
-			</tr> 
+			</tr>
 		</thead>
 		<tbody>
 			@forelse($confirmed_deliveries as $delivery)
@@ -248,19 +244,7 @@
 @endsection
 
 @section('custom_js')
-<script type="text/javascript">
-	var tableToExcel = (function() {
-	    var uri = 'data:application/vnd.ms-excel;base64,'
-	    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta http-equiv="Content-Type" content="text/html;charset=utf-8"></head><body><table>{table}</table></body></html>'
-	    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
-	    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
-	    return function(table, name) {
-	    if (!table.nodeType) table = document.getElementById(table)
-	    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
-	    window.location.href = uri + base64(format(template, ctx))
-	    }
-	})()
-</script>
+<script src="{{ asset('js/jquery.tableToExcel.js') }}"></script>
 <script>
 	$(document).ready(function() {
 

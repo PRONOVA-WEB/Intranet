@@ -24,7 +24,7 @@
     </li>
     @endcan
 
-    @canany(['Pharmacy: transfer'])
+    {{-- @canany(['Pharmacy: transfer'])
     <li class="nav-item">
         <a class="nav-link"
             href="{{ route('pharmacies.products.transfer.index') }}">
@@ -38,7 +38,7 @@
             href="{{ route('pharmacies.products.deliver.index') }}">
             <i class="fas fa-dolly"></i> Entregas Ortesis</a>
     </li>
-    @endcan
+    @endcan --}}
 
     @canany(['Pharmacy: reports'])
     <li class="nav-item dropdown ">
