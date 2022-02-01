@@ -62,81 +62,61 @@
                         @error('purchaseType') <span class="error text-danger">{{ $message }}</span> @enderror
                     </fieldset>
 
-                    <fieldset class="form-group col-sm">
-                        <label>Unidad de Compra:</label><br>
-                        <select wire:model.defer="purchaseUnit" wire:click="resetError" name="purchaseUnit"
-                            class="form-control form-control-sm" required>
-                            <option value="">Seleccione...</option>
-                            @foreach ($lstPurchaseUnit as $unit)
-                                <option value="{{ $unit->id }}">{{ $unit->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('purchaseUnit') <span class="error text-danger">{{ $message }}</span> @enderror
-                    </fieldset>
+              <fieldset class="form-group col-sm">
+                  <label>Unidad de Compra:</label><br>
+                  <select wire:model.defer="purchaseUnit" wire:click="resetError" name="purchaseUnit" class="form-control form-control-sm" required>
+                      <option value="">Seleccione...</option>
+                        @foreach($lstPurchaseUnit as $unit)
+                          <option value="{{$unit->id}}">{{$unit->name}}</option>
+                        @endforeach
+                  </select>
+                  @error('purchaseUnit') <span class="error text-danger">{{ $message }}</span> @enderror
+              </fieldset>
+          </div>
+          @endif
+
+          @if($eventType=='budget_event')
+          <div class="form-row">
+              <fieldset class="form-group col-sm">
+                  <label>Presupuesto actual:</label><br>
+                  <input wire:model="estimated_expense" name="estimated_expense" class="form-control form-control-sm text-right" type="text" readonly>
+                  @error('estimated_expense') <span class="error text-danger">{{ $message }}</span> @enderror
+              </fieldset>
+
+              <fieldset class="form-group col-sm">
+                  <label>Presupuesto nuevo:</label><br>
+                  <input wire:model="purchaser_amount" name="purchaser_amount" class="form-control form-control-sm text-right" type="text" readonly>
+                  @error('purchaser_amount') <span class="error text-danger">{{ $message }}</span> @enderror
+              </fieldset>
+          </div>
+          @endif
+
+          <div class="form-row">
+              <fieldset class="form-group col-sm">
+                  <label for="for_comment">Observación:</label>
+                  <textarea wire:model="comment" wire:click="resetError" name="comment" class="form-control form-control-sm" rows="3"></textarea>
+                  @error('comment') <span class="error text-danger">{{ $message }}</span> @enderror
+              </fieldset>
+          </div>
+
+          <div class="row justify-content-md-end mt-0">
+              @if($eventType=='finance_event')
+                <div class="col-2">
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#exampleModal">
+                        Autorizar
+                    </button>
                 </div>
-            @endif
-
-            @if ($eventType == 'budget_event')
-                <div class="form-row">
-                    <fieldset class="form-group col-sm">
-                        <label>Presupuesto actual:</label><br>
-                        <input wire:model="estimated_expense" name="estimated_expense"
-                            class="form-control form-control-sm text-right" type="text" readonly>
-                        @error('estimated_expense') <span class="error text-danger">{{ $message }}</span>
-                        @enderror
-                    </fieldset>
-
-                    <fieldset class="form-group col-sm">
-                        <label>Presupuesto nuevo:</label><br>
-                        <input wire:model="purchaser_amount" name="purchaser_amount"
-                            class="form-control form-control-sm text-right" type="text" readonly>
-                        @error('purchaser_amount') <span class="error text-danger">{{ $message }}</span> @enderror
-                    </fieldset>
-                </div>
-            @endif
-
-            <div class="form-row">
-                <fieldset class="form-group col-sm">
-                    <label for="forRejectedComment">Comentario de Rechazo:</label>
-                    <textarea wire:model="rejectedComment" wire:click="resetError" name="rejectedComment"
-                        class="form-control form-control-sm" rows="3"></textarea>
-                    @error('rejectedComment') <span class="error text-danger">{{ $message }}</span> @enderror
-                </fieldset>
-            </div>
-
-            <div class="row justify-content-md-end mt-0">
-                @if ($eventType == 'finance_event')
-                    <div class="col-2">
-                        <a href="{{ route('request_forms.create_form_document', $requestForm) }}"
-                            class="btn btn-outline-secondary btn-sm float-right" title="Formulario" target="_blank">
-                            <i class="fas fa-file-alt"></i>
-                        </a>
-                    </div>
-                    <div class="col-2">
-                        {{-- modal firmador --}}
-                        @php$idModelModal = $requestForm->id;
-                            $routePdfSignModal = "/request_forms/create_form_document/$idModelModal/";
-                            $routeCallbackSignModal = 'request_forms.callbackSign';
-                        @endphp
-
-                        @include('documents.signatures.partials.sign_file')
-
-                        <button type="button" data-toggle="modal" class="btn btn-primary btn-sm float-right"
-                            title="Firma Digital" data-target="#signPdfModal{{ $idModelModal }}" title="Firmar">
-                            Firmar Form. <i class="fas fa-signature"></i>
-                        </button>
-                    </div>
-                @else
-                    <div class="col-2">
-                        <button type="button" wire:click="acceptRequestForm"
-                            class="btn btn-primary btn-sm float-right">Autorizar</button>
-                    </div>
-                @endif
-                <div class="col-1">
-                    <button type="button" wire:click="rejectRequestForm"
-                        class="btn btn-secondary btn-sm float-right">Rechazar</button>
-                </div>
-            </div>
-        </div>
-    </div>
+                @include('request_form.partials.modals.finance_sign')
+              @else
+              <div class="col-2">
+                  <button type="button" wire:click="acceptRequestForm" class="btn btn-primary btn-sm float-right">Autorizar</button>
+              </div>
+              @endif
+              <div class="col-1">
+                  <button type="button" wire:click="rejectRequestForm" class="btn btn-secondary btn-sm float-right">Rechazar</button>
+              </div>
+          </div>
+      </div>
+  </div>
 </div>

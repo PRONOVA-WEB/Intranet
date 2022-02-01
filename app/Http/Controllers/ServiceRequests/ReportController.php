@@ -496,7 +496,6 @@ class ReportController extends Controller
 				$pdf->loadView('service_requests.report_resolution_hsa', compact('ServiceRequest'));
 			}
 			else {
-        dd('entro aca 4');
 				$pdf->loadView('service_requests.report_resolution_hsa', compact('ServiceRequest'));
 			}
 		}

@@ -40,8 +40,12 @@ class AttachmentController extends Controller
     public function store(Request $request, Fulfillment $var)
     {
         //
-        $files = $request->file('file');
+        if ($request->file('file') == null) {
+          session()->flash('warning', 'No se ha adjuntado correctamente el archivo.');
+          return redirect()->back();
+        }
 
+        $files = $request->file('file');
         $i = 1;
 
         foreach ($files as $key_file => $file) {

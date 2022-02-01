@@ -170,12 +170,25 @@
                 @endif
             @endif
 
+            @if($requestForm->purchase_mechanism_id == 2)
+                <form method="POST" class="form-horizontal" action="{{ route('request_forms.supply.create_convenio_marco', $requestForm) }}" enctype="multipart/form-data">
+            @endif
+
+            @if($requestForm->purchase_mechanism_id == 3)
+                <form method="POST" class="form-horizontal" action="{{ route('request_forms.supply.create_direct_deal', $requestForm) }}" enctype="multipart/form-data">s
+            @endif
+
             @if($requestForm->purchase_mechanism_id == 4)
                 @if($requestForm->father) <!-- OC ejecución inmediata desde licitacion con ejecucion en el tiempo -->
                 <form method="POST" class="form-horizontal" action="{{ route('request_forms.supply.create_oc', $requestForm) }}" enctype="multipart/form-data">
                 @else
                 <form method="POST" class="form-horizontal" action="{{ route('request_forms.supply.create_tender', $requestForm) }}" enctype="multipart/form-data">
                 @endif
+            @endif
+
+            <!-- compra ágil -->
+            @if($requestForm->purchase_mechanism_id == 5)
+                <form method="POST" class="form-horizontal" action="{{ route('request_forms.supply.create_oc', $requestForm) }}" enctype="multipart/form-data">
             @endif
 
             @csrf
@@ -277,10 +290,9 @@
     @if($requestForm->purchase_type_id == 3)
     @include('request_form.purchase.partials.fund_to_be_settled_form')
     @endif
-
 @endif
 
-<!-- Trato Directo -->
+<!-- Convenio Marco -->
 @if($requestForm->purchase_mechanism_id == 2)
     @include('request_form.purchase.partials.convenio_marco_form')
 @endif
@@ -295,8 +307,8 @@
     @include('request_form.purchase.partials.tender_form')
 @endif
 
-<!-- COMPRA INMEDIATA -->
-@if($requestForm->purchase_mechanism_id == 4 && $requestForm->father)
+<!-- COMPRA INMEDIATA A PARTIR DE LICITACIÓN PÚBLICA o COMPRA ÁGIL -->
+@if(($requestForm->purchase_mechanism_id == 4 && $requestForm->father) || $requestForm->purchase_mechanism_id == 5)
     @include('request_form.purchase.partials.immediate_purchase_form')
 @endif
 
@@ -557,6 +569,36 @@ function calculateAmount(checked = false) {
 
     $(checked ? '#for_amount' : '#total_amount').val(total);
 }
+
+// Calcular fecha de entrega a partir de la suma de dias habiles o corridos con la fecha de la OC aceptada
+$('#for_po_accepted_date,#for_days_delivery,#for_days_type_delivery').on('change keyup',function(){
+    var fechaAceptada = $('#for_po_accepted_date').val();
+    var dias = $('#for_days_delivery').val();
+    var tipo = $('#for_days_type_delivery option:selected').val();
+
+    if(fechaAceptada && dias && tipo){
+        var fechaEstimada = new Date(fechaAceptada + "T00:00:00");
+        if(tipo == 'corridos'){
+            fechaEstimada.setDate(fechaEstimada.getDate() + parseInt(dias));
+        }else{ // dias hábiles
+            while(parseInt(dias)){
+                fechaEstimada.setDate(fechaEstimada.getDate() + 1);
+                switch(fechaEstimada.getDay()){
+                    case 0: case 6: break; // domingo y sábado no se contabilizan
+                    default: dias--;
+                }
+            }
+        }
+        $('#for_estimated_delivery_date').val(formatDateInput(fechaEstimada));
+    }else{
+        $('#for_estimated_delivery_date').val("");
+    }
+});
+
+function formatDateInput(date) {
+    return date.getFullYear() + "-" + ("0"+(date.getMonth()+1)).slice(-2) +"-"+("0" + date.getDate()).slice(-2);
+}
+
 </script>
 
 @endsection
