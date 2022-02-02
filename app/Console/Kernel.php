@@ -13,8 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\CleanTempDirectory::class,
-        Commands\ChangeStaffStatus::class,
+        // Commands\CleanTempDirectory::class,
+        // Commands\ChangeStaffStatus::class,
     ];
 
     /**
@@ -25,8 +25,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('clean:tempDir')->daily();
-        $schedule->command('change:staffStatus')->daily();
+        // $schedule->command('clean:tempDir')->daily();
+        // $schedule->command('change:staffStatus')->daily();
+        $schedule->command('backup:clean')->daily()->at('01:00');
+        $schedule->command('backup:run')->daily()->at('01:30');
     }
 
     /**
