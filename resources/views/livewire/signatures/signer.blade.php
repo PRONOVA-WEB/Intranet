@@ -1,7 +1,7 @@
 <div class="form-row">
     <fieldset class="form-group col-6">
         <label>Firmante - Unidad Organizacional</label>
-        <select name="ou_id_signer" id="for_ou_id_signer" wire:model="organizationalUnit" class="form-control " data-live-search="true" data-size="5">
+        <select name="ou_id_signer" id="for_ou_id_signer" wire:model="organizationalUnit" class="form-control " data-live-search="true" data-size="5" required>
             <option value=''></option>
 
             @foreach($ouRoots as $ouRoot)

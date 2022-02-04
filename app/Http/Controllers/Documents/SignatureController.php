@@ -101,6 +101,12 @@ class SignatureController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        $request->validate([
+            'user_signer' => 'bail|required'
+        ],[
+            'user_signer.required' => 'Debe asignar un firmante.'
+        ]);
+
         DB::beginTransaction();
 
         try {
@@ -156,7 +162,7 @@ class SignatureController extends Controller
                 $signaturesFlow->save();
             }
 
-            if ($request->has('ou_id_visator')) {
+            if ($request->has('ou_id_visator') && count((array)$request->ou_id_visator) > 0 ) {
                 foreach ($request->ou_id_visator as $key => $ou_id_visator) {
                     $signaturesFlow = new SignaturesFlow();
                     $signaturesFlow->signatures_file_id = $signaturesFileDocumentId;

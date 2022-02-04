@@ -150,6 +150,9 @@
 @section('custom_js')
 
     <script type="text/javascript">
+        $( document ).ready(function() {
+            $('#for_ou_id_signer').val('');
+        });
         function disableButton(form) {
             form.submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Creando...';
             form.submitBtn.disabled = true;

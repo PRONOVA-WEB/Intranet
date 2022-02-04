@@ -38,7 +38,7 @@
                 </a>
                 @if (session()->has('superuser'))
                     <a class="dropdown-item" href="{{ route('rrhh.users.switch', session('superuser')) }}">
-                        <i class="fas fa-eye text-danger"></i> God Like
+                        <i class="fas fa-eye text-danger"></i> Volver a superuser
                     </a>
                 @endif
 
