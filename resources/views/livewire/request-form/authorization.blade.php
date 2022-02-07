@@ -75,7 +75,7 @@
           </div>
           @endif
 
-          @if($eventType=='budget_event')
+          @if(in_array($eventType, ['pre_budget_event', 'budget_event']))
           <div class="form-row">
               <fieldset class="form-group col-sm">
                   <label>Presupuesto actual:</label><br>
@@ -85,8 +85,8 @@
 
               <fieldset class="form-group col-sm">
                   <label>Presupuesto nuevo:</label><br>
-                  <input wire:model="purchaser_amount" name="purchaser_amount" class="form-control form-control-sm text-right" type="text" readonly>
-                  @error('purchaser_amount') <span class="error text-danger">{{ $message }}</span> @enderror
+                  <input wire:model="new_estimated_expense" name="new_estimated_expense" class="form-control form-control-sm text-right" type="text" readonly>
+                  @error('new_estimated_expense') <span class="error text-danger">{{ $message }}</span> @enderror
               </fieldset>
           </div>
           @endif
@@ -100,7 +100,7 @@
           </div>
 
           <div class="row justify-content-md-end mt-0">
-              @if($eventType=='finance_event')
+                @if(in_array($eventType, ['finance_event', 'budget_event']))
                 <div class="col-2">
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#exampleModal">

@@ -21,80 +21,22 @@
         @endif
     </h3>
 
+                <fieldset class="form-group col-12">
 
+                    <!-- <label for="asignarCategoria" class="sr-only">Asignar categoría</label>
+                    <input type="text" readonly class="form-control-plaintext" id="asignarCategoria" value="Asignar categoría:"> -->
 
-
-
-
-
-
-
-
-
-
-
-
-
-    <!-- <div class="row">
-    <div class="col-12">
-
-                    <label for="asignarCategoria" class="sr-only">Asignar categoría</label>
-                    <input type="text" readonly class="form-control-plaintext" id="asignarCategoria" value="Asignar categoría:">
-                    <label for="category_id" class="sr-only">Categorias</label>
-                    <select name="category_id" id="category_id" class="selectpicker input-sm"
+                    <label for="category_id">Asignar categoría</label>
+                    <select name="category_id[]" id="category_id" class="form-control selectpicker"
                         multiple title="Elige tus categorías" >
-                        @foreach ($categories as $key => $category)
-                        <option value="{{ $category->id }}"
-                        data-content="<span class='badge badge-primary' style='background-color: #{{ $category->color }};'>{{ $category->name }}</span>">
-
-
-
-                        </option>
+                        @foreach($categories as $key => $category)
+                            <option value="{{$category->id}}"
+                            data-content="<span class='badge badge-primary' style='background-color: #{{$category->color}};'>{{$category->name}}</span>">
+                            </option>
                         @endforeach
-                        </select>
+                    </select>
 
-
-    </div>
-
-    </div>
-
-    <hr> -->
-
-    <div class="form-row">
-        @if ($parte->id != 0)
-            <div class="col-8">
-                @if ($parte->files->first() != null)
-                    @foreach ($parte->files as $file)
-                        <object type="application/pdf" data="{{ route('documents.partes.download', $file->id) }}"
-                            width="100%" height="700">
-                        </object>
-                    @endforeach
-                @endif
-            </div>
-        @endif
-        <div class=@if ($parte->id != 0) "col-4" @else "col-12" @endif>
-            <form method="POST" class="form-horizontal" action="{{ route('requirements.store') }}"
-                enctype="multipart/form-data">
-                @csrf
-                @method('POST')
-
-                <input type="hidden" class="form-control" id="for_parte_id" name="parte_id" value="{{ $parte->id }}">
-
-                <div class="form-row">
-
-
-
-                    <div class="col-12">
-
-                        <label for="asignarCategoria" class="sr-only">Asignar categoría</label>
-                        <input type="text" readonly class="form-control-plaintext" id="asignarCategoria"
-                            value="Asignar categoría:">
-                        <label for="category_id" class="sr-only">Categorias</label>
-                        <select name="category_id[]" id="category_id" class="selectpicker input-sm" multiple
-                            title="Elige tus categorías">
-                            @foreach ($categories as $key => $category)
-                                <option value="{{ $category->id }}"
-                                    data-content="<span class='badge badge-primary' style='background-color: #{{ $category->color }};'>{{ $category->name }}</span>">
+                </fieldset>
 
 
                                 </option>
@@ -168,19 +110,17 @@
                         </div>
                     </fieldset>
 
+            </div>
 
-
-                </div>
-
-                <table id="tabla_funcionarios" class="table table-striped table-sm" style="display: none">
-                    <thead>
-                        <tr>
-                            <th>Unidad Organizacional</th>
-                            <th>Destinatario</th>
-                            <th>En copia</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+            <table id="tabla_funcionarios" class="table table-striped table-sm" style="display: none">
+                <thead>
+                    <tr>
+                        <th>Unidad Organizacional</th>
+                        <th>Destinatario</th>
+                        <th>En copia</th>
+                    </tr>
+                </thead>
+                <tbody>
 
                     </tbody>
                 </table>
@@ -245,7 +185,6 @@
             </form>
         </div>
     </div>
-
 
 
 

@@ -14,6 +14,10 @@
             <table class="table table-sm table-bordered">
               <tbody class="small">
                   <tr>
+                      <th class="table-active" colspan="2" scope="row">Folio</th>
+                      <td>{{ $requestForm->folio }}</td>
+                  </tr>
+                  <tr>
                       <th class="table-active" colspan="2" scope="row">Fecha de Creación</th>
                       <td>{{ $requestForm->created_at->format('d-m-Y H:i') }}</td>
                   </tr>
@@ -32,7 +36,7 @@
                   <tr>
                       <th class="table-active" rowspan="2" scope="row">Gestor</th>
                       <th class="table-active" scope="row">Usuario</th>
-                      <td>{{ $requestForm->user->getFullNameAttribute()}}</td>
+                      <td>{{ $requestForm->user->FullName }}</td>
                   </tr>
                   <tr>
                       <th class="table-active" scope="row">Unidad Organizacional</th>
@@ -41,7 +45,7 @@
                   <tr>
                       <th class="table-active" rowspan="2" scope="row">Administrador de Contrato</th>
                       <th class="table-active" scope="row">Usuario</th>
-                      <td>{{ $requestForm->contractManager->name }}</td>
+                      <td>{{ $requestForm->contractManager->FullName }}</td>
                   </tr>
                   <tr>
                       <th class="table-active" scope="row">Unidad Organizacional</th>
@@ -249,18 +253,41 @@
       </tfoot>
     </table>
 </div>
+
 @endif
 
-<div class="card">
-  <div class="card-header">
-      <i class="fas fa-comment"></i> Observaciones
-  </div>
-  <div class="card-body">
-    <ul class="list-group">
+@if($requestForm->messages->count() > 0)
+    <!-- <div class="row bg-light"> -->
+    <div class="col bg-light">
+        <br>
+        <h6><i class="fas fa-comment"></i> Mensajes</h6>
+        @foreach($requestForm->messages->sortByDesc('created_at') as $message)
+            <div class="card" id="message">
+                <div class="card-header col-sm">
+                    <i class="fas fa-user"></i> {{ $message->user->FullName }}
 
-    </ul>
-  </div>
-</div>
+                </div>
+                <div class="card-body">
+                    <i class="fas fa-calendar"></i> {{ $message->created_at->format('d-m-Y H:i:s') }}
+                    <p class="font-italic"><i class="fas fa-comment"></i> "{{ $message->message }}"</p>
+                </div>
+            </div>
+            <br>
+        @endforeach
+    </div>
+    <!-- </div> -->
+@endif
+<br>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#exampleModal-{{ $requestForm->id }}">
+    <i class="fas fa-comment"></i> Agregar Mensaje
+</button>
+
+@include('request_form.partials.modals.create_message', [
+  'from' => 'show'
+])
+
+<br><br>
 
 @endsection
 @section('custom_js')

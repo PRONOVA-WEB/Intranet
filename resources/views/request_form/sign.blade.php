@@ -20,6 +20,10 @@
         <table class="table table-sm table-bordered">
             <tbody class="small">
                 <tr>
+                    <th class="table-active" colspan="2" scope="row">Folio</th>
+                    <td>{{ $requestForm->folio }}</td>
+                </tr>
+                <tr>
                     <th class="table-active" colspan="2" scope="row">Fecha de Creación</th>
                     <td>{{ $requestForm->created_at->format('d-m-Y H:i') }}</td>
                 </tr>
@@ -31,6 +35,12 @@
                     <th class="table-active" colspan="2" style="width: 33%">Gasto Estimado</th>
                     <td>${{ number_format($requestForm->estimated_expense,0,",",".") }}</td>
                 </tr>
+                @if($requestForm->has_increased_expense)
+                <tr>
+                    <th class="table-active" colspan="2" style="width: 33%">Nuevo presupuesto</th>
+                    <td>${{ number_format($requestForm->new_estimated_expense,0,",",".") }}</td>
+                </tr>
+                @endif
                 <tr>
                     <th class="table-active" colspan="2" scope="row">Tipo de moneda</th>
                     <td>{{ $requestForm->TypeOfCurrencyValue }}</td>
@@ -38,7 +48,7 @@
                 <tr>
                     <th class="table-active" rowspan="2" scope="row">Solicitante</th>
                     <th class="table-active" scope="row">Usuario Gestor</th>
-                    <td>{{ $requestForm->user->getFullNameAttribute()}}</td>
+                    <td>{{ $requestForm->user->FullName }}</td>
                 </tr>
                 <tr>
                     <th class="table-active" scope="row">Unidad Organizacional</th>
@@ -47,7 +57,7 @@
                 <tr>
                     <th class="table-active" rowspan="2" scope="row">Administrador de Contrato</th>
                     <th class="table-active" scope="row">Usuario</th>
-                    <td>{{ $requestForm->contractManager->name }}</td>
+                    <td>{{ $requestForm->contractManager->FullName }}</td>
                 </tr>
                 <tr>
                     <th class="table-active" scope="row">Unidad Organizacional</th>
@@ -61,7 +71,7 @@
                     <th class="table-active" colspan="2" scope="row">Programa Asociado</th>
                     <td>{{ $requestForm->program }}</td>
                 </tr>
-                @if(in_array($eventType, ['finance_event', 'supply_event']))
+                @if(in_array($eventType, ['finance_event', 'supply_event', 'pre_budget_event', 'budget_event']))
                 <tr>
                     <th class="table-active" colspan="2" scope="row">Folio SIGFE</th>
                     <td>{{ $requestForm->sigfe }}</td>
@@ -158,6 +168,8 @@
 
 <livewire:request-form.prefinance-authorization :requestForm="$requestForm" :eventType="$eventType" :round_trips="$round_trips" :baggages="$baggages" >
 
+<br>
+
 @else
 
 <br>
@@ -167,13 +179,13 @@
 
 
 <div class="table-responsive">
-    <h6><i class="fas fa-info-circle"></i> Lista de Bienes y/o Servicios</h6>
+    <h6><i class="fas fa-list-ol"></i> Lista de Bienes y/o Servicios</h6>
     <table class="table table-condensed table-hover table-bordered table-sm">
       <thead class="text-center small">
         <tr>
           <th>Item</th>
           <th>ID</th>
-          @if(in_array($eventType, ['finance_event', 'supply_event', 'budget_event'])) <th>Item Pres.</th> @endif
+          @if(in_array($eventType, ['finance_event', 'supply_event', 'pre_budget_event', 'budget_event'])) <th>Item Pres.</th> @endif
           <th>Artículo</th>
           <th>UM</th>
           <th>Especificaciones Técnicas</th>
@@ -189,7 +201,7 @@
                 <tr>
                     <td>{{ $key+1 }}</td>
                     <td>{{ $itemRequestForm->id }}</td>
-                    @if(in_array($eventType, ['finance_event', 'supply_event', 'budget_event']))
+                    @if(in_array($eventType, ['finance_event', 'supply_event', 'pre_budget_event', 'budget_event']))
                     <td>{{ $itemRequestForm->budgetItem->fullName() ?? '' }}</td>
                     @endif
                     <td>{{ $itemRequestForm->article }}</td>
@@ -210,7 +222,7 @@
       </tbody>
       <tfoot class="text-right small">
         <tr>
-          @if(in_array($eventType, ['finance_event', 'supply_event', 'budget_event']))
+          @if(in_array($eventType, ['finance_event', 'supply_event', 'pre_budget_event', 'budget_event']))
           <td colspan="10">Valor Total</td>
           @else
           <td colspan="9">Valor Total</td>
@@ -233,7 +245,7 @@
           <th>RUT</th>
           <th>Nombres</th>
           <th>Apellidos</th>
-          @if(in_array($eventType, ['finance_event', 'supply_event', 'budget_event'])) <th>Item Pres.</th> @endif
+          @if(in_array($eventType, ['finance_event', 'supply_event', 'pre_budget_event', 'budget_event'])) <th>Item Pres.</th> @endif
           <th>Tipo viaje</th>
           <th>Origen</th>
           <th>Destino</th>
@@ -250,7 +262,7 @@
                     <td>{{ number_format($passenger->run, 0, ",", ".") }}-{{ $passenger->dv }}</td>
                     <td>{{ $passenger->name }}</td>
                     <td>{{ $passenger->fathers_family }} {{ $passenger->mothers_family }}</td>
-                    @if(in_array($eventType, ['finance_event', 'supply_event', 'budget_event']))
+                    @if(in_array($eventType, ['finance_event', 'supply_event', 'pre_budget_event', 'budget_event']))
                     <td>-</td>
                     @endif
                     <td>{{ isset($round_trips[$passenger->round_trip]) ? $round_trips[$passenger->round_trip] : '' }}</td>
@@ -265,7 +277,7 @@
       </tbody>
       <tfoot class="text-right small">
         <tr>
-          <td colspan="{{ in_array($eventType, ['finance_event', 'supply_event', 'budget_event']) ? 11 : 10 }}">Valor Total</td>
+          <td colspan="{{ in_array($eventType, ['finance_event', 'supply_event', 'pre_budget_event', 'budget_event']) ? 11 : 10 }}">Valor Total</td>
           <td>${{ number_format($requestForm->estimated_expense, $requestForm->type_of_currency == 'peso' ? 0 : 2,",",".") }}</td>
         </tr>
       </tfoot>
@@ -275,39 +287,41 @@
 
 <livewire:request-form.authorization :requestForm="$requestForm" :eventType="$eventType" >
 
-
-@if($requestForm->messages->count() > 0)
-<br>
-<div class="card" id="message">
-  <div class="card-header">
-      <i class="fas fa-comment"></i> Mensajes
-  </div>
-  <div class="card-body">
-      @foreach($requestForm->messages as $message)
-      <ul class="list-group">
-          <li class="list-group-item text-left">
-              <p><i class="fas fa-user"></i> {{ $message->user->FullName }}</p>
-              <p><i class="fas fa-calendar"></i> {{ $message->created_at->format('d-m-Y H:i:s') }}</p>
-              <p class="font-italic"><i class="fas fa-comment"></i> {{ $message->message }}</p>
-          </li>
-      </ul>
-      @endforeach
-  </div>
-</div>
-
 @endif
 
-<br>
+<hr>
 
+@if($requestForm->messages->count() > 0)
+    <!-- <div class="row bg-light"> -->
+    <div class="col bg-light">
+        <br>
+        <h6><i class="fas fa-comment"></i> Mensajes</h6>
+        @foreach($requestForm->messages->sortByDesc('created_at') as $message)
+            <div class="card" id="message">
+                <div class="card-header col-sm">
+                    <i class="fas fa-user"></i> {{ $message->user->FullName }}
+
+                </div>
+                <div class="card-body">
+                    <i class="fas fa-calendar"></i> {{ $message->created_at->format('d-m-Y H:i:s') }}
+                    <p class="font-italic"><i class="fas fa-comment"></i> "{{ $message->message }}"</p>
+                </div>
+            </div>
+            <br>
+        @endforeach
+    </div>
+    <!-- </div> -->
+@endif
+<br>
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#exampleModal-{{ $requestForm->id }}">
     <i class="fas fa-comment"></i> Agregar Mensaje
 </button>
 
-@include('request_form.partials.modals.create_message')
+@include('request_form.partials.modals.create_message', [
+  'from' => 'signature'
+])
 
 <br><br>
-
-@endif
 
 @endsection

@@ -133,7 +133,7 @@
                     </div>
                     <form method="POST" class="form-horizontal"
                         action="{{route('documents.signatures.rejectSignature', $pendingSignaturesFlow->id)}}"
-                        enctype="multipart/form-data" id='rejectForm'>
+                        enctype="multipart/form-data" >
                         <div class="modal-body">
                             @csrf
                             <!-- input hidden contra ataques CSRF -->
@@ -142,7 +142,7 @@
                                 <div class="form-group col-12">
                                     <label for="forobservacion">Observación</label>
                                     <input form="" type="text" class="form-control form-control-sm" id="forobservacion"
-                                        form="rejectForm" name="observacion" maxlength="255" autocomplete="off"
+                                         name="observacion" maxlength="255" autocomplete="off"
                                         required />
                                 </div>
                             </div>
@@ -151,7 +151,7 @@
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar
                             </button>
 
-                            <button form="rejectForm" class="btn btn-danger" type="submit">
+                            <button  class="btn btn-danger" type="submit">
                                 <i class="fas fa-edit"></i> Rechazar
                             </button>
                         </div>

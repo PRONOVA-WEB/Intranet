@@ -4,7 +4,7 @@
 
 <div style="text-align: justify;">
 
-  <h4>Estimado/a: </h4>
+  <h4>Estimados/as: </h4>
 
   <br>
 
@@ -15,6 +15,7 @@
 
   <ul>
       <li><strong>Nº Solicitud</strong>: {{ $req->id }}</li>
+      <li><strong>Folio</strong>: {{ $req->folio }}</li>
       <li><strong>Fecha Solicitud</strong>: {{ $req->created_at->format('d-m-Y H:i:s') }}</li>
       <li><strong>Nombre Solicitud</strong>: {{ $req->name }}</li>
   </ul>
@@ -25,11 +26,16 @@
       <li><strong>Solicitado por</strong>: {{ $req->user->FullName }}</li>
       <li><strong>Unidad Organizacional</strong>: {{ $req->userOrganizationalUnit->name }}</li>
       <li><strong>Administrador de Contrato</strong>: {{ $req->contractManager->FullName }}</li>
+      <li><strong>Comprador asignado</strong>: {{ $req->purchasers()->first()->FullName }}</li>
   </ul>
 
   <br>
 
+<<<<<<< HEAD:resources/views/request_form/mail/rfelectronicsignaturenotification.blade.php
   <p>Para mayor infromación favor ingresar a su Bandeja de Solicitudes en {{ settings('site.title') }}.</p>
+=======
+  <p>Para mayor información favor ingresar a su Bandeja de Solicitudes en iOnline.</p>
+>>>>>>> 57b423c3d4874fcfb5f4e575bac206351fe5e0a8:resources/views/request_form/mail/rfendsignnotification.blade.php
 
   <br>
 
