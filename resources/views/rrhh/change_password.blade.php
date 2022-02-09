@@ -4,7 +4,7 @@
 
 @section('content')
 
-<h3 class="mb-3">Cambiar clave</h3>
+<h3 class="mb-3">Cambiar clave - usuario local</h3>
 
 <form method="POST" class="form-horizontal" action="{{ route('rrhh.users.update_password') }}">
     @csrf

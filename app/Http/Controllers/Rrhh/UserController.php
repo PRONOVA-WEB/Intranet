@@ -7,12 +7,15 @@ use App\Http\Requests\Rrhh\storeUser;
 use App\Http\Requests\Rrhh\updatePassword;
 use App\Rrhh\Authority;
 use App\User;
+use App\Mail\NewUser;
 use App\Rrhh\OrganizationalUnit;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Rrhh\UserBankAccount;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -88,8 +91,9 @@ class UserController extends Controller
      */
     public function store(storeUser $request)
     {
-        $user = new User($request->All());
-        $user->password = bcrypt($request->id);
+        $user           = new User($request->All());
+        $password       = Str::random(8);
+        $user->password = bcrypt($password);
 
         if ($request->has('organizationalunit')) {
             if ($request->filled('organizationalunit')) {
@@ -100,7 +104,15 @@ class UserController extends Controller
             }
         }
 
-        $user->save();
+        if($user->save()) {
+            try {
+                //envio email para iniciar sesión
+                Mail::to($user->email)->send(new NewUser($user,$password));
+
+            } catch (\Throwable $th) {
+                //to do
+            }
+        }
 
         if($request->hasFile('photo')){
             $path = $request->file('photo')
