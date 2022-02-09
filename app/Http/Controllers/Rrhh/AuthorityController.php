@@ -104,7 +104,12 @@ class AuthorityController extends Controller
             //$ouTopLevel = OrganizationalUnit::Find(1);
             $ouTopLevel = OrganizationalUnit::where('level', 1)->where('establishment_id', $request->establishment_id)->first();
             //dd($ouTopLevel);
-            return view('rrhh.authorities.create', compact('ous','ouTopLevel'));
+            return view('rrhh.authorities.create', compact('ous','ouTopLevel'))->withOu($request->ou_id);
+        }
+        else
+        {
+            session()->flash('warning', 'Debe seleccionar primero una unidad organizacional');
+            return redirect()->route('rrhh.authorities.index');
         }
 
     }
@@ -145,7 +150,6 @@ class AuthorityController extends Controller
      */
     public function edit(Authority $authority)
     {
-        dd($authority->organizationalUnit);
         switch($authority->organizationalUnit->level) {
             case 4: $ouTopLevel = $authority->organizationalUnit->father->father->father; break;
             case 3: $ouTopLevel = $authority->organizationalUnit->father->father; break;

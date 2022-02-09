@@ -56,8 +56,7 @@
     @endcan
 
     @if(Auth::user()->hasPermissionTo('Replacement Staff: view requests') ||
-      Auth::user()->hasRole('Replacement Staff: admin') ||
-      App\Rrhh\Authority::getAuthorityFromDate(46, Carbon\Carbon::now(), 'manager')->user_id == Auth::user()->id)
+      Auth::user()->hasRole('Replacement Staff: admin'))
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
             <i class="fas fa-users"></i> Personal y Ciclo de Vida laboral
@@ -80,6 +79,9 @@
         <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
             <i class="fas fa-file"></i> Reportes
         </a>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="{{ route('replacement_staff.reports.replacement_staff_historical') }}">Staff: Historico por Persona</a>
+        </div>
    </li>
    @endcan
 

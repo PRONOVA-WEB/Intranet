@@ -7,7 +7,7 @@
               <tr>
                   <th>Item</th>
                   <th>ID</th>
-                  <th>Item Pres.</th>
+                  <th width="250 px">Item Pres.</th>
                   <th>Artículo</th>
                   <th>UM</th>
                   <th>Especificaciones Técnicas</th>
@@ -24,12 +24,15 @@
                   <td class="text-center">{{$key+1}}</td>
                   <td class="text-center">{{$item->id}}</td>
                   <td>
-                      <select  wire:model.defer="arrayItemRequest.{{ $item->id }}.budgetId"  wire:click="resetError" class="form-control form-control-sm" required>
-                          <option value="">Seleccione...</option>
+                    <div wire:ignore id="for-bootstrap-select">
+                      <select  wire:model.defer="arrayItemRequest.{{ $item->id }}.budgetId"  wire:click="resetError" data-container="#for-bootstrap-select"
+                        class="form-control form-control-sm selectpicker" data-size="5" data-live-search="true" title="Seleccione..." required>
+                          <!-- <option value="">Seleccione...</option> -->
                           @foreach($lstBudgetItem as $val)
                             <option value="{{$val->id}}">{{$val->code.' - '.$val->name}}</option>
                           @endforeach
                       </select>
+                    </div>
                   </td>
                   <td>{{$item->article}}</td>
                   <td>{{$item->unit_of_measurement}}</td>
@@ -142,9 +145,9 @@
 
                 <div class="form-row">
                     <fieldset class="form-group col-sm-12">
-                        <label for="forRejectedComment">Comentario de Rechazo:</label>
-                        <textarea wire:model="rejectedComment" wire:click="resetError" name="rejectedComment" class="form-control form-control-sm" rows="3"></textarea>
-                        @error('rejectedComment') <span class="error text-danger">{{ $message }}</span> @enderror
+                        <label for="for_comment">Observación:</label>
+                        <textarea wire:model="comment" wire:click="resetError" name="comment" class="form-control form-control-sm" rows="3"></textarea>
+                        @error('comment') <span class="error text-danger">{{ $message }}</span> @enderror
                         </fieldset>
                 </div>
 

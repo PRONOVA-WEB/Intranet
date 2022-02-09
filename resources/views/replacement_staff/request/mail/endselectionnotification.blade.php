@@ -52,11 +52,16 @@
       <li><strong>Unidad Organizacional</strong>: {{ $technicalEvaluation->requestReplacementStaff->organizationalUnit->name }}</li>
   </ul>
 
-  <p>Para mayor infromación favor ingresar a su Bandeja de Solicitudes en iOnline.</p>
+<<<<<<< HEAD
+  <p>Para mayor infromación favor ingresar a su Bandeja de Solicitudes.</p>
+=======
+  <p>Para mayor información favor ingresar a su Bandeja de Solicitudes en iOnline.</p>
+>>>>>>> 57b423c3d4874fcfb5f4e575bac206351fe5e0a8
 
   <br>
 
-  <p>Esto es un mensaje automático de: {{ env('APP_NAME') }} -  {{ env('APP_SS') }}.</p>
+  <p>Esto es un mensaje automatico de: {{ settings('site.title') }} -  {{ settings('site.organization') }} .</p>
+
 
 
 

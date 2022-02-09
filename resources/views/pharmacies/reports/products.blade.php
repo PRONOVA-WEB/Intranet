@@ -48,7 +48,7 @@
                 <th scope="col">CANTIDAD</th>
         <th>
             <button type="button" class="btn btn-sm btn-outline-primary"
-                onclick="tableToExcel('tabla_last', 'Hoja 1')">
+                onclick="$('#tabla_last').tblToExcel();">
                 <i class="fas fa-download"></i>
             </button>
         </th>
@@ -75,17 +75,5 @@
 @endsection
 
 @section('custom_js')
-<script type="text/javascript">
-	var tableToExcel = (function() {
-	    var uri = 'data:application/vnd.ms-excel;base64,'
-	    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta http-equiv="Content-Type" content="text/html;charset=utf-8"></head><body><table>{table}</table></body></html>'
-	    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
-	    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
-	    return function(table, name) {
-	    if (!table.nodeType) table = document.getElementById(table)
-	    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
-	    window.location.href = uri + base64(format(template, ctx))
-	    }
-	})()
-</script>
+<script src="{{ asset('js/jquery.tableToExcel.js') }}"></script>
 @endsection

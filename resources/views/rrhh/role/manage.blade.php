@@ -20,24 +20,18 @@
 
 			<h4>Permisos</h4>
 
-			@role('god')
+			@role('superuser')
 				<div class="form-check">
 					<input class="form-check-input" type="checkbox" name="permissions[]"
 						value="be god" id="be god"
-						{{ $user->can('be god')? 'checked':'' }}>
-					<label class="form-check-label" for="be god">be god</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" name="permissions[]"
-						value="I play with madness" id="I play with madness"
-						{{ $user->can('I play with madness')? 'checked':'' }}>
-				<label class="form-check-label" for="I play with madness">I play with madness</label>
+						{{ $user->can('be superuser')? 'checked':'' }}>
+					<label class="form-check-label" for="be superuser">be superuser</label>
 				</div>
 			@endrole
 
 			@php $anterior = null; @endphp
 			@foreach($permissions as $permission)
-				@if($permission->name != 'be god' AND $permission->name != 'I play with madness')
+				@if($permission->name != 'be superuser')
 					@if( current(explode(':', $permission->name)) != current(explode(':', $anterior)))
 						<hr>
 						@php $anterior = $permission->name; @endphp
@@ -61,18 +55,18 @@
 
 			<h4>Roles</h4>
 
-			@role('god')
+			@role('superuser')
 			<div class="form-check">
 				<input class="form-check-input" type="checkbox"
-					value="god" id="god" name="roles[]"
-					{{ $user->hasRole('god') ? 'checked':'' }}>
-				<label class="form-check-label" for="god">god</label>
+					value="superuser" id="superuser" name="roles[]"
+					{{ $user->hasRole('superuser') ? 'checked':'' }}>
+				<label class="form-check-label" for="superuser">superuser</label>
 			</div>
 			<hr>
 			@endrole
 
 			@foreach($roles as $rol)
-				@if($rol->name != 'god')
+				@if($rol->name != 'superuser')
 					<div class="form-check">
 				  		<input class="form-check-input" type="checkbox"
 							value="{{ $rol->name }}" id="{{$rol->name}}" name="roles[]"

@@ -51,7 +51,7 @@
 	<div class="form-row">
 		<fieldset class="form-group col-md-4">
 			<label for="forPosition">Cargo/Función</label>
-			<input type="text" class="form-control" id="forPosition" placeholder="Subdirector(S), Enfermera, Referente..., Jefe." 
+			<input type="text" class="form-control" id="forPosition" placeholder="Subdirector(S), Enfermera, Referente..., Jefe."
 				name="position"	value="{{ $user->position }}">
 		</fieldset>
 
@@ -115,7 +115,7 @@
 		</form>
 		@endcan
 
-		@role('god')
+		@role('superuser')
 		<!--TODO: Revisar un código decente para utilizar este método, quizá sólo un link en vez de un formulario, chequear en el controller que tenga el rol god() -->
 		<form method="GET" action="{{ route('rrhh.users.switch', $user->id) }}" class="d-inline float-right">
 			{{ csrf_field() }}

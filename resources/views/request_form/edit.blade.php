@@ -3,9 +3,9 @@
 @section('content')
 
 <link href="{{ asset('css/bootstrap-select.min.css') }}" rel="stylesheet" type="text/css"/>
-<link href="{{ asset('css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" type="text/css"/>
-<link href="{{ asset('css/steps.css') }}" rel="stylesheet" type="text/css"/>
-<h4 class="mb-3">Formulario de Requerimiento - Edición de Formularios</h4>
+{{-- <link href="{{ asset('css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" type="text/css"/>
+<link href="{{ asset('css/steps.css') }}" rel="stylesheet" type="text/css"/> --}}
+<h4 class="mb-3">Formulario de requerimiento - Edición de Formularios</h4>
 
 @include('request_form.partials.nav')
 

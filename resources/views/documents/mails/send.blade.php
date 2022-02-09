@@ -8,17 +8,17 @@
     <p> <strong>Tipo:</strong> {{ $document->type }}</p>
     <p> <strong>Número:</strong> {{ $document->number }}</p>
     <p> <strong>Fecha del documento: </strong> {{ $document->date->format('d-m-Y') }} </p>
-    <p> <strong>Archivo:</strong> SSI_{{ $document->type }}_{{ $document->number }}.pdf</p>
+    <p> <strong>Archivo:</strong> {{ $document->type }}_{{ $document->number }}.pdf</p>
     <br>
     Saludos cordiales.
 </div>
 
 @endsection
 
-@section('firmante', 'Oficina de Partes')
+@section('firmante', settings('site.organization'))
 
-@section('linea1', 'Anexo Minsal: 579502 - 579503')
+@section('linea1', settings('site.phone'))
 
-@section('linea2', 'Teléfono: +56 (57) 409502 - 409503')
+@section('linea2', 'Linea 2')
 
-@section('linea3', 'opartes.ssi@redsalud.gob.cl')
+@section('linea3', 'Linea 3')

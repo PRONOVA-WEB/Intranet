@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Agregar Número a Documento')
+@section('title', 'Agregar número a documento')
 
 @section('content')
 
 @include('documents.partes.partials.nav')
 
-<h3 class="mb-3">Agregar Número a Documento</h3>
+<h3 class="mb-3">Agregar número a documento</h3>
 
 <form class="form-inline" method="POST" action="{{ route('documents.find')}}">
     @csrf
@@ -104,7 +104,7 @@
 
                 <div class="form-check form-check-inline col">
                     <input class="form-check-input" name="sendMail" type="checkbox"
-                        id="for_sendMail" value="true" checked disabled>
+                        id="for_sendMail" value="true" checked >
                     <label class="form-check-label" for="for_sendMail">Enviar mail a distribución</label>
                 </div>
             </div>

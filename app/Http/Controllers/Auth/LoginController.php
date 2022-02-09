@@ -43,6 +43,7 @@ class LoginController extends Controller
      */
     public function attemptLogin(Request $request)
     {
+
         $credentials = $request->only('id', 'password');
 
         /*
@@ -57,6 +58,21 @@ class LoginController extends Controller
             // Authentication passed...
             return redirect()->intended('dashboard');
         }
+    }
+
+        /**
+     * Get the post register / login redirect path.
+     *
+     * @return string
+     */
+    public function redirectPath()
+    {
+        //forzar a cambiar clave
+        if( Auth::user()->hasPermissionTo('Users: must change password') ) {
+            return '/rrhh/users/password';
+        }
+
+        return '/home';
     }
 
     public function logout()

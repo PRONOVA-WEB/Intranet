@@ -102,21 +102,10 @@
                 </button>
             </td>
             <td>
-                {{-- <a href="{{ route('documents.signatures.showPdf',--}}
-
-{{--                            [$pendingSignaturesFlow->signaturesFile->id, time()]--}}
-
-
-{{--                        ) }}" --}} {{-- class="btn btn-sm btn-outline-secondary" target="_blank"
-                    title="Ver documento">--}}
-                    {{-- <span class="fas fa-file" aria-hidden="true"></span>--}}
-                    {{-- </a>--}}
-
-                <a href={{ env("APP_URL").'/storage/' }}{{ $pendingSignaturesFlow->signaturesFile->signed_file ?? $pendingSignaturesFlow->signaturesFile->file }}"
+                <a href="{{ route('documents.signatures.download', $pendingSignaturesFlow->signature->id) }}"
                     class="btn btn-sm btn-outline-secondary" target="_blank" title="Ver documento">
                     <span class="fas fa-file" aria-hidden="true"></span>
                 </a>
-
             </td>
             <td>
                 @foreach($pendingSignaturesFlow->signature->signaturesFiles->where('file_type', 'anexo') as $anexo)
@@ -144,7 +133,7 @@
                     </div>
                     <form method="POST" class="form-horizontal"
                         action="{{route('documents.signatures.rejectSignature', $pendingSignaturesFlow->id)}}"
-                        enctype="multipart/form-data" id='rejectForm'>
+                        enctype="multipart/form-data" >
                         <div class="modal-body">
                             @csrf
                             <!-- input hidden contra ataques CSRF -->
@@ -153,7 +142,7 @@
                                 <div class="form-group col-12">
                                     <label for="forobservacion">Observación</label>
                                     <input form="" type="text" class="form-control form-control-sm" id="forobservacion"
-                                        form="rejectForm" name="observacion" maxlength="255" autocomplete="off"
+                                         name="observacion" maxlength="255" autocomplete="off"
                                         required />
                                 </div>
                             </div>
@@ -162,7 +151,7 @@
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar
                             </button>
 
-                            <button form="rejectForm" class="btn btn-danger" type="submit">
+                            <button  class="btn btn-danger" type="submit">
                                 <i class="fas fa-edit"></i> Rechazar
                             </button>
                         </div>

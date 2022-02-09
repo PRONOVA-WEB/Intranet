@@ -1,7 +1,7 @@
 <div>
     <div class="card">
         <div class="card-header">
-            </i> Formulario de Requerimiento</h6>
+            </i> Formulario de requerimiento</h6>
         </div>
         <div class="card-body">
             <div class="form-row">
@@ -77,7 +77,7 @@
                     </fieldset>
 
                 <fieldset class="form-group col-sm-4">
-                    <label for="for_fileRequests" class="form-label">Documento de Respaldo:</label>
+                    <label for="for_fileRequests" class="form-label">Documento(s) de Respaldo:</label>
                     <input class="form-control form-control-sm" wire:model.defer="fileRequests" type="file" style="padding:2px 0px 0px 2px;" name="fileRequests[]" multiple>
                 </fieldset>
             </div>
@@ -126,6 +126,7 @@
     </div>
 
     <br>
+    <div wire:loading.remove>
     @if($isRFItems)
         @livewire('request-form.item.request-form-items', ['savedItems' => $requestForm->itemRequestForms ?? null])
     @else
@@ -142,8 +143,13 @@
             </button>
         </div>
     </div>
-
-    @if (count($errors) > 0 and ($errors->has('purchaseMechanism') or $errors->has('program') or $errors->has('justify') or $errors->has('items')))
+    </div>
+    <div wire:loading>
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Procesando...</span>
+        </div>
+    </div>
+    @if (count($errors) > 0 and ($errors->has('purchaseMechanism') or $errors->has('program') or $errors->has('justify') or $errors->has('items') or $errors->has('fileRequests')))
       <div class="row justify-content-around mt-0">
          <div class="alert alert-danger col-6 mt-1">
           <p>Corrige los siguientes errores:</p>

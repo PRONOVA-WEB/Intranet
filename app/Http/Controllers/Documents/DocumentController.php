@@ -228,11 +228,10 @@ class DocumentController extends Controller
         if ($request->has('sendMail')) {
             /* Enviar a todos los email que aparecen en distribución */
             preg_match_all("/[\._a-zA-Z0-9-]+@[\._a-zA-Z0-9-]+/i", $document->distribution, $emails);
-            //dd($emails[0]);
             Mail::to($emails[0])->send(new SendDocument($document));
         }
 
-        return redirect()->route('documents.partes.outbox');
+        return redirect()->route('documents.index');
     }
 
 

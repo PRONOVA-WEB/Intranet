@@ -8,7 +8,7 @@
 
   <br>
 
-  <p>A través del presente, se informa que se encuentra disponible en {{ env('APP_NAME') }}
+  <p>A través del presente, se informa que se encuentra disponible en {{ settings('site.title') }}
     un formulario de requerimiento de compras correspondiente a su Unidad Organizacional, favor ingresar
     al módulo de <strong>Abastecimento</strong> para aceptar o declinar la Solicitud.
   </p>
@@ -30,11 +30,11 @@
 
   <br>
 
-  <p>Para mayor infromación favor ingresar a su Bandeja de Solicitudes en iOnline.</p>
+  <p>Para mayor infromación favor ingresar a su Bandeja de Solicitudes.</p>
 
   <br>
 
-  <p>Esto es un mensaje automático de: {{ env('APP_NAME') }} -  {{ env('APP_SS') }}.</p>
+  <p>Esto es un mensaje automático de: {{ settings('site.title') }} -  {{ settings('site.organization') }}.</p>
 
 </div>
 

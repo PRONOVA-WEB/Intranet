@@ -395,9 +395,6 @@ class RequirementController extends Controller
         Mail::to($emails[0])
           ->send(new RequirementNotification($requirement));
       }
-
-
-
       session()->flash('info', 'El requerimiento ' . $requirement->id . ' ha sido creado.');
     } else {
 
@@ -466,6 +463,7 @@ class RequirementController extends Controller
         $firstEvent = new Event($request->All());
         //$firstEvent->organizational_unit_id = $user_aux->first()->organizational_unit_id;
         $user_aux = User::find($user);
+
         if($user_aux){
           $firstEvent->to_user_id = $user_aux->id;
           $firstEvent->to_ou_id = $user_aux->organizational_unit_id;
@@ -476,7 +474,7 @@ class RequirementController extends Controller
         $firstEvent->save();
 
         //Obtiene emails
-        $usersEmail .= $user_aux->first()->email . ',';
+        $usersEmail .= $user_aux->email . ',';
 
         //asocia evento con documentos
         if ($request->documents <> null) {
@@ -600,7 +598,7 @@ class RequirementController extends Controller
         ->get();
     }
 
-    
+
     return view('requirements.show', compact('ous', 'ouRoots' , 'requirement', 'categories', 'requirementCategories', 'lastEvent', 'firstEvent', 'documents', 'groupedRequirements'));
   }
 

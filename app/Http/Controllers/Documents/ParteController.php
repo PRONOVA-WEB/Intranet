@@ -39,7 +39,7 @@ class ParteController extends Controller
     public function outbox(Request $request)
     {
         $documents = Document::Search($request)
-                             ->where('type',['Ordinario','Circular'])
+                             //->where('type',['Ordinario','Circular'])
                              ->latest()
                              ->paginate('100');
         $users = User::orderBy('name')->orderBy('fathers_family')->get();
@@ -156,11 +156,17 @@ class ParteController extends Controller
      */
     public function destroy(Parte $parte)
     {
-        // foreach($parte->events as $event) {
-        //     $event->forceDelete();
-        // }
-        // $parte->forceDelete();
-        // return redirect()->route('documents.partes.index');
+        foreach($parte->events as $event) {
+            $event->forceDelete();
+        }
+        foreach($parte->files as $file) {
+            Storage::disk('gcs')->delete($file->file);
+            //$file->delete();
+            $file->forceDelete();
+        }
+
+        $parte->forceDelete();
+        return redirect()->route('documents.partes.index');
     }
 
     public function inbox()

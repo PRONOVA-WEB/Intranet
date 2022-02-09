@@ -3,7 +3,7 @@
 @section('content')
 
 <link href="{{ asset('css/bootstrap-select.min.css') }}" rel="stylesheet" type="text/css"/>
-<h4 class="mb-3">Formularios de Requerimiento - Bandeja de Entrada</h4>
+<h4 class="mb-3">Formularios de requerimiento - Bandeja de Entrada</h4>
 
 @include('request_form.partials.nav')
 
@@ -30,11 +30,11 @@
                   <thead>
                     <tr class="text-center">
                       <th>ID</th>
+                      <th>Folio</th>
                       <th style="width: 7%">Fecha Creación</th>
-                      <th>Tipo</th>
+                      <th>Tipo / Mecanismo de Compra</th>
                       <th>Descripción</th>
                       <th>Usuario Gestor</th>
-                      <th>Mecanismo de Compra</th>
                       <th>Items</th>
                       <th>Espera</th>
                       <th>Estado</th>
@@ -58,13 +58,15 @@
 
                                     @endswitch
                                 </td>
+                                <td>{{ $requestForm->folio }}</td>
                                 <td>{{ $requestForm->created_at->format('d-m-Y H:i') }}</td>
-                                <td>{{ $requestForm->SubtypeValue }}</td>
+                                <td>{{ ($requestForm->purchaseMechanism) ? $requestForm->purchaseMechanism->PurchaseMechanismValue : '' }}<br>
+                                    {{ $requestForm->SubtypeValue }}
+                                </td>
                                 <td>{{ $requestForm->name }}</td>
                                 <td>{{ $requestForm->user->FullName }}<br>
                                     {{ $requestForm->userOrganizationalUnit->name ?? '' }}
                                 </td>
-                                <td>{{ $requestForm->purchaseMechanism->name ?? '' }}</td>
                                 <td align="center">{{ $requestForm->quantityOfItems() }}</td>
                                 <td align="center">{{ $requestForm->created_at->diffForHumans() }}</td>
                                 <td class="text-center">
@@ -122,6 +124,7 @@
               <thead>
                 <tr class="text-center">
                   <th>ID</th>
+                  <th>Folio</th>
                   <th style="width: 7%">Fecha Creación</th>
                   <th>Tipo</th>
                   <th>Descripción</th>
@@ -158,6 +161,7 @@
 
                                 @endswitch
                             </th>
+                            <td>{{ $requestForm->folio }}</td>
                             <td>{{ $requestForm->created_at->format('d-m-Y H:i') }}</td>
                             <td>{{ $requestForm->SubtypeValue }}</td>
                             <td>{{ $requestForm->name }}</td>

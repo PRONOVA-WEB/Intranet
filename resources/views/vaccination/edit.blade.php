@@ -129,7 +129,7 @@
 
 </form>
 
-@can('be god')
+@can('be superuser')
     @include('partials.audit', ['audits' => $vaccination->audits] )
 @endcan
 

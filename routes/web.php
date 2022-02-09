@@ -27,6 +27,7 @@ use App\Http\Controllers\RequestForms\PurchasingProcessController;
 use App\Http\Controllers\RequestForms\PettyCashController;
 use App\Http\Controllers\RequestForms\FundToBeSettledController;
 use App\Http\Controllers\RequestForms\InternalPurchaseOrderController;
+use App\Http\Controllers\RequestForms\RequestFormMessageController;
 
 use App\Http\Controllers\ReplacementStaff\ReplacementStaffController;
 use App\Http\Controllers\ReplacementStaff\RequestReplacementStaffController;
@@ -239,7 +240,8 @@ Route::prefix('replacement_staff')->as('replacement_staff.')->middleware('auth')
     });
 
     Route::prefix('reports')->name('reports.')->group(function(){
-        Route::get('/replacement_staff_selected_report', [ReplacementStaffController::class, 'replacement_staff_selected_report'])->name('replacement_staff_selected_report');
+        //Route::get('/replacement_staff_selected_report', [ReplacementStaffController::class, 'replacement_staff_selected_report'])->name('replacement_staff_selected_report');
+        Route::get('/replacement_staff_historical', [ReplacementStaffController::class, 'replacement_staff_historical'])->name('replacement_staff_historical');
     });
 
     Route::prefix('profile')->name('profile.')->group(function(){
@@ -533,6 +535,7 @@ Route::prefix('rrhh')->as('rrhh.')->group(function () {
         Route::post('/change-signature-flow', [ServiceRequestController::class, 'change_signature_flow'])->name('change_signature_flow');
         Route::post('/delete-signature-flow', [ServiceRequestController::class, 'delete_signature_flow'])->name('delete_signature_flow');
         Route::post('/derive', [ServiceRequestController::class, 'derive'])->name('derive');
+        Route::get('/accept_all_requests', [ServiceRequestController::class, 'accept_all_requests'])->name('accept_all_requests');
 
         Route::post('/destroy-with-parameters', [ServiceRequestController::class, 'destroy_with_parameters'])->name('destroy-with-parameters');
         Route::get('/pending-requests', [ServiceRequestController::class, 'pending_requests'])->name('pending-requests');
@@ -709,6 +712,8 @@ Route::prefix('rrhh')->as('rrhh.')->group(function () {
         Route::get('autority/{ou_id?}', 'Rrhh\UserController@getAutorityFromOu')->name('get.autority.from.ou')->middleware('auth');
         Route::put('{user}/password', 'Rrhh\UserController@resetPassword')->name('password.reset')->middleware('auth');
         Route::get('{user}/switch', 'Rrhh\UserController@switch')->name('switch')->middleware('auth');
+        Route::get('/password', 'Rrhh\UserController@showPasswordForm')->name('show_form')->middleware('auth');
+        Route::put('/', 'Rrhh\UserController@updatePassword')->name('update_password')->middleware('auth');
         Route::get('directory', 'Rrhh\UserController@directory')->name('directory');
         Route::get('/', 'Rrhh\UserController@index')->name('index')->middleware('auth');
         Route::get('/create', 'Rrhh\UserController@create')->name('create')->middleware('auth');
@@ -1237,42 +1242,40 @@ Route::prefix('indicators')->as('indicators.')->group(function () {
     });
 });
 
-Route::prefix('drugs')->as('drugs.')->middleware('auth')->group(function () {
-    //fixme convertir a gets, put, delete
-    Route::resource('courts', 'Drugs\CourtController');
-    Route::resource('police_units', 'Drugs\PoliceUnitController');
-    Route::resource('substances', 'Drugs\SubstanceController');
+Route::prefix('drugs')->as('drugs.')->middleware('can:Drugs','auth','drugs')->group(function(){
+    Route::resource('courts','Drugs\CourtController');
+    Route::resource('police_units','Drugs\PoliceUnitController');
+    Route::resource('substances','Drugs\SubstanceController');
 
-    Route::get('receptions/report', 'Drugs\ReceptionController@report')->name('receptions.report');
-    Route::get('receptions/{reception}/record', 'Drugs\ReceptionController@showRecord')->name('receptions.record');
+    Route::get('users','Rrhh\UserController@drugs')->name('users');
 
-    Route::get('receptions/{receptionitem}/edit_item', 'Drugs\ReceptionController@editItem')->name('receptions.edit_item');
-    Route::put('receptions/{receptionitem}/update_item', 'Drugs\ReceptionController@updateItem')->name('receptions.update_item');
-    Route::delete('receptions/{receptionitem}/destroy_item', 'Drugs\ReceptionController@destroyItem')->name('receptions.destroy_item');
-    Route::put('receptions/{receptionitem}/store_protocol', 'Drugs\ReceptionController@storeProtocol')->name('receptions.store_protocol');
+    Route::get('receptions/report','Drugs\ReceptionController@report')->name('receptions.report');
+    Route::get('receptions/{reception}/record','Drugs\ReceptionController@showRecord')->name('receptions.record');
+    Route::get('receptions/{receptionitem}/edit_item','Drugs\ReceptionController@editItem')->name('receptions.edit_item');
+    Route::put('receptions/{receptionitem}/update_item','Drugs\ReceptionController@updateItem')->name('receptions.update_item');
+    Route::delete('receptions/{receptionitem}/destroy_item','Drugs\ReceptionController@destroyItem')->name('receptions.destroy_item');
+    Route::put('receptions/{receptionitem}/store_result','Drugs\ReceptionController@storeResult')->name('receptions.store_result');
+    Route::put('receptions/{receptionitem}/store_protocol','Drugs\ReceptionController@storeProtocol')->name('receptions.store_protocol');
+    Route::get('receptions/protocols/{protocol}','Drugs\ReceptionController@showProtocol')->name('receptions.protocols.show');
+    Route::post('receptions/{reception}/item','Drugs\ReceptionController@storeItem')->name('receptions.storeitem');
+    Route::get('receptions/{reception}/doc_fiscal','Drugs\ReceptionController@showDocFiscal')->name('receptions.doc_fiscal');
+    Route::get('receptions/{reception}/sample_to_isp','Drugs\SampleToIspController@show')->name('receptions.sample_to_isp.show');
+    Route::post('receptions/{reception}/sample_to_isp','Drugs\SampleToIspController@store')->name('receptions.sample_to_isp.store');
+    Route::get('receptions/{reception}/record_to_court','Drugs\RecordToCourtController@show')->name('receptions.record_to_court.show');
+    Route::post('receptions/{reception}/record_to_court','Drugs\RecordToCourtController@store')->name('receptions.record_to_court.store');
+    Route::resource('receptions','Drugs\ReceptionController');
 
-    Route::get('receptions/{reception}/sample_to_isp', 'Drugs\SampleToIspController@show')->name('receptions.sample_to_isp.show');
-    Route::get('receptions/{reception}/record_to_court', 'Drugs\RecordToCourtController@show')->name('receptions.record_to_court.show');
+    Route::resource('destructions','Drugs\DestructionController')->except(['create']);
 
-
-    Route::post('receptions/{reception}/item', 'Drugs\ReceptionController@storeItem')->name('receptions.storeitem');
-    Route::post('receptions/{reception}/sample_to_isp', 'Drugs\SampleToIspController@store')->name('receptions.sample_to_isp.store');
-    Route::post('receptions/{reception}/record_to_court', 'Drugs\RecordToCourtController@store')->name('receptions.record_to_court.store');
-
-    Route::get('receptions/', 'Drugs\ReceptionController@index')->name('receptions.index');
-    Route::get('receptions/create', 'Drugs\ReceptionController@create')->name('receptions.create');
-    Route::get('receptions/show/{reception}', 'Drugs\ReceptionController@show')->name('receptions.show');
-    Route::post('receptions/store', 'Drugs\ReceptionController@store')->name('receptions.store');
-    Route::get('receptions/edit/{reception}', 'Drugs\ReceptionController@edit')->name('receptions.edit');
-    Route::put('receptions/update/{reception}', 'Drugs\ReceptionController@update')->name('receptions.update');
-    //    Route::resource('receptions','Drugs\ReceptionController');
+    Route::get('rosters/analisis_to_admin','Drugs\RosterAnalisisToAdminController@index')->name('roster.analisis_to_admin.index');
+    Route::get('rosters/analisis_to_admin/{id}','Drugs\RosterAnalisisToAdminController@show')->name('roster.analisis_to_admin.show');
 });
 
 Route::get('health_plan/{comuna}', 'HealthPlan\HealthPlanController@index')->middleware('auth')->name('health_plan.index');
 Route::get('health_plan/{comuna}/{file}',  'HealthPlan\HealthPlanController@download')->middleware('auth')->name('health_plan.download');
 
-Route::get('quality_aps', 'QualityAps\QualityApsController@index')->middleware('auth')->name('quality_aps.index');
-Route::get('quality_aps/{file}', 'QualityAps\QualityApsController@download')->middleware('auth')->name('quality_aps.download');
+Route::get('biblioteca', 'Library\LibraryController@index')->middleware('auth')->name('biblioteca.index');
+Route::get('biblioteca/{file}', 'Library\LibraryController@download')->middleware('auth')->name('biblioteca.download');
 
 /* Bodega de Farmacia */
 Route::prefix('pharmacies')->as('pharmacies.')->middleware('auth')->group(function () {
@@ -1359,7 +1362,13 @@ Route::prefix('request_forms')->as('request_forms.')->middleware('auth')->group(
     Route::get('/{requestForm}/create_provision', [RequestFormController::class, 'create_provision'])->name('create_provision');
     Route::get('/{requestForm}/sign/{eventType}', [RequestFormController::class, 'sign'])->name('sign');
     Route::get('/callback-sign-request-form/{message}/{modelId}/{signaturesFile?}', [RequestFormController::class, 'callbackSign'])->name('callbackSign');
+    Route::get('/callback-sign-new-budget/{message}/{modelId}/{signaturesFile?}', [RequestFormController::class, 'callbackSignNewBudget'])->name('callbackSignNewBudget');
     Route::get('/signed-request-form-pdf/{requestForm}', [RequestFormController::class, 'signedRequestFormPDF'])->name('signedRequestFormPDF');
+    Route::get('/request_form_comments', [RequestFormController::class, 'request_form_comments'])->name('request_form_comments');
+
+    Route::prefix('message')->as('message.')->middleware('auth')->group(function () {
+        Route::post('/{requestForm}/store/{eventType}/{from}', [RequestFormMessageController::class, 'store'])->name('store');
+    });
 
     Route::prefix('items')->as('items.')->middleware('auth')->group(function () {
         Route::get('/create', [RequestFormController::class, 'create'])->name('create');
@@ -1377,6 +1386,8 @@ Route::prefix('request_forms')->as('request_forms.')->middleware('auth')->group(
         Route::post('/{requestForm}/create_fund_to_be_settled', [PurchasingProcessController::class, 'create_fund_to_be_settled'])->name('create_fund_to_be_settled');
         Route::post('/{requestForm}/create_tender', [PurchasingProcessController::class, 'create_tender'])->name('create_tender');
         Route::post('/{requestForm}/create_oc', [PurchasingProcessController::class, 'create_oc'])->name('create_oc');
+        Route::post('/{requestForm}/create_convenio_marco', [PurchasingProcessController::class, 'create_convenio_marco'])->name('create_convenio_marco');
+        Route::post('/{requestForm}/create_direct_deal', [PurchasingProcessController::class, 'create_direct_deal'])->name('create_direct_deal');
         Route::post('{requestForm}/create_new_budget', [RequestFormController::class, 'create_new_budget'])->name('create_new_budget');
         Route::get('/petty_cash/{pettyCash}/download', [PettyCashController::class, 'download'])->name('petty_cash.download');
         Route::get('/fund_to_be_settled/{fundToBeSettled}/download', [FundToBeSettledController::class, 'download'])->name('fund_to_be_settled.download');
@@ -1385,7 +1396,8 @@ Route::prefix('request_forms')->as('request_forms.')->middleware('auth')->group(
     });
 
     /* DOCUMENTS */
-    Route::get('/create_form_document/{requestForm}', [RequestFormController::class, 'create_form_document'])->name('create_form_document');
+    Route::get('/create_form_document/{requestForm}/{has_increased_expense}', [RequestFormController::class, 'create_form_document'])->name('create_form_document');
+    Route::get('/create_view_document/{requestForm}/{has_increased_expense}', [RequestFormController::class, 'create_view_document'])->name('create_view_document');
     Route::get('/create_internal_purchase_order_document/{purchasingProcessDetail}', [InternalPurchaseOrderController::class, 'create_internal_purchase_order_document'])->name('create_internal_purchase_order_document');
 
     Route::get('/{requestForm}/edit', [RequestFormController::class, 'edit'])->name('edit');
@@ -1587,7 +1599,7 @@ Route::prefix('suitability')->as('suitability.')->middleware('auth')->group(func
 });
 
 //settings module
-Route::prefix('/settings')->as('settings.')->middleware(['auth', 'role:god'])->group(function () {
+Route::prefix('/settings')->as('settings.')->middleware(['auth', 'role:superuser'])->group(function () {
     Route::get('/', [SettingController::class, 'index'])->name('index');
     Route::get('/create', [SettingController::class, 'create'])->name('create');
     Route::post('/store', [SettingController::class, 'store'])->name('store');

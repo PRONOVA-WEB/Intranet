@@ -15,6 +15,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(CountrySeeder::class);
         $this->call(CommuneSeeder::class);
+        $this->call(ClRegionsSeeder::class);
+        $this->call(ClCommunesSeeder::class);
         $this->call(EstablishmentSeeder::class);
         $this->call(OrganizationalUnitSeeder::class);
         $this->call(RoleAndPermissionSeeder::class);
@@ -53,16 +55,19 @@ class DatabaseSeeder extends Seeder
 
         /* SEED PARA MODULO DROGUERÍA DEL SITIO  */
         $this->call(PharmaciesSeeder::class);
-        $this->call(SuppliersSeeder::class);
+        $this->call(PharmacySuppliersSeeder::class);
         $this->call(ProductUnitSeeder::class);
         $this->call(ProductCategorySeeder::class);
         $this->call(ProductProgramSeeder::class);
-
-
+        $this->call(UserExternalSeeder::class);
 
         /* SEED PARA SETTINGS DEL SITIO  */
         $this->call(SettingSeeder::class);
 
+        /* SEED PARA SGR DEL SITIO  */
+        $this->call(ReqCategoriesSeeder::class);
 
+        /* DIRECTORIO PARA BIBLIOTECA DE ARCHIVOS PÚBLICOS */
+        \Storage::makeDirectory('library');
     }
 }

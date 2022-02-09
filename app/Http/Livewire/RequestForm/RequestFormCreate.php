@@ -193,7 +193,11 @@ class RequestFormCreate extends Component
                                     empresa que indique la compra asociada, y un correo de respaldo que
                                     la empresa acepta la nueva adquisición.";
               break;
-          case "":
+          case 5: //COMPRA ÁGIL
+              $this->messagePM[] = "Especificaciones Técnicas";
+              $this->messagePM[] = "Decretos Presupuestarios, si procede.";
+              $this->messagePM[] = "Convenios Mandatos, si procede.";
+              $this->messagePM[] = "Resoluciones Aprobatorias de Programa Ministeriales, si procede.";
               break;
       }
     }
@@ -204,6 +208,14 @@ class RequestFormCreate extends Component
         $total += $item[$this->isRFItems ? 'totalValue' : 'unitValue'];
 
       return $total;
+    }
+
+    private function createFolio(){
+        $startOfYear = Carbon::now()->startOfYear();
+        $endOfYear = Carbon::now()->endOfYear();
+        $counter = RequestForm::withTrashed()->where('created_at', '>=' , $startOfYear)->where('created_at', '<=', $endOfYear)->count();
+        $counter++;
+        return Carbon::now()->year.'-'.$counter;
     }
 
     public function saveRequestForm(){
@@ -223,7 +235,7 @@ class RequestFormCreate extends Component
           'subtype.required'             =>  'Seleccione el tipo para este formulario.',
           'purchaseMechanism.required'   =>  'Seleccione un Mecanismo de Compra.',
           'program.required'             =>  'Ingrese un Programa Asociado.',
-          'fileRequests.required'        =>  'Debe agregar los archivos solicitados',
+          'fileRequests.required'        =>  'Debe agregar los archivos solicitados (DOC RESPALDO)',
           'justify.required'             =>  'Campo Justificación de Adquisición es requerido',
           ($this->isRFItems ? 'items.required' : 'passengers.required') => ($this->isRFItems ? 'Debe agregar al menos un Item para Bien y/o Servicio' : 'Debe agregar al menos un Pasajero')
         ],
@@ -257,7 +269,12 @@ class RequestFormCreate extends Component
             'status'                =>  'pending'
         ]);
 
-        if ($this->isRFItems){
+        if(!$this->idRF){
+          $req->folio = $this->createFolio();
+          $req->save();
+        }
+
+        if($this->isRFItems){
           // save items
           foreach($this->items as $item){
             ItemRequestForm::updateOrCreate(
@@ -307,7 +324,7 @@ class RequestFormCreate extends Component
 
         if($this->editRF){
           $this->isRFItems ? ItemRequestForm::destroy($this->deletedItems) : Passenger::destroy($this->deletedPassengers);
-          session()->flash('info', 'Formulario de requrimiento N° '.$req->id.' fue editado con exito.');
+          session()->flash('info', 'Formulario de requerimiento N° '.$req->folio.' fue editado con exito.');
         }
         else{
           EventRequestform::createLeadershipEvent($req);
@@ -346,7 +363,7 @@ class RequestFormCreate extends Component
           }
           //---------------------------------------------------------
 
-          session()->flash('info', 'Formulario de requrimiento N° '.$req->id.' fue creado con exito.');
+          session()->flash('info', 'Formulario de requerimiento N° '.$req->folio.' fue creado con exito.');
         }
 
         // Se guarda los archivos del form req cuando ya todo lo anteior se guardó exitosamente
@@ -356,7 +373,7 @@ class RequestFormCreate extends Component
               $now = Carbon::now()->format('Y_m_d_H_i_s');
               $file_name = $now.'_req_file_'.$nFiles;
               $reqFile->name = $fileRequest->getClientOriginalName();
-              $reqFile->file = $fileRequest->storeAs('/ionline/request_forms/request_files', $file_name.'.'.$fileRequest->extension(), 'gcs');
+              $reqFile->file = $fileRequest->storeAs('/request_forms/request_files', $file_name.'.'.$fileRequest->extension(), 'gcs');
               $reqFile->request_form_id = $req->id;
               $reqFile->user_id = Auth()->user()->id;
               $reqFile->save();

@@ -6,7 +6,7 @@
 
 @include('documents.partes.partials.nav')
 
-<h3 class="mb-3">Ingreso Parte</h3>
+<h3 class="mb-3">Ingreso de parte</h3>
 
 <form method="POST" class="form" action="{{ route('documents.partes.store')}}" enctype="multipart/form-data">
     @csrf
@@ -99,7 +99,7 @@
             </div>
         </fieldset>
 
-        
+
 
     </div>
 

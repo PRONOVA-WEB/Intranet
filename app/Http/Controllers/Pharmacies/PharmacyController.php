@@ -16,7 +16,7 @@ class PharmacyController extends Controller
     public function index()
     {
 
-        if(Auth::user()->can('Pharmacy: admin')){
+        if(Auth::user()->can('Pharmacy: manager')){
             session(['pharmacy_id' => 1]);
         }
 
