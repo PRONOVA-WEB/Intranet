@@ -9,8 +9,8 @@
     <form method="POST" action="{{ route('documents.signatures.store') }}" enctype="multipart/form-data" onsubmit="disableButton(this)">
         @csrf
 
-        @if(isset($documentId))
-            <input type="hidden" name="document_id" value="{{$documentId}}">
+        @if(isset($document))
+            <input type="hidden" name="document_id" value="{{$document->id}}">
         @endif
 
         @if(isset($signature->agreement_id))
@@ -117,24 +117,7 @@
             <hr>
         @endif
 
-        <div class="form-row">
-
-
-
-            <fieldset class="form-group col">
-                <label for="for_distribution">Distribución del documento (separados por coma)</label>
-                <textarea class="form-control red-tooltip" id="for_distribution" name="distribution"
-                          rows="6">{{  isset($signature) ?  str_replace(PHP_EOL, ",", $signature->recipients)  : ''}}</textarea>
-            </fieldset>
-
-            <fieldset class="form-group col">
-                <label for="for_recipients">Destinatarios del documento (separados por coma)</label>
-                <textarea type="text" class="form-control red-tooltip" id="for_recipients" name="recipients" rows="6"
-
-                ></textarea>
-            </fieldset>
-
-        </div>
+        @livewire('documents.add-email-text-area-list', ['document'=>$document,'signature'=>$signature])
 
         <button type="submit" id="submitBtn" class="btn btn-primary" onclick="disableButton(this)"> <i class="fa fa-file"></i> Crear Solicitud</button>
 

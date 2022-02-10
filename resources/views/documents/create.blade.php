@@ -25,16 +25,16 @@
     @csrf
 
     <div class="form-row">
-        <div class="form-group col-2">
+        <div class="form-group col-lg-2">
             <label for="forNumber">Número</label>
             <input type="text" class="form-control" id="forNumber" name="number"
                 placeholder="Asignado automático">
         </div>
-        <div class="form-group col-2">
+        <div class="form-group col-lg-2">
             <label for="forDate">Fecha</label>
             <input type="date" class="form-control" id="forDate" name="date" value="{{\Carbon\Carbon::now()->toDateString()}}">
         </div>
-        <div class="form-group col-2">
+        <div class="form-group col-lg-2">
             <label for="forType">Tipo*</label>
             <select name="type" id="formType" class="form-control" required>
                 <option value="">Seleccione tipo</option>
@@ -64,7 +64,7 @@
     </div>
 <div id="collapse">
     <div class="form-row">
-        <div class="form-group col-7">
+        <div class="form-group col-lg-7">
             <div class="form-group ">
                 <label for="forFrom">De:*</label>
                 <input type="text" class="form-control" id="forFrom" name="from"
@@ -96,26 +96,12 @@
         <label for="contenido">Contenido*</label>
         <textarea class="form-control" id="contenido" rows="18" name="content">{!! $document->content !!}</textarea>
     </div>
+    <hr>
 
-    <div class="form-row">
-        <div class="form-group col">
-            <label for="forDistribution">Distribución (separado por salto de línea)</label>
-            <textarea class="form-control" id="forDistribution" rows="6" name="distribution">{!! $document->distribution ?? '' !!}</textarea>
-        </div>
-
-        <div class="form-group col">
-            <label for="forResponsible">Responsables (separado por salto de línea)</label>
-            <textarea class="form-control" id="forResponsible" rows="6"
-                name="responsible">{!! $document->responsible ? $document->responsible : '' !!}</textarea>
-        </div>
-    </div>
+    @livewire('documents.add-email-text-area-list')
 
     <div class="form-group">
         <button type="submit" class="btn btn-primary mr-4">Guardar</button>
-        <button type="button" class="btn btn-outline-primary"
-            data-toggle="tooltip" data-placement="top"
-            title="¡ Tampoco me pongas el mouse encima !"
-            onclick="alert('Noooo, si pones Aceptar se borrará todo.');">No apretar</button>
     </div>
 </form>
 
