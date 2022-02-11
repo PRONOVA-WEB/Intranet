@@ -72,12 +72,14 @@
             @csrf
             @method('PUT')
 
-            <div class="row">
+            {{-- <div class="row">
                 <fieldset class="form-group col">
                     <label for="for-distribution"><strong>Distribución:</strong></label>
                     <textarea name="distribution" rows="10" class="form-control">{{ $document->distribution}}</textarea>
                 </fieldset>
-            </div>
+            </div> --}}
+
+            @livewire('documents.add-email-text-area-list', ['document'=>$document])
 
             <div class="row">
 
