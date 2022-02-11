@@ -1,5 +1,27 @@
 <ul class="nav nav-tabs mb-3 d-print-none">
 
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <i class="fas fa-file-alt"></i> Formularios
+    </a>
+    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+      <a class="dropdown-item" href="{{ route('request_forms.my_forms') }}"><i class="fas fa-inbox"></i> Mis Formularios</a>
+      @if(Auth::user()->hasPermissionTo('Request Forms: all'))
+      <a class="dropdown-item" href="{{ route('request_forms.all_forms') }}"><i class="fas fa-inbox"></i> Todos los formularios</a>
+      @endif
+      <a class="dropdown-item" href="{{ route('request_forms.pending_forms') }}"><i class="fas fa-inbox"></i>
+        {{-- @if(App\Models\RequestForms\RequestForm::getPendingRequestToSign() > 0)
+            <span class="badge badge-secondary">{{ App\Models\ReplacementStaff\RequestReplacementStaff::getPendingRequestToSign() }} </span>
+        @endif --}}
+        Pendientes por firmar
+      </a>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" href="{{ route('request_forms.items.create') }}"><i class="fas fa-file-alt"></i> Bienes y/o Servicios</a>
+      <a class="dropdown-item" href="{{ route('request_forms.passengers.create') }}"><i class="fas fa-ticket-alt"></i> Pasajes Aéreos</a>
+    </div>
+  </li>
+
+  @if(Auth()->user()->organizational_unit_id == 37)
     <li class="nav-item dropdown">
 <<<<<<< HEAD
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
@@ -69,7 +91,6 @@
       </a>
       <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
         <a class="dropdown-item" href="{{ route('request_forms.supply.index') }}"><i class="fas fa-inbox"></i> Comprador</a>
-        <!-- <div class="dropdown-divider"></div> -->
       </div>
     </li>
   @endif
