@@ -1,5 +1,5 @@
 <div>
-    <div class="form-row">
+    {{-- <div class="form-row">
         <fieldset class="form-group col">
             <label for="for_establishment_id">Establecimiento</label>
 
@@ -12,7 +12,7 @@
                 </select>
             </div>
         </fieldset>
-    </div>
+    </div> --}}
 
     <div class="form-row" >
 

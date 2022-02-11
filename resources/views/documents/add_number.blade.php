@@ -68,7 +68,7 @@
     @else
 
         <form method="POST" class="form-horizontal" enctype="multipart/form-data"
-            action="{{ route('documents.store_number', $document) }}">
+            action="{{ route('documents.store_number', $document->id) }}">
             @csrf
             @method('PUT')
 
@@ -100,8 +100,8 @@
                 <fieldset class="form-group col">
                     <label for="for_file">Archivo</label>
                     <input type="file" class="form-control-file" id="for_file"
-                        name="file" required>
-                    <small class="form-text text-muted">Tamaño máximo 32 MB</small>
+                        name="file" accept="application/pdf" required>
+                    <small class="form-text text-muted">Tamaño máximo 20 MB | Formato .PDF</small>
                 </fieldset>
 
                 <div class="form-check form-check-inline col">

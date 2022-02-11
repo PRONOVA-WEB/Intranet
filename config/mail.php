@@ -84,8 +84,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'sistemas.ssi@redsalud.gob.cl'),
-        'name' => env('MAIL_FROM_NAME', 'Intranet - Servicio de Salud Iquique'),
+        'address' => env('MAIL_FROM_ADDRESS', 'adiaz@pronova.cl'),
+        'name' => env('MAIL_FROM_NAME', 'Intranet Pronova'),
     ],
 
     /*

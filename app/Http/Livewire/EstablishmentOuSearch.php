@@ -10,11 +10,6 @@ use App\User;
 
 class EstablishmentOuSearch extends Component
 {
-    public $establishments;
-    public $establishment_id;
-    // public $ous;
-
-
     public $query;
     public $ous;
     /** Para cuando viene precargado */
@@ -38,8 +33,6 @@ class EstablishmentOuSearch extends Component
 
     public function mount()
     {
-        $this->establishments = Establishment::all();
-
         if($this->ou) {
             $this->setOu($this->ou);
         }
@@ -58,7 +51,7 @@ class EstablishmentOuSearch extends Component
 
     public function updatedQuery()
     {
-        $this->ous = organizationalunit::where('establishment_id',$this->establishment_id)
+        $this->ous = organizationalunit::where('establishment_id',Establishment::first()->id)
                                          ->where('name','LIKE','%'.$this->query.'%')
                                          ->orderBy('name','Asc')
                                          ->get();
