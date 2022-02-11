@@ -319,9 +319,8 @@ class DocumentController extends Controller
         $signaturesFile->md5_file = md5($documentFile->output());
 
         $signature->signaturesFiles->add($signaturesFile);
-        $documentId = $document->id;
 
-        return view('documents.signatures.create', compact('signature', 'documentId'));
+        return view('documents.signatures.create', compact('signature', 'document'));
     }
 
     public function signedDocumentPdf($id)
