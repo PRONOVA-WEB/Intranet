@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Rrhh\OrganizationalUnit;
 use App\User;
 use App\Documents\Correlative;
-//use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 
 class DocumentController extends Controller
 {
@@ -177,7 +177,8 @@ class DocumentController extends Controller
      */
     public function destroy(Document $document)
     {
-        //
+        $document->delete();
+        return redirect()->route('documents.index');
     }
 
     /**
@@ -209,7 +210,23 @@ class DocumentController extends Controller
     }
 
     public function storeNumber(Request $request, Document $document)
-    {
+    {//dd($document,$request,$request->adjunto);
+
+        $validator = Validator::make($request->all(), [
+            "file" => "required|max:20000|mimes:pdf"
+        ],
+        [
+            'file.mimes' => 'El archivo a cargar debe ser tipo .PDF',
+            'file.size'  => 'El archivo a cargar no debe exeder los 20 MB',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('documents.index')
+                    //->with(['document',$document->id])
+                    ->withErrors($validator)
+                    ->withInput();
+        }
+
         $document->fill($request->all());
         if ($request->hasFile('file')) {
             $filename = $document->id . '-' .
@@ -226,9 +243,12 @@ class DocumentController extends Controller
             Previsualizar</a>');
 
         if ($request->has('sendMail')) {
-            /* Enviar a todos los email que aparecen en distribución */
-            preg_match_all("/[\._a-zA-Z0-9-]+@[\._a-zA-Z0-9-]+/i", $document->distribution, $emails);
-            Mail::to($emails[0])->send(new SendDocument($document));
+            if(!empty($document->distribution))
+            {
+                 /* Enviar a todos los email que aparecen en distribución */
+                preg_match_all("/[\._a-zA-Z0-9-]+@[\._a-zA-Z0-9-]+/i", $document->distribution, $emails);
+                Mail::to($emails[0])->send(new SendDocument($document));
+            }
         }
 
         return redirect()->route('documents.index');

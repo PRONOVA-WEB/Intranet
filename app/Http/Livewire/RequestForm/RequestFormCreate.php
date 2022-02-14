@@ -213,8 +213,7 @@ class RequestFormCreate extends Component
     private function createFolio(){
         $startOfYear = Carbon::now()->startOfYear();
         $endOfYear = Carbon::now()->endOfYear();
-        $counter = RequestForm::withTrashed()->where('created_at', '>=' , $startOfYear)->where('created_at', '<=', $endOfYear)->count();
-        $counter++;
+        $counter = RequestForm::withTrashed()->whereNull('request_form_id')->where('created_at', '>=' , $startOfYear)->where('created_at', '<=', $endOfYear)->count();
         return Carbon::now()->year.'-'.$counter;
     }
 
@@ -222,16 +221,16 @@ class RequestFormCreate extends Component
       // dd($this->items);
       $this->validate(
         [ 'name'                         =>  'required',
-          //'contractManagerId'            =>  'required',
+          'contractManagerId'            =>  'required',
           'subtype'                      =>  'required',
           'purchaseMechanism'            =>  'required',
           'program'                      =>  'required',
           'justify'                      =>  'required',
-          'fileRequests'                 =>  (!$this->editRF) ? 'required' : '',
+          // 'fileRequests'                 =>  (!$this->editRF) ? 'required' : '',
           ($this->isRFItems ? 'items' : 'passengers') => 'required'
         ],
         [ 'name.required'                =>  'Debe ingresar un nombre a este formulario.',
-          //'contractManagerId.required'   =>  'Debe ingresar un Administrador de Contrato.',
+          'contractManagerId.required'   =>  'Debe ingresar un Administrador de Contrato.',
           'subtype.required'             =>  'Seleccione el tipo para este formulario.',
           'purchaseMechanism.required'   =>  'Seleccione un Mecanismo de Compra.',
           'program.required'             =>  'Ingrese un Programa Asociado.',
@@ -268,11 +267,6 @@ class RequestFormCreate extends Component
             'program'               =>  $this->program,
             'status'                =>  'pending'
         ]);
-
-        if(!$this->idRF){
-          $req->folio = $this->createFolio();
-          $req->save();
-        }
 
         if($this->isRFItems){
           // save items
@@ -326,7 +320,8 @@ class RequestFormCreate extends Component
           $this->isRFItems ? ItemRequestForm::destroy($this->deletedItems) : Passenger::destroy($this->deletedPassengers);
           session()->flash('info', 'Formulario de requerimiento N° '.$req->folio.' fue editado con exito.');
         }
-        else{
+        else{ // nuevo formulario de requerimiento
+          $req->update(['folio' => $this->createFolio()]);
           EventRequestform::createLeadershipEvent($req);
           EventRequestform::createPreFinanceEvent($req);
           EventRequestform::createFinanceEvent($req);
@@ -339,9 +334,9 @@ class RequestFormCreate extends Component
 
           if($mail_contract_manager){
               $emails = [$mail_contract_manager];
-              Mail::to($emails)
-                ->cc(env('APP_RF_MAIL'))
-                ->send(new NewRequestFormNotification($req));
+              // Mail::to($emails)
+              //   ->cc(env('APP_RF_MAIL'))
+              //   ->send(new NewRequestFormNotification($req));
           }
           //---------------------------------------------------------
 
@@ -357,9 +352,9 @@ class RequestFormCreate extends Component
           $emails = [$mail_notification_ou_manager->user->email];
 
           if($mail_notification_ou_manager){
-              Mail::to($emails)
-                ->cc(env('APP_RF_MAIL'))
-                ->send(new RequestFormSignNotification($req, $req->eventRequestForms->first()));
+              // Mail::to($emails)
+              //   ->cc(env('APP_RF_MAIL'))
+              //   ->send(new RequestFormSignNotification($req, $req->eventRequestForms->first()));
           }
           //---------------------------------------------------------
 

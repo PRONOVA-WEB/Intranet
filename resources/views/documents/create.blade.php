@@ -47,7 +47,7 @@
                 <option value="Resolución" @if($document->type == 'Resolución') selected @endif>Resolución</option>
             </select>
         </div>
-        <div class="form-group col">
+        <div class="form-group col-lg-6">
             <label for="for_antecedent">Antecedente</label>
             <input type="text" class="form-control" id="for_antecedent" name="antecedent"
                 placeholder="[opcional]"
@@ -55,7 +55,7 @@
         </div>
     </div>
     <div class="form-row">
-        <div class="form-group col">
+        <div class="form-group col-lg-12">
             <label for="forSubject">Materia*</label>
             <input type="text" class="form-control" id="forSubject" name="subject"
                 placeholder="Descripción del contenido del documento" required maxlength="255"

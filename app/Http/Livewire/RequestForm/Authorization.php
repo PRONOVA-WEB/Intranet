@@ -150,9 +150,9 @@ class Authorization extends Component
                 //     ->send(new RequestFormSignNotification($event->requestForm, $nextEvent->first()));
                 // }
                 else{
-                  Mail::to($emails)
-                    ->cc(env('APP_RF_MAIL'))
-                    ->send(new RequestFormSignNotification($event->requestForm, $nextEvent->first()));
+                  // Mail::to($emails)
+                  //   ->cc(env('APP_RF_MAIL'))
+                  //   ->send(new RequestFormSignNotification($event->requestForm, $nextEvent->first()));
                 }
               }
           }
@@ -162,9 +162,9 @@ class Authorization extends Component
                       $this->requestForm->contractManager->email,
                       $this->requestForm->purchasers->first()->email
                   ];
-                  Mail::to($emails)
-                    ->cc(env('APP_RF_MAIL'))
-                    ->send(new RfEndSignNotification($event->requestForm));
+                  // Mail::to($emails)
+                  //   ->cc(env('APP_RF_MAIL'))
+                  //   ->send(new RfEndSignNotification($event->requestForm));
               }
           }
           session()->flash('info', 'Formulario de Requerimientos Nro.'.$this->requestForm->id.' AUTORIZADO correctamente!');

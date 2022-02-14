@@ -22,29 +22,6 @@
     @endif
 </h3>
 
-
-
-<!-- <div class="row">
-<div class="col-12">
-
-    <label for="asignarCategoria" class="sr-only">Asignar categoría</label>
-    <input type="text" readonly class="form-control-plaintext" id="asignarCategoria" value="Asignar categoría:">
-    <label for="category_id" class="sr-only">Categorias</label>
-    <select name="category_id" id="category_id" class="selectpicker input-sm"
-        multiple title="Elige tus categorías" >
-        @foreach($categories as $key => $category)
-            <option value="{{$category->id}}"
-            data-content="<span class='badge badge-primary' style='background-color: #{{$category->color}};'>{{$category->name}}</span>">
-            </option>
-        @endforeach
-    </select>
-
-</div>
-
-</div>
-
-<hr> -->
-
 <div class="form-row">
     @if($parte->id <> 0)
         <div class="col-8">
@@ -86,7 +63,7 @@
                 </fieldset>
 
 
-                <fieldset class="form-group @if($parte->id <> 0) col-12 @else col-6 @endif">
+                <fieldset class="form-group @if($parte->id <> 0) col-lg-12 @else col-lg-6 @endif">
                     <label for="ou">Unidad Organizacional</label>
                     <!-- <select class="custom-select" id="forOrganizationalUnit" name="organizationalunit"> -->
                     <select class="form-control selectpicker" data-live-search="true" id="ou" name="to_ou_id" required
@@ -126,7 +103,7 @@
                     </select>
                 </fieldset>
 
-                <fieldset class="form-group @if($parte->id <> 0) col-12 @else col-5 @endif">
+                <fieldset class="form-group @if($parte->id <> 0) col-lg-12 @else col-lg-5 @endif">
                     <label for="for_origin">Destinatario</label>
                     <div class="input-group">
                         <select class="form-control" name="to_user_id" id="user" required="">
@@ -164,13 +141,13 @@
 
 
             <div class="form-row">
-                <fieldset class="form-group @if($parte->id <> 0) col-12 @else col-6 @endif">
+                <fieldset class="form-group @if($parte->id <> 0) col-lg-12 @else col-lg-6 @endif">
                     <label for="for_date">Asunto</label>
                     <input type="text" class="form-control" id="for_subject"
                            name="subject" required="required" value="{{$parte->subject}}">
                 </fieldset>
 
-                <fieldset class="form-group @if($parte->id <> 0) col-12 @else col-2 @endif">
+                <fieldset class="form-group @if($parte->id <> 0) col-lg-12 @else col-lg-2 @endif">
                     <label for="for_origin">Tipo</label>
                     <select class="form-control" name="priority" id="priority" >
                         <option>Normal</option>
@@ -178,7 +155,7 @@
                     </select>
                 </fieldset>
 
-                <fieldset class="form-group @if($parte->id <> 0) col-12 @else col-3 @endif">
+                <fieldset class="form-group @if($parte->id <> 0) col-lg-12 @else col-lg-3 @endif">
                     <label for="for_origin">Fecha límite</label>
                     <input type="datetime-local" class="form-control" id="for_limit_at"
                            name="limit_at">
@@ -186,12 +163,12 @@
             </div>
 
             <div class="row">
-                <fieldset class="form-group @if($parte->id <> 0) col-12 @else col-5 @endif">
+                <fieldset class="form-group @if($parte->id <> 0) col-lg-12 @else col-lg-5 @endif">
                     <label for="forFile">Adjuntar archivos</label>
                     <input type="file" class="form-control-file" id="forfile" name="forfile[]" multiple>
                 </fieldset>
 
-                <fieldset class="form-group @if($parte->id <> 0) col-12 @else col-3 @endif">
+                <fieldset class="form-group @if($parte->id <> 0) col-lg-12 @else col-lg-3 @endif">
                     <label for="for_document">Asociar documentos</label>
                     <div class="input-group">
                         <input type="number" class="form-control" id="for_document" name="document">

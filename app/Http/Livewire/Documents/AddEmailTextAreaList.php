@@ -40,9 +40,7 @@ class AddEmailTextAreaList extends Component
     {
         if ($selectedUser) {
             if (!str_contains($this->$list, $selectedUser->email)) {
-                if ($this->document) {
-                    $this->$list = (empty($this->$list)) ? $selectedUser->email : $this->$list . PHP_EOL . $selectedUser->email;
-                }
+                $this->$list = (empty($this->$list)) ? $selectedUser->email : $this->$list . PHP_EOL . $selectedUser->email;
             }
         }
     }
@@ -52,6 +50,9 @@ class AddEmailTextAreaList extends Component
 
         if (!empty($this->organizationalUnit)) {
             $this->users = OrganizationalUnit::find($this->organizationalUnit)->users;
+        }
+        else {
+            $this->users = [];
         }
 
         return view('livewire.documents.add-email-text-area-list')

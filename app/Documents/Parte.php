@@ -68,6 +68,11 @@ class Parte extends Model
         return $query;
     }
 
+    public function getEnteredAtAttribute($value)
+    {
+        return Carbon::parse($value)->format('d-m-Y h:s:i');
+    }
+
     use SoftDeletes;
 
     /**
