@@ -31,11 +31,7 @@
 
   <br>
 
-<<<<<<< HEAD:resources/views/request_form/mail/rfelectronicsignaturenotification.blade.php
   <p>Para mayor infromación favor ingresar a su Bandeja de Solicitudes en {{ settings('site.title') }}.</p>
-=======
-  <p>Para mayor información favor ingresar a su Bandeja de Solicitudes en iOnline.</p>
->>>>>>> 57b423c3d4874fcfb5f4e575bac206351fe5e0a8:resources/views/request_form/mail/rfendsignnotification.blade.php
 
   <br>
 

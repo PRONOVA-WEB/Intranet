@@ -40,7 +40,7 @@ class PurchasingProcessController extends Controller
 
         $request_forms = RequestForm::with('user', 'userOrganizationalUnit', 'purchaseMechanism', 'eventRequestForms.signerOrganizationalUnit', 'purchasers')
             ->where('status', 'approved')->whereNotNull('signatures_file_id')->latest('id')->paginate(15);
-        
+
         return view('request_form.purchase.index', compact('my_request_forms', 'request_forms'));
     }
 
@@ -147,7 +147,7 @@ class PurchasingProcessController extends Controller
 
         $now = Carbon::now()->format('Y_m_d_H_i_s');
         $file_name = $now.'_petty_cash_file_'.$pettyCash->id;
-        $pettyCash->file = $request->file ? $request->file->storeAs('/ionline/request_forms/purchase_item_files', $file_name.'.'.$request->file->extension(), 'gcs') : null;
+        $pettyCash->file = $request->file ? $request->file->storeAs('/request_forms/purchase_item_files', $file_name.'.'.$request->file->extension(), 'gcs') : null;
         $pettyCash->save();
 
         foreach($request->item_id as $key => $item){
@@ -230,10 +230,10 @@ class PurchasingProcessController extends Controller
 
         //Registrar archivos en attached_files
         $now = Carbon::now()->format('Y_m_d_H_i_s');
-        $files = ['resol_administrative_bases_file' => 'Resolución bases administrativas', 
+        $files = ['resol_administrative_bases_file' => 'Resolución bases administrativas',
                   'resol_adjudication_deserted_file' => 'Resolución de adjudicación/desierta',
-                  'resol_contract_file' => 'Resolución de contrato', 
-                  'guarantee_ticket_file' => 'Boleta de garantía', 
+                  'resol_contract_file' => 'Resolución de contrato',
+                  'guarantee_ticket_file' => 'Boleta de garantía',
                   'taking_of_reason_file' => 'Resolución toma de razón'];
 
         foreach($files as $key => $file){
@@ -285,12 +285,12 @@ class PurchasingProcessController extends Controller
             $archivo = $request->file($file);
             $file_name = $now.'_'.$file.'_'.$oc->id;
             $attachedFile = new AttachedFile();
-            $attachedFile->file = $archivo->storeAs('/ionline/request_forms/attached_files', $file_name.'.'.$archivo->extension(), 'gcs');
+            $attachedFile->file = $archivo->storeAs('/request_forms/attached_files', $file_name.'.'.$archivo->extension(), 'gcs');
             $attachedFile->document_type = 'Orden de compra';
             $attachedFile->immediate_purchase_id = $oc->id;
             $attachedFile->save();
         }
-        
+
         return redirect()->route('request_forms.supply.purchase', compact('requestForm'));
 
     }
@@ -324,7 +324,7 @@ class PurchasingProcessController extends Controller
         //Registrar archivos en attached_files
         $now = Carbon::now()->format('Y_m_d_H_i_s');
         $files = ['oc_file' => 'Orden de compra',
-                  'resol_supplementary_agree_file' => 'Resolución de acuerdo complementario', 
+                  'resol_supplementary_agree_file' => 'Resolución de acuerdo complementario',
                   'resol_awarding_file' => 'Resolución de adjudicación',
                   'resol_purchase_intention' => 'Resolución de intención de compra'];
 
@@ -374,7 +374,7 @@ class PurchasingProcessController extends Controller
         //Registrar archivos en attached_files
         $now = Carbon::now()->format('Y_m_d_H_i_s');
         $files = ['resol_direct_deal_file' => 'Resolución de trato directo',
-                  'resol_contract_file' => 'Resolución de contrato', 
+                  'resol_contract_file' => 'Resolución de contrato',
                   'guarantee_ticket_file' => 'Boleta de garantía'];
 
         foreach($files as $key => $file){
@@ -382,7 +382,7 @@ class PurchasingProcessController extends Controller
                 $archivo = $request->file($key);
                 $file_name = $now.'_'.$key.'_'.$directdeal->id;
                 $attachedFile = new AttachedFile();
-                $attachedFile->file = $archivo->storeAs('/ionline/request_forms/attached_files', $file_name.'.'.$archivo->extension(), 'gcs');
+                $attachedFile->file = $archivo->storeAs('/request_forms/attached_files', $file_name.'.'.$archivo->extension(), 'gcs');
                 $attachedFile->document_type = $file;
                 $attachedFile->direct_deal_id = $directdeal->id;
                 $attachedFile->save();

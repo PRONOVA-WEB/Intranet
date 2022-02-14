@@ -25,7 +25,7 @@ class ProfileController extends Controller
         $now = Carbon::now()->format('Y_m_d_H_i_s');
         $file = $request->file('file');
         $file_name = $now.'_'.$replacementStaff->run;
-        $profile->file = $file->storeAs('/ionline/replacement_staff/profile_docs/', $file_name.'.'.$file->extension(), 'gcs');
+        $profile->file = $file->storeAs('/replacement_staff/profile_docs/', $file_name.'.'.$file->extension(), 'gcs');
         $profile->save();
 
         session()->flash('success', 'Su perfil profesional ha sido ingresado.');

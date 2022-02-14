@@ -31,7 +31,7 @@
 
   <br>
 
-  <p>Para mayor información favor ingresar a su Bandeja de Solicitudes en iOnline.</p>
+  <p>Para mayor información favor ingresar a su Bandeja de Solicitudes.</p>
 
   <br>
 

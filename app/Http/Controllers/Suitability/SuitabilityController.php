@@ -36,7 +36,7 @@ class SuitabilityController extends Controller
         $dataArray = array();
         $schools = School::orderBy('name', 'asc')->get();
         $result = Result::has('signedCertificate')->with('psirequest');
-        //$schools = School::orderBy('name', 'asc')->get();        
+        //$schools = School::orderBy('name', 'asc')->get();
         $sumesperando = 0;
         $sumfinalizado = 0;
         $sumaprobado = 0;
@@ -282,7 +282,7 @@ class SuitabilityController extends Controller
             $signaturesFile->save();
 
             //Se guarda en gcs
-            $filePath = 'ionline/signatures/original/' . $signaturesFile->id . '.pdf';
+            $filePath = '/signatures/original/' . $signaturesFile->id . '.pdf';
             $signaturesFile->update(['file' => $filePath]);
             Storage::disk('gcs')->put($filePath, $pdf->output());
 
