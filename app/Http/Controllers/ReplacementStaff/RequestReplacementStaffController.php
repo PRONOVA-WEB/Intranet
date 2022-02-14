@@ -540,7 +540,7 @@ class RequestReplacementStaffController extends Controller
             $now = Carbon::now()->format('Y_m_d_H_i_s');
             $file = $request->file('job_profile_file');
             $file_name = $now.'_job_profile';
-            $requestReplacementStaff->job_profile_file = $file->storeAs('/ionline/replacement_staff/request_job_profile/', $file_name.'.'.$file->extension(), 'gcs');
+            $requestReplacementStaff->job_profile_file = $file->storeAs('/replacement_staff/request_job_profile/', $file_name.'.'.$file->extension(), 'gcs');
             $requestReplacementStaff->save();
         }
         else{
