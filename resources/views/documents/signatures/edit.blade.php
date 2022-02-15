@@ -12,7 +12,7 @@
     <div class="form-row">
 
         <fieldset class="form-group col-3">
-            <label for="for_request_date">Fecha Documento</label>
+            <label for="for_request_date">Fecha Documento*</label>
             <input type="date" class="form-control" id="for_request_date" name="request_date" required value="{{\Carbon\Carbon::parse($signature->request_date)->format('Y-m-d')}}">
         </fieldset>
     </div>
@@ -20,7 +20,7 @@
     <div class="form-row">
 
         <fieldset class="form-group col-3">
-            <label for="for_document_type">Tipo de Documento</label>
+            <label for="for_document_type">Tipo de Documento*</label>
             <select class="form-control selectpicker" data-live-search="true" name="document_type" required="" data-size="5">
                 <option value="Carta" @if($signature->document_type == 'Carta') selected @endif >Carta</option>
                 <option value="Circular" @if($signature->document_type == 'Circular') selected @endif>Circular
@@ -40,7 +40,7 @@
         </fieldset>
 
         <fieldset class="form-group col">
-            <label for="for_subject">Materia o tema del documento</label>
+            <label for="for_subject">Materia o tema del documento*</label>
             <input type="text" class="form-control" id="for_subject" name="subject" required value="{{$signature->subject}}">
         </fieldset>
 
@@ -48,14 +48,14 @@
 
     <div class="form-row">
         <fieldset class="form-group col">
-            <label for="for_description">Descripción del documento</label>
-            <input type="text" class="form-control" id="for_description" name="description" value="{{$signature->description}}">
+            <label for="for_description">Descripción del documento*</label>
+            <input type="text" class="form-control" id="for_description" name="description" required value="{{$signature->description}}">
         </fieldset>
     </div>
 
     <div class="form-row">
         <fieldset class="form-group col">
-            <label for="for_document">Documento a distribuir (pdf)</label>
+            <label for="for_document">Documento a distribuir*</label>
             <input type="file" class="form-control" id="for_document" accept="application/pdf" name="document">
             <a href="{{route('documents.signatures.showPdf', [$signature->signaturesFileDocument, time()]
                 )}}" target="_blank" data-toggle="tooltip" data-placement="top" data-original-title="">Documento <i class="fas fa-paperclip"></i>&nbsp

@@ -17,8 +17,6 @@ class AddEmailTextAreaList extends Component
     public $selectedUser;
     public $userRequired;
     public $distribution;
-    public $arrayDistribution = [];
-    public $arrayResponsible = [];
     public $responsible;
     public $document;
     public $signature;

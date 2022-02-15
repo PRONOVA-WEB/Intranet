@@ -8,46 +8,46 @@
         <fieldset class="form-group col-lg-5">
             <label>Unidad Organizacional</label>
             <div wire:ignore>
-            <select name="ou_id_signer" id="for_ou_id_signer" title="Seleccione una unidad" wire:model="organizationalUnit" class="form-control selectpicker" data-live-search="true" data-size="5">
-                <option value=''></option>
+                <select name="ou_id_list" id="for_ou_id_list" title="Seleccione una unidad" wire:model="organizationalUnit" class="form-control selectpicker" data-live-search="true" data-size="5">
+                    <option value=''></option>
 
-                @foreach($ouRoots as $ouRoot)
-                    <option value="{{ $ouRoot->id }}">
-                        {{ $ouRoot->name }}
-                    </option>
-                    @foreach($ouRoot->childs as $child_level_1)
-                        <option value="{{ $child_level_1->id }}">
-                            &nbsp;&nbsp;&nbsp;
-                            {{ $child_level_1->name }}
+                    @foreach($ouRoots as $ouRoot)
+                        <option value="{{ $ouRoot->id }}">
+                            {{ $ouRoot->name }}
                         </option>
-                        @foreach($child_level_1->childs as $child_level_2)
-                            <option value="{{ $child_level_2->id }}">
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                {{ $child_level_2->name }}
+                        @foreach($ouRoot->childs as $child_level_1)
+                            <option value="{{ $child_level_1->id }}">
+                                &nbsp;&nbsp;&nbsp;
+                                {{ $child_level_1->name }}
                             </option>
-                            @foreach($child_level_2->childs as $child_level_3)
-                                <option value="{{ $child_level_3->id }}">
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    {{ $child_level_3->name }}
+                            @foreach($child_level_1->childs as $child_level_2)
+                                <option value="{{ $child_level_2->id }}">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    {{ $child_level_2->name }}
                                 </option>
-                                @foreach($child_level_3->childs as $child_level_4)
-                                    <option value="{{ $child_level_4->id }}">
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        {{ $child_level_4->name }}
+                                @foreach($child_level_2->childs as $child_level_3)
+                                    <option value="{{ $child_level_3->id }}">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        {{ $child_level_3->name }}
                                     </option>
+                                    @foreach($child_level_3->childs as $child_level_4)
+                                        <option value="{{ $child_level_4->id }}">
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            {{ $child_level_4->name }}
+                                        </option>
+                                    @endforeach
                                 @endforeach
                             @endforeach
                         @endforeach
                     @endforeach
-                @endforeach
 
-            </select>
+                </select>
             </div>
         </fieldset>
         @if(count($users) > 0)
             <fieldset class="form-group col-lg-4">
                 <label>Usuario</label>
-                <select name="user_signer" id="for_user_signer" wire:model="user" class="form-control">
+                <select name="user_list" id="for_user_list" wire:model="user" class="form-control">
                     <option value=''></option>
                     @foreach($users as $user)
                         <option value={{ $user->id }}>{{ $user->fullName }}</option>

@@ -71,11 +71,16 @@ class ParteController extends Controller
             "type" => "required",
             "origin" => "required",
             "subject" => "required",
-            "forfile.*"  => "required|max:20000|mimes:pdf,png,jpg,doc,docx,xls,xlsx"
+            "forfile.*"  => "required|max:5000|mimes:pdf,png,jpg,doc,docx,xls,xlsx"
         ],
         [
             'forfile.*.mimes' => 'El archivo a cargar debe ser tipo: pdf, png, jpg, doc, docx, xls, xlsx.',
-            'forfile.*.size'  => 'El archivo a cargar no debe exeder los 20 MB',
+            'forfile.*.size'  => 'El archivo a cargar no debe exeder los 5 MB',
+            'entered_at.required'  => 'el campo fecha de ingreso es obligatorio',
+            'date.required'  => 'el campo fecha de ingreso es obligatorio',
+            'type.required'  => 'el campo tipo de ingreso es obligatorio',
+            'origin.required'  => 'el campo origin de ingreso es obligatorio',
+            'subject.required'  => 'el campo asunto de ingreso es obligatorio',
         ]);
 
         if ($validator->fails()) {
@@ -146,15 +151,21 @@ class ParteController extends Controller
     public function update(Request $request, Parte $parte)
     {
         $validator = Validator::make($request->all(), [
+            "entered_at" => "required",
             "date" => "required",
             "type" => "required",
             "origin" => "required",
             "subject" => "required",
-            "forfile.*" => "max:20000|mimes:pdf,png,jpg,doc,docx,xls,xlsx"
+            "forfile.*" => "max:5000|mimes:pdf,png,jpg,doc,docx,xls,xlsx"
         ],
         [
             'forfile.*.mimes' => 'El archivo a cargar debe ser tipo: pdf, png, jpg, doc, docx, xls, xlsx.',
-            'forfile.*.size'  => 'El archivo a cargar no debe exeder los 20 MB',
+            'forfile.*.size'  => 'El archivo a cargar no debe exeder los 5 MB',
+            'entered_at.required'  => 'el campo fecha de ingreso es obligatorio',
+            'date.required'  => 'el campo fecha de ingreso es obligatorio',
+            'type.required'  => 'el campo tipo es obligatorio',
+            'origin.required'  => 'el campo origin es obligatorio',
+            'subject.required'  => 'el campo asunto es obligatorio',
         ]);
 
         if ($validator->fails()) {

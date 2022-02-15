@@ -20,8 +20,8 @@
         </fieldset>
 
         <fieldset class="form-group col-lg-3">
-            <label for="for_date">Fecha Documento</label>
-            <input type="date" class="form-control" id="for_date"name="date">
+            <label for="for_date">Fecha Documento*</label>
+            <input type="date" class="form-control" id="for_date"name="date" required>
         </fieldset>
 
         <fieldset class="form-group col-lg-3">
@@ -74,7 +74,7 @@
             <div class="custom-file">
                 <label for="forFile">Adjuntar</label>
                 <input type="file" class="form-control-file" id="forfile" name="forfile[]" multiple required>
-                <small class="form-text text-muted">Tamaño máximo 20 MB | Formatos .PDF, .PNG, .JPG, .DOC, .DOCX, .XLS, .XLSX | Puede cargar varios archivos</small>
+                <small class="form-text text-muted">Tamaño máximo 5 MB | Formatos .PDF, .PNG, .JPG, .DOC, .DOCX, .XLS, .XLSX | Puede cargar varios archivos</small>
             </div>
         </fieldset>
         <fieldset class="form-group col-lg-6">

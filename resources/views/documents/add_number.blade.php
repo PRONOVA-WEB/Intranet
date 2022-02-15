@@ -101,7 +101,7 @@
                     <label for="for_file">Archivo</label>
                     <input type="file" class="form-control-file" id="for_file"
                         name="file" accept="application/pdf" required>
-                    <small class="form-text text-muted">Tamaño máximo 20 MB | Formato .PDF</small>
+                    <small class="form-text text-muted">Tamaño máximo 5 MB | Formato .PDF</small>
                 </fieldset>
 
                 <div class="form-check form-check-inline col">

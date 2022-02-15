@@ -78,6 +78,24 @@ class DocumentController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate(
+            [
+                'type'              => 'required',
+                'subject'           => 'required',
+                'from'              => 'required',
+                'for'               => 'required',
+                'greater_hierarchy' => 'required',
+                'content'           => 'required'
+            ],
+            [
+                'type.required'     => 'el campo tipo es obligatorio',
+                'subject.required'  => 'el campo materia es obligatorio',
+                'from.required'     => 'el campo De es obligatorio',
+                'for.required'      => 'el campo Para es obligatorio',
+                'content.required'  => 'el campo Contenido es obligatorio',
+            ]
+        );
+
         $document = new Document($request->All());
         $document->user()->associate(Auth::user());
         $document->organizationalUnit()->associate(Auth::user()->organizationalUnit);
@@ -144,6 +162,23 @@ class DocumentController extends Controller
      */
     public function update(Request $request, Document $document)
     {
+        $request->validate(
+            [
+                'type'              => 'required',
+                'subject'           => 'required',
+                'from'              => 'required',
+                'for'               => 'required',
+                'greater_hierarchy' => 'required',
+                'content'           => 'required'
+            ],
+            [
+                'type.required'     => 'el campo tipo es obligatorio',
+                'subject.required'  => 'el campo materia es obligatorio',
+                'from.required'     => 'el campo De es obligatorio',
+                'for.required'      => 'el campo Para es obligatorio',
+                'content.required'  => 'el campo Contenido es obligatorio',
+            ]
+        );
         $document->fill($request->all());
         /* Agrega uno desde el correlativo */
         if (!$request->number) {
@@ -210,14 +245,13 @@ class DocumentController extends Controller
     }
 
     public function storeNumber(Request $request, Document $document)
-    {//dd($document,$request,$request->adjunto);
-
+    {
         $validator = Validator::make($request->all(), [
-            "file" => "required|max:20000|mimes:pdf"
+            "file" => "required|max:5000|mimes:pdf"
         ],
         [
             'file.mimes' => 'El archivo a cargar debe ser tipo .PDF',
-            'file.size'  => 'El archivo a cargar no debe exeder los 20 MB',
+            'file.size'  => 'El archivo a cargar no debe exeder los 5 MB',
         ]);
 
         if ($validator->fails()) {
