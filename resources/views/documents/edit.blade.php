@@ -112,14 +112,14 @@
     @livewire('documents.add-email-text-area-list', ['document'=>$document])
 
     <div class="form-group">
-        <button type="submit" class="btn btn-primary mr-4">Guardar</button>
+        <button type="submit" class="btn btn-primary float-left">Guardar</button>
         </form>
         @can('Documents: delete document')
             @if(!$document->file OR $document->file_to_sign_id === null)
-            <form method="POST" class="form-horizontal" action="{{ route('documents.destroy', $document) }}">
+            <form method="POST" action="{{ route('documents.destroy', $document) }}">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn btn-danger ml-4 float-right">Eliminar</button>
+                <button type="submit" class="btn btn-danger float-right">Eliminar</button>
                 <br>
             </form>
             @else

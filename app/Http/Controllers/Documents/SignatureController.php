@@ -102,9 +102,17 @@ class SignatureController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'user_signer' => 'bail|required'
+            'user_signer' => 'bail|required',
+            "document" => "required|max:5000|mimes:pdf",
+            'document'     => 'required|max:5000|mimes:pdf',
+            'request_date' => 'required',
+            'document_type'=> 'required',
+            'subject'      => 'required',
+            'description'  => 'required'
         ],[
-            'user_signer.required' => 'Debe asignar un firmante.'
+            'user_signer.required' => 'Debe asignar un firmante.',
+            'document.mimes' => 'El documento a distribuir debe ser tipo .PDF',
+            'document.size'  => 'El documento a distribuir no debe exeder los 5 MB',
         ]);
 
         DB::beginTransaction();
@@ -214,59 +222,6 @@ class SignatureController extends Controller
             throw $e;
         }
 
-        //se crea documento si va de Destinatarios del documento al director
-        // $destinatarios = $request->recipients;
-        // $dest_vec = array_map('trim', explode(',', $destinatarios));
-        // $cont=0;
-
-        // foreach ($dest_vec as $dest) {
-        //     if ($dest == 'director.ssi@redsalud.gob.cl' or $dest == 'director.ssi@redsalud.gov.cl' or $dest == 'director.ssi1@redsalud.gob.cl'and $cont===0)
-        //     {
-        //         $cont=$cont+1;
-        //         $tipo = null;
-        //         $generador = Auth::user()->full_name;
-        //         $unidad = Auth::user()->organizationalUnit->name;
-
-        //         switch ($request->document_type) {
-        //             case 'Memorando':
-        //                 $this->tipo = 'Memo';
-        //                 break;
-        //             case 'Resoluciones':
-        //                 $this->tipo = 'Resolución';
-        //                 break;
-        //             default:
-        //                 $this->tipo = $request->document_type;
-        //                 break;
-        //         }
-
-        //         $parte = Parte::create([
-        //             'entered_at' => Carbon::now(),
-        //             'type' => $this->tipo,
-        //             'date' => $request->request_date,
-        //             'subject' => $request->subject,
-        //             'origin' => $unidad . ' (Parte generado desde Solicitud de Firma N°' . $signature->id . ' por ' . $generador . ')',
-        //         ]);
-
-        //         $distribucion = SignaturesFile::where('signature_id', $signature->id)->where('file_type', 'documento')->get();
-        //         ParteFile::create([
-        //             'parte_id' => $parte->id,
-        //             'file' => $distribucion->first()->file,
-        //             'name' => $distribucion->first()->id . '.pdf',
-        //             'signature_file_id' => $distribucion->first()->id,
-        //         ]);
-
-        //         $signaturesFiles = SignaturesFile::where('signature_id', $signature->id)->where('file_type', 'anexo')->get();
-        //         foreach ($signaturesFiles as $key => $sf) {
-        //             ParteFile::create([
-        //                 'parte_id' => $parte->id,
-        //                 'file' => $sf->file,
-        //                 'name' => $sf->id . '.pdf',
-        //                 //'signature_file_id' => $sf->id,
-        //             ]);
-        //         }
-        //     }
-        // }
-
         session()->flash('info', 'La solicitud de firma ' . $signature->id . ' ha sido creada.');
         return redirect()->route('documents.signatures.index', ['mis_documentos']);
     }
@@ -303,6 +258,19 @@ class SignatureController extends Controller
      */
     public function update(Request $request, Signature $signature): RedirectResponse
     {
+        $request->validate([
+            'user_signer'  => 'bail|required',
+            'document'     => 'required|max:5000|mimes:pdf',
+            'request_date' => 'required',
+            'document_type'=> 'required',
+            'subject'      => 'required',
+            'description'  => 'required'
+        ],[
+            'user_signer.required' => 'Debe asignar un firmante.',
+            'document.mimes' => 'El documento a distribuir debe ser tipo .PDF',
+            'document.size'  => 'El documento a distribuir no debe exeder los 5 MB',
+        ]);
+
         $signature->fill($request->all());
         $signature->save();
 
