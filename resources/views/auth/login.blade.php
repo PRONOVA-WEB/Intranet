@@ -82,7 +82,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6 d-none p-5" id="local_login">
+                            <div class="col-lg-6 d-none px-5 py-lg-5 py-5" id="local_login">
                                 <h1 class="h4 text-gray-900 mb-4 text-center">{{ __('Sing In').' sin clave única' }}</h1>
                                 @isset($url)
                                 <form method="POST" action='{{ url("login/$url") }}'>
