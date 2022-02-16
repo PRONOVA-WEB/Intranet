@@ -51,7 +51,7 @@
                     </div>
                     <div class="card-body p-0">
                         <div class="row">
-                            <div class="col-lg-6 offset-3 d-none d-lg-block" id="login_botones">
+                            <div class="col-lg-6 offset-lg-3 d-lg-none d-lg-block" id="login_botones">
                                 <div class="p-5">
                                     <div class="text-center">
                                         <h1 class="text-gray-900 mb-2">{{ settings('site.title') }}</h1>
@@ -170,12 +170,12 @@
     <!-- Custom scripts-->
     <script type="text/javascript">
         @if ($errors->any())
-            $("#login_botones").toggleClass('offset-3');
+            $("#login_botones").toggleClass('offset-ñg-3');
             $("#local_login").toggleClass('d-none');
         @endif
         $("#show_local_login").click(function() {
             $("#local_login").toggleClass('d-none');
-            $("#login_botones").toggleClass('offset-3');
+            $("#login_botones").toggleClass('offset-lg-3');
         });
         $('.identificacion').mask('00000000-A', {
             onKeyPress: function (value, event) {
