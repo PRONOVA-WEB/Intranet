@@ -777,11 +777,26 @@ Route::prefix('parameters')->as('parameters.')->middleware('auth')->group(functi
     Route::prefix('communes')->as('communes.')->group(function () {
         Route::get('/', 'Parameters\CommuneController@index')->name('index');
         Route::put('/{commune}', 'Parameters\CommuneController@update')->name('update');
+        //14/02/2022 vr agrego boton eliminar
+        Route::delete('/{commune}/destroy', 'Parameters\CommuneController@destroy')->name('destroy');
+        //14/02/2022 vr agrego boton eliminar
+        //15/02/2022 vr agrego boton crear
+        Route::get('/create', 'Parameters\CommuneController@create')->name('create');
+        Route::post('/store', 'Parameters\CommuneController@store')->name('store');
+        //15/02/2022 vr agrego boton crear
     });
 
     Route::prefix('establishments')->as('establishments.')->group(function () {
         Route::get('/', 'Parameters\EstablishmentController@index')->name('index');
         Route::put('/{establishment}', 'Parameters\EstablishmentController@update')->name('update');
+
+        //15/02/2022 vr agrego boton crear y eliminar
+        Route::delete('/{establishment}/destroy', 'Parameters\establishmentController@destroy')->name('destroy');
+        Route::get('/create', 'Parameters\establishmentController@create')->name('create');
+        Route::post('/store', 'Parameters\establishmentController@store')->name('store');
+        //15/02/2022 vr agrego boton crear y eliminar
+
+
     });
 
     Route::prefix('holidays')->as('holidays.')->group(function () {
@@ -1607,7 +1622,7 @@ Route::prefix('/settings')->as('settings.')->middleware(['auth', 'role:superuser
     Route::get('/create', [SettingController::class, 'create'])->name('create');
     Route::post('/store', [SettingController::class, 'store'])->name('store');
     Route::post('/store_values', [SettingController::class, 'storeValues'])->name('store.values');
-    Route::delete('/{setting}/destroy', [SettingController::class, 'destroy'])->name('destroy');
+    Route::delete('{denomination1121}/destroy', [Denomination1121Controller::class, 'destroy'])->name('destroy');
 });
 
 Route::view('/some', 'some');

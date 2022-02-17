@@ -17,7 +17,7 @@ class Establishment extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'type', 'deis', 'sirh_code'
+        'name', 'type', 'deis', 'sirh_code' , 'commune_id' //vr 17-02-2022 agrego commune_id
     ];
 
     /**
