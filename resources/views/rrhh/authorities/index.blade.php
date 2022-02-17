@@ -23,7 +23,7 @@
     @if($authorities AND $calendar AND ($ouTopLevel->establishment_id == $ou->establishment_id))
         <div class="row">
 
-            <div class="col-12">
+            <div class="col-lg-12">
 
                 <h4>{{ $ou->name }} <span class="small"> ({{ $ouTopLevel->establishment->name }}) </span></h4>
 
@@ -62,17 +62,17 @@
 
         @can('Authorities: create')
         <div class="row mt-3 mb-3">
-            <div class="col-7">
+            <div class="col-lg-7">
                 <h4>{{ $ou->name }}</h4>
             </div>
-            <div class="col-1">
+            <div class="col-lg-1">
                 @if($ouTopLevel->establishment_id == Auth::user()->organizationalUnit->establishment->id)
                 <a href="{{ route('rrhh.authorities.create') }}?establishment_id={{$ouTopLevel->establishment_id}}&ou_id={{$ou->id}}" class="btn btn-primary">
                     Crear
                 </a>
                 @endif
             </div>
-            <div class="col-4">
+            <div class="col-lg-4">
                 <form method="GET" class="form-inline" action="{{ route('rrhh.authorities.index') }}?">
 
                     <input type="hidden" name="ou" value="{{ $ou->id }}">
@@ -90,8 +90,8 @@
 
         <div class="row">
 
-            <div class="col-12">
-                <table class="table">
+            <div class="col-lg 12">
+                <table class="table table-responsive-sm">
                     <thead>
                         <tr>
                             <th>Funcionario</th>

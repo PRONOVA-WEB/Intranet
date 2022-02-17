@@ -54,6 +54,6 @@ class AddEmailTextAreaList extends Component
         }
 
         return view('livewire.documents.add-email-text-area-list')
-            ->withOuRoots(OrganizationalUnit::where('level', 1)->where('establishment_id', 1)->get());
+            ->withOuRoots(OrganizationalUnit::where('level', 1)->where('establishment_id', \Auth::user()->organizationalUnit->establishment->id)->get());
     }
 }

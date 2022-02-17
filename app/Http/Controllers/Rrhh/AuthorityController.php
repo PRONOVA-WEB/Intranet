@@ -18,7 +18,7 @@ class AuthorityController extends Controller
      */
     public function index(Request $request)
     {
-        $ouTopLevels = OrganizationalUnit::with('childs.childs.childs.childs')->where('level', 1)->get();
+        $ouTopLevels = OrganizationalUnit::with('childs.childs.childs.childs')->where('level', 1)->where('establishment_id', Auth::user()->organizationalUnit->establishment->id)->get();
         if($request->date) {
             $today = new \DateTime($request->date);
         }
@@ -96,7 +96,6 @@ class AuthorityController extends Controller
     //public function create($establishment_id)
     public function create(Request $request)
     {
-        //dd($request->establishment_id);
         if($request->establishment_id)
         {
             //$users = User::orderBy('name')->orderBy('fathers_family')->get();
@@ -122,6 +121,24 @@ class AuthorityController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate(
+            [
+                'organizational_unit_id' => 'required',
+                'user_id'                => 'required',
+                'from'                   => 'required',
+                'to'                     => 'required',
+                'position'               => 'required',
+                'type'                   => 'required',
+            ],
+            [
+                'organizational_unit_id.required' => 'Seleccione una unidad organizacional',
+                'user_id.required'                => 'Selccione un funcionario dentro de los usuarios del sistema',
+                'from.required'                   => 'El campo fecha desde es requerido',
+                'to.required'                     => 'El campo fecha hasta es requerido',
+                'position.required'               => 'El campo cargo es requerido',
+                'type.required'                   => 'El campo tipo es requerido',
+            ]
+        );
         $authority = new Authority($request->all());
         $authority->creator()->associate(Auth::user());
         $authority->save();
@@ -169,6 +186,24 @@ class AuthorityController extends Controller
      */
     public function update(Request $request, Authority $authority)
     {
+        $request->validate(
+            [
+                'organizational_unit_id' => 'required',
+                'user_id'                => 'required',
+                'from'                   => 'required',
+                'to'                     => 'required',
+                'position'               => 'required',
+                'type'                   => 'required',
+            ],
+            [
+                'organizational_unit_id.required' => 'Seleccione una unidad organizacional',
+                'user_id.required'                => 'Selccione un funcionario dentro de los usuarios del sistema',
+                'from.required'                   => 'El campo fecha desde es requerido',
+                'to.required'                     => 'El campo fecha hasta es requerido',
+                'position.required'               => 'El campo cargo es requerido',
+                'type.required'                   => 'El campo tipo es requerido',
+            ]
+        );
         $authority->fill($request->all());
         $authority->save();
         session()->flash('success', 'La autoridad '.$authority->user->fullName.' ha sido actualizada.');

@@ -17,32 +17,33 @@
     @method('PUT')
 
     <div class="form-row">
-        <fieldset class="form-group col">
+        <fieldset class="form-group col-lg-12">
             <label for="for_organizational_unit_id">Unidad Organizacional*</label>
             @livewire('select-organizational-unit', [
-                'establishment_id' => $ouTopLevel->establishment->id, 
+                'establishment_id' => $ouTopLevel->establishment->id,
                 'organizational_unit_id' => $authority->organizational_unit_id
             ])
         </fieldset>
     </div>
 
     <div class="form-row">
-        <fieldset class="form-group col-12 col-md-6">
+        <fieldset class="form-group col-lg-6">
             <label for="for_user_id">Funcionario*</label>
             @livewire('search-select-user', ['user' => $authority->user])
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-3">
+        <fieldset class="form-group col-lg-3">
             <label for="for_from">Desde*</label>
             <input required type="date" class="form-control" id="for_from" name="from" required value="{{ $authority->from->format('Y-m-d') }}">
         </fieldset>
 
-        <fieldset class="form-group col-6 col-md-3">
+        <fieldset class="form-group col-lg-3">
             <label for="for_to">Hasta*</label>
             <input required type="date" class="form-control" id="for_to" name="to" required value="{{ $authority->to->format('Y-m-d') }}">
         </fieldset>
-    
-        <fieldset class="form-group col-6 col-md-3">
+    </div>
+    <div class="form-row">
+        <fieldset class="form-group col-lg-4">
             <label for="for_position">Cargo*</label>
             <select name="position" id="for_position" class="form-control" required>
                 <option {{ ($authority->position == 'Director')?'selected':'' }}>Director</option>
@@ -69,7 +70,7 @@
         </fieldset>
 
 
-        <fieldset class="form-group col-6 col-md-3">
+        <fieldset class="form-group col-lg-4">
             <label for="for_type">Tipo*</label>
             <select name="type" id="for_type" class="form-control" required>
                 <option value="manager" {{ ($authority->type == 'manager')?'selected':'' }}>Encargado (Jefes)</option>
@@ -78,7 +79,7 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col-12 col-md-6">
+        <fieldset class="form-group col-lg-4">
             <label for="for_decree">Decreto autorizar ejercer cargo</label>
             <input type="text" class="form-control" id="for_decree" name="decree" value="{{$authority->decree}}">
         </fieldset>

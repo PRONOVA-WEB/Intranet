@@ -36,7 +36,7 @@ class Signer extends Component
         }
 
         return view('livewire.signatures.signer')
-            ->withOuRoots(OrganizationalUnit::where('level', 1)->where('establishment_id', 1)->get())
+            ->withOuRoots(OrganizationalUnit::where('level', 1)->where('establishment_id', \Auth::user()->organizationalUnit->establishment->id)->get())
             ->withSignaturesFlowSigner($this->signaturesFlowSigner);
     }
 }
