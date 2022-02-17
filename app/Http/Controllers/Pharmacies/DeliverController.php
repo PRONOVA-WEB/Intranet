@@ -56,7 +56,7 @@ class DeliverController extends Controller
         } else {
 
             if (Auth::user()->establishments->count()==0) {
-              session()->flash('warning', 'El usuario no tiene asignado establecimiento. Contacte a secretaría de informática.');
+              session()->flash('warning', 'El usuario no tiene asignado establecimiento.');
               return redirect()->route('pharmacies.index');
             }
 
@@ -103,14 +103,14 @@ class DeliverController extends Controller
     {
 
         if (Auth::user()->establishments->count()==0) {
-          session()->flash('warning', 'El usuario no tiene asignado establecimiento. Contacte a secretaría de informática.');
+          session()->flash('warning', 'El usuario no tiene asignado establecimiento.');
           return redirect()->route('pharmacies.index');
         }
 
-        if(Auth::user()->can('Pharmacy: transfer view ortesis')){
-            session()->flash('warning', 'Ud. no tiene permiso para registrar y hacer entrega de ayuda técnica.');
-            return redirect()->route('pharmacies.products.deliver.index');
-        }
+        // if(Auth::user()->can('Pharmacy: transfer view ortesis')){
+        //     session()->flash('warning', 'Ud. no tiene permiso para registrar y hacer entrega de ayuda técnica.');
+        //     return redirect()->route('pharmacies.products.deliver.index');
+        // }
 
         $establishment_id = Auth::user()->establishments->first()->id;
         $filterEstablishment = function($query) use ($establishment_id) {
@@ -119,8 +119,8 @@ class DeliverController extends Controller
         $products_by_establishment = Product::whereHas('establishments', $filterEstablishment)
                             ->with(['establishments' => $filterEstablishment])
                             ->where('pharmacy_id',session('pharmacy_id'))
-                            ->where('program_id', 46) //APS ORTESIS
-                            ->whereNotIn('id', [1185, 1186, 1231])
+                            // ->where('program_id', 46) //APS ORTESIS
+                            // ->whereNotIn('id', [1185, 1186, 1231])
                             ->orderBy('name','ASC')->get();
 
         return view('pharmacies.products.deliver.create',compact('products_by_establishment'));

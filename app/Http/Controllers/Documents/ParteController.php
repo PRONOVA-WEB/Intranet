@@ -13,7 +13,7 @@ use App\Rrhh\OrganizationalUnit;
 use Carbon\Carbon;
 use App\User;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Validator;
 
 class ParteController extends Controller
 {
@@ -65,8 +65,29 @@ class ParteController extends Controller
      */
     public function store(Request $request)
     {
-        //$request->entered_at = date("Y-m-d H:i:s",strtotime($request->entered_at));
-        //dd($request);
+        $validator = Validator::make($request->all(), [
+            "entered_at" => "required",
+            "date" => "required",
+            "type" => "required",
+            "origin" => "required",
+            "subject" => "required",
+            "forfile.*"  => "required|max:5000|mimes:pdf,png,jpg,doc,docx,xls,xlsx"
+        ],
+        [
+            'forfile.*.mimes' => 'El archivo a cargar debe ser tipo: pdf, png, jpg, doc, docx, xls, xlsx.',
+            'forfile.*.size'  => 'El archivo a cargar no debe exeder los 5 MB',
+            'entered_at.required'  => 'el campo fecha de ingreso es obligatorio',
+            'date.required'  => 'el campo fecha de ingreso es obligatorio',
+            'type.required'  => 'el campo tipo de ingreso es obligatorio',
+            'origin.required'  => 'el campo origin de ingreso es obligatorio',
+            'subject.required'  => 'el campo asunto de ingreso es obligatorio',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('documents.partes.create')
+                    ->withErrors($validator);
+        }
+
         $parte = new Parte($request->All());
         //dd($parte);
         $parte->save();
@@ -129,6 +150,29 @@ class ParteController extends Controller
      */
     public function update(Request $request, Parte $parte)
     {
+        $validator = Validator::make($request->all(), [
+            "entered_at" => "required",
+            "date" => "required",
+            "type" => "required",
+            "origin" => "required",
+            "subject" => "required",
+            "forfile.*" => "max:5000|mimes:pdf,png,jpg,doc,docx,xls,xlsx"
+        ],
+        [
+            'forfile.*.mimes' => 'El archivo a cargar debe ser tipo: pdf, png, jpg, doc, docx, xls, xlsx.',
+            'forfile.*.size'  => 'El archivo a cargar no debe exeder los 5 MB',
+            'entered_at.required'  => 'el campo fecha de ingreso es obligatorio',
+            'date.required'  => 'el campo fecha de ingreso es obligatorio',
+            'type.required'  => 'el campo tipo es obligatorio',
+            'origin.required'  => 'el campo origin es obligatorio',
+            'subject.required'  => 'el campo asunto es obligatorio',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('documents.partes.edit', $parte->id)
+                ->withErrors($validator);
+        }
+
         $parte->fill($request->All());
 
         $parte->save();

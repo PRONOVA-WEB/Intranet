@@ -87,7 +87,7 @@
     </div>
 
 
-@can('be god')
+@can('be superuser')
     @include('partials.audit', ['audits' => $mammography->audits] )
 @endcan
 

@@ -221,12 +221,12 @@
             </div>
         </li>
     @endcan
-    @role('Drugs: admin|Drugs: receptionist|Drugs: basic')
+    @can('Drugs')
         <li class="nav-item">
             <a class="nav-link" href="{{ route('drugs.receptions.index') }}">
-                <i class="fas fa-cannabis"></i> <span>Drogas</span></a>
+                <i class="fas fa-cannabis"></i> <span>Drogas <span></a>
         </li>
-    @endrole
+    @endcan
 
     @canany(['Asignacion Estimulos'])
         <li class="nav-item">
@@ -293,7 +293,7 @@
     @endcan
     <!-- Divider -->
     <hr class="sidebar-divider">
-    @role('god')
+    @role('superuser')
         <!-- Heading -->
         <div class="sidebar-heading">
             Configuración

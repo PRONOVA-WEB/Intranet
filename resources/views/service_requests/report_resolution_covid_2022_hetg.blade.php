@@ -2,137 +2,134 @@
 <html lang="es">
 
 <head>
-  <meta charset="utf-8">
-  <title>Resolucion</title>
-  <meta name="description" content="">
-  <meta name="author" content="Servicio de Salud Iquique">
-  <style media="screen">
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 0.75rem;
-    }
+    <meta charset="utf-8">
+    <title>Resolucion</title>
+    <meta name="description" content="">
+    <meta name="author" content="Servicio de Salud Iquique">
+    <style media="screen">
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 0.75rem;
+        }
 
-    .content {
-      margin: 0 auto;
-      /*border: 1px solid #F2F2F2;*/
-      width: 724px;
-      /*height: 1100px;*/
-    }
+        .content {
+            margin: 0 auto;
+            /*border: 1px solid #F2F2F2;*/
+            width: 724px;
+            /*height: 1100px;*/
+        }
 
-    .monospace {
-      font-family: "Lucida Console", Monaco, monospace;
-    }
+        .monospace {
+            font-family: "Lucida Console", Monaco, monospace;
+        }
 
-    .pie_pagina {
-      margin: 0 auto;
-      /*border: 1px solid #F2F2F2;*/
-      width: 724px;
-      height: 26px;
-      position: fixed;
-      bottom: 0;
-    }
+        .pie_pagina {
+            margin: 0 auto;
+            /*border: 1px solid #F2F2F2;*/
+            width: 724px;
+            height: 26px;
+            position: fixed;
+            bottom: 0;
+        }
 
-    .seis {
-      font-size: 0.6rem;
-    }
+        .seis {
+            font-size: 0.6rem;
+        }
 
-    .siete {
-      font-size: 0.7rem;
-    }
+        .siete {
+            font-size: 0.7rem;
+        }
 
-    .ocho {
-      font-size: 0.8rem;
-    }
+        .ocho {
+            font-size: 0.8rem;
+        }
 
-    .nueve {
-      font-size: 0.9rem;
-    }
+        .nueve {
+            font-size: 0.9rem;
+        }
 
-    .plomo {
-      background-color: F3F1F0;
-    }
+        .plomo {
+            background-color: F3F1F0;
+        }
 
-    .titulo {
-      text-align: center;
-      font-size: 1.2rem;
-      font-weight: bold;
-      padding: 4px 0 6px;
-    }
+        .titulo {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 4px 0 6px;
+        }
 
-    .center {
-      text-align: center;
-    }
+        .center {
+            text-align: center;
+        }
 
-    .left {
-      text-align: left;
-    }
+        .left {
+            text-align: left;
+        }
 
-    .right {
-      text-align: right;
-    }
+        .right {
+            text-align: right;
+        }
 
-    .justify {
-      text-align: justify;
-    }
+        .justify {
+            text-align: justify;
+        }
 
-    .indent {
-      text-indent: 30px;
-    }
+        .indent {
+            text-indent: 30px;
+        }
 
-    .uppercase {
-      text-transform: uppercase;
-    }
+        .uppercase {
+            text-transform: uppercase;
+        }
 
-    #firmas {
-      margin-top: 80px;
-    }
+        #firmas {
+            margin-top: 80px;
+        }
 
-    #firmas>div {
-      display: inline-block;
-    }
+        #firmas>div {
+            display: inline-block;
+        }
 
-    .li_letras {
-      list-style-type: lower-alpha;
-    }
+        .li_letras {
+            list-style-type: lower-alpha;
+        }
 
-    table {
-      border: 1px solid grey;
-      border-collapse: collapse;
-      padding: 0 4px 0 4px;
-      width: 100%;
-    }
+        table {
+            border: 1px solid grey;
+            border-collapse: collapse;
+            padding: 0 4px 0 4px;
+            width: 100%;
+        }
 
-    th,
-    td {
-      border: 1px solid grey;
-      border-collapse: collapse;
-      padding: 0 4px 0 4px;
-    }
+        th,
+        td {
+            border: 1px solid grey;
+            border-collapse: collapse;
+            padding: 0 4px 0 4px;
+        }
 
-    .column {
-      float: left;
-      width: 50%;
-    }
+        .column {
+            float: left;
+            width: 50%;
+        }
 
-    /* Clear floats after the columns */
-    .row:after {
-      content: "";
-      display: table;
-      clear: both;
-    }
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
 
-    .page-break {
-      page-break-after: always;
-    }
-  </style>
+        .page-break {
+            page-break-after: always;
+        }
+
+    </style>
 </head>
 
 <body>
-  <div class="content">
-
     <div class="content">
-      <img style="padding-bottom: 4px;" src="images/logo_pluma.jpg" width="120" alt="Logo Servicio de Salud"><br>
-
 
       <div class="siete" style="padding-top: 3px;">
         HOSPITAL DR. ERNESTO TORRES GALDÁMEZ<br>
@@ -168,7 +165,7 @@
         {{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->decree}},
         del Servicio de Salud Iquique, Gabinete Presidencial N° 02, de 2018 de la Presidencia de la República, Ley N° 21.395, de 2021 del Ministerio de Hacienda, que Aprueba Presupuesto del Sector Público año 2022; Resoluciones N° 18, de 2017 y N° 6, de 2019 ambas de la Contraloría General de la República.
         @elseif($ServiceRequest->program_contract_type == "Horas")
-        @if($ServiceRequest->estate == "Profesional Médico")
+        @if($ServiceRequest->profession->category == "A")
         Dispuesto en el art. 11° del D.F.L. N° 29, de 2004 del Ministerio de Hacienda, que Fija el texto refundido, coordinado y sistematizado de la Ley N° 18.834, de 1989 sobre Estatuto Administrativo; art. 36° letra f) inciso 2, del D.F.L. N° 01, de 2005 del Ministerio de Salud, que Fija texto refundido, coordinado y sistematizado del Decreto Ley N° 2.763, de 1979 y de las Leyes N° 18.933 y N° 18.469; Art. 54° II letras a), b) y c) del Decreto Supremo N° 140, de 2004, que aprobó el Reglamento Orgánico de los Servicios de Salud; Ley N° 19.880 de Bases de Procedimiento Administrativo, Art. 23° letra f) del Decreto N° 38, de 2005 que Aprueba Reglamento Orgánico de los Establecimientos de Salud de Menor Complejidad y de los Establecimientos de Autogestión en Red todas del Ministerio de Salud;
         {{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->decree}},
         del Servicio de Salud Iquique, Gabinete Presidencial N° 02, de 2018 de la Presidencia de la República, Ley N° 21.289, de 2020 del Ministerio de Hacienda, que Aprueba Presupuesto del Sector Público año 2021; Resoluciones N° 18, de 2017 y N° 6, de 2019 ambas de la Contraloría General de la República;
@@ -253,7 +250,7 @@
         </tr>
       </table>
       @elseif($ServiceRequest->program_contract_type == "Horas")
-      @if($ServiceRequest->estate == "Profesional Médico")
+      @if($ServiceRequest->profession->category == "A")
       <table class="siete">
         <tr>
           <th>Nombre</th>
@@ -354,7 +351,7 @@
         En este caso, el Hospital “Dr. Ernesto Torres Galdames”, pagará a la persona en referencia sólo hasta el porcentaje de la mensualidad correspondiente al período efectivamente prestado.
       </p>
       @elseif($ServiceRequest->program_contract_type == "Horas")
-      @if($ServiceRequest->estate == "Profesional Médico")
+      @if($ServiceRequest->profession->category == "A")
       <p class="justify">
         <strong>SÉPTIMO:</strong>
         En este caso, el Hospital “Dr. Ernesto Torres Galdames”, pagará a la persona en referencia sólo hasta el porcentaje de la mensualidad correspondiente al período efectivamente prestado.
@@ -441,7 +438,7 @@
 
       </p>
       @elseif($ServiceRequest->program_contract_type == "Horas")
-      @if($ServiceRequest->estate == "Profesional Médico")
+      @if($ServiceRequest->profession->category == "A")
       <p class="justify">
         <strong>OCTAVO:</strong> El “valor por hora” será por la suma de ${{number_format($ServiceRequest->gross_amount)}}.- ({{$ServiceRequest->gross_amount_description}}), para efectos del pago, cada final de mes el
         @if($ServiceRequest->responsabilityCenter->establishment_id == 1)
@@ -485,7 +482,7 @@
           <strong>NOVENO:</strong> El prestador deberá cumplir las prestaciones de servicios pactadas entre las partes en el presente convenio, y se deberá acreditar su porcentaje de cumplimiento conforme al verificador establecido, contra presentación de certificado extendido por la jefatura del área donde presta servicios.
         </p>
         @elseif($ServiceRequest->program_contract_type == "Horas")
-        @if($ServiceRequest->estate == "Profesional Médico")
+        @if($ServiceRequest->profession->category == "A")
         <p class="justify">
           <strong>NOVENO:</strong> El prestador deberá cumplir las prestaciones de servicios pactadas entre las partes en el presente convenio, y se deberá acreditar su porcentaje de cumplimiento conforme al verificador establecido, contra presentación de certificado extendido por la jefatura del área donde presta servicios.
         </p>
@@ -526,7 +523,7 @@
           Se deja establecido que, el horario en el cual debe realizar sus servicios el prestador, se indica con el fin de verificar la realización de éstos, sin que altere la naturaleza jurídica del convenio, en virtud del Dictamen N°26.092/2017 de la C.G.R., si durante una jornada de trabajo existiese un cambio de hora, se pagarán las horas efectivamente trabajadas. Los atrasos superiores a una hora, serán descontados de la cuota mensual correspondiente, como también los días de inasistencia, los cuales deberán quedar informados en el respectivo informe de prestaciones mensual. Los reiterados atrasos e inasistencias deberán ser amonestados.
         </p>
         @elseif($ServiceRequest->program_contract_type == "Horas")
-        @if($ServiceRequest->estate == "Profesional Médico")
+        @if($ServiceRequest->profession->category == "A")
         <p class="justify">
           <strong>DÉCIMO:</strong> Se deja establecido que, el horario en el cual debe realizar sus servicios el prestador,
           se indican con el fin de verificar la realización de éstos, sin que se altere la naturaleza jurídica del convenio,
@@ -547,7 +544,7 @@
           <strong>DÉCIMO PRIMERO:</strong> Déjese establecido que el incumplimiento de los términos del presente convenio implica la caducidad inmediata de éste.
         </p>
         @elseif($ServiceRequest->program_contract_type == "Horas")
-        @if($ServiceRequest->estate == "Profesional Médico")
+        @if($ServiceRequest->profession->category == "A")
         <p class="justify">
           <strong>DÉCIMO PRIMERO:</strong> Déjese establecido que el incumplimiento de los términos del presente convenio implica la caducidad inmediata de éste.
         </p>
@@ -579,36 +576,51 @@
           Déjese establecido que el trabajador le será aplicable el procedimiento establecido en el “Manual de Procedimientos de Denuncia, Prevención y Sanción del Maltrato, Acoso Laboral y/o Sexual y Discriminación, conforme resolución vigente en el Servicio de Salud Iquique N°4294 del 10 de octubre del 2019.
         </p>
 
-
+        @php
+          $text = "DÉCIMO TERCERO:";
+        @endphp
 
         @if($ServiceRequest->program_contract_type == "Mensual")
         <p class="justify">
-          <strong>DÉCIMO TERCERO:</strong> Déjese establecido que el prestador tendrá derecho a presentar licencias médicas,
+          <strong>{{$text}}</strong> Déjese establecido que el prestador tendrá derecho a presentar licencias médicas,
           la cual sólo justificará los días de inasistencia, no procediendo el pago de éstos y siendo responsabilidad del prestador del servicio, la tramitación de la licencia médica ante el organismo que corresponda; además deberá dejar copia de licencia médica en la Subdirección de Gestión y Desarrollo de las Personas. Las ausencias por esta causa serán descontadas de la cuota mensual.
           <br><br>
           A contar del 01 de enero del 2019 el personal a honorarios estará obligado a imponer, tanto en salud como en AFP, de manera personal, como lo indica la Ley N°20.894, por lo tanto, deberá realizar el cobro del subsidio de salud directamente en la institución correspondiente, ya sea Fonasa o Isapre.
 
           Las mujeres podrán solicitar permiso post-natal parental, los cuales sólo justificará los días de inasistencia, no procediendo el pago por los días mientras dure el permiso; el beneficio es sólo para la persona definida en el convenio e intransferible
         </p>
+
+        @php
+          $text = "DÉCIMO CUARTO:";
+        @endphp
+
         @endif
 
 
+        @if($ServiceRequest->program_contract_type == "Mensual")
+          @if($ServiceRequest->profession->category != "A")
+            <p class="justify">
+              <strong>{{$text}}</strong> El prestador (a) individualizado (a) en la presente resolución tendrá los siguientes beneficios adicionales:<br><br>
+
+              <ins>Feriado Legal:</ins><br>
+              Derecho a días de descanso, correspondiente a 20 días hábiles, después de un año de prestación de servicio continúo en calidad de honorario, sin opción de acumulación, previa autorización de la jefatura de la unidad que se desempeña.<br><br>
+
+
+              <ins>Permiso Administrativo (Solo para convenios por 3 meses):</ins><br>
+              Permisos para ausentarse de sus labores por motivos particulares por un día hábil durante el periodo del presente convenio, con goce de prestación. Dicho permiso podrá fraccionarse por 1 día o 2 medio día y serán resueltos por la Coordinadora del área correspondiente.<br> <br>
+
+
+              {!! nl2br($ServiceRequest->additional_benefits) !!}
+            </p>
+
+            @php
+              $text = "DÉCIMO QUINTO:";
+            @endphp
+          @endif
+        @endif
+
         <p class="justify">
-          <strong>DECIMO CUARTO:</strong> El prestador (a) individualizado (a) en la presente resolución tendrá los siguientes beneficios adicionales:<br><br>
-
-          <ins>Feriado Legal:</ins><br>
-          Derecho a días de descanso, correspondiente a 20 días hábiles, después de un año de prestación de servicio continúo en calidad de honorario, sin opción de acumulación, previa autorización de la jefatura de la unidad que se desempeña.<br><br>
-
-          
-          <ins>Permiso Administrativo (Solo para convenios por 3 meses):</ins><br>
-          Permisos para ausentarse de sus labores por motivos particulares por un día hábil durante el periodo del presente convenio, con goce de prestación. Dicho permiso podrá fraccionarse por 1 día o 2 medio día y serán resueltos por la Coordinadora del área correspondiente.<br> <br>
-
-
-          {!! nl2br($ServiceRequest->additional_benefits) !!}
-        </p>
-
-        <p class="justify">
-          <strong>DECIMO QUINTO:</strong>
+          <strong>{{$text}}</strong>
           El prestador tiene la obligación de adherirse a una mutualidad a objeto de estar cubierto por la ley 16.744, sobre accidentes y enfermedades profesionales.
           El prestador deberá entregar en la unidad de honorarios covid y en un plazo no superior a 30 días de la fecha de inicio del convenio el certificado de adhesión a una mutualidad.
         </p>
@@ -618,10 +630,10 @@
         <div class="page-break"></div>
         @endif
 
-        
+
 
         Para constancia firman: <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-        {{$ServiceRequest->employee->getFullNameAttribute()}} 
+        {{$ServiceRequest->employee->getFullNameAttribute()}}
         <br><br>
 
         <p class="">
@@ -632,36 +644,37 @@
         <p class="">
 
           <strong>3.</strong> IMPÚTESE el gasto correspondiente al ítem 21-03-001-001-02 Honorario Suma Alzada Personal
-          @if($ServiceRequest->estate == "Profesional Médico")
+          @if($ServiceRequest->profession->category == "A")
           Médico,
           @else
           No Médico,
           @endif
           del presupuesto del
           @if($ServiceRequest->responsabilityCenter->establishment_id == 1)
-          Hospital “Dr. Ernesto Torres Galdames” de Iquique.
+          Hospital “Dr. Ernesto Torres Galdames” de Iquique,
           @else
           Servicio Salud Iquique.
           @endif
+          Unidad demandante COVID-19.
         </p>
         @elseif($ServiceRequest->program_contract_type == "Horas")
-        @if($ServiceRequest->estate == "Profesional Médico")
+        @if($ServiceRequest->profession->category == "A")
         <p class="">
+
+
           <strong>3.</strong> IMPÚTESE el gasto correspondiente al ítem 21-03-001-001-03 Honorario Suma Alzada Personal Médico del presupuesto del
-          @if($ServiceRequest->responsabilityCenter->establishment_id == 1)
-          Hospital “Dr. Ernesto Torres Galdames” de Iquique.
-          @else
-          Servicio Salud Iquique.
-          @endif
+
+          IMPÚTESE el gasto correspondiente al ítem 21-03-001-001-03 Honorario Suma Alzada Personal Médico, del presupuesto del Hospital “Dr. Ernesto Torres Galdames” de Iquique, Unidad demandante COVID-19.
+
+
+
+
+
         </p>
         @else
         <p class="">
-          <strong>3.</strong> IMPÚTESE el gasto correspondiente al ítem 21-03-001-001-02 Honorario Suma Alzada Personal No Médico, del presupuesto del
-          @if($ServiceRequest->responsabilityCenter->establishment_id == 1)
-          Hospital “Dr. Ernesto Torres Galdames” de Iquique.
-          @else
-          Servicio Salud Iquique.
-          @endif
+          <strong>3.</strong>
+          IMPÚTESE el gasto correspondiente al ítem 21-03-001-001-02 Honorario Suma Alzada Personal No Médico, del presupuesto del Hospital “Dr. Ernesto Torres Galdames” de Iquique, Unidad demandante COVID-19.
         </p>
         @endif
         @endif
@@ -693,7 +706,405 @@
             <br style="padding-bottom: 4px;">
             MINISTRO DE FE
             @else
-            <!-- <strong>
+                @if ($ServiceRequest->program_contract_type == 'Mensual')
+                    <p class="justify">
+                        <strong>SÉPTIMO:</strong>
+                        El Servicio de Salud Iquique, cancelará a la persona en referencia sólo hasta la mensualidad
+                        correspondiente al período efectivamente prestado.
+                    </p>
+                @elseif($ServiceRequest->program_contract_type == 'Horas')
+                    <p class="justify">
+                        <strong>SÉPTIMO:</strong>
+                        El Servicio de Salud Iquique, cancelará a la persona en referencia sólo hasta la mensualidad
+                        correspondiente al período efectivamente prestado.
+                    </p>
+                @else
+                    <strong>SÉPTIMO:</strong>
+                    En el desempeño de sus funciones, el prestador cumplió con un total de
+                    {{ number_format($ServiceRequest->Fulfillments->first()->total_hours_to_pay) }} Horas en turno
+                    extras en el mes de {{ $ServiceRequest->start_date->monthName }}, cuya suma alzada totas es de
+                    ${{ number_format($ServiceRequest->Fulfillments->first()->total_to_pay) }}.-
+                    ({{ $ServiceRequest->fulfillments->first()->total_to_pay_description }}) impuesto incluido, en
+                    conformidad a lo dispuesto en el inciso segundo del Art. 2º del Decreto Nº 98 de 1991 del Ministerio
+                    de Hacienda y se cancelará en una cuota de
+                    ${{ number_format($ServiceRequest->Fulfillments->first()->total_to_pay) }} el mes de
+                    {{ $ServiceRequest->start_date->monthName }}; se deberá acreditar contra presentación de
+                    certificado extendido por el Jefe del {{ $ServiceRequest->responsabilityCenter->name }},
+                    dependiente del
+                    @if ($ServiceRequest->responsabilityCenter->establishment_id == 1)
+                        Hospital Regional de Iquique,
+                    @else
+                        Servicio de Salud Iquique,
+                    @endif
+                    en que conste el cumplimiento de las labores estipuladas en el convenio. El pago será efectuado el
+                    día
+                    @if ($ServiceRequest->responsabilityCenter->establishment_id == 1)
+                        10
+                    @else
+                        5
+                    @endif
+                    del mes siguiente, y si este cae en día inhábil, se efectuará el día hábil más cercano una vez que
+                    el establecimiento dé su conformidad a la prestación realizada y previa presentación de la boleta de
+                    honorario respectiva. El Hospital retendrá y pagará el impuesto correspondiente por los honorarios
+                    pactados. Asimismo, el prestador deberá entregar dentro de los primeros 5 días del mes siguiente el
+                    certificado de servicios prestados realizados, a la Subdirección de Gestión y Desarrollo de las
+                    Personas
+                    del Hospital Dr. Ernesto Torres Galdames de Iquique,
+                    el cual debe venir con las debidas observaciones de la Jefatura directa.
+                @endif
+            @endif
+
+
+
+            @if ($ServiceRequest->program_contract_type == 'Mensual')
+                <p class="justify">
+                    <strong>OCTAVO:</strong> La presente contratación se efectuará sobre la base de honorarios, por una
+                    suma alzada de ${{ number_format($ServiceRequest->gross_amount) }}.-
+                    ({{ $ServiceRequest->gross_amount_description }}), impuesto incluido, en conformidad a lo dispuesto
+                    en el inciso segundo del Art. 2º del Decreto Nº 98 de 1991 del Ministerio de Hacienda y se cancelará
+                    en
+                    <!-- TODO para salir del caso excepcional de gramático  se debe cambiar-->
+                    @livewire('service-request.monthly-quotes', ['serviceRequest' => $ServiceRequest])
+                    se deberá acreditar contra presentación de certificado extendido por el Supervisor
+                    Jefe del {{ $ServiceRequest->responsabilityCenter->name }}, dependiente del
+                    Hospital Regional de Iquique, en que conste el cumplimiento de las labores estipuladas en el
+                    convenio, el cual debe ser creado en el sistema interno Phuqhaña. El pago será efectuado dentro de
+                    los primeros 10 días del mes siguiente, y si este cae en día inhábil, se efectuará el día hábil más
+                    cercano una vez que el establecimiento dé su conformidad a la prestación realizada y previa
+                    presentación de la boleta de honorario respectiva. El Servicio retendrá y pagará el impuesto
+                    correspondiente por los honorarios pactados.
+                    <br>
+
+                </p>
+            @elseif($ServiceRequest->program_contract_type == 'Horas')
+                @if ($ServiceRequest->estate == 'Profesional Médico')
+                    <p class="justify">
+                        <strong>OCTAVO:</strong> El “valor por hora” será por la suma de
+                        ${{ number_format($ServiceRequest->gross_amount) }}.-
+                        ({{ $ServiceRequest->gross_amount_description }}), para efectos del pago, cada final de mes el
+                        @if ($ServiceRequest->responsabilityCenter->establishment_id == 1)
+                            Supervisor
+                        @else
+                            Jefe
+                        @endif del {{ $ServiceRequest->responsabilityCenter->name }} o por la
+                        jefatura inmediatamente superior, deberá certificar las horas realizadas por el profesional
+                        médico de manera presencial (no es aceptable la suplantación de personas). Debiendo, además,
+                        adjuntar el registro de asistencia efectuado en el respectivo servicio, los cuales serán
+                        indispensables para su cancelación, sin perjuicio de las funciones de control de la Subdirección
+                        de Gestión y Desarrollo de las Personas del Hospital de Iquique,
+                        <br><br>
+                        El pago será efectuado el día
+                        @if ($ServiceRequest->responsabilityCenter->establishment_id == 1)
+                            10
+                        @else
+                            5
+                        @endif
+                        del mes siguiente, y si este cae en día inhábil, se efectuará el día hábil más cercano una vez
+                        que el establecimiento dé su conformidad a la prestación realizada y previa presentación de la
+                        boleta de honorario respectiva. El Servicio retendrá y pagará el impuesto correspondiente por
+                        los honorarios pactados.
+                        <br><br>
+                        Asimismo, el prestador deberá entregar dentro de los primeros 5 días del mes siguiente el
+                        certificado de servicios prestados realizados, a la Unidad de Honorarios Covid del
+                        @if ($ServiceRequest->responsabilityCenter->establishment_id == 1)
+                            Hospital Dr. Ernesto Torres Galdames de Iquique,
+                        @else
+                            Servicio de salud Iquique,
+                        @endif
+                        el cual debe venir con las debidas observaciones de la Jefatura directa.
+                        <br>
+                    </p>
+                @else
+                    <p class="justify">
+                        <strong>OCTAVO:</strong> El prestador deberá cumplir las prestaciones de servicios pactadas
+                        entre las partes en el presente convenio, y se deberá acreditar su porcentaje de cumplimiento
+                        conforme al verificador establecido, contra presentación de certificado extendido por la
+                        jefatura del área donde presta servicios.
+                    </p>
+                @endif
+            @endif
+
+            @if ($ServiceRequest->program_contract_type == 'Horas' && $ServiceRequest->responsability_center_ou_id == 138 && $ServiceRequest->working_day_type == 'TURNO EXTRA' && ($ServiceRequest->start_date >= '2021/11/01 00:00' && $ServiceRequest->start_date <= '2021/12/31 23:59:59'))
+                <p class="justify">
+                    El valor a pagar por hora es por las “Condiciones Especiales en que están desarrollando el trabajo
+                    en la unidad de Emergencia”.
+                </p>
+            @endif
+
+            @if ($ServiceRequest->program_contract_type == 'Mensual')
+                <p class="justify">
+                    <strong>NOVENO:</strong> El prestador deberá cumplir las prestaciones de servicios pactadas entre
+                    las partes en el presente convenio, y se deberá acreditar su porcentaje de cumplimiento conforme al
+                    verificador establecido, contra presentación de certificado extendido por la jefatura del área donde
+                    presta servicios.
+                </p>
+            @elseif($ServiceRequest->program_contract_type == 'Horas')
+                @if ($ServiceRequest->estate == 'Profesional Médico')
+                    <p class="justify">
+                        <strong>NOVENO:</strong> El prestador deberá cumplir las prestaciones de servicios pactadas
+                        entre las partes en el presente convenio, y se deberá acreditar su porcentaje de cumplimiento
+                        conforme al verificador establecido, contra presentación de certificado extendido por la
+                        jefatura del área donde presta servicios.
+                    </p>
+                @else
+                    <p class="justify">
+                        <strong>NOVENO:</strong> Se deja establecido que, el horario en el cual debe realizar sus
+                        servicios el prestador, se indica con el fin de verificar la realización de éstos, sin que
+                        altere la naturaleza jurídica del convenio, en virtud del Dictamen N°26.092/2017 de la C.G.R.,
+                        los atrasos superiores a una hora, serán descontados de la cuota mensual correspondiente, como
+                        también los días de inasistencia, los cuales deberán quedar informados en el respectivo informe
+                        de prestaciones mensual. Los reiterados atrasos e inasistencias deberán ser amonestados.
+                    </p>
+                @endif
+            @endif
+
+            @if ($ServiceRequest->program_contract_type == 'Mensual')
+                <p class="justify">
+                    <strong>DÉCIMO:</strong> El prestador cumplirá una jornada
+
+                    @switch($ServiceRequest->working_day_type)
+                        @case('DIURNO')
+                            <!-- DIURNA de lunes a viernes de 08:00 a 16:48 hrs. -->
+                            {{ $ServiceRequest->schedule_detail }}.
+                        @break
+                        @case('TERCER TURNO')
+                            de turnos rotativos, en TERCER TURNO, 2 largo de 08:00 a 20:00 hrs, 2 noche de 20:00 a 08:00 hrs
+                            y 2 días libres.
+                        @break
+                        @case('TERCER TURNO - MODIFICADO')
+                            de turnos rotativos, en TERCER TURNO, modificado por necesidades del servicio.
+                        @break
+                        @case('CUARTO TURNO')
+                            de turnos rotativos, en CUARTO TURNO, 1 largo de 08:00 a 20:00 hrs, 1 noche de 20:00 a 08:00 hrs
+                            y 2 días libres.
+                        @break
+                        @case('CUARTO TURNO - MODIFICADO')
+                            de turnos rotativos, en CUARTO TURNO, modificado por necesidades del servicio.
+                        @break
+                    @endswitch
+
+                    @if ($ServiceRequest->working_day_type_other)
+                        {{ $ServiceRequest->working_day_type_other }}<br>
+                    @endif
+
+                    Se deja establecido que, el horario en el cual debe realizar sus servicios el prestador, se indica
+                    con el fin de verificar la realización de éstos, sin que altere la naturaleza jurídica del convenio,
+                    en virtud del Dictamen N°26.092/2017 de la C.G.R., si durante una jornada de trabajo existiese un
+                    cambio de hora, se pagarán las horas efectivamente trabajadas. Los atrasos superiores a una hora,
+                    serán descontados de la cuota mensual correspondiente, como también los días de inasistencia, los
+                    cuales deberán quedar informados en el respectivo informe de prestaciones mensual. Los reiterados
+                    atrasos e inasistencias deberán ser amonestados.
+                </p>
+            @elseif($ServiceRequest->program_contract_type == 'Horas')
+                @if ($ServiceRequest->estate == 'Profesional Médico')
+                    <p class="justify">
+                        <strong>DÉCIMO:</strong> Se deja establecido que, el horario en el cual debe realizar sus
+                        servicios el prestador,
+                        se indican con el fin de verificar la realización de éstos, sin que se altere la naturaleza
+                        jurídica del convenio,
+                        en virtud del Dictamen N°26.092/2017 de la C.G.R.,
+                        si durante una jornada de trabajo existiese un cambio de hora, se pagarán las horas
+                        efectivamente trabajadas.
+                        Los atrasos superiores a una hora, serán descontados de sus horas realizadas.
+                    </p>
+                @else
+                    <p class="justify">
+                        <strong>DÉCIMO:</strong> Déjese establecido que el incumplimiento de los términos del presente
+                        convenio implica la caducidad inmediata de éste.
+                    </p>
+                @endif
+            @endif
+
+            @if ($ServiceRequest->responsabilityCenter->establishment_id == 1)
+                @if ($ServiceRequest->program_contract_type == 'Mensual')
+                    <p class="justify">
+                        <strong>DÉCIMO PRIMERO:</strong> Déjese establecido que el incumplimiento de los términos del
+                        presente convenio implica la caducidad inmediata de éste.
+                    </p>
+                @elseif($ServiceRequest->program_contract_type == 'Horas')
+                    @if ($ServiceRequest->estate == 'Profesional Médico')
+                        <p class="justify">
+                            <strong>DÉCIMO PRIMERO:</strong> Déjese establecido que el incumplimiento de los términos
+                            del presente convenio implica la caducidad inmediata de éste.
+                        </p>
+                    @else
+                        <p class="justify">
+                            <strong>DÉCIMO PRIMERO:</strong> La personería de
+                            D.{{ App\Rrhh\Authority::getAuthorityFromDate(1, now(), ['manager'])->user->FullNameUpper }}
+                            , para representar al Hospital “Dr. E. Torres G.” de Iquique, en su calidad de
+                            {{ App\Rrhh\Authority::getAuthorityFromDate(1, now(), ['manager'])->position }}, consta en
+                            {{ App\Rrhh\Authority::getAuthorityFromDate(1, now(), ['manager'])->decree }},
+                            del Servicio de Salud Iquique.
+                        </p>
+                    @endif
+                @endif
+            @else
+                @if ($ServiceRequest->program_contract_type == 'Mensual')
+                    <p class="justify">
+                        <strong>DÉCIMO PRIMERO:</strong> Déjese establecido que el incumplimiento de los términos del
+                        presente convenio implica la caducidad inmediata de éste.
+                    </p>
+                @elseif($ServiceRequest->program_contract_type == 'Horas')
+                    <p class="justify">
+                        <strong>DÉCIMO PRIMERO:</strong> La personería de D.
+                        {{ App\Rrhh\Authority::getAuthorityFromDate(1, now(), ['manager'])->user->FullNameUpper }} , para
+                        representar al Servicio Salud Iquique, en su calidad de
+                        {{ App\Rrhh\Authority::getAuthorityFromDate(1, now(), ['manager'])->position }}, consta en
+                        {{ App\Rrhh\Authority::getAuthorityFromDate(1, now(), ['manager'])->decree }},
+                        del Servicio de Salud Iquique.
+                    </p>
+                @endif
+            @endif
+
+
+            <p class="justify">
+                <strong>DÉCIMO SEGUNDO:</strong>
+                Déjese establecido que el trabajador le será aplicable el procedimiento establecido en el “Manual de
+                Procedimientos de Denuncia, Prevención y Sanción del Maltrato, Acoso Laboral y/o Sexual y
+                Discriminación, conforme resolución vigente en el Servicio de Salud Iquique N°4294 del 10 de octubre del
+                2019.
+            </p>
+
+
+
+            @if ($ServiceRequest->program_contract_type == 'Mensual')
+                <p class="justify">
+                    <strong>DÉCIMO TERCERO:</strong> Déjese establecido que el prestador tendrá derecho a presentar
+                    licencias médicas,
+                    la cual sólo justificará los días de inasistencia, no procediendo el pago de éstos y siendo
+                    responsabilidad del prestador del servicio, la tramitación de la licencia médica ante el organismo
+                    que corresponda; además deberá dejar copia de licencia médica en la Subdirección de Gestión y
+                    Desarrollo de las Personas. Las ausencias por esta causa serán descontadas de la cuota mensual.
+                    <br><br>
+                    A contar del 01 de enero del 2019 el personal a honorarios estará obligado a imponer, tanto en salud
+                    como en AFP, de manera personal, como lo indica la Ley N°20.894, por lo tanto, deberá realizar el
+                    cobro del subsidio de salud directamente en la institución correspondiente, ya sea Fonasa o Isapre.
+
+                    Las mujeres podrán solicitar permiso post-natal parental, los cuales sólo justificará los días de
+                    inasistencia, no procediendo el pago por los días mientras dure el permiso; el beneficio es sólo
+                    para la persona definida en el convenio e intransferible
+                </p>
+            @endif
+
+
+            <p class="justify">
+                <strong>DECIMO CUARTO:</strong> El prestador (a) individualizado (a) en la presente resolución tendrá
+                los siguientes beneficios adicionales:<br><br>
+
+                <ins>Feriado Legal:</ins><br>
+                Derecho a días de descanso, correspondiente a 20 días hábiles, después de un año de prestación de
+                servicio continúo en calidad de honorario, sin opción de acumulación, previa autorización de la jefatura
+                de la unidad que se desempeña.<br><br>
+
+
+                <ins>Permiso Administrativo (Solo para convenios por 3 meses):</ins><br>
+                Permisos para ausentarse de sus labores por motivos particulares por un día hábil durante el periodo del
+                presente convenio, con goce de prestación. Dicho permiso podrá fraccionarse por 1 día o 2 medio día y
+                serán resueltos por la Coordinadora del área correspondiente.<br> <br>
+
+
+                {!! nl2br($ServiceRequest->additional_benefits) !!}
+            </p>
+
+            <p class="justify">
+                <strong>DECIMO QUINTO:</strong>
+                El prestador tiene la obligación de adherirse a una mutualidad a objeto de estar cubierto por la ley
+                16.744, sobre accidentes y enfermedades profesionales.
+                El prestador deberá entregar en la unidad de honorarios covid y en un plazo no superior a 30 días de la
+                fecha de inicio del convenio el certificado de adhesión a una mutualidad.
+            </p>
+
+
+            @if ($ServiceRequest->signature_page_break)
+                <div class="page-break"></div>
+            @endif
+
+
+
+            Para constancia firman: <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            {{ $ServiceRequest->employee->getFullNameAttribute() }}
+            <br><br>
+
+            <p class="">
+                <strong>2.</strong> El convenio que por este acto se aprueban, se entiende que forman parte integrante
+                de la presente Resolución.
+            </p>
+
+            @if ($ServiceRequest->program_contract_type == 'Mensual')
+                <p class="">
+
+                    <strong>3.</strong> IMPÚTESE el gasto correspondiente al ítem 21-03-001-001-02 Honorario Suma Alzada
+                    Personal
+                    @if ($ServiceRequest->estate == 'Profesional Médico')
+                        Médico,
+                    @else
+                        No Médico,
+                    @endif
+                    del presupuesto del
+                    @if ($ServiceRequest->responsabilityCenter->establishment_id == 1)
+                        Hospital “Dr. Ernesto Torres Galdames” de Iquique,
+                    @else
+                        Servicio Salud Iquique.
+                    @endif
+                    Unidad demandante COVID-19.
+                </p>
+            @elseif($ServiceRequest->program_contract_type == 'Horas')
+                @if ($ServiceRequest->estate == 'Profesional Médico')
+                    <p class="">
+
+
+                        <strong>3.</strong> IMPÚTESE el gasto correspondiente al ítem 21-03-001-001-03 Honorario Suma
+                        Alzada Personal Médico del presupuesto del
+
+                        IMPÚTESE el gasto correspondiente al ítem 21-03-001-001-03 Honorario Suma Alzada Personal
+                        Médico, del presupuesto del Hospital “Dr. Ernesto Torres Galdames” de Iquique, Unidad demandante
+                        COVID-19.
+
+
+
+
+
+                    </p>
+                @else
+                    <p class="">
+                        <strong>3.</strong>
+                        IMPÚTESE el gasto correspondiente al ítem 21-03-001-001-02 Honorario Suma Alzada Personal No
+                        Médico, del presupuesto del Hospital “Dr. Ernesto Torres Galdames” de Iquique, Unidad demandante
+                        COVID-19.
+                    </p>
+                @endif
+            @endif
+
+            <p class="center">
+                <strong>
+                    ANÓTESE, COMUNÍQUESE Y REMÍTASE ESTA RESOLUCIÓN CON LOS ANTECEDENTES QUE CORRESPONDAN A LA
+                    CONTRALORÍA REGIONAL DE TARAPACÁ PARA SU REGISTRO Y CONTROL POSTERIOR.
+                </strong>
+            </p>
+
+            <div id="firmas">
+                <div class="center" style="width: 100%;">
+
+                    @if ($ServiceRequest->responsabilityCenter->establishment_id == 1)
+                        <strong>
+                            <span class="uppercase">
+                                {{ App\Rrhh\Authority::getAuthorityFromDate(1, now(), ['manager'])->user->FullNameUpper }}
+                            </span>
+                            <br>
+                            <span
+                                style="text-transform:uppercase">{{ App\Rrhh\Authority::getAuthorityFromDate(1, now(), ['manager'])->position }}</span>
+                            <br>
+                            Hospital XXXXXXXXXXXXXXX<br>
+                        </strong>
+
+                        <br style="padding-bottom: 4px;">
+                        Lo que me permito transcribe a usted para su conocimiento y fines consiguientes.
+
+                        <br><br><br><br><br><br><br><br><br>
+                        <br style="padding-bottom: 4px;">
+                        MINISTRO DE FE
+                    @else
+                        <!-- <strong>
           <span class="uppercase">JORGE GALLEGUILLOS MOLLER</span><br>
           DIRECTOR<br>
           SERVICIO DE SALUD IQUIQUE<br>
@@ -705,20 +1116,19 @@
           <br><br><br>
           <br style="padding-bottom: 4px;">
           MINISTRO DE FE-->
-            @endif
-          </div>
-        </div>
-        <br style="padding-bottom: 4px;">
-        @if($ServiceRequest->responsabilityCenter->establishment_id == 1)
-        <div class="siete" style="padding-top: 2px;">
-          <strong><u>DISTRIBUCIÓN:</u></strong><br>
+                    @endif
+                </div>
+            </div>
+            <br style="padding-bottom: 4px;">
+            @if ($ServiceRequest->responsabilityCenter->establishment_id == 1)
+                <div class="siete" style="padding-top: 2px;">
+                    <strong><u>DISTRIBUCIÓN:</u></strong><br>
 
-          Honorarios Covid<br>
-          Oficina de partes<br>
-          {{--
-    @else
+                    Honorarios Covid<br>
+                    Oficina de partes<br>
+                    {{-- @else
 
-      @if($ServiceRequest->responsabilityCenter->establishment_id == 12)
+      @if ($ServiceRequest->responsabilityCenter->establishment_id == 12)
         CGU (roxana.penaranda@redsalud.gov.cl, anakena.bravo@redsalud.gov.cl)<br>
         Finanzas (patricia.salinasm@redsalud.gov.cl, finanzas.ssi@redsalud.gov.cl)<br>
         Interesado<br>
@@ -729,14 +1139,13 @@
         Interesado<br>
         Oficina de Partes<br>
 
-      @endif
-      --}}
+      @endif --}}
+
+                </div>
+            @endif
+
 
         </div>
-        @endif
-
-
-    </div>
 </body>
 
 </html>

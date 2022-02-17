@@ -24,7 +24,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $phrase = PhraseOfTheDay::inRandomOrder()->first();
-        return view('home', compact('phrase'));
+        return view('home');
     }
 }

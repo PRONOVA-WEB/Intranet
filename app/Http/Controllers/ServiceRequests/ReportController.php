@@ -32,6 +32,8 @@ class ReportController extends Controller
   {
     $establishment_id = $request->establishment_id;
     $type = $request->type;
+    $programm_name = $request->programm_name;
+
     $topay_fulfillments1 = Fulfillment::whereHas("ServiceRequest", function ($subQuery) {
       $subQuery->where('has_resolution_file', 1);
     })
@@ -43,6 +45,11 @@ class ReportController extends Controller
       ->when($type != null, function ($q) use ($type) {
         return $q->whereHas("ServiceRequest", function ($subQuery) use ($type) {
           $subQuery->where('type', $type);
+        });
+      })
+      ->when($programm_name != null, function ($q) use ($programm_name) {
+        return $q->whereHas("ServiceRequest", function ($subQuery) use ($programm_name) {
+          $subQuery->where('programm_name', $programm_name);
         });
       })
       // ->when($establishment_id == 0, function ($q) use ($establishment_id) {
@@ -72,7 +79,11 @@ class ReportController extends Controller
           $subQuery->where('type', $type);
         });
       })
-
+      ->when($programm_name != null, function ($q) use ($programm_name) {
+        return $q->whereHas("ServiceRequest", function ($subQuery) use ($programm_name) {
+          $subQuery->where('programm_name', $programm_name);
+        });
+      })
       // ->when($request->establishment_id === 0, function ($q) use ($establishment_id) {
       //      return $q->whereHas("ServiceRequest", function($subQuery) use ($establishment_id) {
       //                  $subQuery->where('establishment_id',38);
@@ -294,7 +305,7 @@ class ReportController extends Controller
         return redirect()->back();
       }
 
-      $totalToPay = $fulfillment->total_to_pay - round($fulfillment->total_to_pay * 0.115);
+      $totalToPay = $fulfillment->total_to_pay - round($fulfillment->total_to_pay * 0.1225);
       $txt .=
         $fulfillment->serviceRequest->employee->id . strtoupper($fulfillment->serviceRequest->employee->dv) . "\t" .
         strtoupper(trim($fulfillment->serviceRequest->employee->fullName)) . "\t" .
@@ -429,13 +440,13 @@ class ReportController extends Controller
 		}
 
 		$pdf = app('dompdf.wrapper');
-		if ($ServiceRequest->responsabilityCenter->establishment_id == 1 and 
-			$ServiceRequest->start_date >= "2022-01-01 00:00:00" and 
+		if ($ServiceRequest->responsabilityCenter->establishment_id == 1 and
+			$ServiceRequest->start_date >= "2022-01-01 00:00:00" and
 			$ServiceRequest->programm_name = "Covid 2022") {
 			$pdf->loadView('service_requests.report_resolution_covid_2022_hetg', compact('ServiceRequest'));
 		}
-		else if ($ServiceRequest->responsabilityCenter->establishment_id == 38 and 
-			$ServiceRequest->start_date >= "2022-01-01 00:00:00" and 
+		else if ($ServiceRequest->responsabilityCenter->establishment_id == 38 and
+			$ServiceRequest->start_date >= "2022-01-01 00:00:00" and
 			$ServiceRequest->programm_name = "Covid 2022") {
 			$pdf->loadView('service_requests.report_resolution_covid_2022_ssi', compact('ServiceRequest'));
 		}
@@ -466,11 +477,11 @@ class ReportController extends Controller
 
 		if ($ServiceRequest->working_day_type == "DIARIO") {
 			$pdf->loadView('service_requests.report_resolution_diary', compact('ServiceRequest'));
-		} 
+		}
 		else {
 			//$pdf->loadView('service_requests.report_resolution_hsa', compact('ServiceRequest'));
-			if ($ServiceRequest->responsabilityCenter->establishment_id == 1 and 
-				$ServiceRequest->start_date >= "2022-01-01 00:00:00" and 
+			if ($ServiceRequest->responsabilityCenter->establishment_id == 1 and
+				$ServiceRequest->start_date >= "2022-01-01 00:00:00" and
 				$ServiceRequest->programm_name != "Covid 2022") {
 				if ($ServiceRequest->working_day_type == "HORA MÉDICA") {
 					$pdf->loadView('service_requests.report_resolution_hsa_2022_hora_medica', compact('ServiceRequest'));
@@ -478,25 +489,24 @@ class ReportController extends Controller
 					$pdf->loadView('service_requests.report_resolution_hsa_2022', compact('ServiceRequest'));
 				}
 			}
-			else if ($ServiceRequest->responsabilityCenter->establishment_id == 1 and 
-				$ServiceRequest->start_date >= "2022-01-01 00:00:00" and 
+			else if ($ServiceRequest->responsabilityCenter->establishment_id == 1 and
+				$ServiceRequest->start_date >= "2022-01-01 00:00:00" and
 				$ServiceRequest->programm_name == "Covid 2022") {
 				$pdf->loadView('service_requests.report_resolution_covid_2022_hetg', compact('ServiceRequest'));
 			}
-			else if ($ServiceRequest->responsabilityCenter->establishment_id == 38 and 
-				$ServiceRequest->start_date >= "2022-01-01 00:00:00" and 
+			else if ($ServiceRequest->responsabilityCenter->establishment_id == 38 and
+				$ServiceRequest->start_date >= "2022-01-01 00:00:00" and
 				$ServiceRequest->programm_name == "Covid 2022") {
         //dd($ServiceRequest->programm_name);
 				$pdf->loadView('service_requests.report_resolution_covid_2022_ssi', compact('ServiceRequest'));
 			}
-      else if ($ServiceRequest->responsabilityCenter->establishment_id == 38 and 
-				$ServiceRequest->start_date >= "2022-01-01 00:00:00" and 
+      else if ($ServiceRequest->responsabilityCenter->establishment_id == 38 and
+				$ServiceRequest->start_date >= "2022-01-01 00:00:00" and
 				$ServiceRequest->programm_name != "Covid 2022") {
         //dd('No es Covid');
 				$pdf->loadView('service_requests.report_resolution_hsa', compact('ServiceRequest'));
 			}
 			else {
-        dd('entro aca 4');
 				$pdf->loadView('service_requests.report_resolution_hsa', compact('ServiceRequest'));
 			}
 		}

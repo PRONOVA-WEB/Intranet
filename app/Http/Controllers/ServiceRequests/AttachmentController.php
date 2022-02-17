@@ -40,15 +40,19 @@ class AttachmentController extends Controller
     public function store(Request $request, Fulfillment $var)
     {
         //
-        $files = $request->file('file');
+        if ($request->file('file') == null) {
+          session()->flash('warning', 'No se ha adjuntado correctamente el archivo.');
+          return redirect()->back();
+        }
 
+        $files = $request->file('file');
         $i = 1;
 
         foreach ($files as $key_file => $file) {
             $attachment = new Attachment();
             $file_name = $var->id.'_'.$i;
             $attachment->fulfillment_id = $var->id;
-            $attachment->file = $file->storeAs('/service_request/fulfiments_attachment', $file_name.'.'.$file->extension(), 'public');
+            $attachment->file = $file->storeAs('/service_request/fulfiments_attachment', $file_name.'.'.$file->extension(), 'gcs');
             foreach ($request->name as $req) {
                 $attachment->name = $request->input('name.'.$key_file.'');
                 $attachment->save();

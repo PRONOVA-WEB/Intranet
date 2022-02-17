@@ -68,16 +68,18 @@
     @else
 
         <form method="POST" class="form-horizontal" enctype="multipart/form-data"
-            action="{{ route('documents.store_number', $document) }}">
+            action="{{ route('documents.store_number', $document->id) }}">
             @csrf
             @method('PUT')
 
-            <div class="row">
+            {{-- <div class="row">
                 <fieldset class="form-group col">
                     <label for="for-distribution"><strong>Distribución:</strong></label>
                     <textarea name="distribution" rows="10" class="form-control">{{ $document->distribution}}</textarea>
                 </fieldset>
-            </div>
+            </div> --}}
+
+            @livewire('documents.add-email-text-area-list', ['document'=>$document])
 
             <div class="row">
 
@@ -98,8 +100,8 @@
                 <fieldset class="form-group col">
                     <label for="for_file">Archivo</label>
                     <input type="file" class="form-control-file" id="for_file"
-                        name="file" required>
-                    <small class="form-text text-muted">Tamaño máximo 32 MB</small>
+                        name="file" accept="application/pdf" required>
+                    <small class="form-text text-muted">Tamaño máximo 5 MB | Formato .PDF</small>
                 </fieldset>
 
                 <div class="form-check form-check-inline col">

@@ -1,0 +1,42 @@
+@extends('layouts.mail')
+
+@section('content')
+
+<div style="text-align: justify;">
+
+  <h4>Estimados/as: </h4>
+
+  <br>
+
+  <p>A través del presente, se informa que se encuentra disponible en {{ settings('site.title') }}
+    un formulario de requerimiento de compras pendiente de firma digital, favor ingresar
+    al módulo de <strong>Abastecimento</strong> para firmar documento.
+  </p>
+
+  <ul>
+      <li><strong>Nº Solicitud</strong>: {{ $req->id }}</li>
+      <li><strong>Folio</strong>: {{ $req->folio }}</li>
+      <li><strong>Fecha Solicitud</strong>: {{ $req->created_at->format('d-m-Y H:i:s') }}</li>
+      <li><strong>Nombre Solicitud</strong>: {{ $req->name }}</li>
+  </ul>
+
+  <hr>
+
+  <ul>
+      <li><strong>Solicitado por</strong>: {{ $req->user->FullName }}</li>
+      <li><strong>Unidad Organizacional</strong>: {{ $req->userOrganizationalUnit->name }}</li>
+      <li><strong>Administrador de Contrato</strong>: {{ $req->contractManager->FullName }}</li>
+      <li><strong>Comprador asignado</strong>: {{ $req->purchasers()->first()->FullName }}</li>
+  </ul>
+
+  <br>
+
+  <p>Para mayor infromación favor ingresar a su Bandeja de Solicitudes en {{ settings('site.title') }}.</p>
+
+  <br>
+
+  <p>Esto es un mensaje automático de: {{ settings('site.title') }} -  {{ settings('site.organization') }}.</p>
+
+</div>
+
+@endsection

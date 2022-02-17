@@ -19,6 +19,10 @@
                 </thead> -->
                 <tbody class="small">
                     <tr>
+                        <th class="table-active" scope="row">Folio</th>
+                        <td>{{ $requestForm->folio }}</td>
+                    </tr>
+                    <tr>
                         <th class="table-active" scope="row">Fecha de Creación</th>
                         <td>{{ $requestForm->created_at->format('d-m-Y H:i') }}</td>
                     </tr>
@@ -55,6 +59,10 @@
                         <td>{{ $requestForm->purchaseUnit->name  }}</td>
                     </tr>
                     <tr>
+                        <th class="table-active" scope="row">Caracteristica de Compra</th>
+                        <td>{{ $requestForm->SubtypeValue }}</td>
+                    </tr>
+                    <tr>
                         <th class="table-active" scope="row">Programa Asociado</th>
                         <td>{{ $requestForm->program }}</td>
                     </tr>
@@ -80,7 +88,7 @@
             @include('request_form.purchase.modals.select_purchase_mechanism')
 
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#requestBudget" @if($isBudgetEventSignPending) disabled @endif disabled >
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#requestBudget" @if($isBudgetEventSignPending || $requestForm->father || $requestForm->has_increased_expense) disabled @endif >
                 Solicitar presupuesto
             </button>
 
@@ -166,12 +174,33 @@
                 @endif
             @endif
 
+            @if($requestForm->purchase_mechanism_id == 2)
+                @if($requestForm->father || $requestForm->purchase_type_id == 4) <!-- OC ejecución inmediata desde trato directo con ejecucion en el tiempo o CONVENIO MARCO MENOR A 1.000 UTM -->
+                <form method="POST" class="form-horizontal" action="{{ route('request_forms.supply.create_oc', $requestForm) }}" enctype="multipart/form-data">
+                @else
+                <form method="POST" class="form-horizontal" action="{{ route('request_forms.supply.create_convenio_marco', $requestForm) }}" enctype="multipart/form-data">
+                @endif
+            @endif
+
+            @if($requestForm->purchase_mechanism_id == 3)
+                @if($requestForm->father) <!-- OC ejecución inmediata desde trato directo con ejecucion en el tiempo -->
+                <form method="POST" class="form-horizontal" action="{{ route('request_forms.supply.create_oc', $requestForm) }}" enctype="multipart/form-data">
+                @else
+                <form method="POST" class="form-horizontal" action="{{ route('request_forms.supply.create_direct_deal', $requestForm) }}" enctype="multipart/form-data">
+                @endif
+            @endif
+
             @if($requestForm->purchase_mechanism_id == 4)
                 @if($requestForm->father) <!-- OC ejecución inmediata desde licitacion con ejecucion en el tiempo -->
                 <form method="POST" class="form-horizontal" action="{{ route('request_forms.supply.create_oc', $requestForm) }}" enctype="multipart/form-data">
                 @else
                 <form method="POST" class="form-horizontal" action="{{ route('request_forms.supply.create_tender', $requestForm) }}" enctype="multipart/form-data">
                 @endif
+            @endif
+
+            <!-- compra ágil -->
+            @if($requestForm->purchase_mechanism_id == 5)
+                <form method="POST" class="form-horizontal" action="{{ route('request_forms.supply.create_oc', $requestForm) }}" enctype="multipart/form-data">
             @endif
 
             @csrf
@@ -234,13 +263,13 @@
                                 </div>
                             </fieldset>
                         </td>
-                        <td align="center">
+                        <!-- <td align="center">
                             <a href="">
                               <span style="color: Tomato;">
                                 <i class="fas fa-times-circle"></i>
                               </span>
                             </a>
-                        </td>
+                        </td> -->
                     </tr>
                   @endforeach
                 </tbody>
@@ -273,16 +302,16 @@
     @if($requestForm->purchase_type_id == 3)
     @include('request_form.purchase.partials.fund_to_be_settled_form')
     @endif
-
 @endif
 
-<!-- Trato Directo -->
-@if($requestForm->purchase_mechanism_id == 2)
+
+<!-- Convenio Marco menos CONVENIO MARCO MENOR A 1.000 UTM (cod 4) -->
+@if($requestForm->purchase_mechanism_id == 2 && !$requestForm->father && $requestForm->purchase_type_id != 4)
     @include('request_form.purchase.partials.convenio_marco_form')
 @endif
 
 <!-- Trato Directo -->
-@if($requestForm->purchase_mechanism_id == 3)
+@if($requestForm->purchase_mechanism_id == 3 && !$requestForm->father)
     @include('request_form.purchase.partials.direct_deal_form')
 @endif
 
@@ -291,8 +320,8 @@
     @include('request_form.purchase.partials.tender_form')
 @endif
 
-<!-- COMPRA INMEDIATA -->
-@if($requestForm->purchase_mechanism_id == 4 && $requestForm->father)
+<!-- COMPRA INMEDIATA A PARTIR DE OTRO RF o COMPRA ÁGIL (cod 7) o CONVENIO MARCO MENOR A 1.000 UTM (cod 4) -->
+@if( $requestForm->father || in_array($requestForm->purchase_type_id, [4, 7]))
     @include('request_form.purchase.partials.immediate_purchase_form')
 @endif
 
@@ -384,13 +413,11 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                      <td colspan="10"></td>
-                      <th class="text-right">Valor Total</td>
+                      <th colspan="11" class="text-right">Valor Total</td>
                       <th class="text-right">${{ number_format($requestForm->purchasingProcess->getExpense(),0,",",".") }}</td>
                     </tr>
                     <tr>
-                      <td colspan="10"></td>
-                      <th class="text-right">Disponible</td>
+                      <th colspan="11" class="text-right">Saldo disponible Requerimiento</td>
                       <th class="text-right">${{ number_format($requestForm->estimated_expense - $requestForm->purchasingProcess->getExpense(),0,",",".") }}</td>
                     </tr>
                 </tfoot>
@@ -412,11 +439,12 @@
                     <tr>
                         <th>Item</th>
                         <th>ID</th>
+                        <th>Folio</th>
                         <th style="width: 7%">Fecha Creación</th>
-                        <th>Tipo</th>
+                        <th>Tipo / Mecanismo de Compra</th>
                         <th>Descripción</th>
                         <th>Usuario Gestor</th>
-                        <th>Mecanismo de Compra</th>
+                        <th>Comprador</th>
                         <th>Items</th>
                         <th>Monto total</th>
                         <th>Monto utilizado</th>
@@ -429,7 +457,7 @@
                     @forelse($requestForm->children as $key => $child)
                     <tr @if($child->status != 'approved') class="text-muted" @endif>
                         <td>{{ $key+1 }}</td>
-                        <td>@if($child->status == 'approved')<a href="{{ route('request_forms.supply.purchase', $child) }}">{{ $child->id }}</a> @else {{ $child->id }} @endif<br>
+                        <td>{{ $child->id }}<br>
                         @switch($child->getStatus())
                                     @case('Pendiente')
                                         <i class="fas fa-clock"></i>
@@ -451,12 +479,15 @@
 
                                 @endswitch
                         </td>
+                        <td>@if($child->status == 'approved')<a href="{{ route('request_forms.supply.purchase', $child) }}">{{ $child->folio }}</a> @else {{ $child->folio }} @endif<br>
                         <td>{{ $child->created_at->format('d-m-Y H:i') }}</td>
-                        <td>{{ $child->SubtypeValue }}</td>
-                        <td>@if($child->status == 'approved')<a href="{{ route('request_forms.supply.purchase', $child) }}">{{ $child->name }}</a> @else {{ $child->name }} @endif</td>
+                        <td>{{ ($requestForm->purchaseMechanism) ? $requestForm->purchaseMechanism->PurchaseMechanismValue : '' }}<br>
+                            {{ $requestForm->SubtypeValue }}
+                        </td>
+                        <td>{{ $child->name }}</td>
                         <td>{{ $child->user ? $child->user->FullName : 'Usuario eliminado' }}<br>
                         {{ $child->userOrganizationalUnit ? $child->userOrganizationalUnit->name : 'Usuario eliminado' }}</td>
-                        <td>{{ $child->purchaseMechanism->name }}</td>
+                        <td>{{ $child->purchasers->first()->FullName ?? 'No asignado' }}</td>
                         <td align="center">{{ $child->quantityOfItems() }}</td>
                         <td align="right">${{ number_format($child->estimated_expense,0,",",".") }}</td>
                         <td align="right">{{ $child->purchasingProcess ? '$ '.number_format($child->purchasingProcess->getExpense(),0,",",".") : '-' }}</td>
@@ -466,20 +497,19 @@
                     <tr><td colspan="100%" class="text-center">No existen bienes y/o servicios de ejecución inmediata asociados a este formulario de requerimiento.</td></tr>
                   @endforelse
                 </tbody>
+                @if($requestForm->children->count() > 0)
                 <tfoot>
                     <tr>
-                      <td colspan="7"></td>
-                      <th class="text-right">Totales</td>
+                      <th colspan="9" class="text-right">Totales</td>
                       <th class="text-right">${{ number_format($requestForm->getTotalEstimatedExpense(),0,",",".") }}</td>
                       <th class="text-right">${{ number_format($requestForm->getTotalExpense(),0,",",".") }}</td>
-                      {{--<th class="text-right">${{ number_format($requestForm->getTotalEstimatedExpense() - $requestForm->getTotalExpense(),0,",",".") }}</td>--}}
                     </tr>
                     <tr>
-                      <td colspan="8"></td>
-                      <th class="text-right">Disponible</td>
+                      <th colspan="10" class="text-right">Saldo disponible Compras</td>
                       <th class="text-right">${{ number_format($requestForm->purchasingProcess->getExpense() - $requestForm->getTotalExpense(),0,",",".") }}</td>
                     </tr>
                 </tfoot>
+                @endif
             </table>
         </div>
     </div>
@@ -552,6 +582,68 @@ function calculateAmount(checked = false) {
 
     $(checked ? '#for_amount' : '#total_amount').val(total);
 }
+
+// Calcular fecha de entrega a partir de la suma de dias habiles o corridos con la fecha de la OC aceptada
+$('#for_po_accepted_date,#for_days_delivery,#for_days_type_delivery').on('change keyup',function(){
+    var fechaAceptada = $('#for_po_accepted_date').val();
+    var dias = $('#for_days_delivery').val();
+    var tipo = $('#for_days_type_delivery option:selected').val();
+
+    if(fechaAceptada && dias && tipo){
+        var fechaEstimada = new Date(fechaAceptada + "T00:00:00");
+        if(tipo == 'corridos'){
+            fechaEstimada.setDate(fechaEstimada.getDate() + parseInt(dias));
+        }else{ // dias hábiles
+            while(parseInt(dias)){
+                fechaEstimada.setDate(fechaEstimada.getDate() + 1);
+                switch(fechaEstimada.getDay()){
+                    case 0: case 6: break; // domingo y sábado no se contabilizan
+                    default: dias--;
+                }
+            }
+        }
+        $('#for_estimated_delivery_date').val(formatDateInput(fechaEstimada));
+    }else{
+        $('#for_estimated_delivery_date').val("");
+    }
+});
+
+function formatDateInput(date) {
+    return date.getFullYear() + "-" + ("0"+(date.getMonth()+1)).slice(-2) +"-"+("0" + date.getDate()).slice(-2);
+}
+
+$('form').submit(function() {
+    $('#save_btn').attr("disabled", true);
+    return true;
+});
+
+$('input[type="file"]').bind('change', function(e) {
+    //Validación de tamaño
+    for (let i = 0; i < this.files.length; i++) {
+      if((this.files[i].size / 1024 / 1024) > 3){
+          alert('No puede cargar archivos de más de 3 MB.');
+          $(this).val('');
+          break;
+      }
+    }
+    //Validación de pdf
+    // const allowedExtension = ".pdf";
+    // let hasInvalidFiles = false;
+
+    // for (let i = 0; i < this.files.length; i++) {
+    //     let file = this.files[i];
+
+    //     if (!file.name.endsWith(allowedExtension)) {
+    //         hasInvalidFiles = true;
+    //     }
+    // }
+
+    // if(hasInvalidFiles) {
+    //     $('#for_document').val('');
+    //     alert("Debe seleccionar un archivo pdf.");
+    // }
+  });
+
 </script>
 
 @endsection

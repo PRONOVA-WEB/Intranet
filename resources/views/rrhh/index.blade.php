@@ -88,7 +88,7 @@
 					@endif
 				@endcan
 
-				@role('god')
+				@role('superuser')
 				<a href="{{ route('rrhh.users.switch', $user->id) }}" class="btn btn-outline-warning">
 				<span class="fas fa-redo" aria-hidden="true"></span></a>
 				@endrole

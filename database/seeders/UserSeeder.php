@@ -29,7 +29,7 @@ class UserSeeder extends Seeder
         $user->email = "adiaz@pronova.cl";
         $user->organizationalUnit()->associate($ou);
         $user->save();
-        $user->assignRole('god', 'dev','RRHH: admin','Replacement Staff: admin');
+        $user->assignRole('superuser', 'dev','RRHH: admin','Replacement Staff: admin');
         $user->givePermissionTo(Permission::all());
 
         $user = new User();
@@ -43,7 +43,7 @@ class UserSeeder extends Seeder
         $user->position = "Ingeniero Desarrollador";
         $user->organizationalUnit()->associate($ou);
         $user->save();
-        $user->assignRole('god', 'dev');
+        $user->assignRole('superuser', 'dev');
         $user->givePermissionTo(Permission::all());
 
         //44(Subdirección de Recursos Humanos) = para que sea líder de RRHH

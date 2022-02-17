@@ -20,6 +20,7 @@ use App\Rrhh\Authority;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NewRequestFormNotification;
 use App\Mail\RequestFormSignNotification;
+// use Illuminate\Validation\Validator;
 
 class RequestFormCreate extends Component
 {
@@ -193,7 +194,11 @@ class RequestFormCreate extends Component
                                     empresa que indique la compra asociada, y un correo de respaldo que
                                     la empresa acepta la nueva adquisición.";
               break;
-          case "":
+          case 5: //COMPRA ÁGIL
+              $this->messagePM[] = "Especificaciones Técnicas";
+              $this->messagePM[] = "Decretos Presupuestarios, si procede.";
+              $this->messagePM[] = "Convenios Mandatos, si procede.";
+              $this->messagePM[] = "Resoluciones Aprobatorias de Programa Ministeriales, si procede.";
               break;
       }
     }
@@ -206,31 +211,50 @@ class RequestFormCreate extends Component
       return $total;
     }
 
+    private function createFolio(){
+        $startOfYear = Carbon::now()->startOfYear();
+        $endOfYear = Carbon::now()->endOfYear();
+        $counter = RequestForm::withTrashed()->whereNull('request_form_id')->where('created_at', '>=' , $startOfYear)->where('created_at', '<=', $endOfYear)->count();
+        return Carbon::now()->year.'-'.$counter;
+    }
+
     public function saveRequestForm(){
       // dd($this->items);
       $this->validate(
         [ 'name'                         =>  'required',
-          //'contractManagerId'            =>  'required',
+          'contractManagerId'            =>  'required',
           'subtype'                      =>  'required',
           'purchaseMechanism'            =>  'required',
           'program'                      =>  'required',
           'justify'                      =>  'required',
-          'fileRequests'                 =>  (!$this->editRF) ? 'required' : '',
+          'typeOfCurrency'               =>  'required',
+          // 'fileRequests'                 =>  (!$this->editRF) ? 'required' : '',
           ($this->isRFItems ? 'items' : 'passengers') => 'required'
         ],
         [ 'name.required'                =>  'Debe ingresar un nombre a este formulario.',
-          //'contractManagerId.required'   =>  'Debe ingresar un Administrador de Contrato.',
+          'contractManagerId.required'   =>  'Debe ingresar un Administrador de Contrato.',
           'subtype.required'             =>  'Seleccione el tipo para este formulario.',
           'purchaseMechanism.required'   =>  'Seleccione un Mecanismo de Compra.',
           'program.required'             =>  'Ingrese un Programa Asociado.',
-          'fileRequests.required'        =>  'Debe agregar los archivos solicitados',
+          'fileRequests.required'        =>  'Debe agregar los archivos solicitados (DOC RESPALDO)',
           'justify.required'             =>  'Campo Justificación de Adquisición es requerido',
+          'typeOfCurrency'               =>  'Ingrese un tipo de moneda',
           ($this->isRFItems ? 'items.required' : 'passengers.required') => ($this->isRFItems ? 'Debe agregar al menos un Item para Bien y/o Servicio' : 'Debe agregar al menos un Pasajero')
         ],
       );
 
-      DB::transaction(function () {
+      // $this->withValidator(function (Validator $validator) {
+      //   $validator->after(function ($validator) {
+      //       if ($this->available_balance_purchases_exceeded()) {
+      //           $validator->errors()->add('expense', 'Saldo disponible para compras excedido');
+      //       }
+      //   });
+      // })->validate();
 
+      // dd('pasé ctm');
+
+      DB::transaction(function () {
+        dd($this->fileRequests);
         //dd("chequear por jefatura");
 
         $req = RequestForm::updateOrCreate(
@@ -239,25 +263,25 @@ class RequestFormCreate extends Component
           ],
           [
             'subtype'               =>  $this->subtype,
-            'contract_manager_id'   =>  $this->contractManagerId,
+            'contract_manager_id'   =>  $this->editRF ? $this->requestForm->contract_manager_id : $this->contractManagerId,
             //contractManagerId
             //'contract_manager_id'   =>  Authority::getBossFromUser$this->contractManagerId,
             //'contract_manager_ou_id' => User::with('organizationalUnit')->find($this->contractManagerId)->organizationalUnit->id,
-            'contract_manager_ou_id' => Authority::getBossFromUser($this->contractManagerId,Carbon::now())->organizational_unit_id,
+            'contract_manager_ou_id' => $this->editRF ? $this->requestForm->contract_manager_ou_id : Authority::getBossFromUser($this->contractManagerId,Carbon::now())->organizational_unit_id,
             'name'                  =>  $this->name,
             'superior_chief'        =>  $this->superiorChief,
             'justification'         =>  $this->justify,
             'type_form'             =>  $this->isRFItems ? 'bienes y/o servicios' : 'pasajes aéreos',
-            'request_user_id'       =>  Auth()->user()->id,
-            'request_user_ou_id'    =>  Auth()->user()->organizationalUnit->id,
+            'request_user_id'       =>  $this->editRF ? $this->requestForm->request_user_id : Auth()->user()->id,
+            'request_user_ou_id'    =>  $this->editRF ? $this->requestForm->request_user_ou_id : Auth()->user()->organizationalUnit->id,
             'estimated_expense'     =>  $this->totalForm(),
             'type_of_currency'      =>  $this->typeOfCurrency,
             'purchase_mechanism_id' =>  $this->purchaseMechanism,
             'program'               =>  $this->program,
-            'status'                =>  'pending'
+            'status'                =>  $this->editRF ? $this->requestForm->status : 'pending'
         ]);
 
-        if ($this->isRFItems){
+        if($this->isRFItems){
           // save items
           foreach($this->items as $item){
             ItemRequestForm::updateOrCreate(
@@ -307,9 +331,10 @@ class RequestFormCreate extends Component
 
         if($this->editRF){
           $this->isRFItems ? ItemRequestForm::destroy($this->deletedItems) : Passenger::destroy($this->deletedPassengers);
-          session()->flash('info', 'Formulario de requrimiento N° '.$req->id.' fue editado con exito.');
+          session()->flash('info', 'Formulario de requerimiento N° '.$req->folio.' fue editado con exito.');
         }
-        else{
+        else{ // nuevo formulario de requerimiento
+          $req->update(['folio' => $this->createFolio()]);
           EventRequestform::createLeadershipEvent($req);
           EventRequestform::createPreFinanceEvent($req);
           EventRequestform::createFinanceEvent($req);
@@ -322,9 +347,9 @@ class RequestFormCreate extends Component
 
           if($mail_contract_manager){
               $emails = [$mail_contract_manager];
-              Mail::to($emails)
-                ->cc(env('APP_RF_MAIL'))
-                ->send(new NewRequestFormNotification($req));
+              // Mail::to($emails)
+              //   ->cc(env('APP_RF_MAIL'))
+              //   ->send(new NewRequestFormNotification($req));
           }
           //---------------------------------------------------------
 
@@ -340,13 +365,13 @@ class RequestFormCreate extends Component
           $emails = [$mail_notification_ou_manager->user->email];
 
           if($mail_notification_ou_manager){
-              Mail::to($emails)
-                ->cc(env('APP_RF_MAIL'))
-                ->send(new RequestFormSignNotification($req, $req->eventRequestForms->first()));
+              // Mail::to($emails)
+              //   ->cc(env('APP_RF_MAIL'))
+              //   ->send(new RequestFormSignNotification($req, $req->eventRequestForms->first()));
           }
           //---------------------------------------------------------
 
-          session()->flash('info', 'Formulario de requrimiento N° '.$req->id.' fue creado con exito.');
+          session()->flash('info', 'Formulario de requerimiento N° '.$req->folio.' fue creado con exito.');
         }
 
         // Se guarda los archivos del form req cuando ya todo lo anteior se guardó exitosamente
@@ -388,5 +413,19 @@ class RequestFormCreate extends Component
           ->orderBy('name', 'ASC')
           ->get(['id', 'name', 'fathers_family', 'mothers_family']); //get specific columns equals best perfomance bench
         return view('livewire.request-form.request-form-create', compact('users'));
+    }
+
+    public function available_balance_purchases_exceeded()
+    {
+      if($this->requestForm->request_form_id){ // es suministro de req. form principal
+        //total del monto por items seleccionados en otros suministros + item registrados no debe sobrepasar el total adjudicado al formulario de requerimiento
+        $totalItemSelected = 0;
+        foreach($this->items as $item)
+            $totalItemSelected += $item['totalValue'];
+
+        $this->requestForm->load('father.purchasingProcess.details');
+        return $this->requestForm->father->purchasingProcess->getExpense() - $this->requestForm->father->getTotalExpense() < $totalItemSelected;
+      }
+      return false;
     }
 }

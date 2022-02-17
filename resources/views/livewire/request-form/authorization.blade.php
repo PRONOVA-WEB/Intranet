@@ -62,63 +62,61 @@
                         @error('purchaseType') <span class="error text-danger">{{ $message }}</span> @enderror
                     </fieldset>
 
-                    <fieldset class="form-group col-sm">
-                        <label>Unidad de Compra:</label><br>
-                        <select wire:model.defer="purchaseUnit" wire:click="resetError" name="purchaseUnit"
-                            class="form-control form-control-sm" required>
-                            <option value="">Seleccione...</option>
-                            @foreach ($lstPurchaseUnit as $unit)
-                                <option value="{{ $unit->id }}">{{ $unit->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('purchaseUnit') <span class="error text-danger">{{ $message }}</span> @enderror
-                    </fieldset>
-                </div>
-            @endif
+              <fieldset class="form-group col-sm">
+                  <label>Unidad de Compra:</label><br>
+                  <select wire:model.defer="purchaseUnit" wire:click="resetError" name="purchaseUnit" class="form-control form-control-sm" required>
+                      <option value="">Seleccione...</option>
+                        @foreach($lstPurchaseUnit as $unit)
+                          <option value="{{$unit->id}}">{{$unit->name}}</option>
+                        @endforeach
+                  </select>
+                  @error('purchaseUnit') <span class="error text-danger">{{ $message }}</span> @enderror
+              </fieldset>
+          </div>
+          @endif
 
-            @if ($eventType == 'budget_event')
-                <div class="form-row">
-                    <fieldset class="form-group col-sm">
-                        <label>Presupuesto actual:</label><br>
-                        <input wire:model="estimated_expense" name="estimated_expense"
-                            class="form-control form-control-sm text-right" type="text" readonly>
-                        @error('estimated_expense') <span class="error text-danger">{{ $message }}</span>
-                        @enderror
-                    </fieldset>
+          @if(in_array($eventType, ['pre_budget_event', 'budget_event']))
+          <div class="form-row">
+              <fieldset class="form-group col-sm">
+                  <label>Presupuesto actual:</label><br>
+                  <input wire:model="estimated_expense" name="estimated_expense" class="form-control form-control-sm text-right" type="text" readonly>
+                  @error('estimated_expense') <span class="error text-danger">{{ $message }}</span> @enderror
+              </fieldset>
 
-                    <fieldset class="form-group col-sm">
-                        <label>Presupuesto nuevo:</label><br>
-                        <input wire:model="purchaser_amount" name="purchaser_amount"
-                            class="form-control form-control-sm text-right" type="text" readonly>
-                        @error('purchaser_amount') <span class="error text-danger">{{ $message }}</span> @enderror
-                    </fieldset>
-                </div>
-            @endif
+              <fieldset class="form-group col-sm">
+                  <label>Presupuesto nuevo:</label><br>
+                  <input wire:model="new_estimated_expense" name="new_estimated_expense" class="form-control form-control-sm text-right" type="text" readonly>
+                  @error('new_estimated_expense') <span class="error text-danger">{{ $message }}</span> @enderror
+              </fieldset>
+          </div>
+          @endif
 
-            <div class="form-row">
-                <fieldset class="form-group col-sm">
-                    <label for="forRejectedComment">Comentario de Rechazo:</label>
-                    <textarea wire:model="rejectedComment" wire:click="resetError" name="rejectedComment"
-                        class="form-control form-control-sm" rows="3"></textarea>
-                    @error('rejectedComment') <span class="error text-danger">{{ $message }}</span> @enderror
-                </fieldset>
-            </div>
+          <div class="form-row">
+              <fieldset class="form-group col-sm">
+                  <label for="for_comment">Observación:</label>
+                  <textarea wire:model="comment" wire:click="resetError" name="comment" class="form-control form-control-sm" rows="3"></textarea>
+                  @error('comment') <span class="error text-danger">{{ $message }}</span> @enderror
+              </fieldset>
+          </div>
 
-            <div class="row justify-content-md-end mt-0" wire:loading.remove>
+          <div class="row justify-content-md-end mt-0">
+                @if(in_array($eventType, ['finance_event', 'budget_event']))
                 <div class="col-2">
-                    <button type="button" wire:click="acceptRequestForm"
-                        class="btn btn-primary btn-sm float-right">Autorizar</button>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#exampleModal">
+                        Autorizar
+                    </button>
                 </div>
-                <div class="col-1">
-                    <button type="button" wire:click="rejectRequestForm"
-                        class="btn btn-secondary btn-sm float-right">Rechazar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div wire:loading>
-        <div class="spinner-border" role="status">
-            <span class="sr-only">Procesando...</span>
-        </div>
-    </div>
+                @include('request_form.partials.modals.finance_sign')
+              @else
+              <div class="col-2">
+                  <button type="button" wire:click="acceptRequestForm" class="btn btn-primary btn-sm float-right">Autorizar</button>
+              </div>
+              @endif
+              <div class="col-1">
+                  <button type="button" wire:click="rejectRequestForm" class="btn btn-secondary btn-sm float-right">Rechazar</button>
+              </div>
+          </div>
+      </div>
+  </div>
 </div>

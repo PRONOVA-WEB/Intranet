@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Rrhh\OrganizationalUnit;
 use App\User;
 use App\Documents\Correlative;
-//use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 
 class DocumentController extends Controller
 {
@@ -78,6 +78,24 @@ class DocumentController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate(
+            [
+                'type'              => 'required',
+                'subject'           => 'required',
+                'from'              => 'required',
+                'for'               => 'required',
+                'greater_hierarchy' => 'required',
+                'content'           => 'required'
+            ],
+            [
+                'type.required'     => 'el campo tipo es obligatorio',
+                'subject.required'  => 'el campo materia es obligatorio',
+                'from.required'     => 'el campo De es obligatorio',
+                'for.required'      => 'el campo Para es obligatorio',
+                'content.required'  => 'el campo Contenido es obligatorio',
+            ]
+        );
+
         $document = new Document($request->All());
         $document->user()->associate(Auth::user());
         $document->organizationalUnit()->associate(Auth::user()->organizationalUnit);
@@ -144,6 +162,23 @@ class DocumentController extends Controller
      */
     public function update(Request $request, Document $document)
     {
+        $request->validate(
+            [
+                'type'              => 'required',
+                'subject'           => 'required',
+                'from'              => 'required',
+                'for'               => 'required',
+                'greater_hierarchy' => 'required',
+                'content'           => 'required'
+            ],
+            [
+                'type.required'     => 'el campo tipo es obligatorio',
+                'subject.required'  => 'el campo materia es obligatorio',
+                'from.required'     => 'el campo De es obligatorio',
+                'for.required'      => 'el campo Para es obligatorio',
+                'content.required'  => 'el campo Contenido es obligatorio',
+            ]
+        );
         $document->fill($request->all());
         /* Agrega uno desde el correlativo */
         if (!$request->number) {
@@ -177,7 +212,8 @@ class DocumentController extends Controller
      */
     public function destroy(Document $document)
     {
-        //
+        $document->delete();
+        return redirect()->route('documents.index');
     }
 
     /**
@@ -210,6 +246,21 @@ class DocumentController extends Controller
 
     public function storeNumber(Request $request, Document $document)
     {
+        $validator = Validator::make($request->all(), [
+            "file" => "required|max:5000|mimes:pdf"
+        ],
+        [
+            'file.mimes' => 'El archivo a cargar debe ser tipo .PDF',
+            'file.size'  => 'El archivo a cargar no debe exeder los 5 MB',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('documents.index')
+                    //->with(['document',$document->id])
+                    ->withErrors($validator)
+                    ->withInput();
+        }
+
         $document->fill($request->all());
         if ($request->hasFile('file')) {
             $filename = $document->id . '-' .
@@ -226,9 +277,12 @@ class DocumentController extends Controller
             Previsualizar</a>');
 
         if ($request->has('sendMail')) {
-            /* Enviar a todos los email que aparecen en distribución */
-            preg_match_all("/[\._a-zA-Z0-9-]+@[\._a-zA-Z0-9-]+/i", $document->distribution, $emails);
-            Mail::to($emails[0])->send(new SendDocument($document));
+            if(!empty($document->distribution))
+            {
+                 /* Enviar a todos los email que aparecen en distribución */
+                preg_match_all("/[\._a-zA-Z0-9-]+@[\._a-zA-Z0-9-]+/i", $document->distribution, $emails);
+                Mail::to($emails[0])->send(new SendDocument($document));
+            }
         }
 
         return redirect()->route('documents.index');
@@ -319,9 +373,8 @@ class DocumentController extends Controller
         $signaturesFile->md5_file = md5($documentFile->output());
 
         $signature->signaturesFiles->add($signaturesFile);
-        $documentId = $document->id;
 
-        return view('documents.signatures.create', compact('signature', 'documentId'));
+        return view('documents.signatures.create', compact('signature', 'document'));
     }
 
     public function signedDocumentPdf($id)

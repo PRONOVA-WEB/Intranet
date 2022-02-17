@@ -170,7 +170,7 @@ class FirmaDigitalController extends Controller
                 Storage::disk('gcs')->getDriver()->put($newFilePath, base64_decode($responseArray['content']), ['CacheControl' => 'no-store']);
                 Storage::disk('gcs')->delete($oldFilePath);
             }else {
-                $filePath = 'ionline/signatures/signed/' . $signaturesFlow->signaturesFile->id . '_1' . '.pdf';
+                $filePath = '/signatures/signed/' . $signaturesFlow->signaturesFile->id . '_1' . '.pdf';
                 $signaturesFlow->signaturesFile->signed_file = $filePath;
                 $signaturesFlow->signaturesFile->save();
                 Storage::disk('gcs')->getDriver()->put($filePath, base64_decode($responseArray['content']), ['CacheControl' => 'no-store']);
@@ -184,7 +184,7 @@ class FirmaDigitalController extends Controller
             //Si ya firmaron todos se envía por correo a destinatarios del doc
             $signaturesFlow = SignaturesFlow::find($signaturesFlow->id);
             if ($signaturesFlow->signaturesFile->hasAllFlowsSigned) {
-                $allEmails = $signaturesFlow->signature->recipients . ',' . $signaturesFlow->signature->distribution;
+                $allEmails = $signaturesFlow->signature->recipients . PHP_EOL . $signaturesFlow->signature->distribution;
 
                 preg_match_all("/[\._a-zA-Z0-9-]+@[\._a-zA-Z0-9-]+/i", $allEmails, $emails);
                 Mail::to($emails[0])

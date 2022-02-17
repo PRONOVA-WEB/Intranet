@@ -9,8 +9,8 @@
     <form method="POST" action="{{ route('documents.signatures.store') }}" enctype="multipart/form-data" onsubmit="disableButton(this)">
         @csrf
 
-        @if(isset($documentId))
-            <input type="hidden" name="document_id" value="{{$documentId}}">
+        @if(isset($document))
+            <input type="hidden" name="document_id" value="{{$document->id}}">
         @endif
 
         @if(isset($signature->agreement_id))
@@ -30,8 +30,8 @@
 
         <div class="form-row">
 
-            <fieldset class="form-group col-3">
-                <label for="for_request_date">Fecha Documento</label>
+            <fieldset class="form-group col-lg-3">
+                <label for="for_request_date">Fecha Documento*</label>
                 <input type="date" class="form-control" id="for_request_date" name="request_date"
                        value="{{isset($signature) ? $signature->request_date->format('Y-m-d') : ''}}" required>
             </fieldset>
@@ -39,8 +39,8 @@
 
         <div class="form-row">
 
-            <fieldset class="form-group col-3">
-                <label for="for_document_type">Tipo de Documento</label>
+            <fieldset class="form-group col-lg-3">
+                <label for="for_document_type">Tipo de Documento*</label>
                 <select class="form-control" name="document_type" required>
                     @php($docTypes = array('Carta', 'Circular', 'Convenios', 'Memorando', 'Oficio', 'Resoluciones', 'Acta'))
                     <option value="">Seleccione tipo</option>
@@ -51,8 +51,8 @@
                 </select>
             </fieldset>
 
-            <fieldset class="form-group col">
-                <label for="for_subject">Materia o tema del documento</label>
+            <fieldset class="form-group col-lg-9">
+                <label for="for_subject">Materia o tema del documento*</label>
                 <input type="text" class="form-control" id="for_subject" name="subject"
                        value="{{isset($signature) ? $signature->subject : ''}}" required>
             </fieldset>
@@ -60,16 +60,15 @@
         </div>
 
         <div class="form-row">
-            <fieldset class="form-group col">
-                <label for="for_description">Descripción del documento</label>
+            <fieldset class="form-group col-lg-12">
+                <label for="for_description">Descripción del documento*</label>
                 <input type="text" class="form-control" id="for_description" name="description"
                        value="{{isset($signature) ? $signature->description : ''}}" required>
             </fieldset>
         </div>
 
         <div class="form-row">
-            <fieldset class="form-group col">
-
+            <fieldset class="form-group col-lg-6">
 
                 @if(isset($signature) && $signature->signaturesFileDocument->file != null)
                     <button name="id" class="btn btn-link" form="showPdf" formtarget="_blank">
@@ -81,20 +80,21 @@
                            form="showPdf">
                     <input type="hidden" name="md5_file" value="{{$signature->signaturesFileDocument->md5_file}}">
                 @else
-                    <label for="for_document">Documento a distribuir (pdf)</label>
+                    <label for="for_document">Documento a distribuir* </label>
                     <input type="file" class="form-control" id="for_document" name="document" accept="application/pdf" required>
+                    <small class="form-text text-muted">Tamaño máximo 5 MB | Formato .PDF</small>
                 @endif
 
             </fieldset>
 
-            <fieldset class="form-group col">
+            <fieldset class="form-group col-lg-6">
                 <label for="for_annexed">Anexos</label>
                 <input type="file" class="form-control" id="for_annexed" name="annexed[]" multiple>
             </fieldset>
         </div>
 
         <div class="form-row">
-            <fieldset class="form-group col">
+            <fieldset class="form-group col-lg-12">
                 <label for="for_url">Link o Url asociado</label>
                 <input type="url" class="form-control" id="for_url" name="url"
                        value="{{isset($signature) ? $signature->url : ''}}" >
@@ -117,26 +117,9 @@
             <hr>
         @endif
 
-        <div class="form-row">
+        @livewire('documents.add-email-text-area-list', ['document'=>$document ?? '','signature'=>$signature ?? ''])
 
-
-
-            <fieldset class="form-group col">
-                <label for="for_distribution">Distribución del documento (separados por coma)</label>
-                <textarea class="form-control red-tooltip" id="for_distribution" name="distribution"
-                          rows="6">{{  isset($signature) ?  str_replace(PHP_EOL, ",", $signature->recipients)  : ''}}</textarea>
-            </fieldset>
-
-            <fieldset class="form-group col">
-                <label for="for_recipients">Destinatarios del documento (separados por coma)</label>
-                <textarea type="text" class="form-control red-tooltip" id="for_recipients" name="recipients" rows="6"
-
-                ></textarea>
-            </fieldset>
-
-        </div>
-
-        <button type="submit" id="submitBtn" class="btn btn-primary" onclick="disableButton(this)">Crear</button>
+        <button type="submit" id="submitBtn" class="btn btn-primary" onclick="disableButton(this)"> <i class="fa fa-file"></i> Crear Solicitud</button>
 
     </form>
 
@@ -150,6 +133,9 @@
 @section('custom_js')
 
     <script type="text/javascript">
+        $( document ).ready(function() {
+            $('#for_ou_id_signer').val('');
+        });
         function disableButton(form) {
             form.submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Creando...';
             form.submitBtn.disabled = true;
@@ -158,8 +144,8 @@
 
         $('#for_document').bind('change', function() {
             //Validación de tamaño
-            if((this.files[0].size / 1024 / 1024) > 3){
-                alert('No puede cargar un pdf de mas de 3 MB.');
+            if((this.files[0].size / 1024 / 1024) > 5){
+                alert('No puede cargar un pdf de mas de 5 MB.');
                 $('#for_document').val('');
             }
 

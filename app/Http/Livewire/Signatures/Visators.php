@@ -14,9 +14,7 @@ class Visators extends Component
     public $i = 0;
     public $user;
     public $signature;
-//    public $endorseType;
-//    public $requiredVisator;
-//    public $disabledAddButton = 'disabled';
+    public $showList;
 
     public function add($i)
     {
@@ -28,6 +26,7 @@ class Visators extends Component
     public function remove($i)
     {
         unset($this->inputs[$i]);
+        $this->showList = (!empty($this->inputs)) ? '' : 'd-none';
 //        $this->i--;
 //        if ($this->i === 0) {
 //            $this->endorseType = '';
@@ -55,6 +54,7 @@ class Visators extends Component
 
     public function mount()
     {
+        $this->showList = 'd-none';
         //Agrega inputs según cantidad de flows de visator al editar
         if ($this->signature && $this->signature->signaturesFlowVisator->count() > 0) {
             for ($i = 0; $i < $this->signature->signaturesFlowVisator->count(); $i++) {
@@ -89,9 +89,10 @@ class Visators extends Component
             if (!empty($this->organizationalUnit[$value])) {
                 $this->users[$value] = OrganizationalUnit::find($this->organizationalUnit[$value])->users;
             }
+            $this->showList = '';
         }
 
         return view('livewire.signatures.visators')
-            ->withOuRoots(OrganizationalUnit::where('level', 1)->whereIn('establishment_id', [38, 1])->get());
+            ->withOuRoots(OrganizationalUnit::where('level', 1)->where('establishment_id', 1)->get());
     }
 }

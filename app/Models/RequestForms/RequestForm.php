@@ -2,6 +2,7 @@
 
 namespace App\Models\RequestForms;
 
+use App\Models\Documents\SignaturesFile;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use App\User;
@@ -14,6 +15,7 @@ use App\Models\Parameters\PurchaseUnit;
 use App\Models\Parameters\PurchaseMechanism;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class RequestForm extends Model implements Auditable
@@ -49,8 +51,13 @@ class RequestForm extends Model implements Auditable
         'name', 'subtype', 'justification', 'superior_chief',
         'type_form', 'bidding_number', 'request_user_id',
         'request_user_ou_id', 'contract_manager_ou_id', 'status', 'sigfe',
-        'purchase_unit_id', 'purchase_type_id', 'purchase_mechanism_id', 'type_of_currency'
+        'purchase_unit_id', 'purchase_type_id', 'purchase_mechanism_id', 'type_of_currency',
+        'folio', 'has_increased_expense', 'signatures_file_id', 'old_signatures_file_id'
     ];
+
+    public function getFolioAttribute($value){
+      return $value . ($this->has_increased_expense ? '-M' : '');
+    }
 
     public function father(){
       return $this->belongsTo(RequestForm::class, 'request_form_id');
@@ -62,7 +69,11 @@ class RequestForm extends Model implements Auditable
 
     public function user() {
       return $this->belongsTo(User::class, 'request_user_id');
-  }
+    }
+
+    public function messages() {
+        return $this->hasMany(RequestFormMessage::class);
+    }
 
     public function requestFormFiles() {
         return $this->hasMany(RequestFormFile::class);
@@ -128,7 +139,12 @@ class RequestForm extends Model implements Auditable
 
     public function signedRequestForm()
     {
-        return $this->belongsTo('App\Models\Documents\SignaturesFile', 'signatures_file_id');
+        return $this->belongsTo(SignaturesFile::class, 'signatures_file_id');
+    }
+
+    public function signedOldRequestForm()
+    {
+        return $this->belongsTo(SignaturesFile::class, 'old_signatures_file_id');
     }
 
     public function getTotalEstimatedExpense()
@@ -281,6 +297,13 @@ class RequestForm extends Model implements Auditable
       }
     }
 
+    public function eventPurchaserNewBudget(){
+      $event = $this->eventRequestForms()->where('status', 'approved')->where('event_type', 'budget_event')->first();
+      if(!is_null($event)){
+        return $event->purchaser;
+      }
+    }
+
     public function eventSignerName($event_type, $status){
       $event = $this->eventRequestForms()->where('status', $status)->where('event_type',$event_type)->first();
       if(!is_null($event)){
@@ -308,7 +331,11 @@ class RequestForm extends Model implements Auditable
     }
 
     public function quantityOfItems(){
-      return $this->type_form == 'bienes y/o servicios' ? count($this->itemRequestForms) : count($this->passengers);
+      return $this->type_form == 'bienes y/o servicios' ? $this->itemRequestForms()->count() : $this->passengers()->count();
+    }
+
+    public function iAmPurchaser(){
+      return $this->purchasers->where('id', Auth::id())->count() > 0;
     }
 
 

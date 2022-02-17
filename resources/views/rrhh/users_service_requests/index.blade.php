@@ -47,7 +47,7 @@
 						<a href="{{ route('rrhh.users.service_requests.edit',$user->id) }}" class="btn btn-outline-primary">
 						<span class="fas fa-edit" aria-hidden="true"></span></a>
 
-						<!-- @role('god')
+						<!-- @role('superuser')
 						<a href="{{ route('rrhh.users.switch', $user->id) }}" class="btn btn-outline-warning">
 						<span class="fas fa-redo" aria-hidden="true"></span></a>
 						@endrole -->

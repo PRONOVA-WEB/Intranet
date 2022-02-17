@@ -104,16 +104,28 @@
                     <table class="table table-sm table-striped table-bordered">
                         <tbody>
                             <tr>
-                                <th class="table-active" style="width: 33%">Fecha creacion</th>
-                                <td>{{ $detail->pivot->tender->created_at->format('d-m-Y H:i') }}</td>
-                            </tr>
-                            <tr>
                                 <th class="table-active" style="width: 33%">ID de la licitación</th>
                                 <td>{{ $detail->pivot->tender->tender_number }}</td>
                             </tr>
                             <tr>
                                 <th class="table-active" style="width: 33%">Descripción de la licitación</th>
                                 <td>{{ $detail->pivot->tender->description }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" style="width: 33%">RUT proveedor</th>
+                                <td>{{ number_format($detail->pivot->tender->supplier->run,0,",",".") }}-{{ $detail->pivot->tender->supplier->dv }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" style="width: 33%">Nombre proveedor</th>
+                                <td>{{ $detail->pivot->tender->supplier->name }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" style="width: 33%">Fecha inicio</th>
+                                <td>{{ $detail->pivot->tender->start_date ? $detail->pivot->tender->start_date->format('d-m-Y') : '' }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" scope="row">Plazo vigencia en días</th>
+                                <td>{{ $detail->pivot->tender->duration }}</td>
                             </tr>
                             <tr>
                                 <th class="table-active" scope="row">Nº Resol. de las Bases Administrativas</th>
@@ -145,6 +157,10 @@
                                 <td>{{ $detail->pivot->tender->has_taking_of_reason ? 'SÍ' : 'NO' }}</td>
                             </tr>
                             @endif
+                            <tr>
+                                <th class="table-active" style="width: 33%">Registrado por</th>
+                                <td>{{ $detail->pivot->user->fullName ?? '' }}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -159,6 +175,55 @@
                 </div>
             @endif
 
+            @if($detail->pivot->directDeal)
+                <div class="table-responsive">
+                    <table class="table table-sm table-striped table-bordered">
+                        <tbody>
+                            <tr>
+                                <th class="table-active" style="width: 33%">Descripción de la compra</th>
+                                <td>{{ $detail->pivot->directDeal->description }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" style="width: 33%">RUT proveedor</th>
+                                <td>{{ number_format($detail->pivot->directDeal->supplier->run,0,",",".") }}-{{ $detail->pivot->directDeal->supplier->dv }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" style="width: 33%">Nombre proveedor</th>
+                                <td>{{ $detail->pivot->directDeal->supplier->name }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" style="width: 33%">Nº Resol. de trato directo</th>
+                                <td>{{ $detail->pivot->directDeal->resol_direct_deal }}</td>
+                            </tr>
+                            <!-- Trato directo distinto a MAYOR A 30 Y MENOR A 1.000 UTM -->
+                            @if($detail->pivot->directDeal->purchase_type_id != 8)
+                            <tr>
+                                <th class="table-active" style="width: 33%">Nº Resol. de Contrato</th>
+                                <td>{{ $detail->pivot->directDeal->resol_contract }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" style="width: 33%">Nº Boleta de Garantía</th>
+                                <td>{{ $detail->pivot->directDeal->guarantee_ticket }}</td>
+                            </tr>
+                            @endif
+                            <tr>
+                                <th class="table-active" style="width: 33%">Registrado por</th>
+                                <td>{{ $detail->pivot->user->fullName ?? '' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h6><i class="fas fas fa-paperclip" aria-hidden="true"></i> Anexos</h6>
+                <div class="list-group">
+                    @forelse($detail->pivot->directDeal->attachedFiles as $attachedFile)
+                    <a href="{{ route('request_forms.supply.attached_file.download', $attachedFile) }}" class="list-group-item list-group-item-action py-2" target="_blank">
+                        <i class="fas fa-file"></i> {{ $attachedFile->document_type }} </a>
+                    @empty
+                    <p>No existen archivos adjuntos al trato directo.</p>
+                    @endforelse
+                </div>
+            @endif
+
             @if($detail->pivot->immediatePurchase)
                 <div class="table-responsive">
                     <table class="table table-sm table-striped table-bordered">
@@ -167,6 +232,12 @@
                                 <th class="table-active" style="width: 33%">ID OC</th>
                                 <td>{{ $detail->pivot->immediatePurchase->po_id }}</td>
                             </tr>
+                            @if($requestForm->purchase_mechanism_id == 5)
+                            <tr>
+                                <th class="table-active" style="width: 33%">ID cotización</th>
+                                <td>{{ $detail->pivot->immediatePurchase->cot_id }}</td>
+                            </tr>
+                            @endif
                             <tr>
                                 <th class="table-active" scope="row">Descripción</th>
                                 <td>{{ $detail->pivot->immediatePurchase->description }}</td>
@@ -181,19 +252,27 @@
                             </tr>
                             <tr>
                                 <th class="table-active" style="width: 33%">Fecha OC enviada a proveedor</th>
-                                <td>{{ $detail->pivot->immediatePurchase->po_sent_date->format('d-m-Y') ?? '' }}</td>
+                                <td>{{ $detail->pivot->immediatePurchase->po_sent_date ? $detail->pivot->immediatePurchase->po_sent_date->format('d-m-Y') : '' }}</td>
                             </tr>
                             <tr>
                                 <th class="table-active" scope="row">Fecha OC aceptada</th>
-                                <td>{{ $detail->pivot->immediatePurchase->po_accepted_date->format('d-m-Y') ?? '' }}</td>
+                                <td>{{ $detail->pivot->immediatePurchase->po_accepted_date ? $detail->pivot->immediatePurchase->po_accepted_date->format('d-m-Y') : '' }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" scope="row">Dias</th>
+                                <td>{{ $detail->pivot->immediatePurchase->days_type_delivery }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-active" scope="row">Plazo entrega en días</th>
+                                <td>{{ $detail->pivot->immediatePurchase->days_delivery }}</td>
                             </tr>
                             <tr>
                                 <th class="table-active" scope="row">Fecha estimada entrega</th>
-                                <td>{{ $detail->pivot->immediatePurchase->estimated_delivery_date->format('d-m-Y') ?? '' }}</td>
+                                <td>{{ $detail->pivot->immediatePurchase->estimated_delivery_date ? $detail->pivot->immediatePurchase->estimated_delivery_date->format('d-m-Y') : '' }}</td>
                             </tr>
                             <tr>
                                 <th class="table-active" scope="row">Fecha OC recepción conforme</th>
-                                <td>{{ $detail->pivot->immediatePurchase->po_with_confirmed_receipt_date->format('d-m-Y') ?? '' }}</td>
+                                <td>{{ $detail->pivot->immediatePurchase->po_with_confirmed_receipt_date ? $detail->pivot->immediatePurchase->po_with_confirmed_receipt_date->format('d-m-Y') : '' }}</td>
                             </tr>
                             <tr>
                                 <th class="table-active" style="width: 33%">Monto total</th>
@@ -212,7 +291,7 @@
                     <a href="{{ route('request_forms.supply.attached_file.download', $attachedFile) }}" class="list-group-item list-group-item-action py-2" target="_blank">
                         <i class="fas fa-file"></i> {{ $attachedFile->document_type }} </a>
                     @empty
-                    <p>No existen archivos adjuntos a esta OC.</p>
+                    <p>No existen archivos adjuntos.</p>
                     @endforelse
                 </div>
             @endif

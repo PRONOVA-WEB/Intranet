@@ -14,22 +14,22 @@
 <script src="{{ asset('js/create_doc.js') }}"></script>
 
 
-<form method="POST" action="{{ route('documents.update', $document) }}">
+<form method="POST" class="form-horizontal" action="{{ route('documents.update', $document) }}">
     @csrf
     @method('PUT')
 
     <div class="form-row">
-        <div class="form-group col-2">
+        <div class="form-group col-lg-2">
             <label for="forNumber">Número</label>
             <input type="text" class="form-control" id="forNumber" name="number"
                 value="{{ $document->number }}" readonly>
         </div>
-        <div class="form-group col-2">
+        <div class="form-group col-lg-2">
             <label for="forDate">Fecha</label>
             <input type="date" class="form-control" id="forDate" name="date"
                 value="{{ $document->date ? $document->date->format('Y-m-d') : '' }}">
         </div>
-        <div class="form-group col-2">
+        <div class="form-group col-lg-2">
             <label for="forType">Tipo*</label>
             <select name="type" id="formType" class="form-control" required>
                 <option value="Memo" {{ $document->type === 'Memo' ? 'selected' : '' }}>Memo</option>
@@ -59,7 +59,7 @@
 
 <div id="collapse">
     <div class="form-row">
-        <div class="form-group col-7">
+        <div class="form-group col-lg-7">
             <div class="form-group ">
                 <label for="forFrom">De:*</label>
                 <input type="text" class="form-control" id="forFrom"
@@ -96,7 +96,7 @@
             name="content">{{ $document->content }}</textarea>
     </div>
 
-    <div class="form-row">
+    {{-- <div class="form-row">
         <div class="form-group col">
             <label for="forDistribution">Distribución (separado por salto de línea)*</label>
             <textarea class="form-control" id="forDistribution" rows="5"
@@ -107,12 +107,29 @@
             <textarea class="form-control" id="forResponsible" rows="5"  placeholder="Cargo"
                 name="responsible">{{ $document->responsible }}</textarea>
         </div>
-    </div>
+    </div> --}}
+
+    @livewire('documents.add-email-text-area-list', ['document'=>$document])
 
     <div class="form-group">
-        <button type="submit" class="btn btn-primary mr-4">Guardar</button>
+        <button type="submit" class="btn btn-primary float-left">Guardar</button>
+        </form>
+        @can('Documents: delete document')
+            @if(!$document->file OR $document->file_to_sign_id === null)
+            <form method="POST" action="{{ route('documents.destroy', $document) }}">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger float-right">Eliminar</button>
+                <br>
+            </form>
+            @else
+            <button class="btn btn-outline-danger" disable>No se puede eliminar, tiene un archivo o ha sido firmado</button>
+            @endif
+        @endcan
     </div>
-</form>
+
+
+
 @endif
 
 @endsection
@@ -124,7 +141,7 @@ var typeVal = $('#formType').val();
     if(typeVal == "Resolución") {
         $("#forFrom").removeAttr( "required" );
         $("#forFor").removeAttr( "required" );
-        $("#collapse").hide(); 
+        $("#collapse").hide();
     }
 $('#formType').change(
     function() {

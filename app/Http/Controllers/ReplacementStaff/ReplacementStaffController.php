@@ -70,7 +70,7 @@ class ReplacementStaffController extends Controller
         $now = Carbon::now()->format('Y_m_d_H_i_s');
         $file_name = $now.'_cv_'.$replacementStaff->run;
         $file = $request->file('cv_file');
-        $replacementStaff->cv_file = $file->storeAs('/replacement_staff/cv_docs/', $file_name.'.'.$file->extension(), 'public');
+        $replacementStaff->cv_file = $file->storeAs('/replacement_staff/cv_docs/', $file_name.'.'.$file->extension(), 'gcs');
         $replacementStaff->save();
 
         //SE GUARDA PERFIL OBLIGATORIO
@@ -120,7 +120,7 @@ class ReplacementStaffController extends Controller
             $now = Carbon::now()->format('Y_m_d_H_i_s');
             $file_name = $now.'_cv_'.$replacementStaff->run;
             $file = $request->file('cv_file');
-            $replacementStaff->cv_file = $file->storeAs('/replacement_staff/cv_docs/', $file_name.'.'.$file->extension(), 'public');
+            $replacementStaff->cv_file = $file->storeAs('/replacement_staff/cv_docs/', $file_name.'.'.$file->extension(), 'gcs');
             $replacementStaff->save();
         }
         else{
@@ -151,5 +151,14 @@ class ReplacementStaffController extends Controller
         $profileManage = ProfileManage::orderBy('name', 'ASC')->get();
 
         return view('replacement_staff.show_replacement_staff', compact('replacementStaff', 'professionManage', 'profileManage'));
+    }
+
+    public function replacement_staff_historical(Request $request){
+        $replacementStaff = ReplacementStaff::where('run', $request->run)->first();
+        if($replacementStaff){
+            $applicants = Applicant::where('replacement_staff_id', $replacementStaff->id)->get();
+            return view('replacement_staff.reports.replacement_staff_historical', compact('request', 'replacementStaff', 'applicants'));
+        }
+        return view('replacement_staff.reports.replacement_staff_historical', compact('request', 'replacementStaff'));
     }
 }

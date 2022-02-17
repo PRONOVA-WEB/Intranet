@@ -4,8 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Mail;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        setlocale(LC_ALL, 'es_MX', 'es', 'ES', 'es_MX.utf8');
         Blade::directive('active', function ($route) {
             //$route = array('home','login');
             if (is_array($route)) {
@@ -45,5 +46,9 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Paginator::useBootstrap();
+
+        if (! app()->environment('production')) {
+            Mail::alwaysTo('foo@example.org');
+        }
     }
 }

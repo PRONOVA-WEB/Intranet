@@ -33,14 +33,17 @@
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                 aria-labelledby="userDropdown">
-                @if (session()->has('god'))
-                    <a class="dropdown-item" href="{{ route('rrhh.users.switch', session('god')) }}">
-                        <i class="fas fa-eye text-danger"></i> God Like
+                <a class="dropdown-item" href="{{ route('rrhh.users.show_form') }}">
+                    <i class="fas fa-key"></i> Cambiar clave
+                </a>
+                @if (session()->has('superuser'))
+                    <a class="dropdown-item" href="{{ route('rrhh.users.switch', session('superuser')) }}">
+                        <i class="fas fa-eye text-danger"></i> Volver a superuser
                     </a>
                 @endif
 
 
-                @role('god')
+                @role('superuser')
                     <a class="dropdown-item" href="{{ route('parameters.index') }}">
                         <i class="fas fa-cog fa-fw"></i> Mantenedores
                     </a>

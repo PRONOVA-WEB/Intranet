@@ -108,7 +108,7 @@
 		</fieldset>
 
 		<fieldset class="form-group col">
-			<label for="for_intesis_id">ID Intesis</label>
+			<label for="for_intesis_id">ID Interno</label>
 			<input type="text" class="form-control" id="for_intesis_id" name="intesis_id" value="{{$computer->intesis_id}}">
 		</fieldset>
 
