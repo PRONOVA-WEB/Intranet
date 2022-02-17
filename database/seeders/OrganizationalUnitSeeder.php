@@ -15,7 +15,6 @@ class OrganizationalUnitSeeder extends Seeder
      */
     public function run()
     {
-        //
         $ou0 = OrganizationalUnit::create(['name' => 'Dirección', 'level' => 1, 'organizational_unit_id' => NULL,'establishment_id' => 1 ]);
             $ou1 = OrganizationalUnit::create(['name' => 'Subdirección de Gestion Asistencial / Subdirección Médica', 'level' => 2, 'organizational_unit_id' => $ou0->id,'establishment_id' => 1 ]);
                 $ou2 = OrganizationalUnit::create(['name' => 'Departamento de Red de Salud Mental', 'level' => 3 , 'organizational_unit_id' => $ou1->id,'establishment_id' => 1 ]);
