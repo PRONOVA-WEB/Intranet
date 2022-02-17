@@ -109,7 +109,7 @@
 		</fieldset>
 	</div> -->
 
-	@livewire('establishment-ou-search') 
+	@livewire('establishment-ou-search')
 
 	<button type="submit" class="btn btn-primary">Crear</button>
 

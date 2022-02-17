@@ -39,6 +39,7 @@
         $fileName = pathinfo($file)['filename'];
         $type = pathinfo($file)['extension'];
         $fileExt = $fileName.'.'.$type;
+        $typesubstr = substr($type,0,3);
     @endphp
     <td>
     </td>
@@ -46,13 +47,14 @@
       {{ $fileName.'.'.$type }}
     </td>
     <td>
-      @switch($type)
+      {{-- @switch($type) --}}
+      @switch($typesubstr)
           @case('xls')
-              <i class="far fa-file-excel fa-2x"></i> Excel
+              <i class="far fa-file-excel fa-2x"></i>
               @break
-          @case('xlsx')
+          {{-- @case('xlsx')
               <i class="far fa-file-excel fa-2x"></i> Excel
-              @break
+              @break --}}
           @case('txt')
               <i class="far fa-file fa-2x"></i> Texto
               @break
@@ -62,17 +64,18 @@
           @case('doc')
               <i class="far fa-file-word fa-2x"></i> Word
           @break
-          @case('docx')
+          {{-- @case('docx')
               <i class="far fa-file-word fa-2x"></i> Word
-          @break
+          @break --}}
           @case('ppt')
               <i class="far fa-file-powerpoint fa-2x"></i> Power Point
           @break
-          @case('pptx')
+          {{-- @case('pptx')
               <i class="far fa-file-powerpoint fa-2x"></i> Power Point
-          @break
+          @break --}}
           @default
               <i class="far fa-file fa-2x"></i> Texto
+
       @endswitch
     </td>
     <td>

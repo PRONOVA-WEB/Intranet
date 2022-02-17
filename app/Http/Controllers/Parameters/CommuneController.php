@@ -26,7 +26,7 @@ class CommuneController extends Controller
      */
     public function create()
     {
-        //
+        return view('parameters.communes.create');
     }
 
     /**
@@ -35,10 +35,16 @@ class CommuneController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+
+     //15/02/2022 vr agrego boton crear
+     public function store(Request $request)
     {
-        //
+        $commune = new Commune($request->All());
+        $commune->save();
+
+        return redirect()->route('parameters.communes.index');
     }
+    //15/02/2022 vr agrego boton crear
 
     /**
      * Display the specified resource.
@@ -85,8 +91,13 @@ class CommuneController extends Controller
      * @param  \App\Models\Commune  $commune
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Commune $commune)
+
+    //14/02/2022 vr agrego boton eliminar
+    public function destroy($id)
     {
-        //
+        $commune = Commune::find($id);
+        $commune->delete();
+        return redirect()->back()->with('success', 'Comuna eliminada');
     }
+    //14/02/2022 vr agrego boton eliminar
 }
