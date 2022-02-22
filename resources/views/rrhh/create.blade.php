@@ -12,19 +12,19 @@
 
 
 	<div class="form-row">
-		<fieldset class="form-group col-lg-2">
+		<fieldset class="form-group col-lg-2 col-sm-8">
 			<label for="formGroupIDInput">ID*</label>
 			<input type="number" class="form-control" id="formGroupIDInput" name="id" required="required" min="6" max="99999999" step="">
 		</fieldset>
 
-		<fieldset class="form-group col-lg-1">
+		<fieldset class="form-group col-lg-1 col-sm-4">
 			<label for="formGroupDVInput">DV*</label>
 			<input type="text" class="form-control" id="formGroupDVInput" name="dv" required="required" title="Digito verificador">
 		</fieldset>
 	</div>
 
 	<div class="form-row">
-		<fieldset class="form-group col-lg-4">
+		<fieldset class="form-group col-lg-3">
 			<label for="formGroupNameInput">Nombre*</label>
 			<input type="text" class="form-control" id="formGroupNameInput" placeholder="Nombre" name="name" required="required">
 		</fieldset>
@@ -39,7 +39,7 @@
 			<input type="text" class="form-control" name="mothers_family" required="required">
 		</div>
 
-		<fieldset class="form-group col-lg-2">
+		<fieldset class="form-group col-lg-3">
 			<label for="forbirthday">Fecha Nacimiento</label>
 			<input type="date" class="form-control" id="forbirthday" name="birthday">
 		</fieldset>
@@ -57,51 +57,8 @@
 		</fieldset>
 	</div>
 
-	{{-- @livewire('establishment-ou-search') --}}
+	@livewire('establishment-ou-search')
 
-    <div class="form-row" >
-        <fieldset class="form-group col-lg-4">
-            <label for="forPosition">Cargo/Funcion</label>
-            <input type="text" class="form-control" id="forPosition" placeholder="Subdirector(S), Enfermera, Referente..., Jefe." name="position">
-        </fieldset>
-        <fieldset class="form-group col-lg-8">
-            <label for="forOrganizationalunit">Unidad Organizacional</label>
-            <select name="organizationalunit" id="organizationalunit" title="Seleccione una unidad" class="form-control selectpicker" data-live-search="true" data-size="5">
-                <option value=''></option>
-
-                @foreach($ouRoots as $ouRoot)
-                    <option value="{{ $ouRoot->id }}">
-                        {{ $ouRoot->name }}
-                    </option>
-                    @foreach($ouRoot->childs as $child_level_1)
-                        <option value="{{ $child_level_1->id }}">
-                            &nbsp;&nbsp;&nbsp;
-                            {{ $child_level_1->name }}
-                        </option>
-                        @foreach($child_level_1->childs as $child_level_2)
-                            <option value="{{ $child_level_2->id }}">
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                {{ $child_level_2->name }}
-                            </option>
-                            @foreach($child_level_2->childs as $child_level_3)
-                                <option value="{{ $child_level_3->id }}">
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    {{ $child_level_3->name }}
-                                </option>
-                                @foreach($child_level_3->childs as $child_level_4)
-                                    <option value="{{ $child_level_4->id }}">
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        {{ $child_level_4->name }}
-                                    </option>
-                                @endforeach
-                            @endforeach
-                        @endforeach
-                    @endforeach
-                @endforeach
-
-            </select>
-        </fieldset>
-    </div>
 	<button type="submit" class="btn btn-primary">Crear</button>
 
 </form>

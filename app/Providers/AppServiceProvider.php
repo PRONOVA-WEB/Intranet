@@ -4,9 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -47,5 +46,9 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Paginator::useBootstrap();
+
+        if (! app()->environment('production')) {
+            Mail::alwaysTo('foo@example.org');
+        }
     }
 }

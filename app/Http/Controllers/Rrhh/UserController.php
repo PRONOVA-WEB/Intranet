@@ -27,7 +27,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         //$users = User::Search($request->get('name'))->orderBy('name','Asc')->paginate(50);
-        $users = User::getUsersBySearch($request->get('name'))->orderBy('name','Asc')->paginate(150);
+        $users = User::getUsersBySearch($request->get('name'))->orderBy('name', 'Asc')->paginate(150);
         return view('rrhh.index', compact('users'));
     }
 
@@ -38,27 +38,23 @@ class UserController extends Controller
      */
     public function directory(Request $request)
     {
-        if($request->input('name'))
-        {
+        if ($request->input('name')) {
             $users = User::getUsersBySearch($request->name)
-                ->orderBy('name','Asc')
-                ->with('OrganizationalUnit','Telephones')
+                ->orderBy('name', 'Asc')
+                ->with('OrganizationalUnit', 'Telephones')
                 ->withTrashed(false)
                 ->paginate(50);
-        }
-
-        else {
-            if($request->get('ou')) {
+        } else {
+            if ($request->get('ou')) {
                 $users = User::with('organizationalunit')
-                    ->where('organizational_unit_id',$request->get('ou'))
+                    ->where('organizational_unit_id', $request->get('ou'))
                     ->withTrashed(false)
-                    ->with('OrganizationalUnit','Telephones')
+                    ->with('OrganizationalUnit', 'Telephones')
                     ->orderBy('name')
                     ->paginate(50);
                 //$users = User::has('telephones')->where('organizational_unit_id',$request->get('ou'))->orderBy('name')->paginate(20);
                 //$users = $users->has('telephones')->where('organizational_unit_id',$request->get('ou'))->orderBy('name')->paginate(20);
-            }
-            else {
+            } else {
                 //$users = User::has('telephones')->Search($request->get('name'))->orderBy('name','Asc')->paginate(20);
                 //$users = $users->has('telephones')->Search($request->get('name'))->orderBy('name','Asc')->paginate(20);
                 $users = collect();
@@ -91,6 +87,7 @@ class UserController extends Controller
      */
     public function store(storeUser $request)
     {
+
         $user           = new User($request->All());
         $password       = Str::random(8);
         $user->password = bcrypt($password);
@@ -98,25 +95,18 @@ class UserController extends Controller
         if ($request->has('organizationalunit')) {
             if ($request->filled('organizationalunit')) {
                 $user->organizationalunit()->associate($request->input('organizationalunit'));
-            }
-            else {
+            } else {
                 $user->organizationalunit()->dissociate();
             }
         }
 
-        if($user->save()) {
+        if ($user->save()) {
             try {
                 //envio email para iniciar sesión
-                Mail::to($user->email)->send(new NewUser($user,$password));
-
+                Mail::to($user->email)->send(new NewUser($user, $password));
             } catch (\Throwable $th) {
                 //to do
             }
-        }
-
-        if($request->hasFile('photo')){
-            $path = $request->file('photo')
-                ->storeAs('public',$user->id.'.'.$request->file('photo')->clientExtension());
         }
 
         $user->givePermissionTo('Users: must change password');
@@ -124,8 +114,7 @@ class UserController extends Controller
         $user->givePermissionTo('Calendar: view');
         $user->givePermissionTo('Requirements: create');
 
-
-        session()->flash('info', 'El usuario '.$user->name.' ha sido creado.');
+        session()->flash('info', 'El usuario ' . $user->name . ' ha sido creado.');
 
         return redirect()->route('rrhh.users.index');
     }
@@ -150,9 +139,9 @@ class UserController extends Controller
     public function edit(User $user)
     {
         //$ouRoot = OrganizationalUnit::find(1);
-        $user_id=$user->id;
+        $user_id = $user->id;
         $ouRoots = OrganizationalUnit::where('level', 1)->get();
-        $bankaccount = UserBankAccount::where('user_id',$user_id)->get();
+        $bankaccount = UserBankAccount::where('user_id', $user_id)->get();
         return view('rrhh.edit')
             ->withUser($user)
             ->withBankaccount($bankaccount)
@@ -173,14 +162,12 @@ class UserController extends Controller
         if ($request->has('organizationalunit')) {
             if ($request->filled('organizationalunit')) {
                 $user->organizationalunit()->associate($request->input('organizationalunit'));
-            }
-            else {
+            } else {
                 $user->organizationalunit()->dissociate();
             }
         }
 
         if ($user->isDirty('email_personal')) {
-            // dd('full cocaina');
             $user->email_verified_at = null;
             $user->save();
             $user->sendEmailVerificationNotification();
@@ -188,7 +175,7 @@ class UserController extends Controller
             $user->save();
         }
 
-        session()->flash('success', 'El usuario '.$user->name.' ha sido actualizado.');
+        session()->flash('success', 'El usuario ' . $user->name . ' ha sido actualizado.');
 
         return redirect()->route('rrhh.users.index');
     }
@@ -206,7 +193,7 @@ class UserController extends Controller
 
         $user->delete();
 
-        session()->flash('success', 'El usuario '.$user->name.' ha sido eliminado');
+        session()->flash('success', 'El usuario ' . $user->name . ' ha sido eliminado');
 
         return redirect()->route('rrhh.users.index');
     }
@@ -217,7 +204,8 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function editPassword() {
+    public function editPassword()
+    {
         return view('rrhh.edit_password');
     }
 
@@ -227,20 +215,19 @@ class UserController extends Controller
      * @param  \Illuminate\Http\updatePassword  $request
      * @return \Illuminate\Http\Response
      */
-    public function updatePassword(updatePassword $request) {
-        if(Hash::check($request->password, Auth()->user()->password)) {
+    public function updatePassword(updatePassword $request)
+    {
+        if (Hash::check($request->password, Auth()->user()->password)) {
             Auth()->user()->password = bcrypt($request->newpassword);
             Auth()->user()->save();
 
             session()->flash('success', 'Su clave ha sido cambiada con éxito.');
 
-            if( Auth()->user()->hasPermissionTo('Users: must change password') ) {
+            if (Auth()->user()->hasPermissionTo('Users: must change password')) {
                 Auth()->user()->revokePermissionTo('Users: must change password');
                 Auth::login(Auth()->user());
             }
-
-        }
-        else {
+        } else {
             session()->flash('danger', 'La clave actual es erronea.');
         }
 
@@ -253,22 +240,23 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function resetPassword(User $user) {
+    public function resetPassword(User $user)
+    {
         $user->password = bcrypt($user->id);
         $user->save();
 
-        session()->flash('success', 'La clave ha sido reseteada a: '.$user->id);
+        session()->flash('success', 'La clave ha sido reseteada a: ' . $user->id);
 
         return redirect()->route('rrhh.users.edit', $user->id);
     }
 
 
-    public function switch(User $user) {
+    public function switch(User $user)
+    {
         if (session()->has('superuser')) {
             /* Clean session var */
             session()->pull('superuser');
-        }
-        else {
+        } else {
             /* set god session var = user_id */
             session(['superuser' => Auth::id()]);
         }
@@ -285,21 +273,22 @@ class UserController extends Controller
     public function getFromOu($ou_id)
     {
         $authority = null;
-        $current_authority = Authority::getAuthorityFromDate($ou_id,Carbon::now(),'manager');
-        if($current_authority) {
+        $current_authority = Authority::getAuthorityFromDate($ou_id, Carbon::now(), 'manager');
+        if ($current_authority) {
             $authority = $current_authority->user;
         }
         $users = User::where('organizational_unit_id', $ou_id)->orderBy('name')->get();
         if ($authority <> null) {
-            if(!$users->find($authority)) {
+            if (!$users->find($authority)) {
                 $users->push($authority);
-            }}
+            }
+        }
         return $users;
     }
 
     public function getAutorityFromOu($ou_id)
     {
-        $authority = Authority::getAuthorityFromDate($ou_id,Carbon::now(),'manager');
+        $authority = Authority::getAuthorityFromDate($ou_id, Carbon::now(), 'manager');
         return $authority;
     }
 
@@ -319,7 +308,7 @@ class UserController extends Controller
      */
     public function index_sr(Request $request)
     {
-        $users = User::Search($request->get('name'))->permission('Service Request')->orderBy('name','Asc')->paginate(500);
+        $users = User::Search($request->get('name'))->permission('Service Request')->orderBy('name', 'Asc')->paginate(500);
         return view('rrhh.users_service_requests.index', compact('users'));
     }
 
@@ -371,17 +360,16 @@ class UserController extends Controller
         if ($request->has('organizationalunit')) {
             if ($request->filled('organizationalunit')) {
                 $user->organizationalunit()->associate($request->input('organizationalunit'));
-            }
-            else {
+            } else {
                 $user->organizationalunit()->dissociate();
             }
         }
 
         $user->save();
 
-        if($request->hasFile('photo')){
+        if ($request->hasFile('photo')) {
             $path = $request->file('photo')
-                ->storeAs('public',$user->id.'.'.$request->file('photo')->clientExtension());
+                ->storeAs('public', $user->id . '.' . $request->file('photo')->clientExtension());
         }
 
         $user->givePermissionTo('Users: must change password');
@@ -393,7 +381,7 @@ class UserController extends Controller
         $user->givePermissionTo('Service Request: fulfillments responsable');
 
 
-        session()->flash('info', 'El usuario '.$user->name.' ha sido creado.');
+        session()->flash('info', 'El usuario ' . $user->name . ' ha sido creado.');
 
         return redirect()->route('rrhh.users.service_requests.index');
     }
@@ -437,15 +425,14 @@ class UserController extends Controller
         if ($request->has('organizationalunit')) {
             if ($request->filled('organizationalunit')) {
                 $user->organizationalunit()->associate($request->input('organizationalunit'));
-            }
-            else {
+            } else {
                 $user->organizationalunit()->dissociate();
             }
         }
 
         $user->save();
 
-        session()->flash('success', 'El usuario '.$user->name.' ha sido actualizado.');
+        session()->flash('success', 'El usuario ' . $user->name . ' ha sido actualizado.');
 
         return redirect()->route('rrhh.users.service_requests.index');
     }
@@ -463,7 +450,7 @@ class UserController extends Controller
 
         $user->delete();
 
-        session()->flash('success', 'El usuario '.$user->name.' ha sido eliminado');
+        session()->flash('success', 'El usuario ' . $user->name . ' ha sido eliminado');
 
         return redirect()->route('rrhh.users.service_requests.index');
     }
@@ -482,6 +469,6 @@ class UserController extends Controller
     public function drugs()
     {
         $users = User::permission('Drugs')->get();
-        return view('drugs.users',compact('users'));
+        return view('drugs.users', compact('users'));
     }
 }

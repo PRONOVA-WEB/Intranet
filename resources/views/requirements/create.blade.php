@@ -24,7 +24,7 @@
 
 <div class="form-row">
     @if($parte->id <> 0)
-        <div class="col-8">
+        <div class="col-lg-8">
             @if($parte->files->first() != null)
                 @foreach($parte->files as $file)
                     <object type="application/pdf"
@@ -36,7 +36,7 @@
             @endif
         </div>
     @endif
-    <div class= @if($parte->id <> 0 ) "col-4" @else "col-12" @endif >
+    <div class= @if($parte->id <> 0 ) col-lg-4 @else col-lg-12 @endif >
         <form method="POST" class="form-horizontal" action="{{ route('requirements.store') }}" enctype="multipart/form-data">
             @csrf
             @method('POST')
@@ -71,28 +71,28 @@
                         @foreach($ouRoots as $ouRoot)
                             @if($ouRoot->name != 'Externos')
                                 <option value="{{ $ouRoot->id }}">
-                                {{($ouRoot->establishment->alias ?? '')}}-{{ $ouRoot->name }}
+                                {{ $ouRoot->name }}
                                 </option>
                                 @foreach($ouRoot->childs as $child_level_1)
 
                                     <option value="{{ $child_level_1->id }}">
                                         &nbsp;&nbsp;&nbsp;
-                                        {{($child_level_1->establishment->alias ?? '')}}-{{ $child_level_1->name }}
+                                        {{ $child_level_1->name }}
                                     </option>
                                     @foreach($child_level_1->childs as $child_level_2)
                                         <option value="{{ $child_level_2->id }}">
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            {{($child_level_2->establishment->alias ?? '')}}-{{ $child_level_2->name }}
+                                            {{ $child_level_2->name }}
                                         </option>
                                         @foreach($child_level_2->childs as $child_level_3)
                                             <option value="{{ $child_level_3->id }}">
                                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                {{($child_level_3->establishment->alias ?? '')}}-{{ $child_level_3->name }}
+                                                {{ $child_level_3->name }}
                                             </option>
                                             @foreach($child_level_3->childs as $child_level_4)
                                                 <option value="{{ $child_level_4->id }}">
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    {{($child_level_4->establishment->alias ?? '')}}-{{ $child_level_4->name }}
+                                                    {{ $child_level_4->name }}
                                                 </option>
                                             @endforeach
                                         @endforeach
@@ -139,16 +139,15 @@
                 </tbody>
             </table>
 
-
             <div class="form-row">
                 <fieldset class="form-group @if($parte->id <> 0) col-lg-12 @else col-lg-6 @endif">
-                    <label for="for_date">Asunto</label>
+                    <label for="for_date">Asunto*</label>
                     <input type="text" class="form-control" id="for_subject"
                            name="subject" required="required" value="{{$parte->subject}}">
                 </fieldset>
 
                 <fieldset class="form-group @if($parte->id <> 0) col-lg-12 @else col-lg-2 @endif">
-                    <label for="for_origin">Tipo</label>
+                    <label for="for_origin">Tipo*</label>
                     <select class="form-control" name="priority" id="priority" >
                         <option>Normal</option>
                         <option>Urgente</option>
@@ -156,14 +155,14 @@
                 </fieldset>
 
                 <fieldset class="form-group @if($parte->id <> 0) col-lg-12 @else col-lg-3 @endif">
-                    <label for="for_origin">Fecha límite</label>
+                    <label for="for_origin">Fecha límite*</label>
                     <input type="datetime-local" class="form-control" id="for_limit_at"
                            name="limit_at">
                 </fieldset>
             </div>
 
             <div class="row">
-                <fieldset class="form-group @if($parte->id <> 0) col-lg-12 @else col-lg-5 @endif">
+                <fieldset class="form-group @if($parte->id <> 0) col-lg-12 @else col-lg-6 @endif">
                     <label for="forFile">Adjuntar archivos</label>
                     <input type="file" class="form-control-file" id="forfile" name="forfile[]" multiple>
                 </fieldset>
@@ -180,7 +179,7 @@
                     </div>
                 </fieldset>
 
-                <fieldset class="form-group @if($parte->id <> 0) col-12 @else col-2 @endif">
+                <fieldset class="form-group @if($parte->id <> 0) col-lg-12 @else col-lg-2 @endif">
                     <label for="for_tabla_documents"></br></label></br>
                     <table id="tabla_documents" style="display: none">
                         <tr></tr>
@@ -189,8 +188,8 @@
             </div>
 
             <div class="row">
-                <fieldset class="form-group @if($parte->id <> 0) col-12 @else col @endif">
-                    <label for="for_date">Requerimiento</label>
+                <fieldset class="form-group col-lg-12">
+                    <label for="for_date">Requerimiento*</label>
                     <textarea class="form-control" id="for_body" name="body" rows="3" required></textarea>
                 </fieldset>
             </div>

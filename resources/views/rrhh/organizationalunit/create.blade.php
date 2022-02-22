@@ -4,31 +4,24 @@
 
 @section('content')
 
-<h3>Crear nueva unidad organizacional del {{Auth::user()->organizationalUnit->establishment->name}}</h3>
+<h3>Crear nueva unidad organizacional - {{Auth::user()->organizationalUnit->establishment->name}}</h3>
 
 <form method="POST" class="form-horizontal" action="{{ route('rrhh.organizational-units.store') }}">
 	{{ csrf_field() }}
-
+    <input type="hidden" class="form-control" id="forEstablishment"
+				name="establishment_id" required="required" value="{{Auth::user()->organizationalUnit->establishment->id}}">
 	<div class="row">
-		<fieldset class="form-group col-4">
-			<label for="forEstablishment">Id Establecimiento</label>
-			<input type="text" class="form-control" id="forEstablishment"
-				name="establishment_id" required="required" readonly value="{{Auth::user()->organizationalUnit->establishment->id}}">
-		</fieldset>
-	</div>
-
-	<div class="row">
-		<fieldset class="form-group col-12">
-			<label for="forName">Nombre</label>
+		<fieldset class="form-group col-lg-12">
+			<label for="forName">Nombre*</label>
 			<input type="text" class="form-control" id="forName"
 				placeholder="Nombre de la unidad organizacional" name="name" required="required">
 		</fieldset>
 	</div>
 
 	<div class="row">
-		<fieldset class="form-group col-9">
-			<label for="forFather">Depende de</label>
-			<select class="custom-select" id="forFather" name="father">
+		<fieldset class="form-group col-lg-9">
+			<label for="forFather">Depende de*</label>
+			<select class="form-control selectpicker" id="forFather" name="father">
 				<option value="{{ $organizationalUnit->id }}">
 	            {{ $organizationalUnit->name }}
 	            </option>
@@ -65,10 +58,10 @@
 			</select>
 		</fieldset>
 
-		<fieldset class="form-group col-3">
-			<label for="forLevel">Nivel</label>
+		<fieldset class="form-group col-lg-3">
+			<label for="forLevel">Nivel*</label>
 			<input type="number" class="form-control" id="forLevel"
-				name="level" required="required">
+				name="level" required="required" min="1" max="4">
 		</fieldset>
 	</div>
 

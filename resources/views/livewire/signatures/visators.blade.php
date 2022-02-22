@@ -3,11 +3,12 @@
         <fieldset class="form-group col-lg-4">
             <label for="for_endorse_type">Tipo de visación</label>
             <select class="form-control" name="endorse_type" required>
-                <option value="">Seleccione tipo</option>
+                <option value="">Seleccione tipo de visación</option>
                 @php($endorseTypes = ['No requiere visación', 'Visación opcional', 'Visación en cadena de responsabilidad'])
                 @foreach ($endorseTypes as $endorseType)
                     <option value="{{ $endorseType }}" @if (isset($signature) && $signature->endorse_type == $endorseType) selected @endif>
-                        {{ $endorseType }}</option>
+                        {{ $endorseType }}
+                    </option>
                 @endforeach
             </select>
         </fieldset>
@@ -80,7 +81,7 @@
             <fieldset class="form-group col-lg-5">
                 @if (array_key_exists($value, $users))
                     @if(count($users[$value]) > 0)
-                    <select name="user_visator[]" wire:model="user.{{ $value }}" class="form-control">
+                    <select name="user_visator[]" wire:model="user.{{ $value }}" class="form-control" {{$requiredVisator}}>
                         <option value=''></option>
                         @foreach ($users[$value] as $user)
                             <option value={{ $user->id }}>{{ $user->fullName }}</option>

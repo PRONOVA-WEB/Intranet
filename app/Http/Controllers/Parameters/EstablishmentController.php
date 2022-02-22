@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Parameters;
 
 use App\Establishment;
+use App\Models\Commune;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -26,7 +27,8 @@ class EstablishmentController extends Controller
      */
     public function create()
     {
-        //
+        $communes = Commune::All();
+        return view('parameters.establishments.create', compact('communes'));
     }
 
     /**
@@ -35,10 +37,19 @@ class EstablishmentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    //17/02/2022 vr agrego boton crear
     public function store(Request $request)
     {
-        //
+        //dd ($request);
+        $establishment = new Establishment($request->All());
+        $establishment->save();
+
+        session()->flash('info', 'El lugar '.$establishment->name.' ha sido creado.');
+
+        return redirect()->route('parameters.establishments.index');
     }
+    //17/02/2022 vr agrego boton crear
 
     /**
      * Display the specified resource.
@@ -84,8 +95,18 @@ class EstablishmentController extends Controller
      * @param  \App\Establishment  $establishment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Establishment $establishment)
+
+    //14/02/2022 vr agrego boton eliminar
+    public function destroy($id)
     {
-        //
+        $establishment = Establishment::find($id);
+        $establishment->delete();
+        return redirect()->back()->with('success', 'Establecimiento eliminado');
     }
+    //14/02/2022 vr agrego boton eliminar
+
+    // public function destroy(Establishment $establishment)
+    // {
+    //     //
+    // }
 }

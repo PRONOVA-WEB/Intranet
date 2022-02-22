@@ -96,7 +96,7 @@
                                   @endforeach
                               </td>
                               <td>
-                                <a href="{{ route('request_forms.sign', [$requestForm, $event_type]) }}" class="btn btn-outline-primary btn-sm" title="Aceptar o Rechazar">
+                                <a href="{{ route('request_forms.sign', [$requestForm, $requestForm->firstPendingEvent()->event_type]) }}" class="btn btn-outline-primary btn-sm" title="Aceptar o Rechazar">
                                   <i class="fas fa-signature"></i>
                                 </a>
                               </td>
@@ -118,8 +118,7 @@
         </div>
     @endif
 
-    @if(in_array($event_type, ['finance_event', 'supply_event'])){
-
+    @if(array_intersect($events_type, ['finance_event', 'supply_event']))
     @if(count($new_budget_pending_to_sign) > 0)
         <div class="col">
             <h6><i class="fas fa-inbox"></i> Formularios con nuevo presupuesto pendiente de firma</h6>
@@ -179,7 +178,7 @@
                                   @endforeach
                               </td>
                               <td>
-                                <a href="{{ route('request_forms.sign', [$requestForm, $event_type == 'finance_event' ? 'budget_event' : 'pre_budget_event']) }}" class="btn btn-outline-primary btn-sm" title="Aceptar o Rechazar">
+                                <a href="{{ route('request_forms.sign', [$requestForm, $requestForm->firstPendingEvent()->event_type]) }}" class="btn btn-outline-primary btn-sm" title="Aceptar o Rechazar">
                                   <i class="fas fa-signature"></i>
                                 </a>
                               </td>
@@ -199,10 +198,8 @@
             </div>
         </div>
     @endif
-
-
     @endif
-
+    
     @if(count($my_forms_signed) > 0)
         <div class="col">
             <h6><i class="fas fa-archive"></i> Mis formularios aprobados o rechazados</h6>
@@ -288,12 +285,21 @@
                                     class="btn btn-outline-secondary btn-sm" title="Selección"><i class="fas fa-eye"></i></a>
 
                                 @if($requestForm->signatures_file_id)
+                                    @if($requestForm->signatures_file_id == 11)
+                                    <a class="btn btn-info btn-sm"
+                                        title="Ver Formulario de Requerimiento firmado"
+                                        href="{{ route('request_forms.show_file', $requestForm->requestFormFiles->first() ?? 0) }}"
+                                        target="_blank" title="Certificado">
+                                            <i class="fas fa-file-contract"></i>
+                                    </a>
+                                    @else
                                     <a class="btn btn-info btn-sm"
                                         title="Ver Formulario de Requerimiento firmado"
                                         href="{{ route('request_forms.signedRequestFormPDF', [$requestForm, 1]) }}"
                                         target="_blank" title="Certificado">
-                                          <i class="fas fa-file-contract"></i>
+                                        <i class="fas fa-file-contract"></i>
                                     </a>
+                                    @endif
                                     @if($requestForm->old_signatures_file_id)
                                     <a class="btn btn-secondary btn-sm"
                                         title="Ver Formulario de Requerimiento Anterior firmado"
@@ -308,6 +314,7 @@
                   @endforeach
               </tbody>
             </table>
+            {{$my_forms_signed->appends(Request::input())->links()}}
           </div>
         </div>
     @else
@@ -321,7 +328,7 @@
         </div>
     @endif
 
-    @if(in_array($event_type, ['pre_finance_event', 'finance_event', 'supply_event'])){
+    @if(array_intersect($events_type, ['pre_finance_event', 'finance_event', 'supply_event']))
         @if(count($not_pending_forms) > 0)
         </div>
             <div class="col">
@@ -408,12 +415,21 @@
                                         class="btn btn-outline-secondary btn-sm" title="Selección"><i class="fas fa-eye"></i></a>
 
                                     @if($requestForm->signatures_file_id)
+                                        @if($requestForm->signatures_file_id == 11)
+                                        <a class="btn btn-info btn-sm"
+                                            title="Ver Formulario de Requerimiento firmado"
+                                            href="{{ route('request_forms.show_file', $requestForm->requestFormFiles->first() ?? 0) }}"
+                                            target="_blank" title="Certificado">
+                                                <i class="fas fa-file-contract"></i>
+                                        </a>
+                                        @else
                                         <a class="btn btn-info btn-sm"
                                             title="Ver Formulario de Requerimiento firmado"
                                             href="{{ route('request_forms.signedRequestFormPDF', [$requestForm, 1]) }}"
                                             target="_blank" title="Certificado">
                                             <i class="fas fa-file-contract"></i>
                                         </a>
+                                        @endif
                                         @if($requestForm->old_signatures_file_id)
                                         <a class="btn btn-secondary btn-sm"
                                             title="Ver Formulario de Requerimiento Anterior firmado"
@@ -428,7 +444,7 @@
                     @endforeach
                 </tbody>
                 </table>
-                {{$not_pending_forms->links()}}
+                {{$not_pending_forms->appends(Request::input())->links()}}
             </div>
             </div>
         @else
