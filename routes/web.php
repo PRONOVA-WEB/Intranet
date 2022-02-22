@@ -1258,6 +1258,8 @@ Route::prefix('indicators')->as('indicators.')->group(function () {
     });
 });
 
+
+/* Middleware 'drugs' hace que no se pueda tener acceso al módulo de drogas fuera de horario de oficina */
 Route::prefix('drugs')->as('drugs.')->middleware('can:Drugs','auth','drugs')->group(function(){
     Route::resource('courts','Drugs\CourtController');
     Route::resource('police_units','Drugs\PoliceUnitController');

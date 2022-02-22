@@ -10,7 +10,7 @@
 <div class="row">
     <div class="col-sm-8">
         <div class="table-responsive">
-            <h6><i class="fas fa-info-circle"></i> Detalle Formulario</h6>
+            <h6><i class="fas fa-info-circle"></i> Detalle Formulario ID {{$requestForm->id}}</h6>
             <table class="table table-sm table-striped table-bordered">
                 <!-- <thead>
                     <tr class="table-active">
@@ -124,7 +124,7 @@
         <tbody class="text-center small">
             <tr>
               @foreach($requestForm->eventRequestForms as $event)
-                <th>{{ $event->signerOrganizationalUnit->name }}</th>
+                <td><strong>{{ $event->EventTypeValue }}</strong></td>
               @endforeach
             </tr>
             <tr>
@@ -140,6 +140,9 @@
                       <i class="fas fa-check-circle"></i> {{ $event->StatusValue }} <br>
                     </span>
                     <i class="fas fa-user"></i> {{ $event->signerUser->FullName }}<br>
+                    <p style="font-size: 11px">
+                      {{ $event->position_signer_user }} {{ $event->signerOrganizationalUnit->name }}<br>
+                    </p>
                     <i class="fas fa-calendar-alt"></i> {{ Carbon\Carbon::parse($event->signature_date)->format('d-m-Y H:i:s') }}<br>
                   @endif
                   @if($event->StatusValue == 'Rechazado')
@@ -147,6 +150,9 @@
                       <i class="fas fa-times-circle"></i> {{ $event->StatusValue }} <br>
                     </span>
                     <i class="fas fa-user"></i> {{ $event->signerUser->FullName }}<br>
+                    <p style="font-size: 11px">
+                      {{ $event->position_signer_user }} {{ $event->signerOrganizationalUnit->name }}<br>
+                    </p>
                     <i class="fas fa-calendar-alt"></i> {{ Carbon\Carbon::parse($event->signature_date)->format('d-m-Y H:i:s') }}<br>
                   @endif
                 </td>
@@ -643,6 +649,11 @@ $('input[type="file"]').bind('change', function(e) {
     //     alert("Debe seleccionar un archivo pdf.");
     // }
   });
+
+  $('#for_has_taking_of_reason').change(function() {
+    $('input[name=taking_of_reason_file]').prop('required',this.checked);
+    $('input[name=taking_of_reason_file]').prop('disabled',!this.checked);
+});
 
 </script>
 

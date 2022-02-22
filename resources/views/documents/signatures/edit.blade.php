@@ -155,10 +155,14 @@
 
 @can('be superuser')
     @include('partials.audit', ['audits' => $signature->audits] )
-@endcan
 
-@can('be superuser')
-    @include('partials.audit', ['audits' => $signature->signaturesFlowSigner->audits] )
+    @if($signature->signaturesFlowSigner)
+        @include('partials.audit', ['audits' => $signature->signaturesFlowSigner->audits] )
+    @else
+        <div class="alert alert-danger" role="alert">
+            No tiene firmante
+        </div>
+    @endif
 @endcan
 
 @endsection

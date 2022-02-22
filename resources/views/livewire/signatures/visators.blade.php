@@ -3,11 +3,12 @@
         <fieldset class="form-group col-lg-4">
             <label for="for_endorse_type">Tipo de visación</label>
             <select class="form-control" name="endorse_type" required>
-                <option value="">Seleccione tipo</option>
+                <option value="">Seleccione tipo de visación</option>
                 @php($endorseTypes = ['No requiere visación', 'Visación opcional', 'Visación en cadena de responsabilidad'])
                 @foreach ($endorseTypes as $endorseType)
                     <option value="{{ $endorseType }}" @if (isset($signature) && $signature->endorse_type == $endorseType) selected @endif>
-                        {{ $endorseType }}</option>
+                        {{ $endorseType }}
+                    </option>
                 @endforeach
             </select>
         </fieldset>
@@ -30,6 +31,7 @@
         </fieldset>
 
     </div>
+<<<<<<< HEAD
     <div class="form-row {{ $showList }}">
         <div class="col-lg-5">
             <label for="">Unidad Organizacional</label>
@@ -48,6 +50,36 @@
                         @foreach ($ouRoots as $ouRoot)
                             <option value="{{ $ouRoot->id }}">
                                 {{ $ouRoot->name }}
+=======
+
+    @if($inputs)
+        <div class="form-row">
+            <div class="col-5">
+                <label for="">Visador - Unidad Organizacional</label>
+            </div>
+            <div class="col-5">
+                <label for="">Visador - Usuario</label>
+            </div>
+        </div>
+    @endif
+
+
+    @foreach($inputs as $key => $value)
+        <div class="form-row">
+            <fieldset class="form-group col-5">
+               <select name="ou_id_visator[]" wire:model="organizationalUnit.{{ $value }}" class="form-control" {{$requiredVisator}} >
+                    {{-- <select name="ou_id_visator[]" wire:model="organizationalUnit.{{ $value }}" class="form-control"  > --}}
+                    <option value=''></option>
+
+                    @foreach($ouRoots as $ouRoot)
+                        <option value="{{ $ouRoot->id }}">
+                            {{ $ouRoot->name  . ' - ' . $ouRoot->establishment->alias}}
+                        </option>
+                        @foreach($ouRoot->childs as $child_level_1)
+                            <option value="{{ $child_level_1->id }}">
+                                &nbsp;&nbsp;&nbsp;
+                                {{ $child_level_1->name  . ' - ' . $ouRoot->establishment->alias}}
+>>>>>>> fa1e6739651d28b0cd36fd14064fb33f649818db
                             </option>
                             @foreach ($ouRoot->childs as $child_level_1)
                                 <option value="{{ $child_level_1->id }}">
@@ -77,10 +109,17 @@
                     </select>
                 </div>
             </fieldset>
+<<<<<<< HEAD
             <fieldset class="form-group col-lg-5">
                 @if (array_key_exists($value, $users))
                     @if(count($users[$value]) > 0)
                     <select name="user_visator[]" wire:model="user.{{ $value }}" class="form-control">
+=======
+            <fieldset class="form-group col-5">
+                @if(array_key_exists($value,$users))
+                   <select name="user_visator[]" wire:model="user.{{$value}}" class="form-control" {{$requiredVisator}}>
+                        {{-- <select name="user_visator[]" wire:model="user.{{$value}}" class="form-control"> --}}
+>>>>>>> fa1e6739651d28b0cd36fd14064fb33f649818db
                         <option value=''></option>
                         @foreach ($users[$value] as $user)
                             <option value={{ $user->id }}>{{ $user->fullName }}</option>
