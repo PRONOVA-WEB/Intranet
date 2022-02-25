@@ -21,21 +21,11 @@
 
         <fieldset class="form-group col-3">
             <label for="for_document_type">Tipo de Documento*</label>
-            <select class="form-control selectpicker" data-live-search="true" name="document_type" required="" data-size="5">
-                <option value="Carta" @if($signature->document_type == 'Carta') selected @endif >Carta</option>
-                <option value="Circular" @if($signature->document_type == 'Circular') selected @endif>Circular
-                </option>
-                <option value="Convenios" @if($signature->document_type == 'Convenios') selected @endif>Convenios
-                </option>
-                <option value="Memorando" @if($signature->document_type == 'Memorando') selected @endif>Memorando
-                </option>
-                <option value="Oficio" @if($signature->document_type == 'Oficio') selected @endif>Oficio</option>
-                <option value="Resoluciones" @if($signature->document_type == 'Resoluciones') selected @endif>
-                    Resoluciones
-                </option>
-                <option value="Acta" @if($signature->document_type == 'Acta') selected @endif>
-                    Acta
-                </option>
+            <select class="form-control" name="document_type" required>
+                @foreach($docTypes as $docType)
+                <option value="{{$docType}}"
+                        @if(isset($signature) && $docType == $signature->document_type) selected @endif>{{$docType}}</option>
+                @endforeach
             </select>
         </fieldset>
 
@@ -86,22 +76,7 @@
     <hr>
     @livewire('signatures.signer', ['signaturesFlowSigner' => $signature->signaturesFlowSigner])
 
-    <div class="form-row">
-
-
-
-        <fieldset class="form-group col">
-            <label for="for_distribution">Distribución del documento (separados por coma)</label>
-            <textarea class="form-control" id="for_distribution" name="distribution" rows="6">{{$signature->distribution}}</textarea>
-        </fieldset>
-
-        <fieldset class="form-group col">
-            <label for="for_recipients">Destinatarios del documento (separados por coma)</label>
-            <textarea class="form-control" id="for_recipients" name="recipients" rows="6">{{$signature->recipients}}</textarea>
-        </fieldset>
-
-    </div>
-
+    @livewire('documents.add-email-text-area-list', ['document'=>$document ?? '','signature'=>$signature ?? ''])
 
     @if($signature->hasSignedOrRejectedFlow)
     <button type="button" class="btn btn-primary" @if($signature->responsable_id != Auth::id()) disabled @endif
@@ -171,8 +146,8 @@
     <script type="text/javascript">
         $('#for_document').bind('change', function() {
             //Validación de tamaño
-            if((this.files[0].size / 1024 / 1024) > 3){
-                alert('No puede cargar un pdf de mas de 3 MB.');
+            if((this.files[0].size / 1024 / 1024) > 5){
+                alert('No puede cargar un pdf de mas de 5 MB.');
                 $('#for_document').val('');
             }
 
