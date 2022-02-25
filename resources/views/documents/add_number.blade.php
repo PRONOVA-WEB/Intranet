@@ -29,7 +29,7 @@
             <p> <strong>De:</strong> {!! $document->fromHtml !!} </p>
         </div>
         <div class="col">
-            <p> <strong>Tipo:</strong> {{ $document->type }}<br>
+            <p> <strong>Tipo:</strong> {{ $document->template->type }}<br>
             <strong>Propietario:</strong> {{ $document->user->FullName }} </p>
         </div>
     </div>

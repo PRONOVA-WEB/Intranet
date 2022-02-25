@@ -31,4 +31,22 @@ if (!function_exists('settings')) {
             return null;
         }
     }
+
+    function ceros($value) {
+        switch ((strlen($value))) {
+            case '1':
+                $ceros = '0000';
+                break;
+            case '2':
+                $ceros = '000';
+                break;
+            case '3':
+                $ceros = '00';
+                break;
+            case '4':
+                $ceros = '0';
+                break;
+        }
+        return $ceros.$value;
+    }
 }

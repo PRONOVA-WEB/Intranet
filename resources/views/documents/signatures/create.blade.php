@@ -41,14 +41,18 @@
 
             <fieldset class="form-group col-lg-3">
                 <label for="for_document_type">Tipo de Documento*</label>
-                <select class="form-control" name="document_type" required>
-                    @php($docTypes = array('Carta', 'Circular', 'Convenios', 'Memorando', 'Oficio', 'Resoluciones', 'Acta'))
-                    <option value="">Seleccione tipo</option>
-                    @foreach($docTypes as $docType)
-                        <option value="{{$docType}}"
-                                @if(isset($signature) && $docType == $signature->document_type) selected @endif>{{$docType}}</option>
-                    @endforeach
-                </select>
+                @if (isset($document))
+                    <input type="text" class="form-control" readonly name="document_type" value="{{ $document->template->type }}">
+                @else
+                    <select class="form-control" name="document_type" required>
+                        <option value="">Seleccione tipo</option>
+                        @foreach($docTypes as $docType)
+                            <option value="{{$docType}}"
+                                    @if(isset($signature) && $docType == $signature->document_type) selected @endif>{{$docType}}</option>
+                        @endforeach
+                    </select>
+                @endif
+
             </fieldset>
 
             <fieldset class="form-group col-lg-9">
@@ -74,7 +78,6 @@
                     <button name="id" class="btn btn-link" form="showPdf" formtarget="_blank">
                         <i class="fas fa-paperclip"></i> Documento
                     </button>
-
                     <input type="hidden" name="file_base_64" value="{{  $signature->signaturesFileDocument->file }}">
                     <input type="hidden" name="file_base_64" value="{{  $signature->signaturesFileDocument->file}}"
                            form="showPdf">

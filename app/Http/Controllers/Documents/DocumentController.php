@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Rrhh\OrganizationalUnit;
 use App\User;
 use App\Documents\Correlative;
+use App\Models\Parameters\DocTemplate;
 use Illuminate\Support\Facades\Validator;
 
 class DocumentController extends Controller
@@ -40,15 +41,12 @@ class DocumentController extends Controller
 
             $ownDocuments = Document::Search($request)->latest()
                 ->where('user_id', Auth()->user()->id)
-                //->whereIn('organizational_unit_id',$childs)
-                // ->withTrashed()
                 ->paginate(100);
 
             $otherDocuments = Document::Search($request)->latest()
                 ->where('user_id', '<>', Auth()->user()->id)
-                ->where('type', '<>', 'Reservado')
+                ->where('private', true)
                 ->whereIn('organizational_unit_id', $childs)
-                // ->withTrashed()
                 ->paginate(100);
 
             $users = User::orderBy('name')->orderBy('fathers_family')->withTrashed()->get();
@@ -80,15 +78,15 @@ class DocumentController extends Controller
     {
         $request->validate(
             [
-                'type'              => 'required',
                 'subject'           => 'required',
                 'from'              => 'required',
                 'for'               => 'required',
                 'greater_hierarchy' => 'required',
-                'content'           => 'required'
+                'content'           => 'required',
+                'doc_templates_id'  => 'required'
             ],
             [
-                'type.required'     => 'el campo tipo es obligatorio',
+                'doc_templates_id.required'     => 'el campo tipo es obligatorio',
                 'subject.required'  => 'el campo materia es obligatorio',
                 'from.required'     => 'el campo De es obligatorio',
                 'for.required'      => 'el campo Para es obligatorio',
@@ -99,19 +97,15 @@ class DocumentController extends Controller
         $document = new Document($request->All());
         $document->user()->associate(Auth::user());
         $document->organizationalUnit()->associate(Auth::user()->organizationalUnit);
+        $document->save();
 
         /* Agrega uno desde el correlativo */
-        if (!$request->number) {
-            if (
-                $request->type == 'Memo' or
-                $request->type == 'Acta de recepción' or
-                $request->type == 'Circular'
-            ) {
+        if (is_null($request->number)) {
+            $document->number = DocTemplate::find($request->doc_templates_id)->prefix.ceros($document->id);
+            $document->save();
 
-                $document->number = Correlative::getCorrelativeFromType($request->type);
-            }
         }
-        $document->save();
+
         return redirect()->route('documents.index');
     }
 
@@ -164,7 +158,7 @@ class DocumentController extends Controller
     {
         $request->validate(
             [
-                'type'              => 'required',
+                'doc_templates_id'              => 'required',
                 'subject'           => 'required',
                 'from'              => 'required',
                 'for'               => 'required',
@@ -172,7 +166,7 @@ class DocumentController extends Controller
                 'content'           => 'required'
             ],
             [
-                'type.required'     => 'el campo tipo es obligatorio',
+                'doc_templates_id.required'     => 'el campo tipo es obligatorio',
                 'subject.required'  => 'el campo materia es obligatorio',
                 'from.required'     => 'el campo De es obligatorio',
                 'for.required'      => 'el campo Para es obligatorio',
@@ -331,41 +325,9 @@ class DocumentController extends Controller
         $signature->description = $document->antecedent;
         $signature->recipients = $document->distribution;
 
-        switch ($document->type) {
-            case 'Memo':
-                $signature->document_type = 'Memorando';
-                break;
-            case 'Ordinario':
-            case 'Reservado':
-            case 'Oficio':
-                $signature->document_type = 'Oficio';
-                break;
-            case 'Circular':
-                $signature->document_type = 'Circular';
-                break;
-            case 'Acta de recepción':
-                $signature->document_type = 'Acta';
-                break;
-            case 'Resolución':
-                $signature->document_type = 'Resoluciones';
-                break;
-        }
+        $signature->document_type = $document->template->type;
 
-        if ($signature->document_type = 'Memorando')
-
-            //        $signature->endorse_type = 'Visación en cadena de responsabilidad';
-            //        $signature->distribution = 'División de Atención Primaria MINSAL,Oficina de Partes SSI,'.$municipio;
-
-
-            if ($document->type == 'Acta de recepción') {
-                $documentFile = \PDF::loadView('documents.reception', compact('document'));
-            } else if ($document->type == 'Resolución') {
-                $documentFile = \PDF::loadView('documents.resolution', compact('document'));
-            } else if ($document->type == 'Circular') {
-                $documentFile = \PDF::loadView('documents.circular', compact('document'));
-            } else {
-                $documentFile = \PDF::loadView('documents.show', compact('document'));
-            }
+        $documentFile = \PDF::loadView('documents.show', compact('document'));
 
         $signaturesFile = new SignaturesFile();
         $signaturesFile->file = base64_encode($documentFile->output());
@@ -381,9 +343,5 @@ class DocumentController extends Controller
     {
         $document = Document::find($id);
         return Storage::disk('gcs')->response($document->fileToSign->signed_file);
-        //        header('Content-Type: application/pdf');
-        //        if (isset($document->fileToSign)) {
-        //            echo base64_decode($document->fileToSign->signed_file);
-        //        }
     }
 }

@@ -32,6 +32,11 @@ class AddEmailTextAreaList extends Component
             $this->distribution = $this->document->distribution;
             $this->responsible = $this->document->responsible;
         }
+
+        if ($this->signature) {
+            $this->distribution = $this->signature->distribution;
+            $this->recipients   = $this->signature->recipients;
+        }
     }
 
     public function addToList(User $selectedUser, $list)

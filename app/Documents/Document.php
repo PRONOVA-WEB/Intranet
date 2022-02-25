@@ -2,6 +2,7 @@
 
 namespace App\Documents;
 
+use App\Models\Parameters\DocTemplate;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
@@ -20,7 +21,7 @@ class Document extends Model implements Auditable
 
 
     protected $fillable = [
-        'number', 'date', 'type', 'antecedent', 'responsible', 'subject',
+        'number', 'date','private', 'doc_templates_id', 'antecedent', 'responsible', 'subject',
         'from', 'for', 'greater_hierarchy', 'distribution', 'content', 'file_to_sign_id',
 
     ];
@@ -132,6 +133,10 @@ class Document extends Model implements Auditable
         return $this->belongsTo('App\Models\Documents\SignaturesFile', 'file_to_sign_id');
     }
 
+    public function template()
+    {
+        return $this->belongsTo(DocTemplate::class, 'doc_templates_id');
+    }
 
     /**
      * The attributes that should be mutated to dates.

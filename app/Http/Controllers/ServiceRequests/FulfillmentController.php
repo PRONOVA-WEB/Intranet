@@ -1,25 +1,25 @@
- <?php
+<?php
 
-    namespace App\Http\Controllers\ServiceRequests;
+namespace App\Http\Controllers\ServiceRequests;
 
-    use Illuminate\Http\Request;
-    use App\Http\Controllers\Controller;
-    use Illuminate\Database\Eloquent\Builder;
-    use App\Models\ServiceRequests\ServiceRequest;
-    use App\Models\ServiceRequests\Fulfillment;
-    use App\Models\ServiceRequests\FulfillmentItem;
-    use App\Models\ServiceRequests\ShiftControl;
-    use App\Models\Parameters\Profession;
-    use App\Rrhh\OrganizationalUnit;
-    use DateTime;
-    use DatePeriod;
-    use DateInterval;
-    use App\User;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\Builder;
+use App\Models\ServiceRequests\ServiceRequest;
+use App\Models\ServiceRequests\Fulfillment;
+use App\Models\ServiceRequests\FulfillmentItem;
+use App\Models\ServiceRequests\ShiftControl;
+use App\Models\Parameters\Profession;
+use App\Rrhh\OrganizationalUnit;
+use DateTime;
+use DatePeriod;
+use DateInterval;
+use App\User;
 
-    use Illuminate\Support\Facades\Auth;
-    use App\Rrhh\Authority;
-    use Carbon\Carbon;
-    use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use App\Rrhh\Authority;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
     class FulfillmentController extends Controller
     {
