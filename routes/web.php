@@ -70,6 +70,7 @@ use App\User;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\Parameters\LogController;
 use App\Http\Controllers\RequestForms\AttachedFilesController;
+use App\Http\Controllers\Parameters\DocTemplateController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
@@ -882,6 +883,16 @@ Route::prefix('parameters')->as('parameters.')->middleware('auth')->group(functi
         // Route::get('{log}/edit', [LogController::class, 'edit'])->name('edit');
         // Route::put('{log}', [LogController::class, 'update'])->name('update');
         Route::get('{log}/destroy', [LogController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('documents_templates')->as('documents_templates.')->middleware('auth')->group(function () {
+        Route::get('/',[DocTemplateController::class,'index'])->name('index');
+        Route::get('/create',[DocTemplateController::class,'create'])->name('create');
+        Route::get('/show//{docTemplate}/',[DocTemplateController::class,'show'])->name('show');
+        Route::get('/{docTemplate}/edit',[DocTemplateController::class,'edit'])->name('edit');
+        Route::post('/store',[DocTemplateController::class,'store'])->name('store');
+        Route::put('/{docTemplate}/update',[DocTemplateController::class,'update'])->name('update');
+        Route::delete('/destroy/{docTemplate}',[DocTemplateController::class,'destroy'])->name('destroy');
     });
 
 });

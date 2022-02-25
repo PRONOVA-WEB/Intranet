@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Rrhh\OrganizationalUnit;
 use App\User;
 use App\Documents\Correlative;
+use App\Models\Parameters\DocTemplate;
 use Illuminate\Support\Facades\Validator;
 
 class DocumentController extends Controller
@@ -40,15 +41,12 @@ class DocumentController extends Controller
 
             $ownDocuments = Document::Search($request)->latest()
                 ->where('user_id', Auth()->user()->id)
-                //->whereIn('organizational_unit_id',$childs)
-                // ->withTrashed()
                 ->paginate(100);
 
             $otherDocuments = Document::Search($request)->latest()
                 ->where('user_id', '<>', Auth()->user()->id)
-                ->where('type', '<>', 'Reservado')
+                ->where('private', true)
                 ->whereIn('organizational_unit_id', $childs)
-                // ->withTrashed()
                 ->paginate(100);
 
             $users = User::orderBy('name')->orderBy('fathers_family')->withTrashed()->get();
@@ -80,15 +78,15 @@ class DocumentController extends Controller
     {
         $request->validate(
             [
-                'type'              => 'required',
                 'subject'           => 'required',
                 'from'              => 'required',
                 'for'               => 'required',
                 'greater_hierarchy' => 'required',
-                'content'           => 'required'
+                'content'           => 'required',
+                'doc_templates_id'  => 'required'
             ],
             [
-                'type.required'     => 'el campo tipo es obligatorio',
+                'doc_templates_id.required'     => 'el campo tipo es obligatorio',
                 'subject.required'  => 'el campo materia es obligatorio',
                 'from.required'     => 'el campo De es obligatorio',
                 'for.required'      => 'el campo Para es obligatorio',
@@ -99,19 +97,15 @@ class DocumentController extends Controller
         $document = new Document($request->All());
         $document->user()->associate(Auth::user());
         $document->organizationalUnit()->associate(Auth::user()->organizationalUnit);
+        $document->save();
 
         /* Agrega uno desde el correlativo */
-        if (!$request->number) {
-            if (
-                $request->type == 'Memo' or
-                $request->type == 'Acta de recepción' or
-                $request->type == 'Circular'
-            ) {
+        if (is_null($request->number)) {
+            $document->number = DocTemplate::find($request->doc_templates_id)->prefix.ceros($document->id);
+            $document->save();
 
-                $document->number = Correlative::getCorrelativeFromType($request->type);
-            }
         }
-        $document->save();
+
         return redirect()->route('documents.index');
     }
 
