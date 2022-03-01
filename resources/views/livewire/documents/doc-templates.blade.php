@@ -12,9 +12,9 @@
     <div class="form-group col-lg-12">
         <label for="contenido">Contenido*</label>
         @if ($document)
-        <button type="button" class="btn btn-sm btn-warning float-right" wire:click='resetContent({{ $document->id }})'>Descartar Cambios</button>
+        <button type="button" class="btn btn-sm btn-secondary float-right" wire:click='resetContent({{ $document->id }})'>Descartar Cambios</button>
         @endif
-        <textarea class="form-control" id="contenido" rows="18" wire:model="content" name="content"></textarea>
+        <textarea class="form-control" id="contenido" rows="18" wire:model="content" name="content">{!! $document->content ?? '' !!}></textarea>
     </div>
     <hr>
     <script type="text/javascript">

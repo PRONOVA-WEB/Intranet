@@ -9,7 +9,7 @@
     <!-- Topbar Navbar -->
     <ul class="navbar-nav ml-auto">
         <!-- Nav Item - Alerts -->
-        <li class="nav-item dropdown no-arrow mx-1">
+        {{-- <li class="nav-item dropdown no-arrow mx-1">
             <a class="nav-link text-gray-700" href="{{ route('rrhh.users.directory') }}">
                 <i class="fas fa-address-book fa-fw" title="Teléfonos"></i> Directorio
             </a>
@@ -19,7 +19,7 @@
             <a class="nav-link text-gray-700" href="{{ route('calendars') }}">
                 <i class="fas fa-calendar-alt fa-fw" title="Calendarios"></i> Calendarios
             </a>
-        </li>
+        </li> --}}
         <div class="topbar-divider d-none d-sm-block"></div>
 
         <!-- Nav Item - User Information -->
@@ -43,7 +43,7 @@
                 @endif
 
 
-                @role('superuser')
+                @canany(['Developer', 'Administrator'])
                     <a class="dropdown-item" href="{{ route('parameters.index') }}">
                         <i class="fas fa-cog fa-fw"></i> Mantenedores
                     </a>
@@ -53,7 +53,7 @@
                     <a class="dropdown-item" href="{{ route('parameters.logs.index') }}">
                         <i class="fas fa-bomb fa-fw"></i> <span>Log de errores</span>
                     </a>
-                @endrole
+                @endcan
 
 
                 <div class="dropdown-divider"></div>

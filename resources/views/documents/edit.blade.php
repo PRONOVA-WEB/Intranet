@@ -29,11 +29,15 @@
             <input type="date" class="form-control" id="forDate" name="date"
                 value="{{ $document->date ? $document->date->format('Y-m-d') : '' }}">
         </div>
-        <div class="form-group col-lg-8">
+        <div class="form-group col-lg-6">
             <label for="for_antecedent">Antecedente</label>
             <input type="text" class="form-control" id="for_antecedent"
                 placeholder="[opcional]"
                 value="{{ $document->antecedent }}" name="antecedent">
+        </div>
+        <div class="form-group form-check-inline">
+            <input type="checkbox" class="form-check-input" id="private" {{ $document->private ? 'checked' : '' }} value="1" name="private">
+            <label class="form-check-label" for="private">Privado</label>
         </div>
     </div>
     <div class="form-row">

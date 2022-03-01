@@ -61,7 +61,7 @@
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDocumentos"
             aria-expanded="true" aria-controls="collapseDocumentos">
             <i class="fas fa-file-alt fa-fw"></i>
-            <span>Documento</span>
+            <span>Documentos</span>
         </a>
         <div id="collapseDocumentos" class="collapse" aria-labelledby="headingDocumentos"
             data-parent="#accordionSidebar">
