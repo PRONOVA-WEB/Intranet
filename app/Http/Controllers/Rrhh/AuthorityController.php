@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Rrhh\OrganizationalUnit;
 use Illuminate\Support\Facades\Auth;
+ //vr 25-02-2022 carga datos desde tabla positions
+use App\Models\Position;
 
 class AuthorityController extends Controller
 {
@@ -85,6 +87,7 @@ class AuthorityController extends Controller
         //$todayDate = date("Y-m-d");
         //$calendar[$todayDate] = Authority::getAuthorityFromDate($todayDate,'manager');
         //die($ou);
+
         return view('rrhh.authorities.index',compact('authorities','ouTopLevels','calendar','today','ou'));
     }
 
@@ -103,8 +106,12 @@ class AuthorityController extends Controller
             $ous = OrganizationalUnit::All();
             //$ouTopLevel = OrganizationalUnit::Find(1);
             $ouTopLevel = OrganizationalUnit::where('level', 1)->where('establishment_id', $request->establishment_id)->first();
+
+            //vr 25-02-2022 carga datos desde table
             //dd($ouTopLevel);
-            return view('rrhh.authorities.create', compact('ous','ouTopLevel'))->withOu($request->ou_id);
+            $positions = Position::orderBy('name')->get();
+            return view('rrhh.authorities.create', compact('ous','ouTopLevel','positions'))->withOu($request->ou_id);
+            //vr 25-02-2022 carga datos desde table
         }
         else
         {

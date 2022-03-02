@@ -20,7 +20,7 @@
         <fieldset class="form-group col">
             <label for="for_organizational_unit_id">Unidad Organizacional*</label>
             @livewire('select-organizational-unit', [
-                'establishment_id' => $ouTopLevel->establishment->id, 
+                'establishment_id' => $ouTopLevel->establishment->id,
                 'organizational_unit_id' => $authority->organizational_unit_id
             ])
         </fieldset>
@@ -41,10 +41,13 @@
             <label for="for_to">Hasta*</label>
             <input required type="date" class="form-control" id="for_to" name="to" required value="{{ $authority->to->format('Y-m-d') }}">
         </fieldset>
-    
+
         <fieldset class="form-group col-6 col-md-3">
             <label for="for_position">Cargo*</label>
             <select name="position" id="for_position" class="form-control" required>
+                {{-- vr 22-02-2022 despues de modificar las tablas de cargos y autoridades para que queden relacionales de debe realizar esta modificacion para que busque por id y comentarizar todo lo de abajo en duro --}}
+                {{-- <option value="{{ $position->id }}" @if ($position->id == $authority->position) selected @endif>{{ $position->name }}</option> --}}
+                {{-- vr 22-02-2022 despues de modificar las tablas de cargos y autoridades para que queden relacionales de debe realizar esta modificacion para que busque por id y comentarizar todo lo de abajo en duro --}}
                 <option {{ ($authority->position == 'Director')?'selected':'' }}>Director</option>
                 <option {{ ($authority->position == 'Directora')?'selected':'' }}>Directora</option>
                 <option {{ ($authority->position == 'Director (S)')?'selected':'' }}>Director (S)</option>

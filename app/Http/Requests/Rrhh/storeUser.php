@@ -25,7 +25,11 @@ class storeUser extends FormRequest
     {
         return [
             'id'              => 'unique:users|required',
-            'email'           => 'unique:users|email',
+            'dv'              => 'required',
+            'name'            => 'required',
+            'fathers_family'  => 'required',
+            'mothers_family'  => 'required',
+            'email'           => 'required|unique|email:rfc,dns',
         ];
     }
 
@@ -37,10 +41,14 @@ class storeUser extends FormRequest
     public function messages()
     {
         return [
-            'id.required'       => '"ID" es requerido.',
-            'id.unique'         => 'Ya existe otro usuario con este ID.',
-            'email.email'       => '"Email" debe tener formato de email.',
-            'email.unique'      => 'Ya existe otro usuario con este Email.',
+            'id.required'             => '"ID" es requerido.',
+            'id.unique'               => 'Ya existe otro usuario con este ID.',
+            'name.required'           => 'Campo nombre es requerido',
+            'fathers_family.required' => 'Campo apellido paterno es requerido',
+            'mothers_family.required' => 'Campo apellido materno es requerido',
+            'email.required'          => 'Campo email es requerido',
+            'email.email'             => '"Email" debe tener formato de email.',
+            'email.unique'            => 'Ya existe otro usuario con este Email.',
         ];
     }
 }

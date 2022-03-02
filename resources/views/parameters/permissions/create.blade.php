@@ -33,7 +33,7 @@
     </div>
 
     <button type="submit" class="btn btn-primary">Guardar</button>
-
+    <a class="btn btn-outline-secondary" href="{{ route('parameters.permissions.index',$guard) }}">Volver</a>
 </form>
 
 @endsection

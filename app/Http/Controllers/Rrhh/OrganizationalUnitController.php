@@ -27,7 +27,6 @@ class OrganizationalUnitController extends Controller
      */
     public function create()
     {
-        //$organizationalUnit = OrganizationalUnit::find(84);
         $organizationalUnit = OrganizationalUnit::where('level', 1)->where('establishment_id', Auth::user()->organizationalUnit->establishment->id)->first();
         return view('rrhh.organizationalunit.create',compact('organizationalUnit'));
     }
@@ -40,6 +39,18 @@ class OrganizationalUnitController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate(
+            [
+                'name'   => 'required',
+                'father' => 'required',
+                'level'  => 'required|numeric|min:1|max:4',
+            ],
+            [
+                'name.required'   => 'El campo nombre es requerido',
+                'father.required' => 'El campo "depende de" es requerido',
+                'level.required'  => 'El campo nivel es requerido',
+            ]
+        );
         $organizationalUnit = new OrganizationalUnit($request->All());
         $organizationalUnit->father()->associate($request->input('father'));
         $organizationalUnit->save();
@@ -68,7 +79,7 @@ class OrganizationalUnitController extends Controller
      */
     public function edit(OrganizationalUnit $organizationalUnit)
     {
-        
+
         $organizationalUnits = OrganizationalUnit::where('establishment_id', $organizationalUnit->establishment_id)->get();
         //$organizationalUnits = OrganizationalUnit::all();
         return view('rrhh/organizationalunit/edit')

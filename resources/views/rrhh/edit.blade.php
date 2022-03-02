@@ -39,11 +39,11 @@
 
 	<div class="form-row">
 		<div class="form-group col-lg-6">
-			<label for="email">Correo</label>
+			<label for="email">Email</label>
 			<input type="email" class="form-control" name="email" value="{{$user->email}}">
 		</div>
 		<div class="form-group col-lg-6">
-			<label for="email">Correo Personal</label>
+			<label for="email">Email Personal</label>
 			<input type="email" class="form-control" name="email_personal" value="{{$user->email_personal}}">
 		</div>
 	</div>
