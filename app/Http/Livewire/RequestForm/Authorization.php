@@ -150,9 +150,9 @@ class Authorization extends Component
                 //     ->send(new RequestFormSignNotification($event->requestForm, $nextEvent->first()));
                 // }
                 else{
-                  // Mail::to($emails)
-                  //   ->cc(env('APP_RF_MAIL'))
-                  //   ->send(new RequestFormSignNotification($event->requestForm, $nextEvent->first()));
+                  Mail::to($emails)
+                    ->cc(env('APP_RF_MAIL'))
+                    ->send(new RequestFormSignNotification($event->requestForm, $nextEvent->first()));
                 }
               }
           }
@@ -162,15 +162,15 @@ class Authorization extends Component
                       $this->requestForm->contractManager->email,
                       $this->requestForm->purchasers->first()->email
                   ];
-                  // Mail::to($emails)
-                  //   ->cc(env('APP_RF_MAIL'))
-                  //   ->send(new RfEndSignNotification($event->requestForm));
+                  Mail::to($emails)
+                    ->cc(env('APP_RF_MAIL'))
+                    ->send(new RfEndSignNotification($event->requestForm));
               }
           }
-          session()->flash('info', 'Formulario de Requerimientos Nro.'.$this->requestForm->id.' AUTORIZADO correctamente!');
+          session()->flash('info', 'Formulario de Requerimientos Nro.'.$this->requestForm->folio.' AUTORIZADO correctamente!');
           return redirect()->route($this->route);
       }
-      session()->flash('danger', 'Formulario de Requerimientos Nro.'.$this->requestForm->id.' NO se puede Autorizar!');
+      session()->flash('danger', 'Formulario de Requerimientos Nro.'.$this->requestForm->folio.' NO se puede Autorizar!');
       return redirect()->route($this->route);
     }
 
@@ -189,10 +189,10 @@ class Authorization extends Component
            $event->status = 'rejected';
            $event->signerUser()->associate(auth()->user());
            $event->save();
-           session()->flash('info', 'Formulario de Requerimientos Nro.'.$this->requestForm->id.' fue RECHAZADO!');
+           session()->flash('info', 'Formulario de Requerimientos Nro.'.$this->requestForm->folio.' fue RECHAZADO!');
            return redirect()->route($this->route);
           }
-      session()->flash('danger', 'Formulario de Requerimientos Nro.'.$this->requestForm->id.' NO se puede Rechazar!');
+      session()->flash('danger', 'Formulario de Requerimientos Nro.'.$this->requestForm->folio.' NO se puede Rechazar!');
       return redirect()->route($this->route);
     }
 

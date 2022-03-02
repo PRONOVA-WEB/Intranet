@@ -42,12 +42,6 @@
             <input type="text" class="form-control" id="for_number" name="number">
         </fieldset>
 
-        <!--fieldset class="form-group col">
-            <label for="for_number">Número</label>
-            <select class="form-control selectpicker" id="for_number" name="number">
-            </select>
-        </fieldset-->
-
         <fieldset class="form-group col-3">
             <label for="for_user_id">Usuario</label>
             <select name="user_id" id="for_user_id" class="form-control">
@@ -66,13 +60,7 @@
         <button type="submit" class="btn btn-primary mt-4 mb-3"><i class="fas fa-search"></i></button>
 
     </div>
-
-
-
 </form>
-
-
-
 
 <table class="table table-sm">
     <thead>
@@ -96,8 +84,8 @@
     <tbody>
         @foreach($ownDocuments as $doc)
         <tr class="small">
-            <td>{{ $doc->id }}</td>
-            <td>{{ $doc->type }}</td>
+            <td>{{ $doc->id }} {!! ($doc->private) ? '<i class="fa fa-lock" aria-hidden="true"></i>' : '' !!}</td>
+            <td>{{ $doc->template->type }}</td>
             <td>
                 {{ $doc->number }}
             </td>
@@ -174,7 +162,7 @@
         @foreach($otherDocuments as $doc)
         <tr class="small">
             <td>{{ $doc->id }}</td>
-            <td>{{ $doc->type }}</td>
+            <td>{{ $doc->template->type }}</td>
             <td>
                 {{ $doc->number }}
             </td>

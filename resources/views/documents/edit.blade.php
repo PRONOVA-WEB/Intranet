@@ -29,85 +29,55 @@
             <input type="date" class="form-control" id="forDate" name="date"
                 value="{{ $document->date ? $document->date->format('Y-m-d') : '' }}">
         </div>
-        <div class="form-group col-lg-2">
-            <label for="forType">Tipo*</label>
-            <select name="type" id="formType" class="form-control" required>
-                <option value="Memo" {{ $document->type === 'Memo' ? 'selected' : '' }}>Memo</option>
-                <option value="Oficio" {{ $document->type === 'Oficio' ? 'selected' : '' }}>Oficio</option>
-                <option value="Ordinario" {{ $document->type === 'Ordinario' ? 'selected' : '' }} >Ordinario</option>
-                <option value="Reservado" {{ $document->type === 'Reservado' ? 'selected' : '' }}>Reservado</option>
-                <option value="Circular" {{ $document->type === 'Circular' ? 'selected' : '' }}>Circular</option>
-                <option value="Acta de recepción" {{ $document->type === 'Acta de recepción' ? 'selected' : '' }}>Acta de recepción</option>
-                <option value="Resolución" @if($document->type == 'Resolución') selected @endif>Resolución</option>
-            </select>
-        </div>
-        <div class="form-group col">
+        <div class="form-group col-lg-6">
             <label for="for_antecedent">Antecedente</label>
             <input type="text" class="form-control" id="for_antecedent"
                 placeholder="[opcional]"
                 value="{{ $document->antecedent }}" name="antecedent">
         </div>
+        <div class="form-group form-check-inline">
+            <input type="checkbox" class="form-check-input" id="private" {{ $document->private ? 'checked' : '' }} value="1" name="private">
+            <label class="form-check-label" for="private">Privado</label>
+        </div>
     </div>
     <div class="form-row">
-        <div class="form-group col">
+        <div class="form-group col-lg-12">
             <label for="forSubject">Materia*</label>
             <input type="text" class="form-control" id="forSubject"
                 value="{{ $document->subject }}" name="subject" maxlength="255"
                 placeholder="Descripción del contenido del documento" required>
         </div>
     </div>
-
-<div id="collapse">
     <div class="form-row">
         <div class="form-group col-lg-7">
-            <div class="form-group ">
-                <label for="forFrom">De:*</label>
-                <input type="text" class="form-control" id="forFrom"
-                    value="{{ $document->from }}" name="from"
-                    placeholder="Nombre/Funcion" >
+            <label for="forFrom">De:*</label>
+            <input type="text" class="form-control" id="forFrom"
+                value="{{ $document->from }}" name="from"
+                placeholder="Nombre/Funcion" >
+        </div>
+        <div class="form-group col-lg-7">
+            <label for="forFor">Para:*</label>
+            <input type="text" class="form-control" id="forFor" name="for"
+                value="{{ $document->for }}" placeholder="Nombre/Funcion">
+        </div>
+        <div class="form-group col-lg-7">
+            Mayor jerarquía:
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="greater_hierarchy"
+                    id="forHierarchyFrom" value="from"
+                    {{ $document->greater_hierarchy == 'from' ? 'checked' : ''}}>
+                <label class="form-check-label" for="forHierarchyFrom"> DE: </label>
             </div>
-            <div class="form-group ">
-                <label for="forFor">Para:*</label>
-                <input type="text" class="form-control" id="forFor" name="for"
-                    value="{{ $document->for }}" placeholder="Nombre/Funcion">
-            </div>
-            <div class="form-group">
-                Mayor jerarquía:
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="greater_hierarchy"
-                        id="forHierarchyFrom" value="from"
-                        {{ $document->greater_hierarchy == 'from' ? 'checked' : ''}}>
-                    <label class="form-check-label" for="forHierarchyFrom"> DE: </label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="greater_hierarchy"
-                        id="forHierarchyFor" value="for"
-                        {{ $document->greater_hierarchy == 'for' ? 'checked' : ''}}>
-                    <label class="form-check-label" for="forHierarchyFor"> PARA: </label>
-                </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="greater_hierarchy"
+                    id="forHierarchyFor" value="for"
+                    {{ $document->greater_hierarchy == 'for' ? 'checked' : ''}}>
+                <label class="form-check-label" for="forHierarchyFor"> PARA: </label>
             </div>
         </div>
     </div>
-</div>
 
-    <div class="form-group pt-1" style="width: 940px;">
-        <label for="contenido">Contenido*</label>
-        <textarea class="form-control" id="contenido" rows="18"
-            name="content">{{ $document->content }}</textarea>
-    </div>
-
-    {{-- <div class="form-row">
-        <div class="form-group col">
-            <label for="forDistribution">Distribución (separado por salto de línea)*</label>
-            <textarea class="form-control" id="forDistribution" rows="5"
-                name="distribution">{{ $document->distribution }}</textarea>
-        </div>
-        <div class="form-group col">
-            <label for="forResponsible">Responsables (separado por salto de línea)</label>
-            <textarea class="form-control" id="forResponsible" rows="5"  placeholder="Cargo"
-                name="responsible">{{ $document->responsible }}</textarea>
-        </div>
-    </div> --}}
+    @livewire('documents.doc-templates', ['document'=>$document])
 
     @livewire('documents.add-email-text-area-list', ['document'=>$document])
 

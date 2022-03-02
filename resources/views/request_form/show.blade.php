@@ -10,7 +10,13 @@
 <div class="row">
     <div class="col-sm-8">
         <div class="table-responsive">
-            <h6><i class="fas fa-info-circle"></i> Detalle Formulario</h6>
+            <h6><i class="fas fa-info-circle"></i> Detalle Formulario ID {{$requestForm->id}}
+@if($requestForm->eventRequestForms->first()->status == 'pending')
+<a class="btn btn-link btn-sm float-right font-weight-bold align-top" href="{{route('request_forms.edit', $requestForm)}}">
+    <i class="fas fa-edit"></i> Editar formulario
+</a>
+@endif
+</h6>
             <table class="table table-sm table-bordered">
               <tbody class="small">
                   <tr>
@@ -103,8 +109,7 @@
         <tbody class="text-center small">
             <tr>
               @foreach($requestForm->eventRequestForms as $event)
-                <td><strong>{{ $event->EventTypeValue }}</strong><br>
-                    {{ $event->signerOrganizationalUnit->name }}
+                <td><strong>{{ $event->EventTypeValue }}</strong>
                 </td>
               @endforeach
             </tr>
@@ -121,6 +126,9 @@
                       <i class="fas fa-check-circle"></i> {{ $event->StatusValue }} <br>
                     </span>
                     <i class="fas fa-user"></i> {{ $event->signerUser->FullName }}<br>
+                    <p style="font-size: 11px">
+                      {{ $event->position_signer_user }} {{ $event->signerOrganizationalUnit->name }}<br>
+                    </p>
                     <i class="fas fa-calendar-alt"></i> {{ Carbon\Carbon::parse($event->signature_date)->format('d-m-Y H:i:s') }}<br>
                     @if($event->comment)
                       <br>
@@ -136,6 +144,9 @@
                       <i class="fas fa-times-circle"></i> {{ $event->StatusValue }} <br>
                     </span>
                     <i class="fas fa-user"></i> {{ $event->signerUser->FullName }}<br>
+                    <p style="font-size: 11px">
+                      {{ $event->position_signer_user }} {{ $event->signerOrganizationalUnit->name }}<br>
+                    </p>
                     <i class="fas fa-calendar-alt"></i> {{ Carbon\Carbon::parse($event->signature_date)->format('d-m-Y H:i:s') }}<br>
                     @if($event->comment)
                       <br>

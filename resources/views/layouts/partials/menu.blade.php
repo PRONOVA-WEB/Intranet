@@ -61,7 +61,7 @@
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDocumentos"
             aria-expanded="true" aria-controls="collapseDocumentos">
             <i class="fas fa-file-alt fa-fw"></i>
-            <span>Documento</span>
+            <span>Documentos</span>
         </a>
         <div id="collapseDocumentos" class="collapse" aria-labelledby="headingDocumentos"
             data-parent="#accordionSidebar">
@@ -356,6 +356,8 @@
                     <a class="collapse-item"
                         href="{{ route('parameters.authoritiestypes.index') }}">
                         <i class="fas fa-chalkboard-teacher"></i> Tipos de Autoridades</a>
+                        href="{{ route('parameters.documents_templates.index') }}">
+                        <i class="fa fa-file"></i> Plantillas<br> de Documentos</a>
                 </div>
             </div>
         </li>

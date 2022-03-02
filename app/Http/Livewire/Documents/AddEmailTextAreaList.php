@@ -32,6 +32,11 @@ class AddEmailTextAreaList extends Component
             $this->distribution = $this->document->distribution;
             $this->responsible = $this->document->responsible;
         }
+
+        if ($this->signature) {
+            $this->distribution = $this->signature->distribution;
+            $this->recipients   = $this->signature->recipients;
+        }
     }
 
     public function addToList(User $selectedUser, $list)
@@ -54,6 +59,6 @@ class AddEmailTextAreaList extends Component
         }
 
         return view('livewire.documents.add-email-text-area-list')
-            ->withOuRoots(OrganizationalUnit::where('level', 1)->where('establishment_id', 1)->get());
+            ->withOuRoots(OrganizationalUnit::where('level', 1)->where('establishment_id', \Auth::user()->organizationalUnit->establishment->id)->get());
     }
 }

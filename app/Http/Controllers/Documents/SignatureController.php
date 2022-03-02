@@ -32,7 +32,7 @@ use Throwable;
 use App\Documents\Parte;
 use App\Documents\ParteFile;
 use Carbon\Carbon;
-
+use App\Models\Parameters\DocTemplate;
 class SignatureController extends Controller
 {
     /**
@@ -89,7 +89,8 @@ class SignatureController extends Controller
      */
     public function create($xAxis = null, $yAxis = null)
     {
-        return view('documents.signatures.create', compact('xAxis', 'yAxis'));
+        $docTypes = DocTemplate::active()->pluck('type');
+        return view('documents.signatures.create', compact('xAxis', 'yAxis','docTypes'));
     }
 
     /**
@@ -103,10 +104,9 @@ class SignatureController extends Controller
     {
         $request->validate([
             'user_signer' => 'bail|required',
-            "document" => "required|max:5000|mimes:pdf",
-            'document'     => 'required|max:5000|mimes:pdf',
+            'document'     => 'required_if:file_base_64,==,null|max:5000|mimes:pdf',
             'request_date' => 'required',
-            'document_type'=> 'required',
+            'document_type'=> 'required_if:file_base_64,==,null',
             'subject'      => 'required',
             'description'  => 'required'
         ],[
@@ -245,7 +245,8 @@ class SignatureController extends Controller
      */
     public function edit(Signature $signature)
     {
-        return view('documents.signatures.edit', compact('signature'));
+        $docTypes = DocTemplate::active()->pluck('type');
+        return view('documents.signatures.edit', compact('signature','docTypes'));
     }
 
     /**
@@ -260,9 +261,9 @@ class SignatureController extends Controller
     {
         $request->validate([
             'user_signer'  => 'bail|required',
-            'document'     => 'required|max:5000|mimes:pdf',
+            'document'     => 'required_if:file_base_64,==,null|max:5000|mimes:pdf',
             'request_date' => 'required',
-            'document_type'=> 'required',
+            'document_type'=> 'required_if:file_base_64,==,null',
             'subject'      => 'required',
             'description'  => 'required'
         ],[

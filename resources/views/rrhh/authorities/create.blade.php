@@ -3,14 +3,14 @@
 @section('title', 'Agregar Autoridad')
 
 @section('content')
-<h3 class="mb-3">Agregar autoridad del {{ $ouTopLevel->establishment->name }}</h3>
+<h3 class="mb-3">Agregar autoridad - {{ $ouTopLevel->establishment->name }}</h3>
 
 @can('Authorities: create')
 <form method="POST" class="form-horizontal" action="{{ route('rrhh.authorities.store') }}">
     @csrf
 
     <div class="form-row">
-        <fieldset class="form-group col">
+        <fieldset class="form-group col-lg-12">
             <label for="for_organizational_unit_id">Unidad Organizacional*</label>
             @livewire('select-organizational-unit', [
                 'establishment_id' => $ouTopLevel->establishment->id,
@@ -20,24 +20,24 @@
     </div>
 
     <div class="form-row">
-        <fieldset class="form-group col-6">
+        <fieldset class="form-group col-lg-6">
             <label for="for_user_id">Funcionario*</label>
             @livewire('search-select-user')
         </fieldset>
 
-        <fieldset class="form-group col">
+        <fieldset class="form-group col-lg-3">
             <label for="for_from">Desde*</label>
             <input type="date" class="form-control" id="for_from" name="from" required>
         </fieldset>
 
-        <fieldset class="form-group col">
+        <fieldset class="form-group col-lg-3">
             <label for="for_to">Hasta*</label>
             <input type="date" class="form-control" id="for_to" name="to" required>
         </fieldset>
     </div>
 
     <div class="form-row">
-        <fieldset class="form-group col">
+        <fieldset class="form-group col-lg-4">
             <label for="for_position">Cargo*</label>
             <select name="position" id="for_position" class="form-control" required>
                 <option value=""></option>
@@ -67,7 +67,7 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col">
+        <fieldset class="form-group col-lg-4">
             <label for="for_type">Tipo*</label>
             <select name="type" id="for_type" class="form-control" required>
                 <option value="manager">Encargado (Jefes)</option>
@@ -76,7 +76,7 @@
             </select>
         </fieldset>
 
-        <fieldset class="form-group col">
+        <fieldset class="form-group col-lg-4">
             <label for="for_decree">Decreto autorización del cargo</label>
             <input type="text" class="form-control" id="for_decree" name="decree">
         </fieldset>

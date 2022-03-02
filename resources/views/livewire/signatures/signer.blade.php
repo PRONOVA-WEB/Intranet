@@ -39,7 +39,7 @@
     </fieldset>
     @if(count($users) > 0)
         <fieldset class="form-group col-lg-6">
-            <label>Usuario</label>
+            <label>Firmante - Usuario</label>
             <select name="user_signer" id="for_user_signer" wire:model="user" class="form-control" {{$userRequired}} >
                 <option value=''></option>
                 @foreach($users as $user)

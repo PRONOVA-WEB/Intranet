@@ -65,6 +65,9 @@ class DatabaseSeeder extends Seeder
         /* SEED PARA SETTINGS DEL SITIO  */
         $this->call(SettingSeeder::class);
 
+        /* SEED PARA PLANTILLAS DE DOCUMENTOS */
+        $this->call(DocTemplatesSeeder::class);
+
         /* SEED PARA SGR DEL SITIO  */
         $this->call(ReqCategoriesSeeder::class);
 
