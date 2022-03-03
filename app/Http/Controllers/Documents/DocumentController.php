@@ -126,7 +126,9 @@ class DocumentController extends Controller
             //centrada la materia en negrita y sin de para
             return view('documents.circular')->withDocument($document);
         } else {
-            return view('documents.show')->withDocument($document);
+            $documentFile = \PDF::loadView('documents.show', compact('document'));
+            return $documentFile->stream($document->subject.'.pdf');
+            //return view('documents.show')->withDocument($document);
         }
     }
 

@@ -78,8 +78,8 @@
                     <button name="id" class="btn btn-link" form="showPdf" formtarget="_blank">
                         <i class="fas fa-paperclip"></i> Documento
                     </button>
-                    <input type="hidden" name="file_base_64" value="{{  $signature->signaturesFileDocument->file }}">
-                    <input type="hidden" name="file_base_64" value="{{  $signature->signaturesFileDocument->file}}"
+                    <input type="hidden" name="document" form="showPdf" value="{{  $document->id }}">
+                    <input type="hidden" name="file_base_64"  value="{{  $signature->signaturesFileDocument->file}}"
                            form="showPdf">
                     <input type="hidden" name="md5_file" value="{{$signature->signaturesFileDocument->md5_file}}">
                 @else
