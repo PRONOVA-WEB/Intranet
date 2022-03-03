@@ -170,7 +170,7 @@
 					{{-- Fue reemplazado por el livewire attachments-fulfillments sólo se muestra para 9 registros que quedaron con asistencia cargada --}}
 					@if($fulfillment->backup_assistance)
 					<hr>
-					Respaldo de asistencia (antiguo): 
+					Respaldo de asistencia (antiguo):
 					<a href="https://storage.googleapis.com/{{env('APP_ENV') === 'production' ? 'saludiquique-storage' : 'saludiquique-dev'}}/{{$fulfillment->backup_assistance}}" class="btn btn-sm btn-outline-secondary" target="_blank" title="Ver respaldo asistencia">
 						<span class="fas fa-file" aria-hidden="true"></span>
 					</a>

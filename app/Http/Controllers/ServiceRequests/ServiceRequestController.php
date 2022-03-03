@@ -1388,6 +1388,7 @@ class ServiceRequestController extends Controller
     //cumplimiento
     $fulfillments_missing = [];
     $cumplimiento_falta_ingresar = 0;
+
     foreach ($serviceRequests as $key => $serviceRequest) {
       // $fulfillments_missing[$serviceRequest->SignatureFlows->where('sign_position',2)->first()->user->getFullNameAttribute()][$serviceRequest->SignatureFlows->where('sign_position',2)->first()->organizationalUnit->name] = 0;
       $fulfillments_missing[$serviceRequest->SignatureFlows->where('sign_position', 2)->first()->user->getFullNameAttribute()] = 0;

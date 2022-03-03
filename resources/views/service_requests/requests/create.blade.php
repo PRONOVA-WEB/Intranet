@@ -254,7 +254,7 @@
 
 		<fieldset class="form-group col-6 col-md-3">
 			<label for="for_digera_strategy">Estrategia Digera C.</label>
-			<select name="digera_strategy" class="form-control" id="digera_strategy" required>
+			<select name="digera_strategy" class="form-control"  required>
 				<option value=""></option>
 				<option value="Camas MEDIAS Aperturadas">Camas MEDIAS Aperturadas</option>
 				<option value="Camas MEDIAS Complejizadas">Camas MEDIAS Complejizadas</option>
@@ -282,7 +282,7 @@
 
 		<fieldset class="form-group col-6 col-md-3">
 			<label for="for_contractual_condition">Calidad Contractual</label>
-			<select name="contractual_condition" class="form-control" id="contractual_condition" disabled>
+			<select name="contractual_condition" class="form-control" id="contractual_condition">
 				<option value=""></option>
 				<option value="SUPLENTE">SUPLENTE</option>
 				<option value="CONTRATA">CONTRATA</option>
@@ -592,7 +592,7 @@
 				// 		$("#responsability_center_ou_id option:selected").text() == "Unidad de Medicina Física y Rehabilitación" ||
 				// 		$("#responsability_center_ou_id option:selected").text() == "Unidad de Movilización" ||
 				// 		$("#responsability_center_ou_id option:selected").text() == "Unidad de Salud Ocupacional" ||
-				// 		$("#responsability_center_ou_id option:selected").text() == "Unidad Imagenología") {		
+				// 		$("#responsability_center_ou_id option:selected").text() == "Unidad Imagenología") {
 				$("#responsability_center_ou_id option:selected").text() == "Servicio Unidad Paciente Crítico Adulto" ||
 				$("#responsability_center_ou_id option:selected").text() == "Programa Control de Infecciones" ||
 				$("#responsability_center_ou_id option:selected").text() == "Unidad de Alimentación y Nutrición" ||

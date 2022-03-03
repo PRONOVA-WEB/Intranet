@@ -170,7 +170,7 @@
     <!-- Custom scripts-->
     <script type="text/javascript">
         @if ($errors->any())
-            $("#login_botones").toggleClass('offset-ñg-3');
+            $("#login_botones").toggleClass('offset-lg-3');
             $("#local_login").toggleClass('d-none');
         @endif
         $("#show_local_login").click(function() {

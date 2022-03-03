@@ -32,8 +32,6 @@
       </form>
   </div>
 </div>
-
-</div>
 <br>
 
 <div class="col">

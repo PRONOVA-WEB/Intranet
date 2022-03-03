@@ -318,7 +318,6 @@ class MonthlyQuotes extends Component
             // obtiene descuentos
             // $serviceRequest
 
-
             $valores_mensualizados = array();
             if ($serviceRequest->start_date->format('Y-m-d') == $serviceRequest->start_date->firstOfMonth()->format('Y-m-d') and $serviceRequest->end_date->format('Y-m-d') == $serviceRequest->end_date->endOfMonth()->format('Y-m-d')) {
 
@@ -412,6 +411,7 @@ class MonthlyQuotes extends Component
                     elseif ($serviceRequest->end_date->format('Y-m-d') != $serviceRequest->end_date->endOfMonth()->format('Y-m-d')) {
                         //dd('entra aca');
                         // dd('entre aca 2');
+
                         $nroCuotas = $serviceRequest->start_date->diffInMonths($serviceRequest->end_date) + 1;
                         $valor_mensual = $serviceRequest->net_amount;
                         $string = $nroCuotas . " cuotas,";

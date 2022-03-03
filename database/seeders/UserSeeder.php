@@ -35,10 +35,10 @@ class UserSeeder extends Seeder
         $user = new User();
         $user->id = 98765432;
         $user->dv = 1;
-        $user->name = "Victor";
-        $user->fathers_family = "Ramirez";
+        $user->name = "Director";
+        $user->fathers_family = "General";
         $user->mothers_family = "";
-        $user->email = "vramirez@pronova.cl";
+        $user->email = "director@pronova.cl";
         $user->password = bcrypt('admin');
         $user->position = "Ingeniero Desarrollador";
         $user->organizationalUnit()->associate($ou);
@@ -55,6 +55,7 @@ class UserSeeder extends Seeder
         //48(Unidad de Reclutamiento y Selección de Personal) ->para asignar los requerimientos -> usuario tipo RYS (userrys)
         $user = User::Create(['id'=>32323232, 'dv'=>1, 'name'=>'Reclutamiento', 'fathers_family'=>'Reclutamiento', 'mothers_family' => 'Selección',
             'email'=>'rys@pronova.cl','password'=>bcrypt('admin'), 'position'=>'Gerente', 'organizational_unit_id'=>'48']);
+        $user->givePermissionTo(['Replacement Staff: technical evaluation']);
         $user->assignRole('Replacement Staff: user rys');
 
         /* FIRMANTES MÓDULO DE ABASTECIMIENTO */

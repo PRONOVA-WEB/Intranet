@@ -90,13 +90,14 @@
                           accept="application/pdf">
                     </div>
                 </fieldset>
-
+                @if($requestReplacementStaff->job_profile_file)
                 <div class="col-1">
                     <p>&nbsp;</p>
                     <a href="{{ route('replacement_staff.request.show_file', $requestReplacementStaff) }}" class="btn btn-outline-secondary btn-sm" title="Ir" target="_blank"> <i class="far fa-eye"></i></a>
                     <a class="btn btn-outline-secondary btn-sm" href="{{ route('replacement_staff.request.download', $requestReplacementStaff) }}" target="_blank"><i class="fas fa-download"></i>
                     </a>
                 </div>
+                @endif
             </div>
 
             <button type="submit" class="btn btn-primary float-right"><i class="fas fa-save"></i> Guardar</button>

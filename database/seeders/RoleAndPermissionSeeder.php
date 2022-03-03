@@ -119,6 +119,7 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'Service Request: transfer requests']);
         Permission::create(['name' => 'Service Request: view']);
         Permission::create(['name' => 'Service Request: with resolution']);
+        Permission::create(['name' => 'Service Request: export sirh']);
 
         Permission::create(['name' => 'Shift Management: view']);
 
