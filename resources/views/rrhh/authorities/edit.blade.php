@@ -46,6 +46,9 @@
         <fieldset class="form-group col-lg-4">
             <label for="for_position">Cargo*</label>
             <select name="position" id="for_position" class="form-control" required>
+                {{-- vr 22-02-2022 despues de modificar las tablas de cargos y autoridades para que queden relacionales de debe realizar esta modificacion para que busque por id y comentarizar todo lo de abajo en duro --}}
+                {{-- <option value="{{ $position->id }}" @if ($position->id == $authority->position) selected @endif>{{ $position->name }}</option> --}}
+                {{-- vr 22-02-2022 despues de modificar las tablas de cargos y autoridades para que queden relacionales de debe realizar esta modificacion para que busque por id y comentarizar todo lo de abajo en duro --}}
                 <option {{ ($authority->position == 'Director')?'selected':'' }}>Director</option>
                 <option {{ ($authority->position == 'Directora')?'selected':'' }}>Directora</option>
                 <option {{ ($authority->position == 'Director (S)')?'selected':'' }}>Director (S)</option>

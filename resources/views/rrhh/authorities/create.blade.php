@@ -41,7 +41,10 @@
             <label for="for_position">Cargo*</label>
             <select name="position" id="for_position" class="form-control" required>
                 <option value=""></option>
-                <option>Director</option>
+                @foreach($positions as $position)
+                <option value="{{ $position->id }}">{{ $position->name }}</option>
+                @endforeach
+                {{-- <option>Director</option>
                 <option>Directora</option>
                 <option>Director (S)</option>
                 <option>Directora (S)</option>
@@ -60,7 +63,7 @@
                 <option>Secretario</option>
                 <option>Secretaria</option>
                 <option>Secretario (S)</option>
-                <option>Secretaria (S)</option>
+                <option>Secretaria (S)</option> --}}
             </select>
         </fieldset>
 

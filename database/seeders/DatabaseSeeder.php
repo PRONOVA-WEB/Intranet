@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ProfessionSeeder::class);
         $this->call(MinisterialProgramTableSeeder::class);
         $this->call(ActionTypeTableSeeder::class);
+        $this->call(PositionSeeder::class);
         $this->call(AuthoritySeeder::class);
 
         /* Honorarios Service Request */
@@ -69,6 +70,7 @@ class DatabaseSeeder extends Seeder
 
         /* SEED PARA SGR DEL SITIO  */
         $this->call(ReqCategoriesSeeder::class);
+
 
         /* DIRECTORIO PARA BIBLIOTECA DE ARCHIVOS PÚBLICOS */
         \Storage::makeDirectory('library');

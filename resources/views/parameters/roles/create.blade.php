@@ -36,6 +36,7 @@
     @endforeach
 
     <button type="submit" class="btn btn-primary mt-3">Guardar</button>
+    <a class="btn btn-outline-secondary mt-3" href="{{ route('parameters.roles.index') }}">Volver</a>
 </form>
 
 @endsection

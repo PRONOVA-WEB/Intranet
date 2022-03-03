@@ -11,7 +11,7 @@ class PermissionController extends Controller
 {
     public function index($guard)
     {
-        
+
         $permissions = Permission::where('guard_name',$guard)->OrderBy('name')->get();
         $roles = Role::All();
         return view('parameters.permissions.index', compact('permissions','roles','guard'));
@@ -19,7 +19,7 @@ class PermissionController extends Controller
 
     public function create($guard)
     {
-                        
+
         return view('parameters.permissions.create',compact('guard'));
     }
 
@@ -46,11 +46,19 @@ class PermissionController extends Controller
         return redirect()->route('parameters.permissions.index',$permission->guard_name);
     }
 
-    public function destroy(Permission $permission)
+    //14/02/2022 vr agrego boton eliminar
+    public function destroy($id)
     {
+        $permission = Permission::find($id);
         $permission->delete();
-        session()->flash('success', 'Permiso: '.$permission->name.' ha sido eliminado.');
-
-        return redirect()->route('parameters.permissions.index',$permission->guard_name);
+        return redirect()->back()->with('success', 'Permiso  ha sido eliminado');
     }
+    // public function destroy(Permission $permission)
+    // {
+    //     $permission->delete();
+    //     session()->flash('success', 'Permiso: '.$permission->name.' ha sido eliminado.');
+
+    //     return redirect()->route('parameters.permissions.index',$permission->guard_name);
+    // }
+    //14/02/2022 vr agrego boton eliminar
 }

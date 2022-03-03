@@ -347,6 +347,11 @@
                         href="{{ route('parameters.purchaseunits.index') }}">
                         <i class="fas fa-shopping-cart"></i> Unidades de Compra</a>
                     <a class="collapse-item"
+                        href="{{ route('parameters.positions.index') }}">
+                        <i class="fas fa-chalkboard-teacher"></i> Cargos</a>
+                    <a class="collapse-item"
+                        href="{{ route('parameters.authoritiestypes.index') }}">
+                        <i class="fas fa-chalkboard-teacher"></i> Tipos de Autoridades</a>
                         href="{{ route('parameters.documents_templates.index') }}">
                         <i class="fa fa-file"></i> Plantillas<br> de Documentos</a>
                 </div>
