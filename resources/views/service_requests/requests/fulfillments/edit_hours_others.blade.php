@@ -43,7 +43,7 @@
 
 			</fieldset>
 		</div>
-		
+
 		@php $fulfillment = $serviceRequest->Fulfillments->first();  @endphp
 		<!--archivos adjuntos-->
 		<div class="card">
@@ -187,7 +187,7 @@
 					<div class="col-12 col-md-4">
 						<strong></strong>
 						<div>
-						
+
 						</div>
 					</div>
 				</div>

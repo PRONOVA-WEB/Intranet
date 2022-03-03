@@ -39,28 +39,11 @@
     <div class="form-row">
         <fieldset class="form-group col-lg-4">
             <label for="for_position">Cargo*</label>
-            <select name="position" id="for_position" class="form-control" required>
+            <select name="position_id" id="for_position_id" class="form-control" required>
                 <option value=""></option>
-                <option>Director</option>
-                <option>Directora</option>
-                <option>Director (S)</option>
-                <option>Directora (S)</option>
-                <option>Subdirector</option>
-                <option>Subdirectora</option>
-                <option>Subdirector (S)</option>
-                <option>Subdirectora (S)</option>
-                <option>Jefe</option>
-                <option>Jefa</option>
-                <option>Jefe (S)</option>
-                <option>Jefa (S)</option>
-                <option>Encargado</option>
-                <option>Encargada</option>
-                <option>Encargado (S)</option>
-                <option>Encargada (S)</option>
-                <option>Secretario</option>
-                <option>Secretaria</option>
-                <option>Secretario (S)</option>
-                <option>Secretaria (S)</option>
+                @foreach($positions as $position)
+                <option value="{{ $position->id }}">{{ $position->name }}</option>
+                @endforeach
             </select>
         </fieldset>
 

@@ -327,7 +327,7 @@ class ServiceRequestController extends Controller
         $authorities = Authority::getAmIAuthorityFromOu(Carbon::today(), 'manager', User::find($user)->id);
         $employee = User::find($user)->position;
         if ($authorities != null) {
-          $employee = $authorities[0]->position;
+          $employee = $authorities[0]->position->name;
           $ou_id = $authorities[0]->organizational_unit_id;
         } else {
           $ou_id = User::find($user)->organizational_unit_id;
@@ -468,7 +468,7 @@ class ServiceRequestController extends Controller
     $authorities = Authority::getAmIAuthorityFromOu(Carbon::today(), 'manager', $request->responsable_id);
     $employee = User::find($request->responsable_id)->position;
     if ($authorities != null) {
-      $employee = $authorities[0]->position; // . " - " . $authorities[0]->organizationalUnit->name;
+      $employee = $authorities[0]->position->name; // . " - " . $authorities[0]->organizationalUnit->name;
       $ou_id = $authorities[0]->organizational_unit_id;
     } else {
       $ou_id = User::find($request->responsable_id)->organizational_unit_id;
@@ -495,7 +495,7 @@ class ServiceRequestController extends Controller
         $authorities = Authority::getAmIAuthorityFromOu(Carbon::today(), 'manager', User::find($user)->id);
         $employee = User::find($user)->position;
         if ($authorities != null) {
-          $employee = $authorities[0]->position;
+          $employee = $authorities[0]->position->name;
           $ou_id = $authorities[0]->organizational_unit_id;
         } else {
           $ou_id = User::find($user)->organizational_unit_id;
@@ -535,15 +535,8 @@ class ServiceRequestController extends Controller
     }
 
     //send emails (2 flow position)
-    if (env('APP_ENV') == 'production') {
-      $email = $serviceRequest->SignatureFlows->where('sign_position', 2)->first()->user->email;
-      Mail::to($email)->send(new ServiceRequestNotification($serviceRequest));
-      // if ( $serviceRequest->SignatureFlows->where('responsable_id', 9381231)->first())
-      // {
-      //   $emaildire = $serviceRequest->SignatureFlows->where('responsable_id', 9381231)->first()->user->email;
-      //   Mail::to($emaildire)->send(new ServiceRequestNotification($serviceRequest));
-      // }
-    }
+    $email = $serviceRequest->SignatureFlows->where('sign_position', 2)->first()->user->email;
+    Mail::to($email)->send(new ServiceRequestNotification($serviceRequest));
 
     session()->flash('info', 'La solicitud ' . $serviceRequest->id . ' ha sido creada.');
     // session()->flash('info', 'La solicitud '.$serviceRequest->id.' ha sido creada. Para visualizar el certificado de confirmación, hacer click <a href="'. route('rrhh.service-request.certificate-pdf', $SignatureFlow) . '" target="_blank">Aquí.</a>');
@@ -604,7 +597,7 @@ class ServiceRequestController extends Controller
     $authorities = Authority::getAmIAuthorityFromOu(Carbon::today(), 'manager', Auth::user()->id);
     $employee = Auth::user()->position;
     if ($authorities != null) {
-      $employee = $authorities[0]->position . " - " . $authorities[0]->organizationalUnit->name;
+      $employee = $authorities[0]->position->name . " - " . $authorities[0]->organizationalUnit->name;
     }
 
     $banks = Bank::all();
@@ -1210,9 +1203,9 @@ class ServiceRequestController extends Controller
 
     //send emails
     if ($cont > 0) {
-      if (env('APP_ENV') == 'production') {
+
         Mail::to($receiver_email)->send(new DerivationNotification($cont, $sender_name, $receiver_name));
-      }
+
     }
 
     session()->flash('info', $cont . ' solicitudes fueron derivadas.');
@@ -1388,6 +1381,7 @@ class ServiceRequestController extends Controller
     //cumplimiento
     $fulfillments_missing = [];
     $cumplimiento_falta_ingresar = 0;
+
     foreach ($serviceRequests as $key => $serviceRequest) {
       // $fulfillments_missing[$serviceRequest->SignatureFlows->where('sign_position',2)->first()->user->getFullNameAttribute()][$serviceRequest->SignatureFlows->where('sign_position',2)->first()->organizationalUnit->name] = 0;
       $fulfillments_missing[$serviceRequest->SignatureFlows->where('sign_position', 2)->first()->user->getFullNameAttribute()] = 0;

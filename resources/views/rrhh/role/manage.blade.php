@@ -23,7 +23,7 @@
 			@role('superuser')
 				<div class="form-check">
 					<input class="form-check-input" type="checkbox" name="permissions[]"
-						value="be god" id="be god"
+						value="be superuser" id="be superuser"
 						{{ $user->can('be superuser')? 'checked':'' }}>
 					<label class="form-check-label" for="be superuser">be superuser</label>
 				</div>

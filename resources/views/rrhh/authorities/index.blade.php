@@ -37,21 +37,21 @@
                             @can('Authorities: edit') <a href="{{ route('rrhh.authorities.edit', $item['manager']->id) }}"> @endcan
                             {{ optional($item['manager']->user)->fullName }} <br>
                             @can('Authorities: edit') </a> @endcan
-                            <em class="text-muted">{{ $item['manager']->position }}</em><br>
+                            <em class="text-muted">{{ $item['manager']->position->name }}</em><br>
                         @endif
                         @if($item['delegate'])
                             <hr class="mt-1 mb-1" >
                             @can('Authorities: edit') <a href="{{ route('rrhh.authorities.edit', $item['delegate']->id) }}"> @endcan
                             {{ $item['delegate']->user->fullName }} <br>
                             @can('Authorities: edit') </a> @endcan
-                            <em class="text-muted">{{ $item['delegate']->position }}</em><br>
+                            <em class="text-muted">{{ $item['delegate']->position->name }}</em><br>
                         @endif
                         @if($item['secretary'])
                             <hr class="mt-1 mb-1" >
                             @can('Authorities: edit') <a href="{{ route('rrhh.authorities.edit', $item['secretary']->id) }}"> @endcan
                             {{ $item['secretary']->user->fullName }} <br>
                             @can('Authorities: edit') </a> @endcan
-                            <em class="text-muted">{{ $item['secretary']->position }}</em> <br>
+                            <em class="text-muted">{{ $item['secretary']->position->name }}</em> <br>
                         @endif
 
                     </div>
@@ -108,7 +108,7 @@
                             <td>{{ optional($authority->user)->fullName }} {{ trashed($authority->user) }}</td>
                             <td nowrap>{{ $authority->from->format('d-m-Y') }}</td>
                             <td nowrap>{{ ($authority->to) ? $authority->to->format('d-m-Y') : '' }}</td>
-                            <td>{{ $authority->position }}</td>
+                            <td>{{ $authority->position->name }}</td>
                             <td>
                                 {{ $authority->created_at->format('Y-m-d H:i') }}<br>
                                 <small>{{ $authority->creator->fullName }}</small>

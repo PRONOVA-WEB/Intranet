@@ -1,6 +1,5 @@
 <!-- Sidebar -->
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('home') }}">
         <div class="sidebar-brand-icon">
@@ -57,11 +56,12 @@
         </div>
     </li> --}}
     <!-- Nav Item - Documentos -->
+    @canany(['Documents: create', 'Documents: edit', 'Documents: add number', 'Documents: dev','Documents: signatures and distribution'])
     <li class="nav-item {{ active(['documents.*']) }}">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDocumentos"
             aria-expanded="true" aria-controls="collapseDocumentos">
             <i class="fas fa-file-alt fa-fw"></i>
-            <span>Documento</span>
+            <span>Documentos</span>
         </a>
         <div id="collapseDocumentos" class="collapse" aria-labelledby="headingDocumentos"
             data-parent="#accordionSidebar">
@@ -90,25 +90,26 @@
                     </a>
                 @endcan
 
-                <a class="collapse-item" href="{{ route('biblioteca.index') }}">
+                {{-- <a class="collapse-item" href="{{ route('biblioteca.index') }}">
                     <i class="fas fa-file-alt"></i> Biblioteca
                 </a>
 
                 <a class="collapse-item" href="{{ route('health_plan.index', ['Santiago']) }}">
                     <i class="fas fa-file-powerpoint"></i> Planes Comunales
-                </a>
+                </a> --}}
 
             </div>
         </div>
     </li>
+    @endcan
     <!-- Nav Item - abastecimiento -->
     @if (env('APP_ENV') == 'local' || env('APP_ENV') == 'testing')
-        <li class="nav-item {{ active(['request_forms.*']) }}">
+        {{-- <li class="nav-item {{ active(['request_forms.*']) }}">
             <a class="nav-link" href="{{ route('request_forms.my_forms') }}">
                 <i class="fas fa-shopping-cart"></i>
                 <span>Abastecimiento</span>
             </a>
-        </li>
+        </li> --}}
     @endif
     <!-- Nav Item - SGR -->
     @can('Requirements: create')
@@ -137,6 +138,7 @@
         'Users: service requests',
         'Service Request',
         'Replacement Staff: create request',
+        'Replacement Staff: technical evaluation'
         ])
         <!-- Nav Item - RRHH -->
         <li class="nav-item {{ active(['rrhh.*']) }}">
@@ -164,12 +166,6 @@
                             <i class="fas fa-chess-king fa-fw"></i> Autoridades
                         </a>
                     @endcan
-
-                    {{-- @can('Suitability: ssi')
-                        <a class="collapse-item" href="{{ route('suitability.own') }}">
-                            <i class="fas fa-chalkboard-teacher"></i> Idoneidad
-                        </a>
-                    @endcan --}}
 
                     @canany(['Service Request', 'Service Request: report excel'])
                         <a class="collapse-item" href="{{ route('rrhh.service-request.home') }}">
@@ -351,7 +347,12 @@
                         href="{{ route('parameters.purchaseunits.index') }}">
                         <i class="fas fa-shopping-cart"></i> Unidades de Compra</a>
                     <a class="collapse-item"
-                        href="{{ route('parameters.documents_templates.index') }}">
+                        href="{{ route('parameters.positions.index') }}">
+                        <i class="fas fa-chalkboard-teacher"></i> Cargos</a>
+                    <a class="collapse-item"
+                        href="{{ route('parameters.authoritiestypes.index') }}">
+                        <i class="fas fa-chalkboard-teacher"></i> Tipos de Autoridades</a>
+                    <a class="collapse-item" href="{{ route('parameters.documents_templates.index') }}">
                         <i class="fa fa-file"></i> Plantillas<br> de Documentos</a>
                 </div>
             </div>

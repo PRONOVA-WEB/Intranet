@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Rrhh\OrganizationalUnit;
 use Illuminate\Support\Facades\Auth;
+ //vr 25-02-2022 carga datos desde tabla positions
+use App\Models\Position;
 
 class AuthorityController extends Controller
 {
@@ -85,6 +87,7 @@ class AuthorityController extends Controller
         //$todayDate = date("Y-m-d");
         //$calendar[$todayDate] = Authority::getAuthorityFromDate($todayDate,'manager');
         //die($ou);
+
         return view('rrhh.authorities.index',compact('authorities','ouTopLevels','calendar','today','ou'));
     }
 
@@ -102,8 +105,12 @@ class AuthorityController extends Controller
             $ous = OrganizationalUnit::All();
             //$ouTopLevel = OrganizationalUnit::Find(1);
             $ouTopLevel = OrganizationalUnit::where('level', 1)->where('establishment_id', $request->establishment_id)->first();
+
+            //vr 25-02-2022 carga datos desde table
             //dd($ouTopLevel);
-            return view('rrhh.authorities.create', compact('ous','ouTopLevel'))->withOu($request->ou_id);
+            $positions = Position::orderBy('name')->get();
+            return view('rrhh.authorities.create', compact('ous','ouTopLevel','positions'))->withOu($request->ou_id);
+            //vr 25-02-2022 carga datos desde table
         }
         else
         {
@@ -127,7 +134,7 @@ class AuthorityController extends Controller
                 'user_id'                => 'required',
                 'from'                   => 'required',
                 'to'                     => 'required',
-                'position'               => 'required',
+                'position_id'            => 'required',
                 'type'                   => 'required',
             ],
             [
@@ -135,7 +142,7 @@ class AuthorityController extends Controller
                 'user_id.required'                => 'Selccione un funcionario dentro de los usuarios del sistema',
                 'from.required'                   => 'El campo fecha desde es requerido',
                 'to.required'                     => 'El campo fecha hasta es requerido',
-                'position.required'               => 'El campo cargo es requerido',
+                'position_id.required'            => 'El campo cargo es requerido',
                 'type.required'                   => 'El campo tipo es requerido',
             ]
         );
@@ -143,7 +150,7 @@ class AuthorityController extends Controller
         $authority->creator()->associate(Auth::user());
         $authority->save();
 
-        session()->flash('info', 'La autoridad '.$authority->position.' ha sido creada.');
+        session()->flash('info', 'La autoridad '.$authority->position->name.' ha sido creada.');
 
         return redirect()->route('rrhh.authorities.index');
     }
@@ -173,8 +180,9 @@ class AuthorityController extends Controller
             case 2: $ouTopLevel = $authority->organizationalUnit->father; break;
             case 1: $ouTopLevel = $authority->organizationalUnit; break;
         }
+        $positions = Position::all();
 
-        return view('rrhh.authorities.edit', compact('ouTopLevel','authority'));
+        return view('rrhh.authorities.edit', compact('ouTopLevel','authority','positions'));
     }
 
     /**
@@ -192,7 +200,7 @@ class AuthorityController extends Controller
                 'user_id'                => 'required',
                 'from'                   => 'required',
                 'to'                     => 'required',
-                'position'               => 'required',
+                'position_id'            => 'required',
                 'type'                   => 'required',
             ],
             [
@@ -200,7 +208,7 @@ class AuthorityController extends Controller
                 'user_id.required'                => 'Selccione un funcionario dentro de los usuarios del sistema',
                 'from.required'                   => 'El campo fecha desde es requerido',
                 'to.required'                     => 'El campo fecha hasta es requerido',
-                'position.required'               => 'El campo cargo es requerido',
+                'position_id.required'            => 'El campo cargo es requerido',
                 'type.required'                   => 'El campo tipo es requerido',
             ]
         );

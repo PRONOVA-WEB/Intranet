@@ -47,7 +47,7 @@
                     'from' => $request->from,
                     'to' => $request->to ,
                     'id_from' => $request->id_from,
-                    'id_to' => $request->id_to]) 
+                    'id_to' => $request->id_to])
                 }}">Formato SIRH (Descargar Todo) <i class="far fa-file-excel"></i>
             </a>
         </div>
@@ -58,7 +58,7 @@
 
 
 
-        
+
             <a type="button" class="btn btn-success" target="_blank" href="{{ route('rrhh.service-request.report.export-sirh-txt', ['establishment' => $request->establishment, 'sirh' => $request->sirh, 'from' => $request->from, 'to' => $request->to       ]  ) }}">Formato SIRH (Descargar Todo) <i class="far fa-file-excel"></i>
             </a>
 
@@ -75,7 +75,7 @@
 <table class="table table-sm table-bordered table-responsive-xl small text-uppercase" id="tabla_sirh">
     <thead>
         <tr>
-            <th>ID Service Request</th>
+            <th>ID Solicitud</th>
             <th>Run</th>
             <th>DV</th>
             <th>Fecha inicio contrato</th>

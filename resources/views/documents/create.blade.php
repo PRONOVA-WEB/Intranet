@@ -38,7 +38,7 @@
                 {!! $document->antecedent ? 'value="' . $document->antecedent .'"' : '' !!}>
         </div>
         <div class="form-group form-check-inline">
-            <input type="checkbox" class="form-check-input" id="private" value="1" name="private">
+            <input type="checkbox" class="form-check-input" id="private" {{ $document->private ? 'checked' : '' }} value="1" name="private">
             <label class="form-check-label" for="private">Privado</label>
         </div>
     </div>
@@ -76,7 +76,7 @@
         </div>
     </div>
 
-    @livewire('documents.doc-templates')
+    @livewire('documents.doc-templates',['document'=>$document])
 
     @livewire('documents.add-email-text-area-list')
 

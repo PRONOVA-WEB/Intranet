@@ -16,7 +16,7 @@
                     @method('POST')
                     <div class="form-row">
                         <div class="form-group col-12">
-                            <label for="forotp">Ingrese número OTP1.</label>
+                            <label for="forotp">Ingrese número OTP.</label>
                             <input type="text" class="form-control form-control-sm" id="forotp"
                                    name="otp" maxlength="6" autocomplete="off" required/>
 {{--                            <input type="hidden" name="file_path" value="modulo1/1.pdf">--}}

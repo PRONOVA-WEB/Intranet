@@ -251,7 +251,6 @@
 			<div class="card-body">
 
 				<div class="form-row">
-
 					<div class="col-12 col-md-8">
 						@if($fulfillment->total_to_pay)
 						@livewire('service-request.upload-invoice', ['fulfillment' => $fulfillment])

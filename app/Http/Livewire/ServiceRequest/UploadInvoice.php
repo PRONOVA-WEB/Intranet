@@ -24,7 +24,7 @@ class UploadInvoice extends Component
         $this->invoiceFile->storeAs(
             $this->storage_path,
             $this->fulfillment->id.'.pdf',
-            'public'
+            'gcs'
         );
 
         $this->fulfillment->update(['has_invoice_file' => true]);

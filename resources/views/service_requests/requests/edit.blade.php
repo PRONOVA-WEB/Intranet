@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Editar Solicitud de Contratación')
+@section('title', 'Editar Contratación Honorarios')
 
 @section('content')
 
 @include('service_requests.partials.nav')
 
-<h3>Editar de Contratación de Servicios</h3>
+<h3>Editar Contratación Honorarios</h3>
 
   @can('Service Request: additional data rrhh')
 
@@ -47,7 +47,7 @@
     	<fieldset class="form-group col-6 col-md-2">
 		    <label for="for_name">Origen Financiamiento</label>
 		    <select name="type" class="form-control" id="type" required>
-          <option style="background-color:#F5A7A7;" value="Covid" @if($serviceRequest->type == 'Covid') selected @endif>Covid (Sólo 2021)</option>
+          <option style="background-color:#F5A7A7;" value="Covid" @if($serviceRequest->type == 'Covid') selected @endif>Covid (Sólo 2022)</option>
           <option style="background-color:#8fbc8f;" value="Suma alzada"  @if($serviceRequest->type == 'Suma alzada') selected @endif>Suma alzada</option>
           <!-- <option value="Genérico" @if($serviceRequest->type == 'Genérico') selected @endif >Honorarios - Genérico</option> -->
         </select>

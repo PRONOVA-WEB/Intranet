@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <title>Resolucion</title>
     <meta name="description" content="">
-    <meta name="author" content="Servicio de Salud Iquique">
+    <meta name="author" content="Servicio de Salud">
     <style media="screen">
         body {
             font-family: Arial, Helvetica, sans-serif;
@@ -132,12 +132,12 @@
     <div class="content">
 
       <div class="siete" style="padding-top: 3px;">
-        HOSPITAL DR. ERNESTO TORRES GALDÁMEZ<br>
+        HOSPITAL PRINCIPAL<br>
 
         SUBDIRECCIÓN DE GESTIÓN Y DESARROLLO DE LAS PERSONAS
       </div>
       <div class="seis" style="padding-top: 4px;">
-        N.I.PHUQHAÑA. {{$ServiceRequest->id}} - {{\Carbon\Carbon::now()->format('d/m/Y')}} -
+        CONTRATACIONES {{$ServiceRequest->id}} - {{\Carbon\Carbon::now()->format('d/m/Y')}} -
         @foreach($ServiceRequest->SignatureFlows as $SignatureFlow)
         {{$SignatureFlow->user->Initials}},
         @endforeach
@@ -149,7 +149,7 @@
           <strong>RESOLUCIÓN EXENTA N°: {{$ServiceRequest->resolution_number}}</strong>
         </div>
         <div class="left" style="padding-bottom: 2px;">
-          <strong>IQUIQUE,</strong>
+          <strong>SANTIAGO,</strong>
         </div>
       </div>
 
@@ -162,17 +162,17 @@
         @if($ServiceRequest->responsabilityCenter->establishment_id == 1)
         @if($ServiceRequest->program_contract_type == "Mensual")
         En estos antecedentes, según lo dispuesto en el art. 11° del D.F.L. N° 29, de 2004 del Ministerio de Hacienda, que Fija el texto refundido, coordinado y sistematizado de la Ley N° 18.834, de 1989 sobre Estatuto Administrativo; art. 36° letra f) inciso 2, del D.F.L. N° 01, de 2005 del Ministerio de Salud, que Fija texto refundido, coordinado y sistematizado del Decreto Ley N° 2.763, de 1979 y de las Leyes N° 18.933 y N° 18.469; Art. 54° II letras a), b) y c) del Decreto Supremo N° 140, de 2004, que aprobó el Reglamento Orgánico de los Servicios de Salud; Ley N° 19.880 de Bases de Procedimiento Administrativo, Art. 23° letra f) del Decreto N° 38, de 2005 que Aprueba Reglamento Orgánico de los Establecimientos de Salud de Menor Complejidad y de los Establecimientos de Autogestión en Red todas del Ministerio de Salud;
-        {{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->decree}},
-        del Servicio de Salud Iquique, Gabinete Presidencial N° 02, de 2018 de la Presidencia de la República, Ley N° 21.395, de 2021 del Ministerio de Hacienda, que Aprueba Presupuesto del Sector Público año 2022; Resoluciones N° 18, de 2017 y N° 6, de 2019 ambas de la Contraloría General de la República.
+        {{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->decree}},
+        del Servicio de Salud Santiago, Gabinete Presidencial N° 02, de 2018 de la Presidencia de la República, Ley N° 21.395, de 2021 del Ministerio de Hacienda, que Aprueba Presupuesto del Sector Público año 2022; Resoluciones N° 18, de 2017 y N° 6, de 2019 ambas de la Contraloría General de la República.
         @elseif($ServiceRequest->program_contract_type == "Horas")
         @if($ServiceRequest->profession->category == "A")
         Dispuesto en el art. 11° del D.F.L. N° 29, de 2004 del Ministerio de Hacienda, que Fija el texto refundido, coordinado y sistematizado de la Ley N° 18.834, de 1989 sobre Estatuto Administrativo; art. 36° letra f) inciso 2, del D.F.L. N° 01, de 2005 del Ministerio de Salud, que Fija texto refundido, coordinado y sistematizado del Decreto Ley N° 2.763, de 1979 y de las Leyes N° 18.933 y N° 18.469; Art. 54° II letras a), b) y c) del Decreto Supremo N° 140, de 2004, que aprobó el Reglamento Orgánico de los Servicios de Salud; Ley N° 19.880 de Bases de Procedimiento Administrativo, Art. 23° letra f) del Decreto N° 38, de 2005 que Aprueba Reglamento Orgánico de los Establecimientos de Salud de Menor Complejidad y de los Establecimientos de Autogestión en Red todas del Ministerio de Salud;
-        {{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->decree}},
-        del Servicio de Salud Iquique, Gabinete Presidencial N° 02, de 2018 de la Presidencia de la República, Ley N° 21.289, de 2020 del Ministerio de Hacienda, que Aprueba Presupuesto del Sector Público año 2021; Resoluciones N° 18, de 2017 y N° 6, de 2019 ambas de la Contraloría General de la República;
+        {{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->decree}},
+        del Servicio de Salud Santiago, Gabinete Presidencial N° 02, de 2018 de la Presidencia de la República, Ley N° 21.289, de 2020 del Ministerio de Hacienda, que Aprueba Presupuesto del Sector Público año 2021; Resoluciones N° 18, de 2017 y N° 6, de 2019 ambas de la Contraloría General de la República;
         @else
         En estos antecedentes, según lo dispuesto en el art. 11° del D.F.L. N° 29, de 2004 del Ministerio de Hacienda, que Fija el texto refundido, coordinado y sistematizado de la Ley N° 18.834, de 1989 sobre Estatuto Administrativo; art. 36° letra f) inciso 2, del D.F.L. N° 01, de 2005 del Ministerio de Salud, que Fija texto refundido, coordinado y sistematizado del Decreto Ley N° 2.763, de 1979 y de las Leyes N° 18.933 y N° 18.469; Art. 54° II letras a), b) y c) del Decreto Supremo N° 140, de 2004, que aprobó el Reglamento Orgánico de los Servicios de Salud; Ley N° 19.880 de Bases de Procedimiento Administrativo, Art. 23° letra f) del Decreto N° 38, de 2005 que Aprueba Reglamento Orgánico de los Establecimientos de Salud de Menor Complejidad y de los Establecimientos de Autogestión en Red todas del Ministerio de Salud;
-        {{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->decree}},
-        del Servicio de Salud Iquique, Gabinete Presidencial N° 02, de 2018 de la Presidencia de la República, Ley N° 21.395, de 2021 del Ministerio de Hacienda, que Aprueba Presupuesto del Sector Público año 2022; Resoluciones N° 18, de 2017 y N° 6, de 2019 ambas de la Contraloría General de la República.
+        {{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->decree}},
+        del Servicio de Salud Santiago, Gabinete Presidencial N° 02, de 2018 de la Presidencia de la República, Ley N° 21.395, de 2021 del Ministerio de Hacienda, que Aprueba Presupuesto del Sector Público año 2022; Resoluciones N° 18, de 2017 y N° 6, de 2019 ambas de la Contraloría General de la República.
         @endif
         @endif
         @else
@@ -189,10 +189,10 @@
         <li>Que, mediante Decreto N°52 de fecha 16 de diciembre de 2021 del Ministerio de Salud, prorroga vigencia del Decreto N° 4 de fecha 05 de enero de 2020 del Ministerio de Salud, que decreta alerta sanitaria por el período que se señala y otorga facultades extraordinarias que indica por emergencia de salud pública de importancia internacional (ESPII) por brote del nuevo coronavirus (2019-ncov) hasta el 31 de marzo del 2022
         </li>
 
-        <li>Que, el Hospital “Dr. Ernesto Torres Galdames” de Iquique debido a la contingencia ha debido implementar diversas estrategias asociadas a la complejización e incremento de camas básicas a medias y de alta complejidad a modo de satisfacer y dar cobertura a las necesidades de la población, producto de la pandemia sanitaria.
+        <li>Que, el Hospital “Principal” de Santiago debido a la contingencia ha debido implementar diversas estrategias asociadas a la complejización e incremento de camas básicas a medias y de alta complejidad a modo de satisfacer y dar cobertura a las necesidades de la población, producto de la pandemia sanitaria.
         </li>
 
-        <li>Que, el Hospital “Dr. Ernesto Torres Galdames” de Iquique, producto de esta contingencia ha debido mantener los servicios de personal para reforzar los equipos de salud, además de reforzando las unidades de apoyo que deben ponerse a disposición para enfrentar la pandemia.
+        <li>Que, el Hospital “Principal” de Santiago, producto de esta contingencia ha debido mantener los servicios de personal para reforzar los equipos de salud, además de reforzando las unidades de apoyo que deben ponerse a disposición para enfrentar la pandemia.
         </li>
 
         <li>Que, mediante Memorándum C31/ N°55 de fecha 24 de diciembre de 2020, emitido por el Jefe de División de Gestión y Desarrollo de las Personas del Minsal, se envía instrucciones para la construcción de nómina gasto en honorarios Covid-19 año 2021, con la finalidad de gestionar los recursos financieros extraordinarios ante DIPRES, como también tener un control respecto de todas las contrataciones adicionales que deberán ser consideradas en el presupuesto 2021.
@@ -213,7 +213,7 @@
         </li>
 
         <li>
-        Que, el Hospital "Dr. Ernesto Torres Galdames", cuenta con las disponibilidades presupuestarias suficientes para solventar tal convenio.
+        Que, el Hospital Principal, cuenta con las disponibilidades presupuestarias suficientes para solventar tal convenio.
         </li>
 
       </ol>
@@ -223,7 +223,7 @@
       <p class="justify">
         <strong>RESUELVO:</strong><br><br>
 
-        <strong>1. CONTRÁTESE </strong> a honorarios a suma alzada Covid 19 en el Hospital Ernesto Torres Galdames, a la persona que más abajo se individualiza de acuerdo a su área de competencia,
+        <strong>1. CONTRÁTESE </strong> a honorarios a suma alzada Covid 19 en el Principal, a la persona que más abajo se individualiza de acuerdo a su área de competencia,
       </p>
 
       @if($ServiceRequest->program_contract_type == "Mensual")
@@ -305,17 +305,17 @@
       @endphp
 
       <p class="justify">
-        En Iquique, a {{$inputs['Fecha']}}, comparece por una parte el <b>HOSPITAL ERNESTO TORRES GALDAMES</b>, persona jurídica de derecho público, RUT. 62.000.530-4 , con domicilio en calle Av.héroes de la concepcion N 502 de la ciudad de Iquique, representado por su {{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->position}}
-        <b>{{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->user->FullNameUpper}}</b>,
-        chileno, Cédula Nacional de Identidad N°{{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->user->runFormat()}}, del mismo domicilio del servicio público que representa, en
-        adelante , "El Director del Hospital Ernesto Torres Galdames", y por la otra don <b>{{$ServiceRequest->employee->getFullNameAttribute()}}</b>@if($ServiceRequest->profession), {{$ServiceRequest->profession->name}}@endif, RUT:{{$ServiceRequest->employee->id}}-{{$ServiceRequest->employee->dv}}, chileno,
-        con domicilio en {{$ServiceRequest->address}}, de la ciudad de Iquique, en adelante “El Profesional” y exponen lo siguiente:
+        En Santiago, a {{$inputs['Fecha']}}, comparece por una parte el <b>Principal</b>, persona jurídica de derecho público, RUT. 62.000.530-4 , con domicilio en calle Av.héroes de la concepcion N 502 de la ciudad de Santiago, representado por su {{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->position}}
+        <b>{{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->user->FullNameUpper}}</b>,
+        chileno, Cédula Nacional de Identidad N°{{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->user->runFormat()}}, del mismo domicilio del servicio público que representa, en
+        adelante , "El Director del Principal", y por la otra don <b>{{$ServiceRequest->employee->getFullNameAttribute()}}</b>@if($ServiceRequest->profession), {{$ServiceRequest->profession->name}}@endif, RUT:{{$ServiceRequest->employee->id}}-{{$ServiceRequest->employee->dv}}, chileno,
+        con domicilio en {{$ServiceRequest->address}}, de la ciudad de Santiago, en adelante “El Profesional” y exponen lo siguiente:
       </p>
 
 
       <p class="justify">
         <strong>PRIMERO:</strong>
-        Don {{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->user->FullNameUpper}}, en su calidad de {{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->position}} del Hospital “Dr. Ernesto Torres Galdames” de Iquique, contrata los servicios a honorarios a suma alzada de {{$ServiceRequest->employee->getFullNameAttribute()}}, ({{$ServiceRequest->profession->name}} - {{$ServiceRequest->working_day_type}}), para que preste servicios en el {{$ServiceRequest->responsabilityCenter->name}} al fin de cubrir la recarga de las tareas provocadas por la pandemia de COVID-19.
+        Don {{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->user->FullNameUpper}}, en su calidad de {{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->position}} del Hospital “Principal” de Santiago, contrata los servicios a honorarios a suma alzada de {{$ServiceRequest->employee->getFullNameAttribute()}}, ({{$ServiceRequest->profession->name}} - {{$ServiceRequest->working_day_type}}), para que preste servicios en el {{$ServiceRequest->responsabilityCenter->name}} al fin de cubrir la recarga de las tareas provocadas por la pandemia de COVID-19.
       </p>
 
       <p class="justify">
@@ -326,7 +326,7 @@
       </p>
 
       <p class="justify">
-        <strong>TERCERO:</strong> El prestador recibirá los lineamientos por parte del Supervisor del {{$ServiceRequest->responsabilityCenter->name}}, del Hospital Regional de Iquique,el cual tendrá la responsabilidad de evaluar sus servicios en forma mensual.
+        <strong>TERCERO:</strong> El prestador recibirá los lineamientos por parte del Supervisor del {{$ServiceRequest->responsabilityCenter->name}}, del Hospital Regional de Santiago,el cual tendrá la responsabilidad de evaluar sus servicios en forma mensual.
         <br>
         {{$ServiceRequest->subt31}}
       </p>
@@ -341,20 +341,20 @@
 
       <p class="justify">
         <strong>SEXTO:</strong>
-        El Hospital “Dr. Ernesto Torres Galdames” de Iquique podrá poner término anticipadamente a este convenio sin expresión de causa, previo aviso por escrito al prestador con a lo menos 48 horas de anticipación.
+        El Hospital “Principal” de Santiago podrá poner término anticipadamente a este convenio sin expresión de causa, previo aviso por escrito al prestador con a lo menos 48 horas de anticipación.
       </p>
 
       @if($ServiceRequest->responsabilityCenter->establishment_id == 1)
       @if($ServiceRequest->program_contract_type == "Mensual")
       <p class="justify">
         <strong>SÉPTIMO:</strong>
-        En este caso, el Hospital “Dr. Ernesto Torres Galdames”, pagará a la persona en referencia sólo hasta el porcentaje de la mensualidad correspondiente al período efectivamente prestado.
+        En este caso, el Hospital “Principal”, pagará a la persona en referencia sólo hasta el porcentaje de la mensualidad correspondiente al período efectivamente prestado.
       </p>
       @elseif($ServiceRequest->program_contract_type == "Horas")
       @if($ServiceRequest->profession->category == "A")
       <p class="justify">
         <strong>SÉPTIMO:</strong>
-        En este caso, el Hospital “Dr. Ernesto Torres Galdames”, pagará a la persona en referencia sólo hasta el porcentaje de la mensualidad correspondiente al período efectivamente prestado.
+        En este caso, el Hospital “Principal”, pagará a la persona en referencia sólo hasta el porcentaje de la mensualidad correspondiente al período efectivamente prestado.
       </p>
       @else
       @if($ServiceRequest->working_day_type == "TURNO EXTRA")
@@ -362,9 +362,9 @@
         <strong>SÉPTIMO:</strong>
         En el desempeño de sus funciones, el prestador cumplió con un total de {{number_format($ServiceRequest->Fulfillments->first()->total_hours_to_pay)}} Horas en turno extras en el mes de {{$ServiceRequest->start_date->monthName}}, cuya suma alzada totas es de ${{number_format($ServiceRequest->Fulfillments->first()->total_to_pay)}}.- ({{$ServiceRequest->fulfillments->first()->total_to_pay_description}}) impuesto incluido, en conformidad a lo dispuesto en el inciso segundo del Art. 2º del Decreto Nº 98 de 1991 del Ministerio de Hacienda y se cancelará en una cuota de ${{number_format($ServiceRequest->Fulfillments->first()->total_to_pay)}} el mes de {{$ServiceRequest->start_date->monthName}}; se deberá acreditar contra presentación de certificado extendido por el Jefe del {{$ServiceRequest->responsabilityCenter->name}}, dependiente del
         @if($ServiceRequest->responsabilityCenter->establishment_id == 1)
-        Hospital Regional de Iquique,
+        Hospital Regional de Santiago,
         @else
-        Servicio de Salud Iquique,
+        Servicio de Salud Santiago,
         @endif
         en que conste el cumplimiento de las labores estipuladas en el convenio. El pago será efectuado el día
         @if($ServiceRequest->responsabilityCenter->establishment_id == 1)
@@ -373,14 +373,14 @@
         5
         @endif
         del mes siguiente, y si este cae en día inhábil, se efectuará el día hábil más cercano una vez que el establecimiento dé su conformidad a la prestación realizada y previa presentación de la boleta de honorario respectiva. El Hospital retendrá y pagará el impuesto correspondiente por los honorarios pactados. Asimismo, el prestador deberá entregar dentro de los primeros 5 días del mes siguiente el certificado de servicios prestados realizados, a la Subdirección de Gestión y Desarrollo de las Personas
-        del Hospital Dr. Ernesto Torres Galdames de Iquique,
+        del Hospital Principal de Santiago,
         el cual debe venir con las debidas observaciones de la Jefatura directa.
       </p>
       @elseif($ServiceRequest->working_day_type == "HORA EXTRA")
       <p class="justify">
         <strong>SÉPTIMO:</strong>
         En el desempeño de sus funciones, el prestador cumplió con un total de {{number_format($ServiceRequest->Fulfillments->first()->total_hours_to_pay)}} Horas por extensión horaria en el mes de {{$ServiceRequest->start_date->monthName}}, cuya suma alzada totas es de ${{number_format($ServiceRequest->Fulfillments->first()->total_to_pay)}}.- ({{$ServiceRequest->fulfillments->first()->total_to_pay_description}}) impuesto incluido, en conformidad a lo dispuesto en el inciso segundo del Art. 2º del Decreto Nº 98 de 1991 del Ministerio de Hacienda y se cancelará en una cuota de ${{number_format($ServiceRequest->Fulfillments->first()->total_to_pay)}} el mes de {{$ServiceRequest->start_date->monthName}}; se deberá acreditar contra presentación de certificado extendido por el Jefe del {{$ServiceRequest->responsabilityCenter->name}}, dependiente del
-        Hospital Regional de Iquique,
+        Hospital Regional de Santiago,
 
         en que conste el cumplimiento de las labores estipuladas en el convenio. El pago será efectuado el día
         @if($ServiceRequest->responsabilityCenter->establishment_id == 1)
@@ -388,7 +388,7 @@
         @else
         5
         @endif
-        del mes siguiente, y si este cae en día inhábil, se efectuará el día hábil más cercano una vez que el establecimiento dé su conformidad a la prestación realizada y previa presentación de la boleta de honorario respectiva. El Hospital retendrá y pagará el impuesto correspondiente por los honorarios pactados. Asimismo, el prestador deberá entregar dentro de los primeros 5 días del mes siguiente el certificado de servicios prestados realizados, a la Subdirección de Gestión y Desarrollo de las Personas del Hospital Dr. Ernesto Torres Galdames de Iquique, el cual debe venir con las debidas observaciones de la Jefatura directa.
+        del mes siguiente, y si este cae en día inhábil, se efectuará el día hábil más cercano una vez que el establecimiento dé su conformidad a la prestación realizada y previa presentación de la boleta de honorario respectiva. El Hospital retendrá y pagará el impuesto correspondiente por los honorarios pactados. Asimismo, el prestador deberá entregar dentro de los primeros 5 días del mes siguiente el certificado de servicios prestados realizados, a la Subdirección de Gestión y Desarrollo de las Personas del Hospital Principal de Santiago, el cual debe venir con las debidas observaciones de la Jefatura directa.
       </p>
       @endif
       @endif
@@ -397,20 +397,20 @@
       @if($ServiceRequest->program_contract_type == "Mensual")
       <p class="justify">
         <strong>SÉPTIMO:</strong>
-        El Servicio de Salud Iquique, cancelará a la persona en referencia sólo hasta la mensualidad correspondiente al período efectivamente prestado.
+        El Servicio de Salud Santiago, cancelará a la persona en referencia sólo hasta la mensualidad correspondiente al período efectivamente prestado.
       </p>
       @elseif($ServiceRequest->program_contract_type == "Horas")
       <p class="justify">
         <strong>SÉPTIMO:</strong>
-        El Servicio de Salud Iquique, cancelará a la persona en referencia sólo hasta la mensualidad correspondiente al período efectivamente prestado.
+        El Servicio de Salud Santiago, cancelará a la persona en referencia sólo hasta la mensualidad correspondiente al período efectivamente prestado.
       </p>
       @else
       <strong>SÉPTIMO:</strong>
       En el desempeño de sus funciones, el prestador cumplió con un total de {{number_format($ServiceRequest->Fulfillments->first()->total_hours_to_pay)}} Horas en turno extras en el mes de {{$ServiceRequest->start_date->monthName}}, cuya suma alzada totas es de ${{number_format($ServiceRequest->Fulfillments->first()->total_to_pay)}}.- ({{$ServiceRequest->fulfillments->first()->total_to_pay_description}}) impuesto incluido, en conformidad a lo dispuesto en el inciso segundo del Art. 2º del Decreto Nº 98 de 1991 del Ministerio de Hacienda y se cancelará en una cuota de ${{number_format($ServiceRequest->Fulfillments->first()->total_to_pay)}} el mes de {{$ServiceRequest->start_date->monthName}}; se deberá acreditar contra presentación de certificado extendido por el Jefe del {{$ServiceRequest->responsabilityCenter->name}}, dependiente del
       @if($ServiceRequest->responsabilityCenter->establishment_id == 1)
-      Hospital Regional de Iquique,
+      Hospital Regional de Santiago,
       @else
-      Servicio de Salud Iquique,
+      Servicio de Salud Santiago,
       @endif
       en que conste el cumplimiento de las labores estipuladas en el convenio. El pago será efectuado el día
       @if($ServiceRequest->responsabilityCenter->establishment_id == 1)
@@ -419,7 +419,7 @@
       5
       @endif
       del mes siguiente, y si este cae en día inhábil, se efectuará el día hábil más cercano una vez que el establecimiento dé su conformidad a la prestación realizada y previa presentación de la boleta de honorario respectiva. El Hospital retendrá y pagará el impuesto correspondiente por los honorarios pactados. Asimismo, el prestador deberá entregar dentro de los primeros 5 días del mes siguiente el certificado de servicios prestados realizados, a la Subdirección de Gestión y Desarrollo de las Personas
-      del Hospital Dr. Ernesto Torres Galdames de Iquique,
+      del Hospital Principal de Santiago,
       el cual debe venir con las debidas observaciones de la Jefatura directa.
       @endif
       @endif
@@ -433,7 +433,7 @@
         @livewire('service-request.monthly-quotes', ['serviceRequest' => $ServiceRequest])
         se deberá acreditar contra presentación de certificado extendido por el Supervisor
         Jefe del {{$ServiceRequest->responsabilityCenter->name}}, dependiente del
-        Hospital Regional de Iquique, en que conste el cumplimiento de las labores estipuladas en el convenio, el cual debe ser creado en el sistema interno Phuqhaña. El pago será efectuado dentro de los primeros 10 días del mes siguiente, y si este cae en día inhábil, se efectuará el día hábil más cercano una vez que el establecimiento dé su conformidad a la prestación realizada y previa presentación de la boleta de honorario respectiva. El Servicio retendrá y pagará el impuesto correspondiente por los honorarios pactados.
+        Hospital Regional de Santiago, en que conste el cumplimiento de las labores estipuladas en el convenio, el cual debe ser creado en el sistema interno Phuqhaña. El pago será efectuado dentro de los primeros 10 días del mes siguiente, y si este cae en día inhábil, se efectuará el día hábil más cercano una vez que el establecimiento dé su conformidad a la prestación realizada y previa presentación de la boleta de honorario respectiva. El Servicio retendrá y pagará el impuesto correspondiente por los honorarios pactados.
         <br>
 
       </p>
@@ -445,7 +445,7 @@
         Supervisor
         @else
         Jefe
-        @endif del {{$ServiceRequest->responsabilityCenter->name}} o por la jefatura inmediatamente superior, deberá certificar las horas realizadas por el profesional médico de manera presencial (no es aceptable la suplantación de personas). Debiendo, además, adjuntar el registro de asistencia efectuado en el respectivo servicio, los cuales serán indispensables para su cancelación, sin perjuicio de las funciones de control de la Subdirección de Gestión y Desarrollo de las Personas del Hospital de Iquique,
+        @endif del {{$ServiceRequest->responsabilityCenter->name}} o por la jefatura inmediatamente superior, deberá certificar las horas realizadas por el profesional médico de manera presencial (no es aceptable la suplantación de personas). Debiendo, además, adjuntar el registro de asistencia efectuado en el respectivo servicio, los cuales serán indispensables para su cancelación, sin perjuicio de las funciones de control de la Subdirección de Gestión y Desarrollo de las Personas del Hospital de Santiago,
         <br><br>
         El pago será efectuado el día
         @if($ServiceRequest->responsabilityCenter->establishment_id == 1)
@@ -457,9 +457,9 @@
         <br><br>
         Asimismo, el prestador deberá entregar dentro de los primeros 5 días del mes siguiente el certificado de servicios prestados realizados, a la Unidad de Honorarios Covid del
         @if($ServiceRequest->responsabilityCenter->establishment_id == 1)
-        Hospital Dr. Ernesto Torres Galdames de Iquique,
+        Hospital Principal de Santiago,
         @else
-        Servicio de salud Iquique,
+        Servicio de salud Santiago,
         @endif
         el cual debe venir con las debidas observaciones de la Jefatura directa.
         <br>
@@ -550,9 +550,9 @@
         </p>
         @else
         <p class="justify">
-          <strong>DÉCIMO PRIMERO:</strong> La personería de D.{{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->user->FullNameUpper}} , para representar al Hospital “Dr. E. Torres G.” de Iquique, en su calidad de {{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->position}}, consta en
-          {{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->decree}},
-          del Servicio de Salud Iquique.
+          <strong>DÉCIMO PRIMERO:</strong> La personería de D.{{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->user->FullNameUpper}} , para representar al Hospital “Dr. E. Torres G.” de Santiago, en su calidad de {{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->position}}, consta en
+          {{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->decree}},
+          del Servicio de Salud Santiago.
         </p>
         @endif
         @endif
@@ -563,9 +563,9 @@
         </p>
         @elseif($ServiceRequest->program_contract_type == "Horas")
         <p class="justify">
-          <strong>DÉCIMO PRIMERO:</strong> La personería de D. {{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->user->FullNameUpper}} , para representar al Servicio Salud Iquique, en su calidad de {{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->position}}, consta en
-          {{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->decree}},
-          del Servicio de Salud Iquique.
+          <strong>DÉCIMO PRIMERO:</strong> La personería de D. {{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->user->FullNameUpper}} , para representar al Servicio Salud Santiago, en su calidad de {{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->position}}, consta en
+          {{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->decree}},
+          del Servicio de Salud Santiago.
         </p>
         @endif
         @endif
@@ -573,7 +573,7 @@
 
         <p class="justify">
           <strong>DÉCIMO SEGUNDO:</strong>
-          Déjese establecido que el trabajador le será aplicable el procedimiento establecido en el “Manual de Procedimientos de Denuncia, Prevención y Sanción del Maltrato, Acoso Laboral y/o Sexual y Discriminación, conforme resolución vigente en el Servicio de Salud Iquique N°4294 del 10 de octubre del 2019.
+          Déjese establecido que el trabajador le será aplicable el procedimiento establecido en el “Manual de Procedimientos de Denuncia, Prevención y Sanción del Maltrato, Acoso Laboral y/o Sexual y Discriminación, conforme resolución vigente en el Servicio de Salud Santiago N°4294 del 10 de octubre del 2019.
         </p>
 
         @php
@@ -651,9 +651,9 @@
           @endif
           del presupuesto del
           @if($ServiceRequest->responsabilityCenter->establishment_id == 1)
-          Hospital “Dr. Ernesto Torres Galdames” de Iquique,
+          Hospital “Principal” de Santiago,
           @else
-          Servicio Salud Iquique.
+          Servicio Salud Santiago.
           @endif
           Unidad demandante COVID-19.
         </p>
@@ -664,7 +664,7 @@
 
           <strong>3.</strong> IMPÚTESE el gasto correspondiente al ítem 21-03-001-001-03 Honorario Suma Alzada Personal Médico del presupuesto del
 
-          IMPÚTESE el gasto correspondiente al ítem 21-03-001-001-03 Honorario Suma Alzada Personal Médico, del presupuesto del Hospital “Dr. Ernesto Torres Galdames” de Iquique, Unidad demandante COVID-19.
+          IMPÚTESE el gasto correspondiente al ítem 21-03-001-001-03 Honorario Suma Alzada Personal Médico, del presupuesto del Hospital “Principal” de Santiago, Unidad demandante COVID-19.
 
 
 
@@ -674,7 +674,7 @@
         @else
         <p class="">
           <strong>3.</strong>
-          IMPÚTESE el gasto correspondiente al ítem 21-03-001-001-02 Honorario Suma Alzada Personal No Médico, del presupuesto del Hospital “Dr. Ernesto Torres Galdames” de Iquique, Unidad demandante COVID-19.
+          IMPÚTESE el gasto correspondiente al ítem 21-03-001-001-02 Honorario Suma Alzada Personal No Médico, del presupuesto del Hospital “Principal” de Santiago, Unidad demandante COVID-19.
         </p>
         @endif
         @endif
@@ -691,10 +691,10 @@
             @if($ServiceRequest->responsabilityCenter->establishment_id == 1)
             <strong>
               <span class="uppercase">
-                {{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->user->FullNameUpper}}
+                {{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->user->FullNameUpper}}
               </span>
               <br>
-              <span style="text-transform:uppercase">{{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->position}}</span>
+              <span style="text-transform:uppercase">{{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->position}}</span>
               <br>
               HOSPITAL DR ERNESTO TORRES GALDÁMEZ<br>
             </strong>
@@ -709,13 +709,13 @@
                 @if ($ServiceRequest->program_contract_type == 'Mensual')
                     <p class="justify">
                         <strong>SÉPTIMO:</strong>
-                        El Servicio de Salud Iquique, cancelará a la persona en referencia sólo hasta la mensualidad
+                        El Servicio de Salud Santiago, cancelará a la persona en referencia sólo hasta la mensualidad
                         correspondiente al período efectivamente prestado.
                     </p>
                 @elseif($ServiceRequest->program_contract_type == 'Horas')
                     <p class="justify">
                         <strong>SÉPTIMO:</strong>
-                        El Servicio de Salud Iquique, cancelará a la persona en referencia sólo hasta la mensualidad
+                        El Servicio de Salud Santiago, cancelará a la persona en referencia sólo hasta la mensualidad
                         correspondiente al período efectivamente prestado.
                     </p>
                 @else
@@ -732,9 +732,9 @@
                     certificado extendido por el Jefe del {{ $ServiceRequest->responsabilityCenter->name }},
                     dependiente del
                     @if ($ServiceRequest->responsabilityCenter->establishment_id == 1)
-                        Hospital Regional de Iquique,
+                        Hospital Regional de Santiago,
                     @else
-                        Servicio de Salud Iquique,
+                        Servicio de Salud Santiago,
                     @endif
                     en que conste el cumplimiento de las labores estipuladas en el convenio. El pago será efectuado el
                     día
@@ -749,7 +749,7 @@
                     pactados. Asimismo, el prestador deberá entregar dentro de los primeros 5 días del mes siguiente el
                     certificado de servicios prestados realizados, a la Subdirección de Gestión y Desarrollo de las
                     Personas
-                    del Hospital Dr. Ernesto Torres Galdames de Iquique,
+                    del Hospital Principal de Santiago,
                     el cual debe venir con las debidas observaciones de la Jefatura directa.
                 @endif
             @endif
@@ -767,7 +767,7 @@
                     @livewire('service-request.monthly-quotes', ['serviceRequest' => $ServiceRequest])
                     se deberá acreditar contra presentación de certificado extendido por el Supervisor
                     Jefe del {{ $ServiceRequest->responsabilityCenter->name }}, dependiente del
-                    Hospital Regional de Iquique, en que conste el cumplimiento de las labores estipuladas en el
+                    Hospital Regional de Santiago, en que conste el cumplimiento de las labores estipuladas en el
                     convenio, el cual debe ser creado en el sistema interno Phuqhaña. El pago será efectuado dentro de
                     los primeros 10 días del mes siguiente, y si este cae en día inhábil, se efectuará el día hábil más
                     cercano una vez que el establecimiento dé su conformidad a la prestación realizada y previa
@@ -791,7 +791,7 @@
                         médico de manera presencial (no es aceptable la suplantación de personas). Debiendo, además,
                         adjuntar el registro de asistencia efectuado en el respectivo servicio, los cuales serán
                         indispensables para su cancelación, sin perjuicio de las funciones de control de la Subdirección
-                        de Gestión y Desarrollo de las Personas del Hospital de Iquique,
+                        de Gestión y Desarrollo de las Personas del Hospital de Santiago,
                         <br><br>
                         El pago será efectuado el día
                         @if ($ServiceRequest->responsabilityCenter->establishment_id == 1)
@@ -807,9 +807,9 @@
                         Asimismo, el prestador deberá entregar dentro de los primeros 5 días del mes siguiente el
                         certificado de servicios prestados realizados, a la Unidad de Honorarios Covid del
                         @if ($ServiceRequest->responsabilityCenter->establishment_id == 1)
-                            Hospital Dr. Ernesto Torres Galdames de Iquique,
+                            Hospital Principal de Santiago,
                         @else
-                            Servicio de salud Iquique,
+                            Servicio de salud Santiago,
                         @endif
                         el cual debe venir con las debidas observaciones de la Jefatura directa.
                         <br>
@@ -931,10 +931,10 @@
                         <p class="justify">
                             <strong>DÉCIMO PRIMERO:</strong> La personería de
                             D.{{ App\Rrhh\Authority::getAuthorityFromDate(1, now(), ['manager'])->user->FullNameUpper }}
-                            , para representar al Hospital “Dr. E. Torres G.” de Iquique, en su calidad de
+                            , para representar al Hospital “Dr. E. Torres G.” de Santiago, en su calidad de
                             {{ App\Rrhh\Authority::getAuthorityFromDate(1, now(), ['manager'])->position }}, consta en
                             {{ App\Rrhh\Authority::getAuthorityFromDate(1, now(), ['manager'])->decree }},
-                            del Servicio de Salud Iquique.
+                            del Servicio de Salud Santiago.
                         </p>
                     @endif
                 @endif
@@ -948,10 +948,10 @@
                     <p class="justify">
                         <strong>DÉCIMO PRIMERO:</strong> La personería de D.
                         {{ App\Rrhh\Authority::getAuthorityFromDate(1, now(), ['manager'])->user->FullNameUpper }} , para
-                        representar al Servicio Salud Iquique, en su calidad de
+                        representar al Servicio Salud Santiago, en su calidad de
                         {{ App\Rrhh\Authority::getAuthorityFromDate(1, now(), ['manager'])->position }}, consta en
                         {{ App\Rrhh\Authority::getAuthorityFromDate(1, now(), ['manager'])->decree }},
-                        del Servicio de Salud Iquique.
+                        del Servicio de Salud Santiago.
                     </p>
                 @endif
             @endif
@@ -961,7 +961,7 @@
                 <strong>DÉCIMO SEGUNDO:</strong>
                 Déjese establecido que el trabajador le será aplicable el procedimiento establecido en el “Manual de
                 Procedimientos de Denuncia, Prevención y Sanción del Maltrato, Acoso Laboral y/o Sexual y
-                Discriminación, conforme resolución vigente en el Servicio de Salud Iquique N°4294 del 10 de octubre del
+                Discriminación, conforme resolución vigente en el Servicio de Salud Santiago N°4294 del 10 de octubre del
                 2019.
             </p>
 
@@ -1042,9 +1042,9 @@
                     @endif
                     del presupuesto del
                     @if ($ServiceRequest->responsabilityCenter->establishment_id == 1)
-                        Hospital “Dr. Ernesto Torres Galdames” de Iquique,
+                        Hospital “Principal” de Santiago,
                     @else
-                        Servicio Salud Iquique.
+                        Servicio Salud Santiago.
                     @endif
                     Unidad demandante COVID-19.
                 </p>
@@ -1057,7 +1057,7 @@
                         Alzada Personal Médico del presupuesto del
 
                         IMPÚTESE el gasto correspondiente al ítem 21-03-001-001-03 Honorario Suma Alzada Personal
-                        Médico, del presupuesto del Hospital “Dr. Ernesto Torres Galdames” de Iquique, Unidad demandante
+                        Médico, del presupuesto del Hospital “Principal” de Santiago, Unidad demandante
                         COVID-19.
 
 
@@ -1069,7 +1069,7 @@
                     <p class="">
                         <strong>3.</strong>
                         IMPÚTESE el gasto correspondiente al ítem 21-03-001-001-02 Honorario Suma Alzada Personal No
-                        Médico, del presupuesto del Hospital “Dr. Ernesto Torres Galdames” de Iquique, Unidad demandante
+                        Médico, del presupuesto del Hospital “Principal” de Santiago, Unidad demandante
                         COVID-19.
                     </p>
                 @endif
@@ -1107,7 +1107,7 @@
                         <!-- <strong>
           <span class="uppercase">JORGE GALLEGUILLOS MOLLER</span><br>
           DIRECTOR<br>
-          SERVICIO DE SALUD IQUIQUE<br>
+          SERVICIO DE SALUD Santiago<br>
           </strong>
 
           <br style="padding-bottom: 4px;">

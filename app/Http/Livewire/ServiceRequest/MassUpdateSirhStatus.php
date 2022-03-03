@@ -17,7 +17,7 @@ class MassUpdateSirhStatus extends Component
             ServiceRequest::find($id)->update(['sirh_contract_registration' => 1]);
             $this->mensaje .= $id.', ';
         }
-        
+
     }
 
     public function render()

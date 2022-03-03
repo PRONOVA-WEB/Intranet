@@ -50,7 +50,8 @@ class DocumentController extends Controller
                 ->paginate(100);
 
             $users = User::orderBy('name')->orderBy('fathers_family')->withTrashed()->get();
-            return view('documents.index', compact('ownDocuments', 'otherDocuments', 'users'));
+            $docTemplates = DocTemplate::orderBy('type','asc')->get();
+            return view('documents.index', compact('ownDocuments', 'otherDocuments', 'users','docTemplates'));
         }
         else {
             return redirect()->back()->with('danger', 'Usted no posee asignada una unidad organizacional favor contactar a su administrador');
@@ -292,10 +293,10 @@ class DocumentController extends Controller
     public function createFromPrevious(Request $request)
     {
         $document = Document::findOrNew($request->document_id);
-        $document->type = null;
         if ($document->user_id != Auth::id()) {
             $document = new Document();
         }
+
         return view('documents.create', compact('document'));
     }
 

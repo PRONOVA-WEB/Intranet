@@ -60,24 +60,21 @@
     </div>
 </div>
 
-@section('custom_js')
-    <script>
-        $('#confirm-delete').on('show.bs.modal', function(e) {
-            console.log($(e.relatedTarget).data('href'));
-            $('#setting').val($(e.relatedTarget).data('id'));
-            $('#form-delete').attr('action', $(e.relatedTarget).data('href'));
-            //$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
-        });
-    </script>
-@endsection
-{{-- 14/02/2022 vr agrego boton eleiminar --}}
-
 @include('parameters/communes/modal_edit')
 
 @endsection
 
 @section('custom_js')
 <script type="text/javascript">
+
+    //14/02/2022 vr agregar boton eleiminar
+    $('#confirm-delete').on('show.bs.modal', function(e) {
+        console.log($(e.relatedTarget).data('href'));
+        $('#setting').val($(e.relatedTarget).data('id'));
+        $('#form-delete').attr('action', $(e.relatedTarget).data('href'));
+        //$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+    });
+
     $('#editModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
         var modal = $(this)

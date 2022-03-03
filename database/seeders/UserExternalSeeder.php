@@ -15,7 +15,7 @@ class UserExternalSeeder extends Seeder
     public function run()
     {
         $user = new UserExternal();
-        $user->id = 98765432;
+        $user->id = 88888888;
         $user->dv = 1;
         $user->name = "Usuario";
         $user->fathers_family = "Externo";

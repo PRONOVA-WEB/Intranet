@@ -97,8 +97,8 @@ class Document extends Model implements Auditable
             $query->where('id', $request->input('id') );
         }
 
-        if($request->input('type') != "") {
-            $query->where('type', 'LIKE', '%'.$request->input('type').'%' );
+        if($request->input('doc_templates_id') != "") {
+            $query->where('doc_templates_id', 'LIKE', '%'.$request->input('doc_templates_id').'%' );
         }
 
         if($request->input('number') != "") {

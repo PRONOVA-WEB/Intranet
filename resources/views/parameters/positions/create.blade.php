@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Crear nueva Comuna')
+@section('title', 'Crear nuevo Cargo')
 
 @section('content')
 
 @include('parameters/nav')
 
-<h3 class="mb-3">Crear nueva Comuna</h3>
+<h3 class="mb-3">Crear nuevo Cargo</h3>
 
-<form method="POST" class="form-horizontal" action="{{ route('parameters.communes.store') }}">
+<form method="POST" class="form-horizontal" action="{{ route('parameters.positions.store') }}">
     @csrf
     @method('POST')
 
@@ -22,7 +22,7 @@
     </div>
 
     <button type="submit" class="btn btn-primary mt-3">Guardar</button>
-    <a class="btn btn-outline-secondary mt-3" href="{{ route('parameters.communes.index') }}">Volver</a>
+    <a class="btn btn-outline-secondary mt-3" href="{{ route('parameters.positions.index') }}">Volver</a>
 
 </form>
 

@@ -23,15 +23,15 @@
             <input type="date" class="form-control" name="to" value="{{ $request->to }}" required>
         </fieldset>
 
-        
 
-       
+
+
 
         <fieldset class="form-group col-md-3">
             <label for="for_to">Origen de Financiamiento</label>
             <select name="type" class="form-control" value="{{ $request->type }}">
             <option value=""></option>
-            <option value="Suma alzada" @if($request->type == 'Covid') selected @endif>Covid (Sólo 2021)</option>
+            <option value="Suma alzada" @if($request->type == 'Covid') selected @endif>Covid (Sólo 2022)</option>
             <option value="Covid" @if($request->type == 'Suma alzada') selected @endif>Suma alzada</option>
         </select>
 
@@ -76,7 +76,7 @@
                 {{ $serviceRequest->id ?? '' }}
             </a>
         </td>
-        <td>{{$key2}}</td>        
+        <td>{{$key2}}</td>
     </tr>
     @endforeach
     </tr>
