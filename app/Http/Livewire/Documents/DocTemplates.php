@@ -15,7 +15,7 @@ class DocTemplates extends Component
 
     public function mount()
     {
-        $this->docTemplates = DocTemplate::active()->get();
+        $this->docTemplates = DocTemplate::active()->orderBy('type','asc')->get();
         $this->content = ($this->document) ? $this->document->content : '';
     }
 

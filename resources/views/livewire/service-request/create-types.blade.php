@@ -14,7 +14,7 @@
       <select name="type" class="form-control" wire:model.lazy="type" required id="type">
         <option value=""></option>
         <option value="Suma alzada">Suma alzada</option>
-        <option value="Covid">Covid (Sólo 2021)</option>
+        <option value="Covid">Covid (Sólo 2022)</option>
       </select>
   </fieldset>
 

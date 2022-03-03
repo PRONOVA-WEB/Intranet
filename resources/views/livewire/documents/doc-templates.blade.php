@@ -2,6 +2,7 @@
     <div class="form-group col-lg-7">
         <label for="forType">Tipo*</label>
         <select name="doc_templates_id" id="doc_templates_id" wire:change="$emit('typeChange',$event.target.value)" name="doc_templates_id" class="form-control" required>
+            <option>Seleccione</option>
             @foreach ($docTemplates as $docTemplate)
             <option value="{{ $docTemplate->id }}" @if ($document)
                 {{ ($docTemplate->id == $document->doc_templates_id) ? 'selected' : '' }}

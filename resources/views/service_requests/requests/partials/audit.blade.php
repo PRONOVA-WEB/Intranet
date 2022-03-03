@@ -23,11 +23,11 @@
                 {{ $audit->event }}
             </td>
             <td>
-            @if($audit->event != "deleted")
+            {{-- @if($audit->event != "deleted")
               @foreach($audit->getModified() as $attribute => $modified)
-                  <strong>{{ $attribute }}</strong> :  {{ isset($modified['old']) ? $modified['old'] : '' }}  => {{ $modified['new'] }} <br>
+                  <strong>{{ $attribute }}</strong> :  {{ $modified['old'] ?? '' }}  => {{ $modified['new'] }} <br>
               @endforeach
-            @endif
+            @endif --}}
             </td>
         </tr>
         @endforeach

@@ -45,30 +45,10 @@
     <div class="form-row">
         <fieldset class="form-group col-lg-4">
             <label for="for_position">Cargo*</label>
-            <select name="position" id="for_position" class="form-control" required>
-                {{-- vr 22-02-2022 despues de modificar las tablas de cargos y autoridades para que queden relacionales de debe realizar esta modificacion para que busque por id y comentarizar todo lo de abajo en duro --}}
-                {{-- <option value="{{ $position->id }}" @if ($position->id == $authority->position) selected @endif>{{ $position->name }}</option> --}}
-                {{-- vr 22-02-2022 despues de modificar las tablas de cargos y autoridades para que queden relacionales de debe realizar esta modificacion para que busque por id y comentarizar todo lo de abajo en duro --}}
-                <option {{ ($authority->position == 'Director')?'selected':'' }}>Director</option>
-                <option {{ ($authority->position == 'Directora')?'selected':'' }}>Directora</option>
-                <option {{ ($authority->position == 'Director (S)')?'selected':'' }}>Director (S)</option>
-                <option {{ ($authority->position == 'Directora (S)')?'selected':'' }}>Directora (S)</option>
-                <option {{ ($authority->position == 'Subdirector')?'selected':'' }}>Subdirector</option>
-                <option {{ ($authority->position == 'Subdirectora')?'selected':'' }}>Subdirectora</option>
-                <option {{ ($authority->position == 'Subdirector (S)')?'selected':'' }}>Subdirector (S)</option>
-                <option {{ ($authority->position == 'Subdirectora (S)')?'selected':'' }}>Subdirectora (S)</option>
-                <option {{ ($authority->position == 'Jefe')?'selected':'' }}>Jefe</option>
-                <option {{ ($authority->position == 'Jefa')?'selected':'' }}>Jefa</option>
-                <option {{ ($authority->position == 'Jefe (S)')?'selected':'' }}>Jefe (S)</option>
-                <option {{ ($authority->position == 'Jefa (S)')?'selected':'' }}>Jefa (S)</option>
-                <option {{ ($authority->position == 'Encargado')?'selected':'' }}>Encargado</option>
-                <option {{ ($authority->position == 'Encargada')?'selected':'' }}>Encargada</option>
-                <option {{ ($authority->position == 'Encargado (S)')?'selected':'' }}>Encargado (S)</option>
-                <option {{ ($authority->position == 'Encargada (S)')?'selected':'' }}>Encargada (S)</option>
-                <option {{ ($authority->position == 'Secretario')?'selected':'' }}>Secretario</option>
-                <option {{ ($authority->position == 'Secretaria')?'selected':'' }}>Secretaria</option>
-                <option {{ ($authority->position == 'Secretario (S)')?'selected':'' }}>Secretario (S)</option>
-                <option {{ ($authority->position == 'Secretaria (S)')?'selected':'' }}>Secretaria (S)</option>
+            <select name="position_id" id="for_position_id" class="form-control" required>
+                @foreach($positions as $position)
+                <option value="{{ $position->id }}" {{ ($position->id == $authority->position_id) ? 'selected' : '' }}>{{ $position->name }}</option>
+                @endforeach
             </select>
         </fieldset>
 

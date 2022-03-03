@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Crear Solicitud de Contratación de Servicios')
+@section('title', 'Crear Solicitud de Contratación Honorarios')
 
 @section('content')
 
 @include('service_requests.partials.nav')
 
-<h3>Solicitud de Contratación de Servicios</h3>
+<h3>Solicitud de Contratación Honorarios</h3>
 
 <form method="POST" enctype="multipart/form-data" action="{{ route('rrhh.service-request.store') }}">
 	@csrf

@@ -14,7 +14,7 @@ class Authority extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'from', 'to', 'position', 'type',
+        'user_id', 'from', 'to', 'position_id', 'type',
         'decree', 'organizational_unit_id', 'creator_id'
     ];
 
@@ -56,22 +56,22 @@ class Authority extends Model
 
         $result = Authority::with('user','organizationalUnit')
             ->where('organizational_unit_id', $u1->organizational_unit_id)
-            ->where('type','manager')            
+            ->where('type','manager')
             ->where('from','<=',$date)->where('to','>=',$date)->get()->last();
         if($result == null)
         {
             $oujefe = OrganizationalUnit::find($u1->organizational_unit_id);
             return Authority::with('user','organizationalUnit')
             ->where('organizational_unit_id', $oujefe->father->id)
-            ->where('type','manager')            
-            ->where('from','<=',$date)->where('to','>=',$date)->get()->last();            
+            ->where('type','manager')
+            ->where('from','<=',$date)->where('to','>=',$date)->get()->last();
         }
         else
         {
-            return $result;   
+            return $result;
 
         }
-        
+
     }
 
     public static function getAmIAuthorityFromOu($date, $type, $user_id) {
@@ -98,6 +98,10 @@ class Authority extends Model
         }
 
         return $authorities;
+    }
+
+    public function position() {
+        return $this->belongsTo('App\Models\Position');
     }
 
     protected $table = 'rrhh_authorities';

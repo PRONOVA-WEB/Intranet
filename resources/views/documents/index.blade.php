@@ -20,15 +20,11 @@
 
         <fieldset class="form-group col-2">
             <label for="for_type">Tipo</label>
-            <select name="type" id="for_type" class="form-control">
+            <select name="doc_templates_id" id="for_type" class="form-control">
                 <option></option>
-                <option value="Memo">Memo</option>
-                <option value="Oficio">Oficio</option>
-                <!-- <option value="Ordinario">Ordinario</option> -->
-                <option value="Reservado">Reservado</option>
-                <option value="Circular">Circular</option>
-                <option value="Acta de recepción">Acta de recepción</option>
-                <option value="Resolución">Resolución</option>
+                @foreach ($docTemplates as $docTemplate)
+                <option value="{{ $docTemplate->id }}">{{ $docTemplate->type }}</option>
+                @endforeach
             </select>
         </fieldset>
 

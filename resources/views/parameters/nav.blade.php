@@ -90,8 +90,11 @@
             href="{{ route('parameters.suppliers.index') }}">
             <i class="fas fa-shopping-cart"></i> Proveedores</a>
     </li>
-
-
+    <li class="nav-item">
+        <a class="nav-link"
+        href="{{ route('parameters.positions.index') }}">
+        <i class="fas fa-chalkboard-teacher"></i> Cargos</a>
+    </li>
     <li class="nav-item">
         <a class="nav-link"
             href="{{ route('parameters.documents_templates.index') }}">

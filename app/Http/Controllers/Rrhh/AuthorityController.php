@@ -134,7 +134,7 @@ class AuthorityController extends Controller
                 'user_id'                => 'required',
                 'from'                   => 'required',
                 'to'                     => 'required',
-                'position'               => 'required',
+                'position_id'            => 'required',
                 'type'                   => 'required',
             ],
             [
@@ -142,7 +142,7 @@ class AuthorityController extends Controller
                 'user_id.required'                => 'Selccione un funcionario dentro de los usuarios del sistema',
                 'from.required'                   => 'El campo fecha desde es requerido',
                 'to.required'                     => 'El campo fecha hasta es requerido',
-                'position.required'               => 'El campo cargo es requerido',
+                'position_id.required'            => 'El campo cargo es requerido',
                 'type.required'                   => 'El campo tipo es requerido',
             ]
         );
@@ -150,7 +150,7 @@ class AuthorityController extends Controller
         $authority->creator()->associate(Auth::user());
         $authority->save();
 
-        session()->flash('info', 'La autoridad '.$authority->position.' ha sido creada.');
+        session()->flash('info', 'La autoridad '.$authority->position->name.' ha sido creada.');
 
         return redirect()->route('rrhh.authorities.index');
     }
@@ -180,8 +180,9 @@ class AuthorityController extends Controller
             case 2: $ouTopLevel = $authority->organizationalUnit->father; break;
             case 1: $ouTopLevel = $authority->organizationalUnit; break;
         }
+        $positions = Position::all();
 
-        return view('rrhh.authorities.edit', compact('ouTopLevel','authority'));
+        return view('rrhh.authorities.edit', compact('ouTopLevel','authority','positions'));
     }
 
     /**
@@ -199,7 +200,7 @@ class AuthorityController extends Controller
                 'user_id'                => 'required',
                 'from'                   => 'required',
                 'to'                     => 'required',
-                'position'               => 'required',
+                'position_id'            => 'required',
                 'type'                   => 'required',
             ],
             [
@@ -207,7 +208,7 @@ class AuthorityController extends Controller
                 'user_id.required'                => 'Selccione un funcionario dentro de los usuarios del sistema',
                 'from.required'                   => 'El campo fecha desde es requerido',
                 'to.required'                     => 'El campo fecha hasta es requerido',
-                'position.required'               => 'El campo cargo es requerido',
+                'position_id.required'            => 'El campo cargo es requerido',
                 'type.required'                   => 'El campo tipo es requerido',
             ]
         );

@@ -50,7 +50,8 @@ class DocumentController extends Controller
                 ->paginate(100);
 
             $users = User::orderBy('name')->orderBy('fathers_family')->withTrashed()->get();
-            return view('documents.index', compact('ownDocuments', 'otherDocuments', 'users'));
+            $docTemplates = DocTemplate::orderBy('type','asc')->get();
+            return view('documents.index', compact('ownDocuments', 'otherDocuments', 'users','docTemplates'));
         }
         else {
             return redirect()->back()->with('danger', 'Usted no posee asignada una unidad organizacional favor contactar a su administrador');
