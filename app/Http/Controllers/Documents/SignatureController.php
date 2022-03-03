@@ -435,8 +435,11 @@ class SignatureController extends Controller
 
     public function showPdfFromFile(Request $request)
     {
-        header('Content-Type: application/pdf');
-        echo base64_decode($request->file_base_64);
+        // header('Content-Type: application/pdf');
+        // echo base64_decode($request->file_base_64);
+        $document = Document::find($request->document);
+        $documentFile = \PDF::loadView('documents.show', compact('document'));
+        return $documentFile->stream('documento.pdf');
     }
 
     public function showPdfAnexo(SignaturesFile $anexo)
