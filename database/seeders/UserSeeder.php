@@ -29,7 +29,7 @@ class UserSeeder extends Seeder
         $user->email = "adiaz@pronova.cl";
         $user->organizationalUnit()->associate($ou);
         $user->save();
-        $user->assignRole('superuser', 'dev','RRHH: admin','Replacement Staff: admin');
+        $user->assignRole('superuser', 'dev','RRHH: admin','Replacement Staff: admin','Drugs: admin');
         $user->givePermissionTo(Permission::all());
 
         $user = new User();

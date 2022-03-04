@@ -1656,7 +1656,7 @@ Route::prefix('/settings')->as('settings.')->middleware(['auth', 'role:superuser
     Route::get('/create', [SettingController::class, 'create'])->name('create');
     Route::post('/store', [SettingController::class, 'store'])->name('store');
     Route::post('/store_values', [SettingController::class, 'storeValues'])->name('store.values');
-    Route::delete('{denomination1121}/destroy', [Denomination1121Controller::class, 'destroy'])->name('destroy');
+    Route::delete('/{setting}/destroy', [SettingController::class, 'destroy'])->name('destroy');
 });
 
 Route::view('/some', 'some');
