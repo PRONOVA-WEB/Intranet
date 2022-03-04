@@ -22,10 +22,17 @@
     <div class="form-row">
         <fieldset class="form-group col-lg-6">
             <label for="for_user_id">Funcionario*</label>
-            @livewire('search-select-user')
+            @livewire('search-select-user', ['required' => 'required'])
         </fieldset>
 
-        <fieldset class="form-group col-lg-3">
+        <fieldset class="form-group col-12 col-md-6">
+            <label for="for_user_id">En representación de (opcional)</label>
+            @livewire('search-select-user', ['selected_id' => 'representation_id'])
+        </fieldset>
+
+    </div>
+    <div class="form-row">
+        <fieldset class="form-group col-6 col-md-3">
             <label for="for_from">Desde*</label>
             <input type="date" class="form-control" id="for_from" name="from" required>
         </fieldset>
@@ -35,7 +42,6 @@
             <input type="date" class="form-control" id="for_to" name="to" required>
         </fieldset>
     </div>
-
     <div class="form-row">
         <fieldset class="form-group col-lg-4">
             <label for="for_position">Cargo*</label>

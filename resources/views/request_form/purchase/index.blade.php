@@ -24,7 +24,7 @@
                     <th>Items</th>
                     <th>Presupuesto</th>
                     <th>Espera</th>
-                    <th>Estado</th>
+                    <th>Etapas de aprobación</th>
                     <th></th>
                 </tr>
             </thead>
@@ -42,7 +42,7 @@
                                 {{ $requestForm->user ? $requestForm->userOrganizationalUnit->name : 'Usuario eliminado' }}
                             </td>
                             <td>{{ $requestForm->quantityOfItems() }}</td>
-                            <td class="text-right">${{ number_format($requestForm->estimated_expense,0,",",".") }}</td>
+                            <td class="text-right">{{$requestForm->symbol_currency}}{{ number_format($requestForm->estimated_expense,$requestForm->precision_currency,",",".") }}</td>
                             <td>{{ $requestForm->created_at->diffForHumans() }}</td>
                             <td>
                             @foreach($requestForm->eventRequestForms as $sign)
@@ -62,6 +62,25 @@
                             @endforeach
                             </td>
                             <td>
+                                @if($requestForm->signatures_file_id)
+                                  @if($requestForm->signatures_file_id == 11)
+                                  <a class="btn btn-info btn-sm"
+                                      title="Ver Formulario de Requerimiento firmado"
+                                      href="{{ route('request_forms.show_file', $requestForm->requestFormFiles->first() ?? 0) }}"
+                                      target="_blank" title="Certificado">
+                                        <i class="fas fa-file-contract"></i>
+                                  </a>
+                                  @else
+                                  <a class="btn btn-info btn-sm" title="Ver Formulario de Requerimiento firmado" href="{{ route('request_forms.signedRequestFormPDF', [$requestForm, 1]) }}" target="_blank" title="Certificado">
+                                    <i class="fas fa-file-contract"></i>
+                                  </a>
+                                  @endif
+                                  @if($requestForm->old_signatures_file_id)
+                                  <a class="btn btn-secondary btn-sm" title="Ver Formulario de Requerimiento Anterior firmado" href="{{ route('request_forms.signedRequestFormPDF', [$requestForm, 0]) }}" target="_blank" title="Certificado">
+                                    <i class="fas fa-file-contract"></i>
+                                  </a>
+                                  @endif
+                                @endif
                                 <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="">
                                 <a href="{{ route('request_forms.supply.purchase', $requestForm) }}"
                                     class="btn btn-outline-secondary btn-sm"><i class="fas fa-shopping-cart"></i></a>
@@ -100,7 +119,7 @@
                     <th>Items</th>
                     <th>Presupuesto</th>
                     <th>Espera</th>
-                    <th>Estado</th>
+                    <th>Etapas de aprobación</th>
                     <th></th>
                 </tr>
             </thead>
@@ -119,7 +138,7 @@
                             </td>
                             <td>@foreach($requestForm->purchasers as $purchaser) {{ $purchaser->FullName }} <br> @endforeach</td>
                             <td>{{ $requestForm->quantityOfItems() }}</td>
-                            <td class="text-right">${{ number_format($requestForm->estimated_expense,0,",",".") }}</td>
+                            <td class="text-right">{{$requestForm->symbol_currency}}{{ number_format($requestForm->estimated_expense,$requestForm->precision_currency,",",".") }}</td>
                             <td>{{ $requestForm->created_at->diffForHumans() }}</td>
                             <td>
                             @foreach($requestForm->eventRequestForms as $sign)
@@ -140,6 +159,25 @@
                             </td>
                             <td>
                                 @if($requestForm->iAmPurchaser())
+                                @if($requestForm->signatures_file_id)
+                                  @if($requestForm->signatures_file_id == 11)
+                                  <a class="btn btn-info btn-sm"
+                                      title="Ver Formulario de Requerimiento firmado"
+                                      href="{{ route('request_forms.show_file', $requestForm->requestFormFiles->first() ?? 0) }}"
+                                      target="_blank" title="Certificado">
+                                        <i class="fas fa-file-contract"></i>
+                                  </a>
+                                  @else
+                                  <a class="btn btn-info btn-sm" title="Ver Formulario de Requerimiento firmado" href="{{ route('request_forms.signedRequestFormPDF', [$requestForm, 1]) }}" target="_blank" title="Certificado">
+                                    <i class="fas fa-file-contract"></i>
+                                  </a>
+                                  @endif
+                                  @if($requestForm->old_signatures_file_id)
+                                  <a class="btn btn-secondary btn-sm" title="Ver Formulario de Requerimiento Anterior firmado" href="{{ route('request_forms.signedRequestFormPDF', [$requestForm, 0]) }}" target="_blank" title="Certificado">
+                                    <i class="fas fa-file-contract"></i>
+                                  </a>
+                                  @endif
+                                @endif
                                 <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="">
                                 <a href="{{ route('request_forms.supply.purchase', $requestForm) }}"
                                     class="btn btn-outline-secondary btn-sm"><i class="fas fa-shopping-cart"></i></a>
