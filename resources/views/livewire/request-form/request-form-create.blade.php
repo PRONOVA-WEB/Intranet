@@ -6,7 +6,7 @@
         <div class="card-body">
             <div class="form-row">
                 <fieldset class="form-group col-sm-4">
-                    <label for="forRut">Nombre:</label>
+                    <label for="forRut">Nombre de Formulario:</label>
                     <input wire:model.defer="name" name="name" class="form-control form-control-sm" type="text" value="">
                     {{-- @error('name') <span class="error">{{ $message }}</span> @enderror --}}
                 </fieldset>
@@ -79,6 +79,7 @@
                 <fieldset class="form-group col-sm-4">
                     <label for="for_fileRequests" class="form-label">Documento(s) de Respaldo:</label>
                     <input class="form-control form-control-sm" wire:model.defer="fileRequests" id="for_fileRequests" type="file" style="padding:2px 0px 0px 2px;" name="fileRequests[]" multiple>
+                    <div wire:loading wire:target="fileRequests">Cargando archivo(s)...</div>
                 </fieldset>
             </div>
 
@@ -105,7 +106,7 @@
             @if($savedFiles && !$savedFiles->isEmpty())
             <div class="form-row">
                 <fieldset class="form-group col-sm">
-                      <label>Documentos adjuntados:</label>
+                      <label>Documentos adjuntos:</label>
 
                         <ul class="list-group">
                           @foreach ($savedFiles as $file)
@@ -114,7 +115,7 @@
                                 <a onclick="return confirm('¿Está seguro de eliminar archivo con nombre {{$file->name}}?') || event.stopImmediatePropagation()" wire:click="destroyFile({{$file->id}})"
                                     class="btn btn-link btn-sm float-right" title="Eliminar"><i class="far fa-trash-alt" style="color:red"></i></a>
                                 <a href="{{ route('request_forms.show_file', $file->id) }}"
-                                    class="btn btn-link btn-sm float-right" title="Ver"><i class="far fa-eye"></i></a>
+                                    class="btn btn-link btn-sm float-right" title="Ver" target="_blank"><i class="far fa-eye"></i></a>
                             </li>
                           @endforeach
                         </ul>
@@ -128,9 +129,9 @@
     <br>
     <div wire:loading.remove>
     @if($isRFItems)
-        @livewire('request-form.item.request-form-items', ['savedItems' => $requestForm->itemRequestForms ?? null])
+        @livewire('request-form.item.request-form-items', ['savedItems' => $requestForm->itemRequestForms ?? null, 'savedTypeOfCurrency' => $requestForm->type_of_currency ?? null])
     @else
-        @livewire('request-form.passenger.passenger-request', ['savedPassengers' => $requestForm->passengers ?? null])
+        @livewire('request-form.passenger.passenger-request', ['savedPassengers' => $requestForm->passengers ?? null, 'savedTypeOfCurrency' => $requestForm->type_of_currency ?? null])
     @endif
 
     <div class="row justify-content-md-end mt-0">

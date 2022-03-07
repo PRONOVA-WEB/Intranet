@@ -226,18 +226,33 @@ class RequestForm extends Model implements Auditable
                 return 'Peso';
                 break;
 
-            case "bienes ejecución tiempo":
-                return 'Bienes Ejecución En Tiempo';
+            case "dolar":
+                return 'Dólar';
                 break;
 
-            case "servicios ejecución inmediata":
-                return 'Servicios Ejecución Inmediata';
-                break;
-
-            case "servicios ejecución tiempo":
-                return 'Servicios Ejecución En Tiempo';
+            case "uf":
+                return 'Uf';
                 break;
         }
+    }
+    public function getSymbolCurrencyAttribute(){
+        switch ($this->type_of_currency) {
+          case "peso":
+              return '$';
+              break;
+
+          case "dolar":
+              return 'USD ';
+              break;
+
+          case "uf":
+              return 'Uf ';
+              break;
+      }
+    }
+
+    public function getPrecisionCurrencyAttribute(){
+      return $this->type_of_currency == 'peso' ? 0 : 2;
     }
 
     /*Regresa Icono del estado de firma de Eventos [argumento:  tipo de Evento]*/

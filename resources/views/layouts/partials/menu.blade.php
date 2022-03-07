@@ -231,7 +231,7 @@
         </li>
     @endcan
 
-    @can('Pharmacy: manager')
+    {{-- @can('Pharmacy: manager')
         <li class="nav-item {{ active('pharmacies.*') }}">
             <a class="nav-link" href="{{ route('pharmacies.index') }}">
                 <i class="fas fa-prescription-bottle-alt fa-fw "></i>
@@ -240,10 +240,10 @@
                 </span>
             </a>
         </li>
-    @endcan
+    @endcan --}}
 
     <!-- Nav Item - Recursos Collapse Menu -->
-    @canany(['Resources: create', 'Resources: edit', 'Resources: delete'])
+    {{-- @canany(['Resources: create', 'Resources: edit', 'Resources: delete'])
         <li class="nav-item {{ active('resources.*') }}">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseRecursos"
                 aria-expanded="true" aria-controls="collapseRecursos">
@@ -280,7 +280,7 @@
                 </div>
             </div>
         </li>
-    @endcan
+    @endcan --}}
 
     @can('Mammography: admin')
         <li class="nav-item">

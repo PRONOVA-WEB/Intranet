@@ -32,7 +32,7 @@
                     </tr>
                     <tr>
                         <th class="table-active" style="width: 33%">Gasto Estimado</th>
-                        <td>${{ number_format($requestForm->estimated_expense,0,",",".") }}</td>
+                        <td>{{$requestForm->symbol_currency}}{{ number_format($requestForm->estimated_expense,$requestForm->precision_currency,",",".") }}</td>
                     </tr>
                     <tr>
                         <th class="table-active" scope="row">Nombre del Solicitante</th>
@@ -222,10 +222,10 @@
                         <th>UM</th>
                         <th>Especificaciones Técnicas</th>
                         <th>Archivo</th>
-                        <th>Cantidad</th>
-                        <th>Valor U.</th>
-                        <th>Impuestos</th>
-                        <th>Total Item</th>
+                        <th width="100">Cantidad</th>
+                        <th width="150">Valor U.</th>
+                        <th width="50">Impto.</th>
+                        <th width="150">Total Item</th>
                         <th colspan="2"></th>
                         <!-- <th></th> -->
                     </tr>
@@ -284,7 +284,14 @@
                       <td colspan="9"></td>
                       <td class="text-right">Valor Total</td>
                       <td align="right">
-                          <input type="number" step="0.01" min="1" class="form-control form-control-sm text-right" id="total_amount" name="total_amount" readonly>
+                          <input type="number" step="0.01" min="1" class="form-control form-control-sm text-right" id="total_amount" readonly>
+                        </td>
+                    </tr>
+                    <tr>
+                      <td colspan="9"></td>
+                      <td class="text-right">Total seleccionado</td>
+                      <td align="right">
+                          <input type="number" step="0.01" min="1" class="form-control form-control-sm text-right" id="total_amount_selected" readonly>
                         </td>
                     </tr>
                 </tfoot>
@@ -396,9 +403,9 @@
                             @endif
                         </td>
                         <td align="right">{{ $detail->pivot->quantity }}</td>
-                        <td align="right">${{ number_format($detail->pivot->unit_value,0,",",".") }}</td>
+                        <td align="right">{{$requestForm->symbol_currency}}{{ number_format($detail->pivot->unit_value,$requestForm->precision_currency,",",".") }}</td>
                         <td>{{ $detail->tax }}</td>
-                        <td align="right">${{ number_format($detail->pivot->expense,0,",",".") }}</td>
+                        <td align="right">{{$requestForm->symbol_currency}}{{ number_format($detail->pivot->expense,$requestForm->precision_currency,",",".") }}</td>
                         <!-- <td align="center">
                             <fieldset class="form-group">
                                 <div class="form-check">
@@ -420,11 +427,11 @@
                 <tfoot>
                     <tr>
                       <th colspan="11" class="text-right">Valor Total</td>
-                      <th class="text-right">${{ number_format($requestForm->purchasingProcess->getExpense(),0,",",".") }}</td>
+                      <th class="text-right">{{$requestForm->symbol_currency}}{{ number_format($requestForm->purchasingProcess->getExpense(),$requestForm->precision_currency,",",".") }}</td>
                     </tr>
                     <tr>
                       <th colspan="11" class="text-right">Saldo disponible Requerimiento</td>
-                      <th class="text-right">${{ number_format($requestForm->estimated_expense - $requestForm->purchasingProcess->getExpense(),0,",",".") }}</td>
+                      <th class="text-right">{{$requestForm->symbol_currency}}{{ number_format($requestForm->estimated_expense - $requestForm->purchasingProcess->getExpense(),$requestForm->precision_currency,",",".") }}</td>
                     </tr>
                 </tfoot>
             </table>
@@ -495,9 +502,9 @@
                         {{ $child->userOrganizationalUnit ? $child->userOrganizationalUnit->name : 'Usuario eliminado' }}</td>
                         <td>{{ $child->purchasers->first()->FullName ?? 'No asignado' }}</td>
                         <td align="center">{{ $child->quantityOfItems() }}</td>
-                        <td align="right">${{ number_format($child->estimated_expense,0,",",".") }}</td>
-                        <td align="right">{{ $child->purchasingProcess ? '$ '.number_format($child->purchasingProcess->getExpense(),0,",",".") : '-' }}</td>
-                        {{--<td align="right">{{ $child->purchasingProcess ? '$ '.number_format($child->estimated_expense - $child->purchasingProcess->getExpense(),0,",",".") : '-' }}</td>--}}
+                        <td align="right">{{$requestForm->symbol_currency}}{{ number_format($child->estimated_expense,$requestForm->precision_currency,",",".") }}</td>
+                        <td align="right">{{ $child->purchasingProcess ? $requestForm->symbol_currency.number_format($child->purchasingProcess->getExpense(),$requestForm->precision_currency,",",".") : '-' }}</td>
+                        {{--<td align="right">{{ $child->purchasingProcess ? $requestForm->symbol_currency.number_format($child->estimated_expense - $child->purchasingProcess->getExpense(),$requestForm->precision_currency,",",".") : '-' }}</td>--}}
                     </tr>
                   @empty
                     <tr><td colspan="100%" class="text-center">No existen bienes y/o servicios de ejecución inmediata asociados a este formulario de requerimiento.</td></tr>
@@ -507,12 +514,12 @@
                 <tfoot>
                     <tr>
                       <th colspan="9" class="text-right">Totales</td>
-                      <th class="text-right">${{ number_format($requestForm->getTotalEstimatedExpense(),0,",",".") }}</td>
-                      <th class="text-right">${{ number_format($requestForm->getTotalExpense(),0,",",".") }}</td>
+                      <th class="text-right">{{$requestForm->symbol_currency}}{{ number_format($requestForm->getTotalEstimatedExpense(),$requestForm->precision_currency,",",".") }}</td>
+                      <th class="text-right">{{$requestForm->symbol_currency}}{{ number_format($requestForm->getTotalExpense(),$requestForm->precision_currency,",",".") }}</td>
                     </tr>
                     <tr>
                       <th colspan="10" class="text-right">Saldo disponible Compras</td>
-                      <th class="text-right">${{ number_format($requestForm->purchasingProcess->getExpense() - $requestForm->getTotalExpense(),0,",",".") }}</td>
+                      <th class="text-right">{{$requestForm->symbol_currency}}{{ number_format($requestForm->purchasingProcess->getExpense() - $requestForm->getTotalExpense(),$requestForm->precision_currency,",",".") }}</td>
                     </tr>
                 </tfoot>
                 @endif
@@ -548,17 +555,19 @@ $('#for_quantity,#for_unit_value').on('change keyup',function(){
     var total = tr.find('input[name="item_total[]"]')
     var grand_total = $('#total_amount')
 
-    total.val(Math.round(qty.val() * totalValueWithTaxes(price.val(), tax.val())));
+    total.val((qty.val() * totalValueWithTaxes(price.val(), tax.val())).toFixed(2))
 
     var grandTotal=0;
     $('table').find('input[name="item_total[]"]').each(function(){
         if(!isNaN($(this).val()))
-            grandTotal += parseInt($(this).val());
+            grandTotal += parseFloat($(this).val())
     });
+
+    
 
     if(isNaN(grandTotal))
         grandTotal = 0;
-    grand_total.val(grandTotal)
+    grand_total.val(grandTotal.toFixed(2))
 
     calculateAmount(true)
 });
@@ -581,12 +590,12 @@ function disabledSaveBtn() {
 function calculateAmount(checked = false) {
     var total = 0;
     $('input[type="checkbox"]' + (checked ? ':checked' : '')).each(function(){
-        var val = Math.round($(this).parents("tr").find('input[name="item_total[]"]').val());
+        var val = Math.round($(this).parents("tr").find('input[name="item_total[]"]').val() * 100) / 100;
         if(!isNaN(val))
             total += val;
     });
 
-    $(checked ? '#for_amount' : '#total_amount').val(total);
+    $(checked ? '#for_amount,#total_amount_selected' : '#total_amount').val(total.toFixed(2));
 }
 
 // Calcular fecha de entrega a partir de la suma de dias habiles o corridos con la fecha de la OC aceptada

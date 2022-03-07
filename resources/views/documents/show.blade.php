@@ -69,7 +69,7 @@
 
         <div class="content">
             <div class="left" style="float: left;">
-                <img src="{{ (App::environment('local')) ? asset('images/logo_rgb.png') : public_path('images/logo_rgb.png') }}" width="120" alt="Logo servicio de salud"><br>
+                <img src="{{ public_path('images/logo_rgb.png') }}" width="120" alt="Logo servicio de salud"><br>
                 <!--div class="siete" style="padding-bottom: 4px;">{{ $document->user->organizationalUnit->name }}</div-->
                 <div class="left seis" style="padding-bottom: 6px; color: #999">Código interno: {{ $document->id }}</div>
             </div>

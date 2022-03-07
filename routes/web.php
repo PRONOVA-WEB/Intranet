@@ -773,9 +773,7 @@ Route::prefix('parameters')->as('parameters.')->middleware('auth')->group(functi
 
     });
 
-    Route::resource('roles', 'Parameters\RoleController');{
-        Route::get('/', 'Parameters\RoleController@index')->name('index');
-    }
+    Route::resource('roles', 'Parameters\RoleController');
 
     Route::prefix('communes')->as('communes.')->group(function () {
         Route::get('/', 'Parameters\CommuneController@index')->name('index');
@@ -887,8 +885,8 @@ Route::prefix('parameters')->as('parameters.')->middleware('auth')->group(functi
         Route::get('{log}/destroy', [LogController::class, 'destroy'])->name('destroy');
     });
 
-    //vr 22-02-2022 crear maestro de Cargos
-    Route::prefix('positions')->as('positions.')->group(function () {
+       //vr 22-02-2022 crear maestro de Cargos
+       Route::prefix('positions')->as('positions.')->group(function () {
         Route::get('/', 'Parameters\PositionController@index')->name('index');
         Route::put('/{position}', 'Parameters\PositionController@update')->name('update');
         Route::delete('/{position}/destroy', 'Parameters\PositionController@destroy')->name('destroy');

@@ -30,6 +30,10 @@ class Authority extends Model
         return $this->belongsTo('App\User','creator_id')->withTrashed();
     }
 
+    public function represents() {
+        return $this->belongsTo('App\User','representation_id')->withTrashed();
+    }
+
     public function agreement() {
         return $this->hasMany('App\Agreements\Agreement');
     }
