@@ -19,8 +19,8 @@ class ServiceRequestSeeder extends Seeder
             'id' => '1',
             'type' => 'Covid',
             'subdirection_ou_id' => '31',
-            'responsability_center_ou_id' => '222',
-            'responsable_id' => '15287582',
+            'responsability_center_ou_id' => '1',
+            'responsable_id' => '12345678',
             'address' => 'Iquique',
             'phone_number' => '912345678',
             'email' => 'sistemas.ssi@redsalud.gob.cl',
@@ -41,10 +41,10 @@ class ServiceRequestSeeder extends Seeder
             'digera_strategy' => 'Camas MEDIAS Aperturadas',
             'rrhh_team' => 'Residencia Médica',
             'signature_page_break' => '0',
-            'user_id' => '15287582',
+            'user_id' => '12345678',
             'created_at' => carbon::now(),
             'updated_at' => carbon::now(),
-            'creator_id' => '15287582'
+            'creator_id' => '12345678'
         ]);
     }
 }

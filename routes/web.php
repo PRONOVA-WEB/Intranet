@@ -773,9 +773,7 @@ Route::prefix('parameters')->as('parameters.')->middleware('auth')->group(functi
 
     });
 
-    Route::resource('roles', 'Parameters\RoleController');{
-        Route::get('/', 'Parameters\RoleController@index')->name('index');
-    }
+    Route::resource('roles', 'Parameters\RoleController');
 
     Route::prefix('communes')->as('communes.')->group(function () {
         Route::get('/', 'Parameters\CommuneController@index')->name('index');
@@ -887,25 +885,6 @@ Route::prefix('parameters')->as('parameters.')->middleware('auth')->group(functi
         Route::get('{log}/destroy', [LogController::class, 'destroy'])->name('destroy');
     });
 
-    //vr 22-02-2022 crear maestro de Cargos
-    Route::prefix('positions')->as('positions.')->group(function () {
-        Route::get('/', 'Parameters\PositionController@index')->name('index');
-        Route::put('/{position}', 'Parameters\PositionController@update')->name('update');
-        Route::delete('/{position}/destroy', 'Parameters\PositionController@destroy')->name('destroy');
-        Route::get('/create', 'Parameters\PositionController@create')->name('create');
-        Route::post('/store', 'Parameters\PositionController@store')->name('store');
-    });
-    //vr 22-02-2022 crear maestro de Cargos
-
-    //vr 22-02-2022 crear maestro de Tipos de Autoridades
-    Route::prefix('authoritiestypes')->as('authoritiestypes.')->group(function () {
-        Route::get('/', 'Parameters\AuthoritieTypeController@index')->name('index');
-        Route::put('/{authoritietype}', 'Parameters\AuthoritieTypeController@update')->name('update');
-        Route::delete('/{authoritietype}/destroy', 'Parameters\AuthoritieTypeController@destroy')->name('destroy');
-        Route::get('/create', 'Parameters\AuthoritieTypeController@create')->name('create');
-        Route::post('/store', 'Parameters\AuthoritieTypeController@store')->name('store');
-    });
-    //vr 22-02-2022 crear maestro de Tipos de Autoridades
     Route::prefix('documents_templates')->as('documents_templates.')->middleware('auth')->group(function () {
         Route::get('/',[DocTemplateController::class,'index'])->name('index');
         Route::get('/create',[DocTemplateController::class,'create'])->name('create');
@@ -1656,7 +1635,7 @@ Route::prefix('/settings')->as('settings.')->middleware(['auth', 'role:superuser
     Route::get('/create', [SettingController::class, 'create'])->name('create');
     Route::post('/store', [SettingController::class, 'store'])->name('store');
     Route::post('/store_values', [SettingController::class, 'storeValues'])->name('store.values');
-    Route::delete('/{setting}/destroy', [SettingController::class, 'destroy'])->name('destroy');
+    Route::delete('{denomination1121}/destroy', [Denomination1121Controller::class, 'destroy'])->name('destroy');
 });
 
 Route::view('/some', 'some');

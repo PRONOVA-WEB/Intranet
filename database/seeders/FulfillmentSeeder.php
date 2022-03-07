@@ -13,7 +13,7 @@ class FulfillmentSeeder extends Seeder
      *
      * @return void
      */
-    
+
     public function run()
     {
         Fulfillment::create([
@@ -23,10 +23,10 @@ class FulfillmentSeeder extends Seeder
             'type' => 'Mensual',
             'start_date' => '2022-01-01 00:00:00',
             'end_date' => '2022-01-31 00:00:00',
-            'user_id' => '15287582',
+            'user_id' => '12345678',
             'created_at' => carbon::now(),
             'updated_at' => carbon::now()
         ]);
-        
+
     }
 }
