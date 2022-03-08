@@ -43,11 +43,11 @@
             <i class="fas fa-home"></i> Ubicaciones</a>
     </li>
 
-    <li class="nav-item">
+    {{-- <li class="nav-item">
         <a class="nav-link {{active('parameters.places.index')}}"
             href="{{ route('parameters.places.index') }}">
             <i class="fas fa-map-marker-alt"></i> Lugares</a>
-    </li>
+    </li> --}}
 
     <li class="nav-item">
         <a class="nav-link {{active('parameters.professions.index')}}"
@@ -55,7 +55,7 @@
             <i class="fas fa-external-link-alt"></i> Profesiones</a>
     </li>
 
-    <li class="nav-item">
+    {{-- <li class="nav-item">
         <a class="nav-link"
             href="{{ route('parameters.budgetitems.index') }}">
             <i class="fas fa-file-invoice-dollar"></i> Item Presupuestario</a>
@@ -89,7 +89,7 @@
         <a class="nav-link"
             href="{{ route('parameters.suppliers.index') }}">
             <i class="fas fa-shopping-cart"></i> Proveedores</a>
-    </li>
+    </li> --}}
     <li class="nav-item">
         <a class="nav-link"
         href="{{ route('parameters.positions.index') }}">

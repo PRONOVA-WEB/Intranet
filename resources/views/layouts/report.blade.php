@@ -8,15 +8,14 @@
     </head>
     <body>
         <div class="content">
-            <img style="padding-bottom: 4px;" src="{{ asset('images/logo_pluma.jpg') }}"
-                width="120" alt="Logo {{ env('APP_SS') }}"><br>
+            <img style="padding-bottom: 4px;" src="{{ asset('images/logo_pronova.jpg') }}"
+                width="120" alt="Logo {{ settings('site.organization') }}"><br>
             @yield('content')
 
             <div class="pie_pagina seis center">
-                <span class="uppercase">{{ env('APP_SS') }}</span><br>
-                {{ env('APP_SS_ADDRESS') }} -
-                Fono: {{ env('APP_SS_TELEPHONE') }} -
-                {{ env('APP_SS_WEBSITE') }}
+                <span class="uppercase">{{ settings('site.organization') }}</span><br>
+                Fono: {{ settings('site.phone') }} -
+                {{ env('APP_URL') }}
             </div>
         </div>
 
