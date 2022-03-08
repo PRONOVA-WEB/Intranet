@@ -71,6 +71,9 @@ class DatabaseSeeder extends Seeder
         /* SEED PARA SGR DEL SITIO  */
         $this->call(ReqCategoriesSeeder::class);
 
+         /* SEED PARAMETROS DE MÓDULO DE DROGAS */
+         $this->call(ParameterSeeder::class);
+
 
         /* DIRECTORIO PARA BIBLIOTECA DE ARCHIVOS PÚBLICOS */
         \Storage::makeDirectory('library');

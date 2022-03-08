@@ -31,7 +31,7 @@
         <strong>MAT:</strong> Informa sobre decomiso.
     </div>
     <div class="left" style="padding-bottom: 2px;">
-        Iquique, {{ ($reception->recordToCourt->document_date) ? $reception->recordToCourt->document_date->format('d-m-Y'):'' }}
+        Santiago, {{ ($reception->recordToCourt->document_date) ? $reception->recordToCourt->document_date->format('d-m-Y'):'' }}
     </div>
 </div>
 

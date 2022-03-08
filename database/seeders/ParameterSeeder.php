@@ -17,7 +17,7 @@ class ParameterSeeder extends Seeder
         $parameter = Parameter::Create([
             'module'=>'drugs',
             'parameter'=>'Jefe',
-            'value'=>8908877,
+            'value'=>12345678,
             'description'=>'RUN (sin digito verificador) del encargado de la Unidad de Drogas']);
 
         $parameter = Parameter::Create([
@@ -29,7 +29,7 @@ class ParameterSeeder extends Seeder
         $parameter = Parameter::Create([
             'module'=>'drugs',
             'parameter'=>'Mandatado',
-            'value'=>6811637,
+            'value'=>12345678,
             'description'=>'RUN (sin digito verificador) del mandatado']);
 
         $parameter = Parameter::Create([
@@ -41,13 +41,13 @@ class ParameterSeeder extends Seeder
         $parameter = Parameter::Create([
             'module'=>'drugs',
             'parameter'=>'MinistroDeFe',
-            'value'=>17095355,
+            'value'=>12345678,
             'description'=>'Run (sin digito verificador) del ministro de Fe']);
 
         $parameter = Parameter::Create([
             'module'=>'drugs',
             'parameter'=>'MinistroDeFeJuridico',
-            'value'=>10147961,
+            'value'=>12345678,
             'description'=>'Run (sin digito verificador) del ministro de Fe']);
     }
 }

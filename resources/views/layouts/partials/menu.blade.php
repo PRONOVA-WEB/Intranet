@@ -218,9 +218,9 @@
         </li>
     @endcan
     @can('Drugs')
-        <li class="nav-item">
+        <li class="nav-item {{ active('drugs.*') }}">
             <a class="nav-link" href="{{ route('drugs.receptions.index') }}">
-                <i class="fas fa-cannabis"></i> <span>Drogas <span></a>
+                <i class="fas fa-cannabis"></i> <span> Drogas <span></a>
         </li>
     @endcan
 
@@ -317,21 +317,21 @@
                         <i class="fas fa-external-link-alt"></i> Externos
                     </a>
                     <hr>
-                    <a class="collapse-item" href="{{ route('parameters.holidays.index') }}">
-                        <i class="fas fa-suitcase"></i> Feriados</a>
+                    {{-- <a class="collapse-item" href="{{ route('parameters.holidays.index') }}">
+                        <i class="fas fa-suitcase"></i> Feriados</a> --}}
                     <a class="collapse-item" href="{{ route('parameters.roles.index') }}">
                         <i class="fas fa-chalkboard-teacher"></i> Roles</a>
                     <a class="collapse-item" href="{{ route('parameters.locations.index') }}">
                         <i class="fas fa-home"></i> Ubicaciones</a>
-                    <a class="collapse-item" href="{{ route('parameters.places.index') }}">
+                    {{-- <a class="collapse-item" href="{{ route('parameters.places.index') }}">
                         <i class="fas fa-map-marker-alt"></i> Lugares</a>
                     <a class="collapse-item"
                         href="{{ route('parameters.phrases.index') }}">
-                        <i class="fas fa-smile-beam"></i> Frases del día</a>
+                        <i class="fas fa-smile-beam"></i> Frases del día</a> --}}
                     <a class="collapse-item"
                         href="{{ route('parameters.professions.index') }}">
                         <i class="fas fa-external-link-alt"></i> Profesiones</a>
-                    <a class="collapse-item"
+                    {{-- <a class="collapse-item"
                         href="{{ route('parameters.budgetitems.index') }}">
                         <i class="fas fa-file-invoice-dollar"></i> Item Presupuestario</a>
                     <a class="collapse-item"
@@ -345,13 +345,13 @@
                         <i class="fas fa-shopping-cart"></i> Tipos de Compra</a>
                     <a class="collapse-item"
                         href="{{ route('parameters.purchaseunits.index') }}">
-                        <i class="fas fa-shopping-cart"></i> Unidades de Compra</a>
+                        <i class="fas fa-shopping-cart"></i> Unidades de Compra</a> --}}
                     <a class="collapse-item"
                         href="{{ route('parameters.positions.index') }}">
                         <i class="fas fa-chalkboard-teacher"></i> Cargos</a>
-                    <a class="collapse-item"
+                    {{-- <a class="collapse-item"
                         href="{{ route('parameters.authoritiestypes.index') }}">
-                        <i class="fas fa-chalkboard-teacher"></i> Tipos de Autoridades</a>
+                        <i class="fas fa-chalkboard-teacher"></i> Tipos de Autoridades</a> --}}
                     <a class="collapse-item" href="{{ route('parameters.documents_templates.index') }}">
                         <i class="fa fa-file"></i> Plantillas<br> de Documentos</a>
                 </div>

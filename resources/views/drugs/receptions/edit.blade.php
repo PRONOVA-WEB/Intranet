@@ -124,7 +124,7 @@
         </fieldset>
 
         <fieldset class="form-group col-1 pb-1">
-            <label for="for_accion">Accion</label>
+            <label for="for_accion">Acción</label>
             <button type="submit" class="btn btn-primary">Actualizar</button>
         </fieldset>
     </div>
