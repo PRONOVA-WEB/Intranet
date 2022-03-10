@@ -119,16 +119,16 @@
         <div class="content">
 
                 <div class="content">
-                    <img style="padding-bottom: 4px;" src="images/logo_pluma.jpg"
+                    <img style="padding-bottom: 4px;" src="images/logo_pronova.jpg"
                         width="120" alt="Logo Servicio de Salud"><br>
 
 
 <div class="siete" style="padding-top: 3px;">
-    @if($fulfillment->serviceRequest->responsabilityCenter->establishment_id == 1)
+    {{-- @if($fulfillment->serviceRequest->responsabilityCenter->establishment_id == 1)
       HOSPITAL DR. ERNESTO TORRES GALDÁMEZ<br>
     @else
       SERVICIO SALUD IQUIQUE<br>
-    @endif
+    @endif --}}
     SUBDIRECCIÓN DE GESTIÓN Y DESARROLLO DE LAS PERSONAS
 </div>
 
