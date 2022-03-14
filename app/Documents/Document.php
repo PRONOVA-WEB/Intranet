@@ -138,6 +138,11 @@ class Document extends Model implements Auditable
         return $this->belongsTo(DocTemplate::class, 'doc_templates_id');
     }
 
+    public function getUrlGenerateAttribute()
+    {
+        return \Crypt::encrypt( route('documents.show', $this->id) );
+    }
+
     /**
      * The attributes that should be mutated to dates.
      *

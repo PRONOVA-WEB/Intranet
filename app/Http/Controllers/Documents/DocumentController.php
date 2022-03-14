@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Rrhh\OrganizationalUnit;
 use App\User;
 use App\Documents\Correlative;
+use App\Models\Documents\DocUrlGenerate;
 use App\Models\Parameters\DocTemplate;
 use Illuminate\Support\Facades\Validator;
 
@@ -346,5 +347,15 @@ class DocumentController extends Controller
     {
         $document = Document::find($id);
         return Storage::disk('gcs')->response($document->fileToSign->signed_file);
+    }
+
+    public function desencriptar(Request $request)
+    {dd(url()->current());
+        $url = \Crypt::decrypt($request->url);
+        $url = \Str::replace(env('APP_URL').'/documents/', '', $url);
+        dd($url);
+        $documentFile = \PDF::loadView('documents.show', compact('document'));
+        return $documentFile->stream($document->subject.'.pdf');
+
     }
 }
