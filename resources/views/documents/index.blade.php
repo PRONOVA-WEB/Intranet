@@ -75,6 +75,7 @@
             <th nowrap></th>
             <th nowrap></th>
             <th nowrap></th>
+            <th nowrap></th>
         </tr>
     </thead>
     <tbody>
@@ -113,6 +114,11 @@
                         </button>
                     </form>
                 @endif
+            </td>
+            <td nowrap>
+                <a href="{{route('docValido',['url'=>$doc->url_generate]) }}" class="btn btn-sm btn-outline-secondary" target="blank" title="Compartir enlace">
+                    <span class="fas fa-link" aria-hidden="true"></span>
+                </a>
             </td>
             <td nowrap>
                 @if($doc->file_to_sign_id === null)

@@ -1663,3 +1663,5 @@ Route::get('/test-getip',[TestController::class,'getIp']);
 Route::get('/log',[TestController::class,'log']);
 Route::get('/ous',[TestController::class,'ous']);
 Route::get('/test-mercado-publico-api/{date}', [TestController::class, 'getMercadoPublicoTender']);
+
+Route::get('/visorExternoDocumento', [DocumentController::class, 'desencriptar'])->name('docValido');

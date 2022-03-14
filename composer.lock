@@ -7792,22 +7792,6 @@
                     "type": "tidelift"
                 }
             ],
-<<<<<<< HEAD
-            "time": "2021-11-23T10:19:22+00:00"
-        },
-        {
-            "name": "symfony/service-contracts",
-            "version": "v2.4.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/service-contracts.git",
-                "reference": "d664541b99d6fb0247ec5ff32e87238582236204"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/service-contracts/zipball/d664541b99d6fb0247ec5ff32e87238582236204",
-                "reference": "d664541b99d6fb0247ec5ff32e87238582236204",
-=======
             "time": "2022-01-02T09:53:40+00:00"
         },
         {
@@ -7822,7 +7806,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/service-contracts/zipball/1ab11b933cd6bc5464b08e81e2c5b07dec58b0fc",
                 "reference": "1ab11b933cd6bc5464b08e81e2c5b07dec58b0fc",
->>>>>>> 84a559cd1c14986a34ca496e30907174b48067c0
                 "shasum": ""
             },
             "require": {
