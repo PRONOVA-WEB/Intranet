@@ -938,11 +938,6 @@ Route::prefix('documents')->as('documents.')->middleware('auth')->group(function
     });
     Route::resource('partes', 'Documents\ParteController');
 
-    Route::prefix('summaries')->as('summaries.')->group(function () {
-      Route::resource('events', 'Documents\Summaries\SummaryEventController');
-    });
-    Route::resource('summaries', 'Documents\Summaries\SummaryController');
-
     Route::get('signatures/index/{tab}', 'Documents\SignatureController@index')->name('signatures.index');
     Route::get('signatures/create/{xAxis?}/{yAxis?}', 'Documents\SignatureController@create')->name('signatures.create');
     Route::resource('signatures', 'Documents\SignatureController')->except(['index', 'create']);
