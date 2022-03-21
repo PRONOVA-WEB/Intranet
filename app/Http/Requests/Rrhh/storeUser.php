@@ -25,11 +25,10 @@ class storeUser extends FormRequest
     {
         return [
             'id'              => 'unique:users|required',
-            'dv'              => 'required',
             'name'            => 'required',
             'fathers_family'  => 'required',
             'mothers_family'  => 'required',
-            'email'           => 'required|unique|email:rfc,dns',
+            'email'           => 'required|unique:users|email:rfc,dns',
         ];
     }
 
