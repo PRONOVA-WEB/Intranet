@@ -140,7 +140,7 @@ class Document extends Model implements Auditable
 
     public function getUrlGenerateAttribute()
     {
-        return \Crypt::encrypt( route('documents.show', $this->id) );
+        return \Crypt::encrypt($this->id);
     }
 
     /**

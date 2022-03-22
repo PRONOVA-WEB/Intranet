@@ -350,10 +350,9 @@ class DocumentController extends Controller
     }
 
     public function desencriptar(Request $request)
-    {dd(url()->current());
-        $url = \Crypt::decrypt($request->url);
-        $url = \Str::replace(env('APP_URL').'/documents/', '', $url);
-        dd($url);
+    {
+        $doc_id = \Crypt::decrypt($request->url);
+        $document = Document::find($doc_id);
         $documentFile = \PDF::loadView('documents.show', compact('document'));
         return $documentFile->stream($document->subject.'.pdf');
 
