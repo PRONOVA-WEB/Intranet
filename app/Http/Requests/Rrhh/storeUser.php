@@ -25,7 +25,6 @@ class storeUser extends FormRequest
     {
         return [
             'id'              => 'unique:users|required',
-            'dv'              => 'required',
             'name'            => 'required',
             'fathers_family'  => 'required',
             'mothers_family'  => 'required',

@@ -62,6 +62,11 @@ use App\Http\Controllers\ServiceRequests\ReportController;
 use App\Http\Controllers\ServiceRequests\Denomination1121Controller;
 use App\Http\Controllers\ServiceRequests\DenominationFormulaController;
 
+use App\Http\Controllers\Documents\Summaries\SummaryController;
+use App\Http\Controllers\Documents\Summaries\SummaryEventController;
+use App\Http\Controllers\Documents\Summaries\SummaryStatusController;
+use App\Http\Controllers\Documents\Summaries\FiscalController;
+
 use App\Http\Controllers\Parameters\ProfessionController;
 use App\Http\Controllers\Pharmacies\PurchaseController;
 use App\Http\Controllers\Settings\SettingController;
@@ -937,6 +942,45 @@ Route::prefix('documents')->as('documents.')->middleware('auth')->group(function
         Route::get('/inbox', 'Documents\ParteController@inbox')->name('inbox');
     });
     Route::resource('partes', 'Documents\ParteController');
+
+    Route::prefix('summaries')->as('summaries.')->group(function () {
+      // Route::resource('events', 'Documents\Summaries\SummaryEventController');
+      Route::get('/', [SummaryController::class, 'index'])->name('index');
+      Route::get('/create', [SummaryController::class, 'create'])->name('create');
+      Route::post('/store', [SummaryController::class, 'store'])->name('store');
+      Route::get('/{summary}/edit', [SummaryController::class, 'edit'])->name('edit');
+      Route::put('/{summary}/update', [SummaryController::class, 'update'])->name('update');
+      Route::delete('{summary}/destroy', [SummaryController::class, 'destroy'])->name('destroy');
+
+      Route::prefix('events')->as('events.')->group(function () {
+        Route::get('/', [SummaryEventController::class, 'index'])->name('index');
+        Route::get('/{summary}/create', [SummaryEventController::class, 'create'])->name('create');
+        Route::post('/{summary}/store', [SummaryEventController::class, 'store'])->name('store');
+        Route::get('/{summaryEvent}/edit', [SummaryEventController::class, 'edit'])->name('edit');
+        Route::put('/{summaryEvent}/update', [SummaryEventController::class, 'update'])->name('update');
+        Route::delete('{summaryEvent}/destroy', [SummaryEventController::class, 'destroy'])->name('destroy');
+      });
+
+      Route::prefix('fiscals')->as('fiscals.')->group(function () {
+        Route::get('/', [FiscalController::class, 'index'])->name('index');
+        Route::get('/create', [FiscalController::class, 'create'])->name('create');
+        Route::post('/store', [FiscalController::class, 'store'])->name('store');
+        Route::get('/{fiscal}/edit', [FiscalController::class, 'edit'])->name('edit');
+        Route::put('/{fiscal}/update', [FiscalController::class, 'update'])->name('update');
+        Route::delete('{fiscal}/destroy', [FiscalController::class, 'destroy'])->name('destroy');
+      });
+
+      Route::prefix('status')->as('status.')->group(function () {
+        Route::get('/', [SummaryStatusController::class, 'index'])->name('index');
+        Route::get('/create', [SummaryStatusController::class, 'create'])->name('create');
+        Route::post('/store', [SummaryStatusController::class, 'store'])->name('store');
+        Route::get('/{summaryStatus}/edit', [SummaryStatusController::class, 'edit'])->name('edit');
+        Route::put('/{summaryStatus}/update', [SummaryStatusController::class, 'update'])->name('update');
+        Route::delete('{summaryStatus}/destroy', [SummaryStatusController::class, 'destroy'])->name('destroy');
+      });
+
+    });
+    // Route::resource('summaries', 'Documents\Summaries\SummaryController');
 
     Route::get('signatures/index/{tab}', 'Documents\SignatureController@index')->name('signatures.index');
     Route::get('signatures/create/{xAxis?}/{yAxis?}', 'Documents\SignatureController@create')->name('signatures.create');

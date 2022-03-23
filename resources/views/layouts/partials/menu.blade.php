@@ -84,8 +84,12 @@
                     </a>
                 @endcan
 
+                <a class="collapse-item" href="{{ route('documents.summaries.index') }}">
+                    <i class="fas fa-file-import"></i> Sumarios
+                </a>
+
                 @can('Agreement: view')
-                    <a class=collapse-item" href="{{ route('agreements.tracking.index') }}">
+                    <a class="collapse-item" href="{{ route('agreements.tracking.index') }}">
                         <i class="fas fa-file"></i> Convenios
                     </a>
                 @endcan
