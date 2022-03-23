@@ -12,7 +12,7 @@
     @csrf -->
 
     <div class="form-row">
-        <div class="form-group col-lg-3">
+        <div class="form-group col-lg-1">
             <label for="forNumber">ID</label>
             <input type="text" class="form-control" id="forNumber" name="number" value="{{$summary->id}}" disabled>
         </div>
@@ -38,6 +38,14 @@
                 <option value="{{$fiscal->user->id}}" @if($summary->fiscal_id == $fiscal->id) selected @endif>{{$fiscal->user->getFullNameAttribute()}}</option>
               @endforeach
             </select>
+        </div>
+        <div class="form-group col-lg-2">
+            <label for="for_antecedent">&nbsp;</label>
+            @if($summary->files->count()>0)
+              <a type="button" class="form-control btn btn-outline-primary" href="{{ route('documents.summaries.download',$summary) }}" target="_blank">
+      					Ver archivo <i class="fas fa-file"></i>
+      				</a>
+            @endif
         </div>
     </div>
     <!-- <div class="form-row">
@@ -70,32 +78,46 @@
     	</a>
     </div>
 
+    @php
+    $now = Carbon\Carbon::now()
+    @endphp
+
     <div class="table-responsive">
       <table class="card-table table table-sm table-bordered">
           <thead>
             <tr>
               <!-- FALTA AQUI HACERLO DINAMICO -->
               <th scope="col">Fecha</th>
+              <th scope="col">Nro.Res.</th>
               <th scope="col">Tipo</th>
               <th scope="col">Funcionario</th>
               <th scope="col">Unidad/Departamento</th>
               <th>Observaciones</th>
               <th>Días otorgados</th>
               <th>T. desde el evento</th>
-              <!-- <th></th> -->
+              <th></th>
             </tr>
           </thead>
           <tbody>
             @foreach($summary->events as $event)
-              <tr>
+              @if($event->event_date->diff($now)->days > $summary->events->last()->granted_days)
+                <tr class="table-danger">
+              @else
+                <tr>
+              @endif
                 <td>{{$event->event_date}}</td>
+                <td>{{$event->resolution_number}}</td>
                 <td>{{$event->status->name}}</td>
                 <td>{{$event->creator->getFullNameAttribute()}}</td>
                 <td>{{$event->creator->organizationalUnit->name}}</td>
                 <td>{{$event->observation}}</td>
                 <td>{{$event->granted_days}}</td>
                 <td>{{$event->event_date->diffForHumans()}}</td>
-                <!-- <td></td> -->
+                <td>
+                  @if($event->files->count()>0)
+                    <a href="{{route('documents.summaries.events.download',$event)}}" target="_blank"><i class="fas fa-file"></i></a>
+                  @endif
+                </td>
               </tr>
             @endforeach
           </tbody>

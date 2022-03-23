@@ -55,6 +55,7 @@ class CreateSummaryTables extends Migration
             $table->foreignId('creator_id');
             $table->bigInteger('summary_id')->unsigned();
             $table->bigInteger('status_id')->unsigned();
+            $table->string('resolution_number')->nullable();
             $table->integer('granted_days');
             $table->string('observation')->nullable(); //unidad, departamento o establecimiento donde se encuentra el proceso
 
@@ -63,6 +64,19 @@ class CreateSummaryTables extends Migration
             $table->foreign('creator_id')->references('id')->on('users');
             $table->timestamps();
             $table->SoftDeletes();
+        });
+
+        Schema::create('doc_summary_files', function (Blueprint $table) {
+            $table->id();
+            $table->string('file');
+            $table->string('document_type')->nullable();
+            $table->bigInteger('summary_id')->unsigned()->nullable();
+            $table->bigInteger('summary_event_id')->unsigned()->nullable();
+
+            $table->foreign('summary_id')->references('id')->on('doc_summaries');
+            $table->foreign('summary_event_id')->references('id')->on('doc_summary_events');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -79,6 +93,7 @@ class CreateSummaryTables extends Migration
         Schema::dropIfExists('doc_summary_events');
         Schema::dropIfExists('doc_summaries');
         Schema::dropIfExists('doc_summary_status');
+        Schema::dropIfExists('doc_summary_files');
         Schema::dropIfExists('doc_fiscals');
     }
 }
