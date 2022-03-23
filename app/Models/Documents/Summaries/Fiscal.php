@@ -22,5 +22,9 @@ class Fiscal extends Model implements Auditable
         'id', 'user_id'
     ];
 
+    public function user(){
+        return $this->belongsTo('App\User');
+    }
+
     protected $table = 'doc_fiscals';
 }

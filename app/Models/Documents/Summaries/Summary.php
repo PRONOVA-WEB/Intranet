@@ -20,15 +20,23 @@ class Summary extends Model implements Auditable
      * @var array
      */
     protected $fillable = [
-        'id', 'document_id','resolution_number','summary_date','type','user_id','fiscal_id','matter'
+        'id', 'document_id','resolution_number','summary_date','type','creator_id','fiscal_id','matter'
     ];
 
     // public function type(){
     //     return $this->belongsTo('App\Models\Documents\Summaries');
     // }
 
-    public function user(){
-        return $this->belongsTo('App\User');
+    public function creator(){
+        return $this->belongsTo('App\User','creator_id');
+    }
+
+    public function fiscal(){
+        return $this->belongsTo('App\Models\Documents\Summaries\Fiscal');
+    }
+
+    public function events(){
+        return $this->hasMany('App\Models\Documents\Summaries\SummaryEvent');
     }
 
     protected $table = 'doc_summaries';

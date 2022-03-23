@@ -19,8 +19,22 @@ class SummaryEvent extends Model implements Auditable
      * @var array
      */
     protected $fillable = [
-        'id', 'summary_id','status_id','granted_days','observation'
+        'id', 'event_date','creator_id','summary_id','status_id','granted_days','observation'
     ];
 
+    public function summary(){
+        return $this->belongsTo('App\Models\Documents\Summaries\Summary');
+    }
+
+    public function status()
+    {
+        return $this->belongsTo('App\Models\Documents\Summaries\SummaryStatus');
+    }
+
+    public function creator(){
+        return $this->belongsTo('App\User','creator_id');
+    }
+
     protected $table = 'doc_summary_events';
+    protected $dates = ['event_date'];
 }

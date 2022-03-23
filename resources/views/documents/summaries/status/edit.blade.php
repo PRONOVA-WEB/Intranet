@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Editar sumario')
+@section('title', 'Editar estado')
 
 @section('content')
 
 @include('documents.summaries.partials.nav')
 
-<h3>Editar Sumario</h3>
+<h3>Editar Estado</h3>
 
 <!-- <form method="post" name="form" action="{{ route('documents.store') }}" onsubmit="return validate_form()">
     @csrf -->

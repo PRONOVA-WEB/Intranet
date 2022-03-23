@@ -22,9 +22,9 @@ class CreateSummaryTables extends Migration
             $table->SoftDeletes();
         });
 
-        Schema::create('doc_summary_types', function (Blueprint $table) {
+        Schema::create('doc_summary_status', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
+            $table->string('name')->nullable(); //apertura - notificación al fiscal - formulación de cargos - solicita sobreseimiento - prorroga - cerrar el sumario reapertura.
             $table->integer('granted_days');
 
             $table->timestamps();
@@ -35,15 +35,15 @@ class CreateSummaryTables extends Migration
             $table->id();
             $table->bigInteger('document_id')->unsigned()->nullable();
             $table->string('resolution_number')->nullable();
-            $table->date('summary_date')->nullable();
+            $table->dateTime('summary_date');
             $table->string('type')->nullable(); //sumario administrativo o investigación sumaria
             $table->bigInteger('fiscal_id')->unsigned();
             $table->text('matter')->nullable();
-            $table->foreignId('user_id');
+            $table->foreignId('creator_id');
 
 
             $table->foreign('document_id')->references('id')->on('documents');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('creator_id')->references('id')->on('users');
             $table->foreign('fiscal_id')->references('id')->on('doc_fiscals');
             $table->timestamps();
             $table->SoftDeletes();
@@ -51,13 +51,16 @@ class CreateSummaryTables extends Migration
 
         Schema::create('doc_summary_events', function (Blueprint $table) {
             $table->id();
+            $table->dateTime('event_date');
+            $table->foreignId('creator_id');
             $table->bigInteger('summary_id')->unsigned();
             $table->bigInteger('status_id')->unsigned();
             $table->integer('granted_days');
             $table->string('observation')->nullable(); //unidad, departamento o establecimiento donde se encuentra el proceso
 
-            $table->foreign('status_id')->references('id')->on('doc_summary_types');
+            $table->foreign('status_id')->references('id')->on('doc_summary_status');
             $table->foreign('summary_id')->references('id')->on('doc_summaries');
+            $table->foreign('creator_id')->references('id')->on('users');
             $table->timestamps();
             $table->SoftDeletes();
         });
@@ -75,7 +78,7 @@ class CreateSummaryTables extends Migration
     {
         Schema::dropIfExists('doc_summary_events');
         Schema::dropIfExists('doc_summaries');
-        Schema::dropIfExists('doc_summary_types');
+        Schema::dropIfExists('doc_summary_status');
         Schema::dropIfExists('doc_fiscals');
     }
 }

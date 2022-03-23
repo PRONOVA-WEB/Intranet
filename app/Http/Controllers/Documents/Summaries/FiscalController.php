@@ -7,12 +7,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
-use App\Models\Documents\Summaries\Summary;
-use App\Models\Documents\Summaries\SummaryEvent;
-use App\Models\Documents\Summaries\SummaryStatus;
+// use App\Models\Documents\Summaries\Summary;
+// use App\Models\Documents\Summaries\SummaryEvent;
+// use App\Models\Documents\Summaries\SummaryStatus;
 use App\Models\Documents\Summaries\Fiscal;
 
-class SummaryEventController extends Controller
+class FiscalController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,7 +21,9 @@ class SummaryEventController extends Controller
      */
     public function index()
     {
-        //
+      $fiscals = Fiscal::all();
+
+      return view('documents.summaries.fiscals.index',compact('fiscals'));
     }
 
     /**
@@ -29,10 +31,9 @@ class SummaryEventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Summary $summary)
+    public function create()
     {
-        $summaryStatus = SummaryStatus::where('id','!=',1)->get();
-        return view('documents.summaries.events.create',compact('summary','summaryStatus'));
+        return view('documents.summaries.fiscals.create');
     }
 
     /**
@@ -41,20 +42,18 @@ class SummaryEventController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Summary $summary, Request $request)
+    public function store(Request $request)
     {
+        if (Fiscal::where('user_id',$request->user_id)->count() > 0) {
+          session()->flash('warning', 'El usuario ya se encuentra asignado como fiscal');
+          return redirect()->route('documents.summaries.fiscals.index');
+        }
 
-        $summaryEvent = new SummaryEvent($request->All());
-        $summaryEvent->creator_id =  Auth::user()->id;
-        $summaryEvent->event_date = Carbon::now();
-        $summaryEvent->summary_id = $summary->id;
-        $summaryEvent->save();
+        $fiscal = new Fiscal($request->All());
+        $fiscal->save();
 
-        $fiscals = Fiscal::all();
-
-        session()->flash('success', 'El evento ha sido creado.');
-        return view('documents.summaries.edit',compact('summary','fiscals'));
-
+        session()->flash('success', 'El fiscal se ha asignado.');
+        return redirect()->route('documents.summaries.fiscals.index');
     }
 
     /**
@@ -97,8 +96,10 @@ class SummaryEventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Fiscal $fiscal)
     {
-        //
+        $fiscal->delete();
+        session()->flash('success', 'El fiscal ha sido eliminado.');
+        return redirect()->route('documents.summaries.fiscals.index');
     }
 }

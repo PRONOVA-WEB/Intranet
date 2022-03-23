@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Historial de documentos')
+@section('title', 'Listado de sumarios')
 
 @section('content')
 
-<h3>Sumarios activos</h3>
+@include('documents.summaries.partials.nav')
 
 <div class="mb-3">
 	<a class="btn btn-primary"
@@ -17,6 +17,8 @@
 	</button>
 </div>
 
+<h3>Sumarios activos</h3>
+
 <table class="table table-sm table-striped">
     <thead>
         <tr>
@@ -25,22 +27,22 @@
             <th>Fecha</th>
             <th>Tipo</th>
             <th>Fiscal</th>
-            <th>Estado</th>
-						<th>Dias desde último evento</th>
+            <th>Estado Actual</th>
+						<th>T. desde último evento</th>
 						<th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach($summaries as $summary)
+        @foreach($open_summaries as $summary)
 	        <tr>
 	            <td>{{$summary->id}}</td>
 	            <td>{{$summary->resolution_number}}</td>
 	            <td>{{$summary->summary_date}}</td>
 	            <td>{{$summary->type}}</td>
-	            <td>{{$summary->fiscal}}</td>
-	            <td>En proceso (falta)</td>
-							<td>3 (falta)</td>
-	            <td><a class="delete"><i class="fas fa-edit"></i></a></td>
+	            <td>{{$summary->fiscal->user->getFullNameAttribute()}}</td>
+	            <td>{{$summary->events->last()->status->name}}</td>
+							<td>{{$summary->events->last()->event_date->diffForHumans()}}</td>
+	            <td><a href="{{route('documents.summaries.edit',$summary)}}"><i class="fas fa-edit"></i></a></td>
 	        </tr>
 				@endforeach
     </tbody>
@@ -56,22 +58,22 @@
             <th>Fecha</th>
             <th>Tipo</th>
             <th>Fiscal</th>
-            <th>Estado</th>
+            <th>Estado Actual</th>
 						<th>Dias desde último evento</th>
             <td></td>
         </tr>
     </thead>
     <tbody>
-			@foreach($summaries as $summary)
+			@foreach($closed_summaries as $summary)
 				<tr>
 						<td>{{$summary->id}}</td>
 						<td>{{$summary->resolution_number}}</td>
 						<td>{{$summary->summary_date}}</td>
 						<td>{{$summary->type}}</td>
-						<td>{{$summary->fiscal}}</td>
-						<td>En proceso (falta)</td>
-						<td>3 (falta)</td>
-						<td><a class="delete"><i class="fas fa-edit"></i></a></td>
+						<td>{{$summary->fiscal->user->getFullNameAttribute()}}</td>
+						<td>{{$summary->events->last()->status->name}}</td>
+						<td>{{$summary->events->last()->event_date->diffForHumans()}}</td>
+						<td><a href=""><i class="fas fa-edit"></i></a></td>
 				</tr>
 			@endforeach
     </tbody>

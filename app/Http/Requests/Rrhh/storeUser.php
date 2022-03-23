@@ -29,7 +29,7 @@ class storeUser extends FormRequest
             'name'            => 'required',
             'fathers_family'  => 'required',
             'mothers_family'  => 'required',
-            'email'           => 'required|unique|email:rfc,dns',
+            'email'           => 'required|unique:users|email:rfc,dns',
         ];
     }
 

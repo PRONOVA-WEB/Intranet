@@ -7,12 +7,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
-use App\Models\Documents\Summaries\Summary;
-use App\Models\Documents\Summaries\SummaryEvent;
+// use App\Models\Documents\Summaries\Summary;
+// use App\Models\Documents\Summaries\SummaryEvent;
 use App\Models\Documents\Summaries\SummaryStatus;
-use App\Models\Documents\Summaries\Fiscal;
+// use App\Models\Documents\Summaries\Fiscal;
 
-class SummaryEventController extends Controller
+class SummaryStatusController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,7 +21,9 @@ class SummaryEventController extends Controller
      */
     public function index()
     {
-        //
+      $summaryStatus = SummaryStatus::all();
+
+      return view('documents.summaries.status.index',compact('summaryStatus'));
     }
 
     /**
@@ -29,10 +31,9 @@ class SummaryEventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Summary $summary)
+    public function create()
     {
-        $summaryStatus = SummaryStatus::where('id','!=',1)->get();
-        return view('documents.summaries.events.create',compact('summary','summaryStatus'));
+        return view('documents.summaries.status.create');
     }
 
     /**
@@ -41,20 +42,13 @@ class SummaryEventController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Summary $summary, Request $request)
+    public function store(Request $request)
     {
+        $summaryStatus = new SummaryStatus($request->All());
+        $summaryStatus->save();
 
-        $summaryEvent = new SummaryEvent($request->All());
-        $summaryEvent->creator_id =  Auth::user()->id;
-        $summaryEvent->event_date = Carbon::now();
-        $summaryEvent->summary_id = $summary->id;
-        $summaryEvent->save();
-
-        $fiscals = Fiscal::all();
-
-        session()->flash('success', 'El evento ha sido creado.');
-        return view('documents.summaries.edit',compact('summary','fiscals'));
-
+        session()->flash('success', 'El estado ha sido creado.');
+        return redirect()->route('documents.summaries.status.index');
     }
 
     /**

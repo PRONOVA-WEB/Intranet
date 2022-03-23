@@ -5,8 +5,12 @@ namespace App\Http\Controllers\Documents\Summaries;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 use App\Models\Documents\Summaries\Summary;
+use App\Models\Documents\Summaries\SummaryEvent;
+use App\Models\Documents\Summaries\SummaryStatus;
+use App\Models\Documents\Summaries\Fiscal;
 
 class SummaryController extends Controller
 {
@@ -18,7 +22,16 @@ class SummaryController extends Controller
     public function index()
     {
           $summaries = Summary::all();
-          return view('documents.summaries.index',compact('summaries'));
+
+          $open_summaries = Summary::whereHas("events", function ($subQuery) {
+                                      $subQuery->latest()->where('status_id','!=', 6);
+                                    })->get();
+
+          $closed_summaries = Summary::whereHas("events", function ($subQuery) {
+                                      $subQuery->latest()->where('status_id','==', 6);
+                                    })->get();
+
+          return view('documents.summaries.index',compact('open_summaries','closed_summaries'));
     }
 
     /**
@@ -28,7 +41,8 @@ class SummaryController extends Controller
      */
     public function create()
     {
-        return view('documents.summaries.create');
+        $fiscals = Fiscal::all();
+        return view('documents.summaries.create',compact('fiscals'));
     }
 
     /**
@@ -40,11 +54,23 @@ class SummaryController extends Controller
     public function store(Request $request)
     {
       $summary = new Summary($request->All());
-      $summary->user_id =  Auth::user()->id;
+      $summary->creator_id =  Auth::user()->id;
+      $summary->summary_date = Carbon::now();
       $summary->save();
 
+      //obtiene estado Apertua
+      $summaryStatus = SummaryStatus::find(1);
+
+      $summaryEvent = new SummaryEvent();
+      $summaryEvent->summary_id = $summary->id;
+      $summaryEvent->status_id = $summaryStatus->id; //apertura
+      $summaryEvent->granted_days = $summaryStatus->granted_days;
+      $summaryEvent->creator_id =  Auth::user()->id;
+      $summaryEvent->event_date = Carbon::now();
+      $summaryEvent->save();
+
       session()->flash('success', 'El sumario ha sido creado.');
-      return redirect()->back();
+      return redirect()->route('documents.summaries.index');
     }
 
     /**
@@ -64,15 +90,10 @@ class SummaryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Summary $summary)
     {
-      if ($id == 1) {
-        return view('documents.summaries.edit');
-      }
-      if ($id == 2) {
-        return view('documents.summaries.edit_passed_out');
-      }
-
+        $fiscals = Fiscal::all();
+        return view('documents.summaries.edit',compact('summary','fiscals'));
     }
 
     /**
