@@ -944,7 +944,8 @@ Route::prefix('documents')->as('documents.')->middleware('auth')->group(function
     Route::resource('partes', 'Documents\ParteController');
 
     Route::prefix('summaries')->as('summaries.')->group(function () {
-      // Route::resource('events', 'Documents\Summaries\SummaryEventController');
+      Route::get('/{summary}/download', [SummaryController::class, 'download'])->name('download');
+
       Route::get('/', [SummaryController::class, 'index'])->name('index');
       Route::get('/create', [SummaryController::class, 'create'])->name('create');
       Route::post('/store', [SummaryController::class, 'store'])->name('store');
@@ -953,6 +954,8 @@ Route::prefix('documents')->as('documents.')->middleware('auth')->group(function
       Route::delete('{summary}/destroy', [SummaryController::class, 'destroy'])->name('destroy');
 
       Route::prefix('events')->as('events.')->group(function () {
+        Route::get('/{event}/download', [SummaryEventController::class, 'download'])->name('download');
+
         Route::get('/', [SummaryEventController::class, 'index'])->name('index');
         Route::get('/{summary}/create', [SummaryEventController::class, 'create'])->name('create');
         Route::post('/{summary}/store', [SummaryEventController::class, 'store'])->name('store');

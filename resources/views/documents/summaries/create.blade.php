@@ -8,7 +8,7 @@
 
 <h3>Nuevo Sumario</h3>
 
-<form method="post" name="form" action="{{ route('documents.summaries.store') }}" onsubmit="return validate_form()">
+<form method="post" name="form" action="{{ route('documents.summaries.store') }}" onsubmit="return validate_form()" enctype="multipart/form-data">
     @csrf
 
     <div class="form-row">
@@ -42,6 +42,13 @@
           <textarea class="form-control" name="matter" rows="5"></textarea>
       </div>
     </div>
+    <div class="form-row">
+        <fieldset class="form-group col-sm-6">
+            <label for="forFile">Adjuntar archivo Res.</label>
+            <input type="file" class="form-control-file" id="forFile" name="resol_file">
+        </fieldset>
+    </div>
+
     <div class="form-group">
         <button type="submit" class="btn btn-primary mr-4">Guardar</button>
     </div>

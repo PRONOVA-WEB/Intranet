@@ -19,7 +19,7 @@ class SummaryEvent extends Model implements Auditable
      * @var array
      */
     protected $fillable = [
-        'id', 'event_date','creator_id','summary_id','status_id','granted_days','observation'
+        'id', 'event_date','creator_id','summary_id','status_id','resolution_number','granted_days','observation'
     ];
 
     public function summary(){
@@ -33,6 +33,10 @@ class SummaryEvent extends Model implements Auditable
 
     public function creator(){
         return $this->belongsTo('App\User','creator_id');
+    }
+
+    public function files() {
+    	return $this->hasMany('\App\Models\Documents\Summaries\SummaryFile','summary_event_id');
     }
 
     protected $table = 'doc_summary_events';

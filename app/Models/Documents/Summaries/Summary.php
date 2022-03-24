@@ -39,6 +39,10 @@ class Summary extends Model implements Auditable
         return $this->hasMany('App\Models\Documents\Summaries\SummaryEvent');
     }
 
+    public function files() {
+    	return $this->hasMany('\App\Models\Documents\Summaries\SummaryFile','summary_id');
+    }
+
     protected $table = 'doc_summaries';
     protected $dates = ['summary_date'];
 }
