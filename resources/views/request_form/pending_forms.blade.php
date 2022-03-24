@@ -3,11 +3,7 @@
 @section('content')
 
 <link href="{{ asset('css/bootstrap-select.min.css') }}" rel="stylesheet" type="text/css"/>
-<<<<<<< HEAD
-<h4 class="mb-3">Formularios de requerimiento - Bandeja de Entrada</h4>
-=======
 <h4 class="mb-3">Formularios de Requerimiento - Bandeja de Entrada pendientes por firmar</h4>
->>>>>>> 57b423c3d4874fcfb5f4e575bac206351fe5e0a8
 
 @include('request_form.partials.nav')
 
@@ -199,7 +195,7 @@
         </div>
     @endif
     @endif
-    
+
     @if(count($my_forms_signed) > 0)
         <div class="col">
             <h6><i class="fas fa-archive"></i> Mis formularios aprobados o rechazados</h6>

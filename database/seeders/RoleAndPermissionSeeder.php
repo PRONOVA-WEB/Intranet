@@ -128,6 +128,7 @@ class RoleAndPermissionSeeder extends Seeder
 
         Permission::create(['name' => 'Request Forms: Finance add item code']);
         Permission::create(['name' => 'Request Forms: config']);
+        Permission::create(['name' => 'Request Forms: all']);
 
         Permission::create(['name' => 'Health Plan']);
 
@@ -154,7 +155,7 @@ class RoleAndPermissionSeeder extends Seeder
         // GOD LIKE
         $role = Role::create(['name' => 'superuser']);
         $role = Role::create(['name' => 'dev']);
-        //$role->givePermissionTo(Permission::all());
+        $role->givePermissionTo(Permission::all());
 
 
         $role = Role::create(['name' => 'Drugs: admin']);
