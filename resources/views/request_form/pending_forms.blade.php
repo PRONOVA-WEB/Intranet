@@ -132,6 +132,7 @@
                       <th>Items</th>
                       <th>Espera</th>
                       <th>Etapas de aprobación</th>
+                      <th style="width: 7%">Fecha de Aprobación</th>
                       <th></th>
                     </tr>
                   </thead>
@@ -173,6 +174,7 @@
                                       @endif
                                   @endforeach
                               </td>
+                              <td>{{ $requestForm->eventRequestForms->where('signer_user_id', Auth::user()->id)->last()->signature_date?? 'No se ha firmado Documento' }}</td>
                               <td>
                                 <a href="{{ route('request_forms.sign', [$requestForm, $requestForm->firstPendingEvent()->event_type]) }}" class="btn btn-outline-primary btn-sm" title="Aceptar o Rechazar">
                                   <i class="fas fa-signature"></i>
@@ -213,6 +215,7 @@
                   <th>Items</th>
                   <th>Espera</th>
                   <th>Etapas de aprobación</th>
+                  <th style="width: 7%">Fecha de Aprobación</th>
                   <th></th>
                 </tr>
               </thead>
@@ -275,6 +278,7 @@
                                     @endif
                                 @endforeach
                             </td>
+                            <td>{{ $requestForm->eventRequestForms->where('signer_user_id', Auth::user()->id)->last()->signature_date?? 'No se ha firmado Documento' }}
 
                             <td>
                                 <a href="{{ route('request_forms.show', $requestForm->id) }}"
@@ -343,6 +347,7 @@
                     <th>Items</th>
                     <th>Espera</th>
                     <th>Etapas de aprobación</th>
+                    <th style="width: 7%">Fecha de Aprobación</th>
                     <th></th>
                     </tr>
                 </thead>
@@ -405,6 +410,7 @@
                                         @endif
                                     @endforeach
                                 </td>
+                                <td>{{ $requestForm->eventRequestForms->where('signer_user_id', Auth::user()->id)->last()->signature_date??'No se ha firmado Documento' }}</td>
 
                                 <td>
                                     <a href="{{ route('request_forms.show', $requestForm->id) }}"

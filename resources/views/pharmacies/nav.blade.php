@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 @can('Pharmacy: manager')
+=======
+@canany(['Pharmacy'])
+>>>>>>> ebee989a8d9556bf2aeea9c2144eaf6c0c0197e7
 <ul class="nav nav-tabs mb-3">
     @canany(['Pharmacy: purchase'])
         <li class="nav-item">

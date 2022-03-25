@@ -76,7 +76,7 @@
 	</table>
 </div>
 
-{{-- {{ $purchases->links() }} --}}
+{{ $purchases->links() }}
 
 @endsection
 

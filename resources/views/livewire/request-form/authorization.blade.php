@@ -12,63 +12,11 @@
 
                 <fieldset class="form-group col-sm-2">
                     <label>Cargo:</label><br>
-                    <input wire:model="position" name="position" class="form-control form-control-sm" type="text"
-                        readonly>
+                    <input wire:model="position" name="position" class="form-control form-control-sm" type="text" readonly>
                 </fieldset>
 
                 <fieldset class="form-group col-sm-5">
                     <label for="forRut">Unidad Organizacional:</label>
-<<<<<<< HEAD
-                    <input wire:model="organizationalUnit" name="organizationalUnit" class="form-control form-control-sm"
-                        type="text" readonly>
-                </fieldset>
-            </div>
-
-            @if ($eventType == 'supply_event')
-                <div class="form-row">
-                    <fieldset class="form-group col-sm">
-                        <label>Comprador:</label><br>
-                        <select wire:model.defer="supervisorUser" wire:click="resetError" name="supervisorUser"
-                            class="form-control form-control-sm" required>
-                            <option value="">Seleccione...</option>
-                            @foreach ($lstSupervisorUser as $user)
-                                <option value="{{ $user->id }}">{{ $user->tinnyName() }}</option>
-                            @endforeach
-                        </select>
-                        @error('supervisorUser') <span class="error text-danger">{{ $message }}</span> @enderror
-                    </fieldset>
-
-                    <fieldset class="form-group col-sm">
-                        <label>Mecanismo de Compra:</label><br>
-                        <select wire:model="purchaseMechanism" name="purchaseMechanism"
-                            wire:change="changePurchaseMechanism" class="form-control form-control-sm" required>
-                            <option value="">Seleccione...</option>
-                            @foreach ($lstPurchaseMechanism as $val)
-                                <option value="{{ $val->id }}">{{ $val->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('purchaseMechanism') <span class="error text-danger">{{ $message }}</span> @enderror
-                    </fieldset>
-
-                    <fieldset class="form-group col-sm">
-                        <label>Tipo de Compra:</label><br>
-                        <select wire:model.defer="purchaseType" wire:click="resetError" name="purchaseType"
-                            class="form-control form-control-sm" required>
-                            <option value="">Seleccione...</option>
-                            @foreach ($lstPurchaseType as $type)
-                                <option value="{{ $type->id }}">{{ $type->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('purchaseType') <span class="error text-danger">{{ $message }}</span> @enderror
-                    </fieldset>
-
-              <fieldset class="form-group col-sm">
-                  <label>Unidad de Compra:</label><br>
-                  <select wire:model.defer="purchaseUnit" wire:click="resetError" name="purchaseUnit" class="form-control form-control-sm" required>
-                      <option value="">Seleccione...</option>
-                        @foreach($lstPurchaseUnit as $unit)
-                          <option value="{{$unit->id}}">{{$unit->name}}</option>
-=======
                     <input wire:model="organizationalUnit" name="organizationalUnit" class="form-control form-control-sm" type="text" readonly>
                 </fieldset>
             </div>
@@ -111,7 +59,6 @@
                         <option value="">Seleccione...</option>
                         @foreach($lstPurchaseType as $type)
                         <option value="{{$type->id}}">{{$type->name}}</option>
->>>>>>> ebee989a8d9556bf2aeea9c2144eaf6c0c0197e7
                         @endforeach
                     </select>
                     @error('purchaseType') <span class="error text-danger">{{ $message }}</span> @enderror

@@ -143,10 +143,19 @@
 @if($serviceRequest->program_contract_type == "Mensual")
     @include('service_requests.requests.fulfillments.edit_monthly',['serviceRequest' => $serviceRequest])
 @else
-    @if($serviceRequest->working_day_type == "HORA MÉDICA" or $serviceRequest->working_day_type == "TURNO DE REEMPLAZO")
+
+    @if($serviceRequest->programm_name == "Covid 2022")
+      @if($serviceRequest->working_day_type == "HORA MÉDICA")
         @include('service_requests.requests.fulfillments.edit_hours_medics',['serviceRequest' => $serviceRequest])
-    @else
+      @else
         @include('service_requests.requests.fulfillments.edit_hours_others',['serviceRequest' => $serviceRequest])
+      @endif
+    @else
+      @if($serviceRequest->working_day_type == "HORA MÉDICA" or $serviceRequest->working_day_type == "TURNO DE REEMPLAZO")
+        @include('service_requests.requests.fulfillments.edit_hours_medics',['serviceRequest' => $serviceRequest])
+      @else
+          @include('service_requests.requests.fulfillments.edit_hours_others',['serviceRequest' => $serviceRequest])
+      @endif
     @endif
 @endif
 
