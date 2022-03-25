@@ -41,7 +41,7 @@ class ServiceRequestSeeder extends Seeder
             'digera_strategy' => 'Camas MEDIAS Aperturadas',
             'rrhh_team' => 'Residencia Médica',
             'signature_page_break' => '0',
-            'user_id' => '12345678',
+            'user_id' => '88888888',
             'created_at' => carbon::now(),
             'updated_at' => carbon::now(),
             'creator_id' => '12345678'

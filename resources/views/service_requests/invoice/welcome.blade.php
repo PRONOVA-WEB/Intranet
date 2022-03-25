@@ -7,8 +7,8 @@
 
 
 <ul>
-    <li>Está dirigido a funcionarios que poseen contrato a Honorario para la DSSI</li>
-    <li>Podrás ver el estado de tus solicitudes de pago</li>     
+    <li>Está dirigido a funcionarios que poseen contrato a Honorario</li>
+    <li>Podrás ver el estado de tus solicitudes de pago</li>
 </ul>
 
 
@@ -26,9 +26,9 @@
 </div>
 
 
-<div class="alert alert-info mt-3" role="alert">
+{{-- <div class="alert alert-info mt-3" role="alert">
 Si no tienes clave única, puedes obtener la tuya en sucursales de Registro Civil o en los totem ubicados en el SOME del Hospital, Mall Zofri o Mall Plaza Iquique.
-</div>
+</div> --}}
 
 @endsection
 
