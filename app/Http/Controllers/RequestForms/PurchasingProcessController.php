@@ -21,7 +21,9 @@ use App\Models\RequestForms\PurchasingProcessDetail;
 use App\Models\RequestForms\Tender;
 use App\Models\RequestForms\DirectDeal;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PurchasingProcessController extends Controller
 {
@@ -60,6 +62,25 @@ class PurchasingProcessController extends Controller
         }
     }
 
+    public function edit(RequestForm $requestForm, PurchasingProcessDetail $purchasingProcessDetail)
+    {
+        if(Auth()->user()->organizational_unit_id != 37){
+            session()->flash('danger', 'Estimado Usuario/a: Usted no pertence a la Unidad de Abastecimiento.');
+            return redirect()->route('request_forms.my_forms');
+        }
+        $result = $purchasingProcessDetail->getPurchasingType();
+        $result->load('attachedFiles');
+        // return $result->attachedFiles;
+        $result_details = PurchasingProcessDetail::where($purchasingProcessDetail->getPurchasingTypeColumn(), $result->id)->get();
+        // return $result_details;
+        $requestForm->load('user', 'userOrganizationalUnit', 'contractManager', 'requestFormFiles', 'purchasingProcess.details', 'eventRequestForms.signerOrganizationalUnit', 'eventRequestForms.signerUser', 'purchaseMechanism', 'purchaseType', 'children', 'father.requestFormFiles');
+        $isBudgetEventSignPending = $requestForm->eventRequestForms()->where('status', 'pending')->where('event_type', 'budget_event')->count() > 0;
+        if($isBudgetEventSignPending) session()->flash('warning', 'Estimado/a usuario/a: El formulario de requerimiento tiene una firma pendiente de aprobación por concepto de presupuesto, por lo que no podrá agregar o quitar compras hasta que no se haya notificado de la resolución de la firma.');
+        $suppliers = Supplier::orderBy('name','asc')->get();
+
+        return view('request_form.purchase.purchase', compact('requestForm', 'suppliers', 'isBudgetEventSignPending', 'result', 'result_details'));
+    }
+
     public function show(RequestForm $requestForm)
     {
         $requestForm->load('user', 'userOrganizationalUnit', 'contractManager', 'requestFormFiles', 'purchasingProcess.details', 'eventRequestForms.signerOrganizationalUnit', 'eventRequestForms.signerUser', 'purchaseMechanism', 'purchaseType', 'children', 'father.requestFormFiles');
@@ -79,6 +100,26 @@ class PurchasingProcessController extends Controller
         $purchasingProcess->request_form_id       = $requestForm->id;
         $purchasingProcess->save();
         return $purchasingProcess;
+    }
+
+    public function close_purchasing_process(RequestForm $requestForm, Request $request)
+    {
+        $requestForm->load('purchasingProcess');
+        if(!$requestForm->purchasingProcess) $requestForm->purchasingProcess = $this->create($requestForm);
+        $requestForm->purchasingProcess()->update([
+            'status' => $request->status == 'finished' ? (Str::contains($requestForm->subtype, 'tiempo') ? 'finalized' : 'purchased') : 'canceled',
+            'observation' => $request->observation
+        ]);
+
+        session()->flash('success', 'Cierre de proceso de compra registrado exitosamente');
+        return redirect()->route('request_forms.supply.purchase', compact('requestForm'));
+    }
+
+    public function edit_observation(RequestForm $requestForm, Request $request)
+    {
+        $requestForm->purchasingProcess()->update(['observation' => $request->observation]);
+        session()->flash('success', 'La observación al proceso de compra ha sido registrado exitosamente');
+        return redirect()->route('request_forms.supply.purchase', compact('requestForm'));
     }
 
     public function estimated_expense_exceeded(RequestForm $requestForm)
@@ -124,7 +165,12 @@ class PurchasingProcessController extends Controller
             $detail->save();
         }
 
-        session()->flash('success', 'La Orden de compra interna ha sido creado exitosamente');
+        $requestForm->load('purchasingProcess.details');
+        if(round($requestForm->estimated_expense - $requestForm->purchasingProcess->getExpense()) == 0){ //Saldo total utilizado
+            $requestForm->purchasingProcess()->update([ 'status' => Str::contains($requestForm->subtype, 'tiempo') ? 'finalized' : 'purchased']);
+        }
+
+        session()->flash('success', 'La Orden de compra interna ha sido registrado exitosamente');
         return redirect()->route('request_forms.supply.purchase', compact('requestForm'));
     }
 
@@ -163,7 +209,12 @@ class PurchasingProcessController extends Controller
             $detail->save();
         }
 
-        session()->flash('success', 'El fondo menor (caja chica) ha sido creado exitosamente');
+        $requestForm->load('purchasingProcess.details');
+        if(round($requestForm->estimated_expense - $requestForm->purchasingProcess->getExpense()) == 0){ //Saldo total utilizado
+            $requestForm->purchasingProcess()->update([ 'status' => Str::contains($requestForm->subtype, 'tiempo') ? 'finalized' : 'purchased']);
+        }
+
+        session()->flash('success', 'El fondo menor (caja chica) ha registrado creado exitosamente');
         return redirect()->route('request_forms.supply.purchase', compact('requestForm'));
     }
 
@@ -196,7 +247,12 @@ class PurchasingProcessController extends Controller
             $detail->save();
         }
 
-        session()->flash('success', 'El fondo a rendir ha sido creado exitosamente');
+        $requestForm->load('purchasingProcess.details');
+        if(round($requestForm->estimated_expense - $requestForm->purchasingProcess->getExpense()) == 0){ //Saldo total utilizado
+            $requestForm->purchasingProcess()->update([ 'status' => Str::contains($requestForm->subtype, 'tiempo') ? 'finalized' : 'purchased']);
+        }
+
+        session()->flash('success', 'El fondo a rendir ha sido registrado exitosamente');
         return redirect()->route('request_forms.supply.purchase', compact('requestForm'));
     }
 
@@ -226,7 +282,13 @@ class PurchasingProcessController extends Controller
             $detail->save();
         }
 
-        //Aqui falta registrar suministro o compra inmediata
+        //Registrar oc de la licitacion como compra inmediata
+        if(!$requestForm->father && Str::contains($requestForm->subtype, 'inmediata') && $request->status == 'adjudicada'){
+            $oc = new ImmediatePurchase($request->all());
+            $oc->description = $request->po_description;
+            $tender->oc()->save($oc);
+        }
+
 
         //Registrar archivos en attached_files
         $now = Carbon::now()->format('Y_m_d_H_i_s');
@@ -234,7 +296,8 @@ class PurchasingProcessController extends Controller
                   'resol_adjudication_deserted_file' => 'Resolución de adjudicación/desierta',
                   'resol_contract_file' => 'Resolución de contrato',
                   'guarantee_ticket_file' => 'Boleta de garantía',
-                  'taking_of_reason_file' => 'Resolución toma de razón'];
+                  'memo_file' => 'Oficio',
+                  'oc_file' => 'Orden de compra'];
 
         foreach($files as $key => $file){
             if($request->hasFile($key)){
@@ -248,7 +311,12 @@ class PurchasingProcessController extends Controller
             }
         }
 
-        session()->flash('success', 'La Licitación ha sido creado exitosamente');
+        $requestForm->load('purchasingProcess.details');
+        if(round($requestForm->estimated_expense - $requestForm->purchasingProcess->getExpense()) == 0){ //Saldo total utilizado
+            $requestForm->purchasingProcess()->update([ 'status' => Str::contains($requestForm->subtype, 'tiempo') ? 'finalized' : 'purchased']);
+        }
+
+        session()->flash('success', 'La Licitación ha sido registrado exitosamente');
         return redirect()->route('request_forms.supply.purchase', compact('requestForm'));
 
     }
@@ -279,20 +347,29 @@ class PurchasingProcessController extends Controller
             $detail->save();
         }
 
-        $file = 'oc_file';
         $now = Carbon::now()->format('Y_m_d_H_i_s');
-        if($request->hasFile($file)){
-            $archivo = $request->file($file);
-            $file_name = $now.'_'.$file.'_'.$oc->id;
-            $attachedFile = new AttachedFile();
-            $attachedFile->file = $archivo->storeAs('/request_forms/attached_files', $file_name.'.'.$archivo->extension(), 'gcs');
-            $attachedFile->document_type = 'Orden de compra';
-            $attachedFile->immediate_purchase_id = $oc->id;
-            $attachedFile->save();
+        $files = ['oc_file' => 'Orden de compra',
+                  'mail_file' => 'Correo de respaldo'];
+
+        foreach($files as $key => $file){
+            if($request->hasFile($key)){
+                $archivo = $request->file($key);
+                $file_name = $now.'_'.$key.'_'.$oc->id;
+                $attachedFile = new AttachedFile();
+                $attachedFile->file = $archivo->storeAs('/request_forms/attached_files', $file_name.'.'.$archivo->extension(), 'gcs');
+                $attachedFile->document_type = $file;
+                $attachedFile->immediate_purchase_id = $oc->id;
+                $attachedFile->save();
+            }
         }
 
-        return redirect()->route('request_forms.supply.purchase', compact('requestForm'));
+        $requestForm->load('purchasingProcess.details');
+        if(round($requestForm->estimated_expense - $requestForm->purchasingProcess->getExpense()) == 0){ //Saldo total utilizado
+            $requestForm->purchasingProcess()->update([ 'status' => Str::contains($requestForm->subtype, 'tiempo') ? 'finalized' : 'purchased']);
+        }
 
+        session()->flash('success', 'La Orden de compra ha sido registrado exitosamente');
+        return redirect()->route('request_forms.supply.purchase', compact('requestForm'));
     }
 
     public function create_convenio_marco(Request $request, RequestForm $requestForm)
@@ -340,8 +417,13 @@ class PurchasingProcessController extends Controller
             }
         }
 
-        return redirect()->route('request_forms.supply.purchase', compact('requestForm'));
+        $requestForm->load('purchasingProcess.details');
+        if(round($requestForm->estimated_expense - $requestForm->purchasingProcess->getExpense()) == 0){ //Saldo total utilizado
+            $requestForm->purchasingProcess()->update([ 'status' => Str::contains($requestForm->subtype, 'tiempo') ? 'finalized' : 'purchased']);
+        }
 
+        session()->flash('success', 'Convenio marco ha sido registrado exitosamente');
+        return redirect()->route('request_forms.supply.purchase', compact('requestForm'));
     }
 
     public function create_direct_deal(Request $request, RequestForm $requestForm)
@@ -369,13 +451,24 @@ class PurchasingProcessController extends Controller
             $detail->save();
         }
 
-        //Aqui falta registrar suministro o compra inmediata
+        //Registrar oc del trato directo como compra inmediata
+        if(!$requestForm->father && Str::contains($requestForm->subtype, 'inmediata')){
+            $oc = new ImmediatePurchase($request->all());
+            $oc->description = $request->po_description;
+            $directdeal->oc()->save($oc);
+        }
 
         //Registrar archivos en attached_files
         $now = Carbon::now()->format('Y_m_d_H_i_s');
         $files = ['resol_direct_deal_file' => 'Resolución de trato directo',
+<<<<<<< HEAD
                   'resol_contract_file' => 'Resolución de contrato',
                   'guarantee_ticket_file' => 'Boleta de garantía'];
+=======
+                  'resol_contract_file' => 'Resolución de contrato',
+                  'guarantee_ticket_file' => 'Boleta de garantía',
+                  'oc_file' => 'Orden de compra'];
+>>>>>>> ebee989a8d9556bf2aeea9c2144eaf6c0c0197e7
 
         foreach($files as $key => $file){
             if($request->hasFile($key)){
@@ -389,7 +482,44 @@ class PurchasingProcessController extends Controller
             }
         }
 
-        session()->flash('success', 'El trato directo ha sido creado exitosamentes');
+        $requestForm->load('purchasingProcess.details');
+        if(round($requestForm->estimated_expense - $requestForm->purchasingProcess->getExpense()) == 0){ //Saldo total utilizado
+            $requestForm->purchasingProcess()->update([ 'status' => Str::contains($requestForm->subtype, 'tiempo') ? 'finalized' : 'purchased']);
+        }
+
+        session()->flash('success', 'El trato directo ha sido registrado exitosamente');
         return redirect()->route('request_forms.supply.purchase', compact('requestForm'));
+    }
+
+    public function update_direct_deal(Request $request, RequestForm $requestForm, DirectDeal $directDeal)
+    {
+        $directDeal->update($request->all());
+
+        //Registrar archivos en attached_files
+        $now = Carbon::now()->format('Y_m_d_H_i_s');
+        $files = ['resol_direct_deal_file' => 'Resolución de trato directo',
+                  'resol_contract_file' => 'Resolución de contrato',
+                  'guarantee_ticket_file' => 'Boleta de garantía'];
+
+        foreach($files as $key => $file){
+            if($request->hasFile($key)){
+                $previousFile = $directDeal->findAttachedFile($key);
+                if($previousFile){
+                    $previousFile->delete();
+                    Storage::disk('gcs')->delete($previousFile->file);
+                }
+                $archivo = $request->file($key);
+                $file_name = $now.'_'.$key.'_'.$directDeal->id;
+                $attachedFile = new AttachedFile();
+                $attachedFile->file = $archivo->storeAs('/ionline/request_forms/attached_files', $file_name.'.'.$archivo->extension(), 'gcs');
+                $attachedFile->document_type = $file;
+                $attachedFile->direct_deal_id = $directDeal->id;
+                $attachedFile->save();
+            }
+        }
+
+        session()->flash('success', 'El trato directo ha sido modificado exitosamente');
+        return redirect()->route('request_forms.supply.purchase', compact('requestForm'));
+
     }
 }

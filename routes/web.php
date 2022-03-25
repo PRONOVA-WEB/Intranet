@@ -69,6 +69,7 @@ use App\Http\Controllers\Documents\Summaries\FiscalController;
 
 use App\Http\Controllers\Parameters\ProfessionController;
 use App\Http\Controllers\Pharmacies\PurchaseController;
+use App\Http\Controllers\Pharmacies\PharmacyController;
 use App\Http\Controllers\Settings\SettingController;
 use App\Pharmacies\Purchase;
 use App\User;
@@ -394,8 +395,9 @@ Route::prefix('agreements')->as('agreements.')->middleware('auth')->group(functi
     Route::get('tracking', 'Agreements\AgreementController@indexTracking')->name('tracking.index');
     //Route::get('createWord','Agreements\WordTestController@createWordDocx')->name('createWord.index');
     Route::get('/createWord/{agreement}', 'Agreements\WordTestController@createWordDocx')->name('createWord');
-    Route::get('/createWordWithdrawal/{agreement}', 'Agreements\WordWithdrawalAgreeController@createWordDocx')->name('createWordWithdrawal');
     Route::post('/createWordRes/{agreement}', 'Agreements\WordTestController@createResWordDocx')->name('createWordRes');
+    Route::get('/createWordWithdrawal/{agreement}', 'Agreements\WordWithdrawalAgreeController@createWordDocx')->name('createWordWithdrawal');
+    Route::post('/createWordResWithdrawal/{agreement}', 'Agreements\WordWithdrawalAgreeController@createResWordDocx')->name('createWordResWithdrawal');
     Route::get('/sign/{agreement}/type/{type}', 'Agreements\AgreementController@sign')->name('sign');
 });
 
@@ -1048,11 +1050,16 @@ Route::prefix('indicators')->as('indicators.')->group(function () {
     });
 
     Route::prefix('health_goals')->as('health_goals.')->group(function () {
+        Route::get('/show_file/{attachedFile}', 'Indicators\HealthGoalController@show_file')->name('ind.value.show_file');
+        Route::delete('/{attachedFile}', 'Indicators\HealthGoalController@destroy_file')->middleware('auth')->name('ind.value.destroy_file');
         Route::get('/{law}', 'Indicators\HealthGoalController@index')->name('index');
         Route::get('/{law}/{year}', 'Indicators\HealthGoalController@list')->name('list');
         Route::get('/{law}/{year}/{health_goal}', 'Indicators\HealthGoalController@show')->name('show');
         Route::get('/{law}/{year}/{health_goal}/ind/{indicator}/edit', 'Indicators\HealthGoalController@editInd')->middleware('auth')->name('ind.edit');
         Route::put('/{law}/{year}/{health_goal}/ind/{indicator}', 'Indicators\HealthGoalController@updateInd')->middleware('auth')->name('ind.update');
+        Route::post('/{law}/{year}/{health_goal}/ind/{indicator}/import', 'Indicators\HealthGoalController@importIndValues')->middleware('auth')->name('ind.import');
+        Route::post('/{law}/{year}/{health_goal}/ind/{indicator}/value/{value}', 'Indicators\HealthGoalController@storeIndValue')->middleware('auth')->name('ind.value.store');
+        Route::put('/{law}/{year}/{health_goal}/ind/{indicator}/value/{value}', 'Indicators\HealthGoalController@updateIndValue')->middleware('auth')->name('ind.value.update');
     });
 
     Route::prefix('programming_aps')->as('programming_aps.')->group(function () {
@@ -1375,6 +1382,12 @@ Route::get('biblioteca/{file}', 'Library\LibraryController@download')->middlewar
 /* Bodega de Farmacia */
 Route::prefix('pharmacies')->as('pharmacies.')->middleware('auth')->group(function () {
     Route::get('/', 'Pharmacies\PharmacyController@index')->name('index');
+    Route::get('admin_view', 'Pharmacies\PharmacyController@admin_view')->name('admin_view');
+    Route::get('pharmacy_users', 'Pharmacies\PharmacyController@pharmacy_users')->name('pharmacy_users');
+    Route::post('user_asign_store', [PharmacyController::class, 'user_asign_store'])->name('user_asign_store');
+    Route::delete('/{pharmacy}/{user}/user_asign_destroy', [PharmacyController::class, 'user_asign_destroy'])->name('user_asign_destroy');
+
+
     Route::resource('establishments', 'Pharmacies\EstablishmentController');
     Route::resource('programs', 'Pharmacies\ProgramController');
     Route::resource('suppliers', 'Pharmacies\SupplierController');
@@ -1454,6 +1467,7 @@ Route::prefix('request_forms')->as('request_forms.')->middleware('auth')->group(
     Route::get('/my_forms', [RequestFormController::class, 'my_forms'])->name('my_forms');
     Route::get('/all_forms', [RequestFormController::class, 'all_forms'])->name('all_forms');
     Route::get('/pending_forms', [RequestFormController::class, 'pending_forms'])->name('pending_forms');
+    Route::get('/contract_manager_forms', [RequestFormController::class, 'contract_manager_forms'])->name('contract_manager_forms');
     Route::get('/create', [RequestFormController::class, 'create'])->name('create');
     Route::get('/{requestForm}/create_provision', [RequestFormController::class, 'create_provision'])->name('create_provision');
     Route::get('/{requestForm}/sign/{eventType}', [RequestFormController::class, 'sign'])->name('sign');
@@ -1464,6 +1478,7 @@ Route::prefix('request_forms')->as('request_forms.')->middleware('auth')->group(
 
     Route::prefix('message')->as('message.')->middleware('auth')->group(function () {
         Route::post('/{requestForm}/store/{eventType}/{from}', [RequestFormMessageController::class, 'store'])->name('store');
+        Route::get('/show_file/{requestFormMessage}', [RequestFormMessageController::class, 'show_file'])->name('show_file');
     });
 
     Route::prefix('items')->as('items.')->middleware('auth')->group(function () {
@@ -1478,6 +1493,7 @@ Route::prefix('request_forms')->as('request_forms.')->middleware('auth')->group(
         Route::get('/', [PurchasingProcessController::class, 'index'])->name('index');
         Route::get('/{requestForm}', [PurchasingProcessController::class, 'show'])->name('show');
         Route::get('/{requestForm}/purchase', [PurchasingProcessController::class, 'purchase'])->name('purchase');
+        Route::get('/{requestForm}/purchase/{purchasingProcessDetail}/edit', [PurchasingProcessController::class, 'edit'])->name('edit');
         Route::post('/{requestForm}/create_internal_oc', [PurchasingProcessController::class, 'create_internal_oc'])->name('create_internal_oc');
         Route::post('/{requestForm}/create_petty_cash', [PurchasingProcessController::class, 'create_petty_cash'])->name('create_petty_cash');
         Route::post('/{requestForm}/create_fund_to_be_settled', [PurchasingProcessController::class, 'create_fund_to_be_settled'])->name('create_fund_to_be_settled');
@@ -1485,7 +1501,10 @@ Route::prefix('request_forms')->as('request_forms.')->middleware('auth')->group(
         Route::post('/{requestForm}/create_oc', [PurchasingProcessController::class, 'create_oc'])->name('create_oc');
         Route::post('/{requestForm}/create_convenio_marco', [PurchasingProcessController::class, 'create_convenio_marco'])->name('create_convenio_marco');
         Route::post('/{requestForm}/create_direct_deal', [PurchasingProcessController::class, 'create_direct_deal'])->name('create_direct_deal');
+        Route::put('/{requestForm}/{directDeal}/update_direct_deal', [PurchasingProcessController::class, 'update_direct_deal'])->name('update_direct_deal');
         Route::post('{requestForm}/create_new_budget', [RequestFormController::class, 'create_new_budget'])->name('create_new_budget');
+        Route::post('{requestForm}/close_purchasing_process', [PurchasingProcessController::class, 'close_purchasing_process'])->name('close_purchasing_process');
+        Route::post('{requestForm}/edit_observation', [PurchasingProcessController::class, 'edit_observation'])->name('edit_observation');
         Route::get('/petty_cash/{pettyCash}/download', [PettyCashController::class, 'download'])->name('petty_cash.download');
         Route::get('/fund_to_be_settled/{fundToBeSettled}/download', [FundToBeSettledController::class, 'download'])->name('fund_to_be_settled.download');
         Route::get('/attached_file/{attachedFile}/download', [AttachedFilesController::class, 'download'])->name('attached_file.download');
@@ -1679,6 +1698,7 @@ Route::prefix('suitability')->as('suitability.')->middleware('auth')->group(func
 
     Route::prefix('results')->as('results.')->middleware('auth')->group(function () {
         Route::get('/', [ResultsController::class, 'index'])->name('index');
+        Route::delete('{result}/destroy', [ResultsController::class, 'destroy'])->name('destroy');
         Route::get('/{id}', [ResultsController::class, 'show'])->name('show');
         Route::get('/certificate/{id}', [ResultsController::class, 'certificate'])->name('certificate');
         Route::get('/certificatepdf/{id}', [ResultsController::class, 'certificatepdf'])->name('certificatepdf');

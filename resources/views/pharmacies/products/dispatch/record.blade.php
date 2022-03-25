@@ -6,6 +6,7 @@
 
 <?php setlocale(LC_ALL, 'es_CL.UTF-8');?>
 
+@if(Auth::user()->pharmacies->first()->id == 1 || Auth::user()->pharmacies->first()->id == 2)
     <div>
         <div style="width: 49%; display: inline-block;">
             <div class="siete" style="padding-top: 3px;">
@@ -16,6 +17,44 @@
             {{ $dispatch->date->formatLocalized('%d de %B del %Y') }}<br>
         </div>
     </div>
+@endif
+@if(Auth::user()->pharmacies->first()->id == 3)
+    <div>
+        <div style="width: 49%; display: inline-block;">
+            <div class="siete" style="padding-top: 3px;">
+                Bodega APS - {{ env('APP_SS') }}
+            </div>
+            <div class="siete" style="padding-top: 3px;">
+                <i>bodega.ssi@redsalud.gov.cl</i>
+            </div>
+            <div class="siete" style="padding-top: 3px;">
+                <i>N* minsal 576975 teléfono 572406975</i>
+            </div>
+        </div>
+        <div class="right" style="width: 49%; display: inline-block;">
+            Iquique {{ $dispatch->date->formatLocalized('%d de %B del %Y') }}<br>
+        </div>
+    </div>
+@endif
+@if(Auth::user()->pharmacies->first()->id == 4)
+    <div>
+        <div style="width: 49%; display: inline-block;">
+            <div class="siete" style="padding-top: 3px;">
+                Bodega Servicios Generales - {{ env('APP_SS') }}
+            </div>
+            <div class="siete" style="padding-top: 3px;">
+                <i>bodega.ssi@redsalud.gov.cl</i>
+            </div>
+            <div class="siete" style="padding-top: 3px;">
+                <i>N* minsal 576975 teléfono 572406975</i>
+            </div>
+        </div>
+        <div class="right" style="width: 49%; display: inline-block;">
+            Iquique {{ $dispatch->date->formatLocalized('%d de %B del %Y') }}<br>
+        </div>
+    </div>
+@endif
+
 
 <div class="titulo">ACTA DE DESPACHO N° {{ $dispatch->id }}</div>
 
@@ -53,7 +92,7 @@
         <span class="uppercase">Encargado de bodega</span>
     </div> -->
     <div class="center" style="width: 49%">
-      @if( Auth::user()->can('Pharmacy: REYNO (id:2)'))
+      @if(Auth::user()->pharmacies->first()->id == 2)
         <span class="uppercase">{{Auth::user()->name}}</span><br>
         @if(Auth::user()->id == 18899957 || Auth::user()->id == 16074423)
           <span class="uppercase">QF Botiquín</span>

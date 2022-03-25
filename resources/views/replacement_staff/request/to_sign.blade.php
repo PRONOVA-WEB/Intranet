@@ -49,7 +49,7 @@
                     <th>Cargo</th>
                     <th>Grado</th>
                     <th>Calidad Jurídica</th>
-                    <th>Periodo</th>
+                    <th colspan="2">Periodo</th>
                     <th>Fundamento</th>
                     <th>Solicitante</th>
                     <th>Estado</th>
@@ -87,6 +87,13 @@
                     <td>{{ $requestReplacementStaff->legalQualityManage->NameValue }}</td>
                     <td>{{ Carbon\Carbon::parse($requestReplacementStaff->start_date)->format('d-m-Y') }} <br>
                         {{ Carbon\Carbon::parse($requestReplacementStaff->end_date)->format('d-m-Y') }}
+                    </td>
+                    <td class="text-center">{{ $requestReplacementStaff->getNumberOfDays() }}
+                        @if($requestReplacementStaff->getNumberOfDays() > 1)
+                            días
+                        @else
+                            dia
+                        @endif
                     </td>
                     <td>
                         {{ $requestReplacementStaff->fundamentManage->NameValue }}<br>
@@ -144,7 +151,7 @@
                     <th>Cargo</th>
                     <th>Grado</th>
                     <th>Calidad Jurídica</th>
-                    <th>Periodo</th>
+                    <th colspan="2">Periodo</th>
                     <th>Fundamento</th>
                     <th>Solicitante</th>
                     <th>Estado</th>
@@ -182,6 +189,13 @@
                     <td class="text-center">{{ $requestReplacementStaff->LegalQualityValue }}</td>
                     <td>{{ Carbon\Carbon::parse($requestReplacementStaff->start_date)->format('d-m-Y') }} <br>
                         {{ Carbon\Carbon::parse($requestReplacementStaff->end_date)->format('d-m-Y') }}
+                    </td>
+                    <td class="text-center">{{ $requestReplacementStaff->getNumberOfDays() }}
+                        @if($requestReplacementStaff->getNumberOfDays() > 1)
+                            días
+                        @else
+                            dia
+                        @endif
                     </td>
                     <td>{{ $requestReplacementStaff->FundamentValue }}</td>
                     <td>{{ $requestReplacementStaff->user->FullName }}<br>

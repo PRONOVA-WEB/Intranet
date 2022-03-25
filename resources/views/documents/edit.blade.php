@@ -84,7 +84,8 @@
     <div class="form-group">
         <button type="submit" class="btn btn-primary float-left">Guardar</button>
         </form>
-        @can('Documents: delete document')
+        @if(session()->has('god') OR auth()->user()->can('Documents: delete document'))
+
             @if(!$document->file OR $document->file_to_sign_id === null)
             <form method="POST" action="{{ route('documents.destroy', $document) }}">
                 @csrf
@@ -95,7 +96,7 @@
             @else
             <button class="btn btn-outline-danger" disable>No se puede eliminar, tiene un archivo o ha sido firmado</button>
             @endif
-        @endcan
+        @endif
     </div>
 
 

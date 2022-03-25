@@ -99,7 +99,14 @@ bottom: 5px;
 
 <hr />
 
-<h5 class="mb-3"><span class="text-info">Req {{ $requirement->id}}:</span> {{ $requirement->subject }}</h5>
+
+<h5 class="mb-3"><span class="text-info">Req {{ $requirement->id}}:</span> {{ $requirement->subject }} </h5>
+@if($requirement->limit_at <> NULL)
+<h5 class="mb-3 text-danger"> 
+<i class="fas fa-chess-king"></i>
+Fecha Límite Requerimiento:{{optional($requirement->limit_at)->format('Y-m-d')}}
+</h5>
+@endif
 
 @if($requirement->parte <> null)
     @if($requirement->parte->files != null)
@@ -138,6 +145,11 @@ bottom: 5px;
             @endswitch
             para <strong>{{$event->to_user->getFullNameAttribute()}}</strong>
             de <span class="text-info">{{$event->to_ou->name}}</span>
+            @if($event->limit_at)
+            <span class="text-danger">
+            <i class="fas fa-chess-pawn "></i>Fecha Límite Evento: {{$event->limit_at}}
+            </span>
+            @endif
         </div>
 
         <div class="card-body">

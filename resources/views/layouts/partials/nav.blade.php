@@ -38,7 +38,7 @@
 
                         <a class="dropdown-item"
                            href="{{ route('indicators.population') }}">
-                            <i class="fas fa-globe-americas"></i> Dashboard de población
+                            <i class="fas fa-globe-americas"></i> Tablero de población
                         </a>
 
                         @can('Programming: view')
@@ -140,7 +140,8 @@
                     'Authorities: create',
                     'Users: service requests',
                     'Service Request',
-                    'Replacement Staff: create request'])
+                    'Replacement Staff: create request',
+                    'Replacement Staff: view requests'])
                 <li class="nav-item dropdown @active(['rrhh.users.*','rrhh.organizationalUnits.*']">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -203,14 +204,14 @@
                         </a>
                         @endcan
 
-                        @if(Auth::user()->hasRole('Replacement Staff: admin'))
+                        {{-- @if(Auth::user()->hasRole('Replacement Staff: admin'))
                             <div class="dropdown-divider"></div>
 
                             <a class="dropdown-item @active('replacement_staff.request.index')"
                                href="{{ route('replacement_staff.request.index') }}">
                                 <i class="far fa-id-card"></i> Solicitudes de Contratación
                             </a>
-                        @endif
+                        @endif --}}
 
                         @if(Auth::user()->hasRole('Replacement Staff: user rys'))
                             <div class="dropdown-divider"></div>
@@ -222,7 +223,10 @@
                         @endif
 
                         @if(Auth::user()->hasRole('Replacement Staff: user') ||
-                            App\Rrhh\Authority::getAmIAuthorityFromOu(Carbon\Carbon::now(), 'manager', Auth::user()->id))
+                            App\Rrhh\Authority::getAmIAuthorityFromOu(Carbon\Carbon::now(), 'manager', Auth::user()->id) ||
+                            Auth::user()->hasRole('Replacement Staff: personal') ||
+                            Auth::user()->hasRole('Replacement Staff: personal sign') ||
+                            Auth::user()->hasRole('Replacement Staff: admin'))
 
                             <div class="dropdown-divider"></div>
 
@@ -235,14 +239,14 @@
                             </a>
                         @endif
 
-                        @if(Auth::user()->hasRole('Replacement Staff: personal'))
+                        {{-- @if(Auth::user()->hasRole('Replacement Staff: personal') || Auth::user()->hasRole('Replacement Staff: personal sign'))
                             <div class="dropdown-divider"></div>
 
                             <a class="dropdown-item @active('replacement_staff.request.personal_index')"
                                href="{{ route('replacement_staff.request.personal_index') }}">
                                 <i class="far fa-id-card"></i> Solicitudes de Contratación
                             </a>
-                        @endif
+                        @endif --}}
                     </div>
 
                 </li>
@@ -262,7 +266,7 @@
                   </li>
                 @endcan
 
-                @canany(['Pharmacy: SSI (id:1)', 'Pharmacy: REYNO (id:2)', 'Pharmacy: APS (id:3)', 'Pharmacy: Servicios generales (id:4)'])
+                @canany(['Pharmacy'])
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -270,26 +274,23 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
-                            @canany(['Pharmacy: SSI (id:1)', 'Pharmacy: REYNO (id:2)'])
+                            @canany(['Pharmacy: Administrator'])
                             <a class="dropdown-item"
-                                href="{{ route('pharmacies.index') }}">
-                                <i class="fas fa-fw fa-prescription-bottle-alt"></i> Droguería
+                                href="{{ route('pharmacies.admin_view') }}">
+                                <i class="fas fa-fw fa-user"></i> Administrador
                             </a>
                             @endcanany
 
-                            @can('Pharmacy: APS (id:3)')
-                            <a class="dropdown-item"
-                                href="{{ route('pharmacies.index') }}">
-                                <i class="fas fa-fw fa-medkit"></i> APS
-                            </a>
-                            @endcan
-
-                            @can('Pharmacy: Servicios generales (id:4)')
-                            <a class="dropdown-item"
-                                href="{{ route('pharmacies.index') }}">
-                                <i class="fas fa-fw fa-warehouse"></i> Servicios Generales
-                            </a>
-                            @endcan
+                            @if(Auth::user()->pharmacies->count() > 0)
+                              <a class="dropdown-item"
+                                  href="{{ route('pharmacies.index') }}">
+                                  <i class="fas fa-fw fa-prescription-bottle-alt"></i> {{Auth::user()->pharmacies->first()->name}}
+                              </a>
+                            @else
+                              <a class="dropdown-item">
+                                  <i class="fas fa-fw fa-solid fa-x"></i> Falta asignar bodega
+                              </a>
+                            @endif
 
                         </div>
                     </li>

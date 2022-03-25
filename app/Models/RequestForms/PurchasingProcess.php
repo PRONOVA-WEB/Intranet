@@ -10,6 +10,7 @@ use App\Models\Parameters\PurchaseUnit;
 use App\Models\Parameters\PurchaseMechanism;
 use CreateArqPurchasingProcessDetailTable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Contracts\Auditable;
 
 /*
  * Diferentes estados del Proceso de Compra
@@ -34,10 +35,11 @@ firma electronica, enlace bodega
  **/
 
 
-class PurchasingProcess extends Model
+class PurchasingProcess extends Model implements Auditable
 {
     use HasFactory;
     use SoftDeletes;
+    use \OwenIt\Auditing\Auditable;
 
 
     protected $fillable = [
@@ -84,6 +86,40 @@ class PurchasingProcess extends Model
     // public function itemRequestForm(){
     //   return $this->belongsTo(ItemRequestForm::class, 'item_request_form_id');
     // }
+
+    public function getStatus(){
+        switch ($this->status) {
+            case "in_process":
+                return 'En proceso';
+                break;
+            case "purchased":
+                return 'Comprado';
+                break;
+            case "finalized":
+                return 'Finalizado';
+                break;
+            case "canceled":
+                return 'Anulado';
+                break;
+        }
+    }
+
+    public function getColor(){
+        switch ($this->status) {
+            case "in_process":
+                return 'warning';
+                break;
+            case "purchased":
+                return 'success';
+                break;
+            case "finalized":
+                return 'primary';
+                break;
+            case "canceled":
+                return 'danger';
+                break;
+        }
+    }
 
     /**
     * The table associated with the model.
