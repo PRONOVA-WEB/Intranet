@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use App\Pharmacies\Pharmacy;
+use App\User;
+
 class PharmacyController extends Controller
 {
     /**
@@ -15,12 +18,42 @@ class PharmacyController extends Controller
      */
     public function index()
     {
-
-        if(Auth::user()->can('Pharmacy: manager')){
-            session(['pharmacy_id' => 1]);
-        }
-
+        session(['pharmacy_id' => Auth::user()->pharmacies->first()->id]);
         return view('pharmacies.index');
+    }
+
+    public function admin_view(){
+      return view('pharmacies.admin_view');
+    }
+
+    public function pharmacy_users(){
+      $pharmacies = Pharmacy::all();
+      return view('pharmacies.admin.pharmacy_users',compact('pharmacies'));
+    }
+
+    public function user_asign_store(Request $request){
+
+      $pharmacies = Pharmacy::all();
+      $user = User::find($request->user_id);
+      $pharmacy = Pharmacy::find($request->pharmacy_id);
+
+      if ($user->pharmacies->count() > 0) {
+        session()->flash('warning', 'El usuario ya tiene una farmacia asignada.');
+        return view('pharmacies.admin.pharmacy_users',compact('pharmacies'));
+      }
+
+      $user->pharmacies()->attach($pharmacy);
+
+      session()->flash('info', 'Se ha asociado el usuario a la farmacia seleccionada.');
+      return view('pharmacies.admin.pharmacy_users',compact('pharmacies'));
+    }
+
+    public function user_asign_destroy(Pharmacy $pharmacy, User $user){
+      $pharmacies = Pharmacy::all();
+      $user->pharmacies()->detach($pharmacy);
+
+      session()->flash('info', 'Se ha desaociado el usuario de la farmacia seleccionada.');
+      return view('pharmacies.admin.pharmacy_users',compact('pharmacies'));
     }
 
     /**

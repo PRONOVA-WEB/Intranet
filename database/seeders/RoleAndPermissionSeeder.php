@@ -128,6 +128,7 @@ class RoleAndPermissionSeeder extends Seeder
 
         Permission::create(['name' => 'Request Forms: Finance add item code']);
         Permission::create(['name' => 'Request Forms: config']);
+        Permission::create(['name' => 'Request Forms: all']);
 
         Permission::create(['name' => 'Health Plan']);
 
@@ -136,14 +137,14 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'Partes: oficina']);
         Permission::create(['name' => 'Partes: delete']);
 
-
         Permission::create(['name' => 'Replacement Staff: create request']);
         Permission::create(['name' => 'Replacement Staff: list rrhh']);
         Permission::create(['name' => 'Replacement Staff: manage']);
         Permission::create(['name' => 'Replacement Staff: technical evaluation']);
         Permission::create(['name' => 'Replacement Staff: assign request']);
+        Permission::create(['name' => 'Replacement Staff: personal sign']);
         Permission::create(['name' => 'Replacement Staff: view requests']);
-        //Permission::create(['name' => 'Programming: view']);
+
 
         // @role(
         //   'Replacement Staff: admin |
@@ -154,7 +155,7 @@ class RoleAndPermissionSeeder extends Seeder
         // GOD LIKE
         $role = Role::create(['name' => 'superuser']);
         $role = Role::create(['name' => 'dev']);
-        //$role->givePermissionTo(Permission::all());
+        $role->givePermissionTo(Permission::all());
 
 
         $role = Role::create(['name' => 'Drugs: admin']);

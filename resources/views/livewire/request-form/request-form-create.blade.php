@@ -134,15 +134,29 @@
         @livewire('request-form.passenger.passenger-request', ['savedPassengers' => $requestForm->passengers ?? null, 'savedTypeOfCurrency' => $requestForm->type_of_currency ?? null])
     @endif
 
-    <div class="row justify-content-md-end mt-0">
-        <!-- <div class="col-2">
-            <button wire:click="btnCancelRequestForm"  class="btn btn-secondary btn-sm float-right">Cancelar</button>
-        </div> -->
+    <!-- <div class="row justify-content-md-end mt-0">
         <div class="col-2">
             <button wire:click="saveRequestForm"  class="btn btn-primary btn-sm float-right " type="button" wire:loading.attr="disabled">
                 <i class="fas fa-save"></i> Guardar
             </button>
         </div>
+
+        <div class="col-1">
+            <button wire:click="saveRequestForm"  class="btn btn-primary btn-sm float-right " type="button" wire:loading.attr="disabled">
+                Enviar
+            </button>
+        </div>
+    </div> -->
+
+    <div class="float-right">
+        <button wire:click="saveRequestForm('save')"  class="btn btn-primary btn-sm" type="button" wire:loading.attr="disabled">
+            <i class="fas fa-save"></i> Guardar
+        </button>
+
+        <button wire:click="saveRequestForm('sent')"  class="btn btn-primary btn-sm" type="button" wire:loading.attr="disabled" @if($requestForm && $requestForm->eventRequestForms->count() > 0) disabled @endif>
+            <i class="fas fa-paper-plane"></i> Guardar y Enviar
+        </button>
+
     </div>
     </div>
     <div wire:loading>
@@ -162,5 +176,8 @@
              </ul>
          </div>
       </div>
+    @else
+      <br/><br/>
     @endif
+
 </div>

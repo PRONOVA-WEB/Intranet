@@ -46,6 +46,6 @@ post_max_size = 66M
 ```
 
 
-## License
+## License.
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

@@ -6,9 +6,8 @@
 
 @include('pharmacies.nav')
 
-@can('Pharmacy: manager')
-    <h3 class="mb-3">Bienvenido al módulo de bodega de medicamentos</h3>
-@endcan
+<h3 class="mb-3">Bienvenido al módulo de {{Auth::user()->pharmacies->first()->name}}</h3>
+<h4>Bodega selecionada: {{Auth::user()->pharmacies->first()->name}}</h4>
 
 @endsection
 

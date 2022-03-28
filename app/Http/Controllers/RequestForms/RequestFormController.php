@@ -10,6 +10,7 @@ use App\RequestForms\RequestFormItemCode;
 use App\Rrhh\OrganizationalUnit;
 use App\Rrhh\Authority;
 use App\Http\Controllers\Controller;
+use App\Mail\NewRequestFormNotification;
 use App\Models\Documents\SignaturesFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -43,7 +44,12 @@ class RequestFormController extends Controller {
 
         $my_pending_requests = RequestForm::with('user', 'userOrganizationalUnit', 'purchaseMechanism', 'eventRequestForms.signerOrganizationalUnit', 'father:id,folio,has_increased_expense')
             ->where('request_user_id', Auth::user()->id)
-            ->where('status', 'pending')
+            ->where(function ($q){
+                $q->where('status', 'pending')
+                ->OrWhere('status', 'saved');
+            })
+            // ->where('status', 'pending')
+            // ->OrWhere('status', 'saved')
             ->latest('id')
             ->get();
 
@@ -64,27 +70,41 @@ class RequestFormController extends Controller {
         }
 
         $request_forms = RequestForm::with('user', 'userOrganizationalUnit', 'purchaseMechanism', 'eventRequestForms.signerOrganizationalUnit', 'purchasers', 'father:id,folio,has_increased_expense')->latest('id')->paginate(30);
-        
+
         return view('request_form.all_forms', compact('request_forms'));
     }
 
     public function get_events_type_user()
     {
         $events_type = [];
-        $manager = Authority::getAuthorityFromDate(Auth::user()->organizationalUnit->id, Carbon::now(), 'manager');
-        // return $manager;
 
-        //superchief?
-        $result = RequestForm::whereHas('eventRequestForms', function($q){
-            return $q->where('ou_signer_user', Auth::user()->organizationalUnit->id)->where('event_type', 'superior_leader_ship_event');
-        })->count();
+        $authorities = Authority::getAmIAuthorityFromOu(Carbon::now(), 'manager', Auth::id());
 
-        // Permisos
-        if($result > 0 && $manager->user_id == Auth::user()->id) $events_type[] = 'superior_leader_ship_event';
-        if($manager->user_id == Auth::user()->id) $events_type[] = 'leader_ship_event';
-        if(Auth::user()->organizationalUnit->id == 40 && $manager->user_id != Auth::user()->id) $events_type[] = 'pre_finance_event';
-        if(Auth::user()->organizationalUnit->id == 40 && $manager->user_id == Auth::user()->id) $events_type[] = 'finance_event';
-        if(Auth::user()->organizationalUnit->id == 37 && $manager->user_id == Auth::user()->id) $events_type[] = 'supply_event';
+        if(count($authorities) > 0){
+          foreach ($authorities as $authority){
+              $iam_authorities_in[] = $authority->organizational_unit_id;
+          }
+
+          //superchief?
+          $result = RequestForm::whereHas('eventRequestForms', function($q) use ($iam_authorities_in){
+              return $q->whereIn('ou_signer_user', $iam_authorities_in)->where('event_type', 'superior_leader_ship_event');
+          })->count();
+
+          // if($result > 0 && in_array(Auth::user()->organizationalUnit->id, $iam_authorities_in)) $events_type[] = 'superior_leader_ship_event';
+          // if(in_array(Auth::user()->organizationalUnit->id, $iam_authorities_in)) $events_type[] = 'leader_ship_event';
+          // if(Auth::user()->organizationalUnit->id == 40 && in_array(Auth::user()->organizationalUnit->id, $iam_authorities_in)) $events_type[] = 'finance_event';
+          // if(Auth::user()->organizationalUnit->id == 37 && in_array(Auth::user()->organizationalUnit->id, $iam_authorities_in)) $events_type[] = 'supply_event';
+
+          if($result > 0) $events_type[] = 'superior_leader_ship_event';
+          $events_type[] = 'leader_ship_event';
+          if(in_array(40, $iam_authorities_in)) $events_type[] = 'finance_event';
+          if(in_array(37, $iam_authorities_in)) $events_type[] = 'supply_event';
+
+        }
+        else{
+          $manager = Authority::getAuthorityFromDate(Auth::user()->organizationalUnit->id, Carbon::now(), 'manager');
+          if(Auth::user()->organizationalUnit->id == 40 && $manager->user_id != Auth::user()->id) $events_type[] = 'pre_finance_event';
+        }
 
         return $events_type;
     }
@@ -97,20 +117,30 @@ class RequestFormController extends Controller {
 
         // return $events_type;
 
-        foreach($events_type as $event_type){
-            $prev_event_type = $event_type == 'supply_event' ? 'finance_event' : ($event_type == 'finance_event' ? 'pre_finance_event' : ($event_type == 'pre_finance_event' ? ['superior_leader_ship_event', 'leader_ship_event'] : ($event_type == 'superior_leader_ship_event' ? 'leader_ship_event' : null)));
-            // return $prev_event_type;
-            $result = RequestForm::with('user', 'userOrganizationalUnit', 'purchaseMechanism', 'eventRequestForms.signerOrganizationalUnit')
-                ->where('status', 'pending')
-                ->whereHas('eventRequestForms', function($q) use ($event_type){
-                    return $q->where('status', 'pending')->where('ou_signer_user', Auth::user()->organizationalUnit->id)->where('event_type', $event_type);
-                })->when($prev_event_type, function($q) use ($prev_event_type) {
-                    return $q->whereDoesntHave('eventRequestForms', function ($f) use ($prev_event_type) {
-                        return is_array($prev_event_type) ? $f->whereIn('event_type', $prev_event_type)->where('status', 'pending') : $f->where('event_type', $prev_event_type)->where('status', 'pending');
-                    });
-                })->get();
-            $my_pending_forms_to_signs = $my_pending_forms_to_signs->concat($result);
-        }
+        $iam_authorities_in = [];
+
+        $authorities = Authority::getAmIAuthorityFromOu(Carbon::now(), 'manager', Auth::id());
+
+        // if(count($authorities) > 0){
+          foreach ($authorities as $authority){
+              $iam_authorities_in[] = $authority->organizational_unit_id;
+          }
+
+          foreach($events_type as $event_type){
+              $prev_event_type = $event_type == 'supply_event' ? 'finance_event' : ($event_type == 'finance_event' ? 'pre_finance_event' : ($event_type == 'pre_finance_event' ? ['superior_leader_ship_event', 'leader_ship_event'] : ($event_type == 'superior_leader_ship_event' ? 'leader_ship_event' : null)));
+              // return $prev_event_type;
+              $result = RequestForm::with('user', 'userOrganizationalUnit', 'purchaseMechanism', 'eventRequestForms.signerOrganizationalUnit')
+                  ->where('status', 'pending')
+                  ->whereHas('eventRequestForms', function($q) use ($event_type, $iam_authorities_in){
+                      return $q->where('status', 'pending')->whereIn('ou_signer_user', (count($iam_authorities_in) > 0 ? $iam_authorities_in : [Auth::user()->organizationalUnit->id]))->where('event_type', $event_type);
+                  })->when($prev_event_type, function($q) use ($prev_event_type) {
+                      return $q->whereDoesntHave('eventRequestForms', function ($f) use ($prev_event_type) {
+                          return is_array($prev_event_type) ? $f->whereIn('event_type', $prev_event_type)->where('status', 'pending') : $f->where('event_type', $prev_event_type)->where('status', 'pending');
+                      });
+                  })->get();
+              $my_pending_forms_to_signs = $my_pending_forms_to_signs->concat($result);
+          }
+        // }
 
         // return $my_pending_forms_to_signs;
 
@@ -150,6 +180,16 @@ class RequestFormController extends Controller {
         return view('request_form.pending_forms', compact('my_pending_forms_to_signs', 'not_pending_forms', 'new_budget_pending_to_sign', 'my_forms_signed', 'events_type'));
     }
 
+    public function contract_manager_forms() {
+
+        $contract_manager_forms = RequestForm::with('user', 'userOrganizationalUnit', 'purchaseMechanism', 'eventRequestForms.signerOrganizationalUnit', 'father:id,folio,has_increased_expense')
+            ->where('contract_manager_id', Auth::user()->id)
+            ->latest('id')
+            ->paginate(30);
+
+        return view('request_form.contract_manager_forms', compact('contract_manager_forms'));
+    }
+
 
     // public function edit(RequestForm $requestForm) {
     //     if($requestForm->request_user_id != auth()->user()->id){
@@ -172,6 +212,10 @@ class RequestFormController extends Controller {
 
     public function edit(RequestForm $requestForm){
         // $requestForm=null;
+        if(!Auth()->user()->hasPermissionTo('Request Forms: all') && Auth()->user()->organizational_unit_id != 40 && $requestForm->request_user_id != auth()->user()->id){
+            session()->flash('danger', 'Estimado Usuario/a: no tiene los permisos necesarios para editar formulario N° '.$requestForm->folio);
+            return redirect()->route('request_forms.my_forms');
+        }
         return  view('request_form.create', compact('requestForm'));
     }
 
@@ -202,15 +246,17 @@ class RequestFormController extends Controller {
 
         $requestForm->load('itemRequestForms');
 
-        $title = 'Formularios de requerimiento - Autorización ' . $eventTitles[$eventType];
-        $manager              = Authority::getAuthorityFromDate(Auth::user()->organizationalUnit->id, Carbon::now(), 'manager');
-        $position             = $manager->position;
-        $organizationalUnit   = $manager->organizationalUnit->name;
-        if(is_null($manager))
-            $manager = 'No se ha registrado una Autoridad en el módulo correspondiente!';
-        else
-            $manager = $manager->user->getFullNameAttribute();
-        return view('request_form.sign', compact('requestForm', 'manager', 'position', 'organizationalUnit', 'eventType', 'title'));
+        $title = 'Formularios de Requerimiento - Autorización ' . $eventTitles[$eventType];
+
+        //$manager              = Authority::getAuthorityFromDate(Auth::user()->organizationalUnit->id, Carbon::now(), 'manager');
+
+        // $position             = $manager->position;
+        // $organizationalUnit   = $manager->organizationalUnit->name;
+        // if(is_null($manager))
+        //     $manager = 'No se ha registrado una Autoridad en el módulo correspondiente!';
+        // else
+        //     $manager = $manager->user->getFullNameAttribute();
+        return view('request_form.sign', compact('requestForm', 'eventType', 'title'));
     }
 
     public function create_new_budget(Request $request, RequestForm $requestForm)
@@ -389,11 +435,16 @@ class RequestFormController extends Controller {
 
     public function create_provision(RequestForm $requestForm)
     {
-        // Validar que la suma de total adjudicado de suministros registrados no sobrepase de lo adjudicado en el form req
         $requestForm->load('purchasingProcess.details', 'children.purchasingProcess.details');
-        if($requestForm->purchasingProcess && ($requestForm->purchasingProcess->getExpense() - $requestForm->getTotalExpense() <= 0)){ // Ya no me queda saldo que gastar
-            session()->flash('info', 'No se puede generar un nuevo suministro, el formulario de requerimiento N° '.$requestForm->folio.' no ha comenzado el proceso de compra aún o ya se ha ocupado el monto total de compra adjudicada.');
-            return redirect()->route('request_forms.my_forms');
+        // Validar que el formulario req padre esté finalizado.
+        if(!$requestForm->purchasingProcess || $requestForm->purchasingProcess->status != 'finalized'){
+            session()->flash('danger', 'No se puede generar un nuevo suministro, el formulario de requerimiento N° '.$requestForm->folio.' no ha finalizado su proceso de compra.');
+            return redirect()->back();
+        }
+        // Validar que la suma de total adjudicado de suministros registrados no sobrepase de lo adjudicado en el form req
+        if($requestForm->purchasingProcess->getExpense() - $requestForm->getTotalExpense() <= 0){ // Ya no me queda saldo que gastar
+            session()->flash('danger', 'No se puede generar un nuevo suministro, el formulario de requerimiento N° '.$requestForm->folio.' ya no le queda saldo disponible del monto total de la compra adjudicada.');
+            return redirect()->back();
         }
 
         $requestForm->load('itemRequestForms');
@@ -431,6 +482,33 @@ class RequestFormController extends Controller {
         EventRequestform::createPreFinanceEvent($newRequestForm);
         EventRequestform::createFinanceEvent($newRequestForm);
         EventRequestform::createSupplyEvent($newRequestForm);
+
+        //Envío de notificación a Adm de Contrato y abastecimiento.
+        $mail_contract_manager = User::select('email')
+        ->where('id', $newRequestForm->contract_manager_id)
+        ->first();
+
+        if($mail_contract_manager){
+            $emails = [$mail_contract_manager];
+            Mail::to($emails)
+                ->cc(env('APP_RF_MAIL'))
+                ->send(new NewRequestFormNotification($newRequestForm));
+        }
+        //---------------------------------------------------------
+
+        //Envío de notificación para visación.
+        //manager
+        $type = 'manager';
+        $mail_notification_ou_manager = Authority::getAuthorityFromDate($newRequestForm->eventRequestForms->first()->ou_signer_user, Carbon::now(), $type);
+
+        $emails = [$mail_notification_ou_manager->user->email];
+
+        if($mail_notification_ou_manager){
+            Mail::to($emails)
+                ->cc(env('APP_RF_MAIL'))
+                ->send(new RequestFormSignNotification($newRequestForm, $newRequestForm->eventRequestForms->first()));
+        }
+        //---------------------------------------------------------
 
         session()->flash('info', 'Formulario de requerimiento N° '.$newRequestForm->folio.' fue creado con éxito. <br>
                                   Recuerde que es un formulario dependiente de ID N° '.$requestForm->folio.'. <br>

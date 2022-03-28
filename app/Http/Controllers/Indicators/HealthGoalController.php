@@ -3,14 +3,20 @@
 namespace App\Http\Controllers\Indicators;
 
 use App\Http\Controllers\Controller;
+use App\Imports\IndicatorValuesImport;
+use App\Indicators\AttachedFile;
 use App\Indicators\Establecimiento;
 use App\Indicators\HealthGoal;
 use App\Indicators\Indicator;
 use App\Indicators\Percapita;
+use App\Indicators\PercapitaOficial;
 use App\Indicators\Rem;
 use App\Indicators\Value;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 
 class HealthGoalController extends Controller
 {
@@ -40,7 +46,9 @@ class HealthGoalController extends Controller
     {
         if($law == '19813'){
             $indicator = Indicator::findOrFail($health_goal);
-            $indicator->load('values');
+            $currentMonth = Rem::year($year)->max('Mes');
+            $indicator->currentMonth = $currentMonth;
+            $indicator->load('values.attachedFiles');
             $indicator->establishments = Establecimiento::year($year)->where('meta_san', 1)->orderBy('comuna')->get();
             $this->loadValuesWithRemSourceLaw19813($year, $indicator);
         } else { // ley 18834 o 19664
@@ -114,16 +122,28 @@ class HealthGoalController extends Controller
                     $cols = array_map('trim', explode(',', $cols_array[$i]));
                     $source = $factor == 'numerador' ? $indicator->numerator_source : $indicator->denominator_source;
 
-                    if($source == 'FONASA'){
-                        $result = Percapita::year($year)->selectRaw('COUNT(*)*'.reset($cols).' AS valor, COD_CENTRO')
-                                                ->with(['establecimiento' => function($q) use ($establishment_cods){ 
-                                                    return $establishment_cods ? $q->whereIn('Codigo', $establishment_cods) : $q->where('meta_san', 1); //meta_san es un campo que se empezó a ocupar en el año 2021
-                                                }])
-                                                ->whereHas('establecimiento', function($q) use ($establishment_cods){
-                                                    return $establishment_cods ? $q->whereIn('Codigo', $establishment_cods) : $q->where('meta_san', 1);
-                                                })
-                                                ->whereRaw(implode(' AND ', $cods))
-                                                ->groupBy('COD_CENTRO')->orderBy('COD_CENTRO')->get();
+                    if(Str::contains($source, 'FONASA')){
+                        if($source == 'FONASA'){ // fuente FONASA preliminar
+                            $result = Percapita::year($year)->selectRaw('COUNT(*)*'.reset($cols).' AS valor, COD_CENTRO')
+                                                    ->with(['establecimiento' => function($q) use ($establishment_cods){ 
+                                                        return $establishment_cods ? $q->whereIn('Codigo', $establishment_cods) : $q->where('meta_san', 1); //meta_san es un campo que se empezó a ocupar en el año 2021
+                                                    }])
+                                                    ->whereHas('establecimiento', function($q) use ($establishment_cods){
+                                                        return $establishment_cods ? $q->whereIn('Codigo', $establishment_cods) : $q->where('meta_san', 1);
+                                                    })
+                                                    ->whereRaw(implode(' AND ', $cods))
+                                                    ->groupBy('COD_CENTRO')->orderBy('COD_CENTRO')->get();
+                        }else{ //fuente FONASA definitivo
+                            $result = PercapitaOficial::year($year)->selectRaw('SUM(Inscritos)*'.reset($cols).' AS valor, Id_Centro_APS')
+                                                    ->with(['establecimiento' => function($q) use ($establishment_cods){ 
+                                                        return $establishment_cods ? $q->whereIn('Codigo', $establishment_cods) : $q->where('meta_san', 1); //meta_san es un campo que se empezó a ocupar en el año 2021
+                                                    }])
+                                                    ->whereHas('establecimiento', function($q) use ($establishment_cods){
+                                                        return $establishment_cods ? $q->whereIn('Codigo', $establishment_cods) : $q->where('meta_san', 1);
+                                                    })
+                                                    ->whereRaw(implode(' AND ', $cods))
+                                                    ->groupBy('Id_Centro_APS')->orderBy('Id_Centro_APS')->get();
+                        }
 
                         foreach($result as $item){
                             $value = new Value(['month' => 12, 'factor' => $factor, 'value' => $item->valor]);
@@ -185,7 +205,7 @@ class HealthGoalController extends Controller
                                     ->when($isRemP, function($query){
                                         return $query->whereIn('Mes', [6,12]);
                                     })
-                                    ->when($indicator->id == 76 && $factor == 'denominador', function($query){ //N° de niños y niñas de 12 a 23 meses diagnosticados con riesgo de DSM en su primera evaluación en control de los 18 meses, período enero a septiembre 2021
+                                    ->when(in_array($indicator->id, [76,341]) && $factor == 'denominador', function($query){ //N° de niños y niñas de 12 a 23 meses diagnosticados con riesgo de DSM en su primera evaluación en control de los 18 meses, período enero a septiembre 2021
                                         return $query->whereIn('Mes', [1,2,3,4,5,6,7,8,9]);
                                     })
                                     ->whereIn('CodigoPrestacion', $cods)->groupBy('IdEstablecimiento','Mes')->orderBy('Mes')->get();
@@ -197,7 +217,7 @@ class HealthGoalController extends Controller
                             $indicator->values->add($value);
                         }
 
-                        if($indicator->id == 76 && $factor == 'denominador'){
+                        if(in_array($indicator->id, [76,341]) && $factor == 'denominador'){
                             // N° de niños y niñas de 12 a 23 meses diagnosticados con riesgo de DSM en su primera evaluación en control de los 18 meses, período octubre 2020 a diciembre del 2020
                             $result = Rem::year($year-1)->selectRaw($raws)
                                     ->with(['establecimiento' => function($q) use ($establishment_cods){ 
@@ -304,5 +324,77 @@ class HealthGoalController extends Controller
         
         session()->flash('success', 'Registros actualizados satisfactoriamente.');
         return redirect()->route('indicators.health_goals.show', [$law, $year, $health_goal]);
+    }
+
+    public function importIndValues($law, $year, $health_goal, Indicator $indicator, Request $request)
+    {
+        // return $request;
+        session()->flash('commune', str_replace(" ","_",$request->commune)); //Necesario para ubicar comuna en el conjunto de tabs
+        Excel::import(new IndicatorValuesImport($indicator->id, $request->commune), $request->file);
+        session()->flash('success', 'Actividades para comuna de '.$request->commune.' fueron registradas satisfactoriamente.');
+        return redirect()->route('indicators.health_goals.show', [$law, $year, $indicator]);
+    }
+
+    public function storeIndValue($law, $year, $health_goal, Indicator $indicator, Value $value, Request $request)
+    {
+        $newValue = Value::create([
+            'activity_name' => $value->activity_name,
+            'month' => $request->month,
+            'factor' => 'numerador',
+            'commune' =>  $value->commune,
+            'value' => 1,
+            'valueable_id' => $value->valueable_id,
+            'valueable_type' => $value->valueable_type,
+        ]);
+
+        if($request->hasFile('files')){
+            foreach($request->file('files') as $file) {
+                $filename = $file->getClientOriginalName();
+                $fileModel = new AttachedFile();
+                $fileModel->file = $file->store('ionline/indicators/health_goals/19813/'.$year,['disk' => 'gcs']);
+                $fileModel->document_name = $filename;
+                $fileModel->value_id = $newValue->id;
+                $fileModel->save();
+            }
+        }
+        
+        session()->flash('commune', str_replace(" ","_",$value->commune)); //Necesario para ubicar comuna en el conjunto de tabs
+        session()->flash('success', 'Actividad ejecutada para comuna de '.$request->commune.' se registra satisfactoriamente.');
+        return redirect()->route('indicators.health_goals.show', [$law, $year, $indicator]);
+    }
+
+    public function updateIndValue($law, $year, $health_goal, Indicator $indicator, Value $value, Request $request)
+    {
+        $value->value = $request->has('value') ? 1 : 0;
+        $value->save();
+
+        if($request->hasFile('files')){
+            foreach($request->file('files') as $file) {
+                $filename = $file->getClientOriginalName();
+                $fileModel = new AttachedFile();
+                $fileModel->file = $file->store('ionline/indicators/health_goals/19813/'.$year,['disk' => 'gcs']);
+                $fileModel->document_name = $filename;
+                $fileModel->value_id = $value->id;
+                $fileModel->save();
+            }
+        }
+        
+        session()->flash('commune', str_replace(" ","_",$value->commune)); //Necesario para ubicar comuna en el conjunto de tabs
+        session()->flash('success', 'Actividad ejecutada para comuna de '.$request->commune.' se modifica satisfactoriamente.');
+        return redirect()->route('indicators.health_goals.show', [$law, $year, $indicator]);
+    }
+
+    public function destroy_file(AttachedFile $attachedFile)
+    {
+        $attachedFile->delete();
+        Storage::disk('gcs')->delete($attachedFile->file);
+
+        session()->flash('success', 'Documento adjunto se eliminó satisfactoriamente.');
+        return redirect()->back();
+    }
+
+    public function show_file(AttachedFile $attachedFile)
+    {
+        return Storage::disk('gcs')->response($attachedFile->file, $attachedFile->document_name);
     }
 }

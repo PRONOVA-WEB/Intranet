@@ -84,8 +84,12 @@
                     </a>
                 @endcan
 
+                <a class="collapse-item" href="{{ route('documents.summaries.index') }}">
+                    <i class="fas fa-file-import"></i> Sumarios
+                </a>
+
                 @can('Agreement: view')
-                    <a class=collapse-item" href="{{ route('agreements.tracking.index') }}">
+                    <a class="collapse-item" href="{{ route('agreements.tracking.index') }}">
                         <i class="fas fa-file"></i> Convenios
                     </a>
                 @endcan
@@ -104,12 +108,12 @@
     @endcan
     <!-- Nav Item - abastecimiento -->
     @if (env('APP_ENV') == 'local' || env('APP_ENV') == 'testing')
-        {{-- <li class="nav-item {{ active(['request_forms.*']) }}">
+        <li class="nav-item {{ active(['request_forms.*']) }}">
             <a class="nav-link" href="{{ route('request_forms.my_forms') }}">
                 <i class="fas fa-shopping-cart"></i>
                 <span>Abastecimiento</span>
             </a>
-        </li> --}}
+        </li>
     @endif
     <!-- Nav Item - SGR -->
     @can('Requirements: create')
@@ -173,11 +177,11 @@
                         </a>
                     @endcan
 
-                    {{-- @canany(['Shift Management: view'])
+                    @canany(['Shift Management: view'])
                         <a class="collapse-item" href="{{ route('rrhh.shiftManag.index') }}">
                             <i class="fa fa-calendar fa-fw"></i> Modulo Turnos
                         </a>
-                    @endcan --}}
+                    @endcan
 
                     @canany(['Users: service requests'])
                         <a class="collapse-item" href="{{ route('rrhh.users.service_requests.index') }}">
@@ -217,19 +221,19 @@
             </div>
         </li>
     @endcan
-    @can('Drugs')
+    {{-- @can('Drugs')
         <li class="nav-item {{ active('drugs.*') }}">
             <a class="nav-link" href="{{ route('drugs.receptions.index') }}">
                 <i class="fas fa-cannabis"></i> <span> Drogas <span></a>
         </li>
-    @endcan
+    @endcan --}}
 
-    @canany(['Asignacion Estimulos'])
+    {{-- @canany(['Asignacion Estimulos'])
         <li class="nav-item">
             <a class="nav-link" href="{{ route('assigment.index') }}">
                 <i class="fas fa-wallet"></i> <span>Asign. Estímulos</span></a>
         </li>
-    @endcan
+    @endcan --}}
 
     {{-- @can('Pharmacy: manager')
         <li class="nav-item {{ active('pharmacies.*') }}">
@@ -282,11 +286,11 @@
         </li>
     @endcan --}}
 
-    @can('Mammography: admin')
+    {{-- @can('Mammography: admin')
         <li class="nav-item">
             <a class="nav-link" href="{{ route('mammography.index') }}">Booking Mamografías</a>
         </li>
-    @endcan
+    @endcan --}}
     <!-- Divider -->
     <hr class="sidebar-divider">
     @role('superuser')

@@ -22,6 +22,10 @@ class RequestReplacementStaff extends Model
         'ou_of_performance_id'
     ];
 
+    public function requestFather() {
+        return $this->belongsTo('App\Models\ReplacementStaff\RequestReplacementStaff', 'request_id');
+    }
+
     public function profile_manage() {
         return $this->belongsTo('App\Models\ReplacementStaff\ProfileManage');
     }
@@ -31,7 +35,7 @@ class RequestReplacementStaff extends Model
     }
 
     public function fundamentManage() {
-        return $this->belongsTo('App\Models\ReplacementStaff\RstFundamentManage');
+        return $this->belongsTo('App\Models\ReplacementStaff\RstFundamentManage')->withTrashed();
     }
 
     public function fundamentDetailManage() {
@@ -153,9 +157,26 @@ class RequestReplacementStaff extends Model
             }
             return $request_to_sign;
         }
+        elseif (Auth::user()->hasRole('Replacement Staff: personal sign')) {
+
+            $request_to_sign = RequestReplacementStaff::latest()
+                ->whereHas('requestSign', function($q){
+                    $q->Where('organizational_unit_id', 46)
+                    ->Where('request_status', 'pending');
+                })
+                ->paginate(10)
+                ->count();
+
+            return $request_to_sign;
+        }
         else{
             return $request_to_sign = 0;
         }
+    }
+
+    public function getNumberOfDays() {
+        $numberDays = 1 + $this->end_date->diff($this->start_date)->format("%a");
+        return $numberDays;
     }
 
     /**

@@ -74,6 +74,15 @@ class DatabaseSeeder extends Seeder
          /* SEED PARAMETROS DE MÓDULO DE DROGAS */
          $this->call(ParameterSeeder::class);
 
+         /* SEED PARAMETROS DE SUMARIOS */
+         $this->call(FiscalSeeder::class);
+         $this->call(SummaryStatusSeeder::class);
+
+         /* SEED PARA TURNOS */
+         $this->call(ShiftTypesSeeder::class);
+
+
+
 
         /* DIRECTORIO PARA BIBLIOTECA DE ARCHIVOS PÚBLICOS */
         \Storage::makeDirectory('library');

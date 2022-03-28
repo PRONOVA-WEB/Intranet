@@ -73,5 +73,17 @@ class UserSeeder extends Seeder
         'email'=>'managerfinanzas@pronova.cl','password'=>bcrypt('admin'), 'position'=>'Gerente', 'organizational_unit_id'=>'40']);
         $user->assignRole('dev');
         $user->givePermissionTo(Permission::all());
+
+        $user = new User();
+        $user->id = 88888888;
+        $user->dv = 1;
+        $user->name = "Candidato";
+        $user->fathers_family = "Contratación";
+        $user->mothers_family = "Honorarios";
+        $user->password = bcrypt('admin');
+        $user->position = "Ingeniero Desarrollador";
+        $user->email = "candidato@pronova.cl";
+        $user->save();
+        $user->givePermissionTo('Service Request');
     }
 }

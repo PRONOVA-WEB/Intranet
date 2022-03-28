@@ -48,7 +48,7 @@
                   <th>Solicitud</th>
                   <th>Grado</th>
                   <th>Calidad Jurídica</th>
-                  <th>Periodo</th>
+                  <th colspan="2">Periodo</th>
                   <th>Fundamento</th>
                   <th>Jornada</th>
                   <th>Solicitante</th>
@@ -87,6 +87,13 @@
                   <td>{{ $requestReplacementStaff->legalQualityManage->NameValue }}</td>
                   <td>{{ Carbon\Carbon::parse($requestReplacementStaff->start_date)->format('d-m-Y') }} <br>
                       {{ Carbon\Carbon::parse($requestReplacementStaff->end_date)->format('d-m-Y') }}
+                  </td>
+                  <td class="text-center">{{ $requestReplacementStaff->getNumberOfDays() }}
+                      @if($requestReplacementStaff->getNumberOfDays() > 1)
+                          días
+                      @else
+                          dia
+                      @endif
                   </td>
                   <td>
                       {{ $requestReplacementStaff->fundamentManage->NameValue }}<br>
@@ -155,7 +162,7 @@
                   <th>Solicitud</th>
                   <th>Grado</th>
                   <th>Calidad Jurídica</th>
-                  <th>Periodo</th>
+                  <th colspan="2">Periodo</th>
                   <th>Fundamento</th>
                   <th>Jornada</th>
                   <th>Solicitante</th>
@@ -194,6 +201,13 @@
                   <td>{{ $requestReplacementStaff->legalQualityManage->NameValue }}</td>
                   <td>{{ Carbon\Carbon::parse($requestReplacementStaff->start_date)->format('d-m-Y') }} <br>
                       {{ Carbon\Carbon::parse($requestReplacementStaff->end_date)->format('d-m-Y') }}
+                  </td>
+                  <td class="text-center">{{ $requestReplacementStaff->getNumberOfDays() }}
+                      @if($requestReplacementStaff->getNumberOfDays() > 1)
+                          días
+                      @else
+                          dia
+                      @endif
                   </td>
                   <td>
                     {{ $requestReplacementStaff->fundamentManage->NameValue }}<br>

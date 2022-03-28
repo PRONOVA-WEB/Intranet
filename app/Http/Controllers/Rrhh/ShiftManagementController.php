@@ -397,6 +397,8 @@ class ShiftManagementController extends Controller
             $nUShiftTypesMonts->shift_type_id = $nSType->id;
             $nUShiftTypesMonts->save();
         }
+        $sTypes = ShiftTypes::all();
+        Session::put('sTypes',$sTypes);
         session()->flash('info', 'El Turno tipo <i>"'.$r->name.'"</i> ha sido creado.');
         return redirect()->route('rrhh.shiftsTypes.index');
     }
@@ -435,6 +437,7 @@ class ShiftManagementController extends Controller
         $nShift->shift_types_id = $r->shiftId;
         $nShift->organizational_units_id = $r->orgUnitId;
         $nShift->groupname = htmlentities($r->groupname);
+
         $nShift->save();
         // echo "staff assigned to shift";
         $nUser = User::find($nShift->user_id);
