@@ -78,6 +78,11 @@ class DatabaseSeeder extends Seeder
          $this->call(FiscalSeeder::class);
          $this->call(SummaryStatusSeeder::class);
 
+         /* SEED PARA TURNOS */
+         $this->call(ShiftTypesSeeder::class);
+
+
+
 
         /* DIRECTORIO PARA BIBLIOTECA DE ARCHIVOS PÚBLICOS */
         \Storage::makeDirectory('library');

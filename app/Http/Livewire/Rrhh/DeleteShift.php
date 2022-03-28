@@ -10,7 +10,7 @@ use Carbon\Carbon;
 
 
 class DeleteShift extends Component
-{   
+{
     protected $listeners = ['setDataToDeleteModal' => 'setValues'];
     public $startdate;
     public $enddate;
@@ -23,12 +23,13 @@ class DeleteShift extends Component
     public $deleteAll = 0 ;
     public $rutUser;
     public $daysList= array();
+    public $actuallyShiftUserDay;
     public function render()
-    {   
+    {
         return view('livewire.rrhh.delete-shift');
     }
     public function mount(){
-       
+
        $this->cantDaysToDelete = 0;
        // $this->deleteAll = 1;
     }
@@ -45,7 +46,7 @@ class DeleteShift extends Component
 
         $this->startdate =  Session::get('actuallyYear')."-". Session::get('actuallyMonth') ."-01" ;
 
-        $this->enddate =  Session::get('actuallyYear') 
+        $this->enddate =  Session::get('actuallyYear')
         ."-". Session::get('actuallyMonth') ."-31";
         $days =  (object) $this->ShiftUser->days;
         foreach ($days->where("day",">=",$this->startdate)->where("day","<=",$this->enddate) as $day) {
@@ -75,14 +76,22 @@ class DeleteShift extends Component
     }
 
     public function clearDeleteModal(){
-         $this->reset();
+        $this->reset();
+
     }
 
     public function confirmDeleteDays(){
         for($i=0;$i<sizeof($this->daysList);$i++){
-            $ShiftUserDay = ShiftUserDay::find($this->daysList[$i]["id"]); 
+            $ShiftUserDay = ShiftUserDay::find($this->daysList[$i]["id"]);
             // dd($ShiftUserDay);
+            $ShiftUserDay->shiftUserDayLog()->where('shift_user_day_id',  $ShiftUserDay->id)->delete();
             $ShiftUserDay->delete();
+            $ShiftUserDaytoDelete = $ShiftUserDay->shift_user_id;
+        }
+        $CountShiftUserDay = ShiftUserDay::where('shift_user_id',$ShiftUserDaytoDelete)->get();
+        if($CountShiftUserDay->count() == 0)
+        {
+            ShiftUser::find($ShiftUserDaytoDelete)->delete();
         }
         session()->flash('warning', 'Se han eliminado los dias seleccionados ');
         return redirect()->route('rrhh.shiftManag.index');

@@ -78,13 +78,10 @@ class RoleAndPermissionSeeder extends Seeder
 
         Permission::create(['name' => 'Pharmacy: manager']);
         Permission::create(['name' => 'Pharmacy: user']);
-<<<<<<< HEAD
         //Permission::create(['name' => 'Pharmacy: SSI (id:1)']);
         // Permission::create(['name' => 'Pharmacy: REYNO (id:2)']);
         // Permission::create(['name' => 'Pharmacy: APS (id:3)']);
         // Permission::create(['name' => 'Pharmacy: Servicios generales (id:4)']);
-=======
->>>>>>> ebee989a8d9556bf2aeea9c2144eaf6c0c0197e7
         Permission::create(['name' => 'Pharmacy: create']);
         Permission::create(['name' => 'Pharmacy: deliver']);
         Permission::create(['name' => 'Pharmacy: dispatch']);
@@ -140,23 +137,14 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'Partes: oficina']);
         Permission::create(['name' => 'Partes: delete']);
 
-<<<<<<< HEAD
-
         Permission::create(['name' => 'Replacement Staff: create request']);
         Permission::create(['name' => 'Replacement Staff: list rrhh']);
         Permission::create(['name' => 'Replacement Staff: manage']);
         Permission::create(['name' => 'Replacement Staff: technical evaluation']);
         Permission::create(['name' => 'Replacement Staff: assign request']);
+        Permission::create(['name' => 'Replacement Staff: personal sign']);
         Permission::create(['name' => 'Replacement Staff: view requests']);
-        //Permission::create(['name' => 'Programming: view']);
-=======
-        // Permission::create(['name' => 'Replacement Staff: create request']);
-        // Permission::create(['name' => 'Replacement Staff: list rrhh']);
-        // Permission::create(['name' => 'Replacement Staff: manage']);
-        // Permission::create(['name' => 'Replacement Staff: technical evaluation']);
-        // Permission::create(['name' => 'Replacement Staff: assign request']);
-        // Permission::create(['name' => 'Replacement Staff: personal sign']);
->>>>>>> ebee989a8d9556bf2aeea9c2144eaf6c0c0197e7
+
 
         // @role(
         //   'Replacement Staff: admin |
@@ -215,7 +203,6 @@ class RoleAndPermissionSeeder extends Seeder
         $role = Role::create(['name' => 'Resources: admin']);
         $role->givePermissionTo(['Resources: create', 'Resources: edit', 'Resources: delete']);
 
-<<<<<<< HEAD
         if(!env('APP_PRONOVA'))
         {
             $role = Role::create(['name' => 'Tickets: admin']);
@@ -230,42 +217,5 @@ class RoleAndPermissionSeeder extends Seeder
 
         $role = Role::create(['name' => 'Replacement Staff: user rys']);
 
-=======
-        $role = Role::create(['name' => 'Tickets: admin']);
-        $role->givePermissionTo(['Tickets: create', 'Tickets: manage','Tickets: TI']);
-
-        $role = Role::create(['name' => 'Replacement Staff: admin']);
-        $role->givePermissionTo([
-          'Replacement Staff: create request',
-          'Replacement Staff: list rrhh',
-          'Replacement Staff: technical evaluation',
-          'Replacement Staff: manage',
-          'Replacement Staff: assign request'
-        ]);
-
-        $role = Role::create(['name' => 'Replacement Staff: user']);
-        $role->givePermissionTo([
-          'Replacement Staff: create request'
-        ]);
-
-        $role = Role::create(['name' => 'Replacement Staff: user rys']);
-        $role->givePermissionTo([
-          'Replacement Staff: create request',
-          'Replacement Staff: list rrhh',
-          'Replacement Staff: technical evaluation',
-          'Replacement Staff: view requests'
-        ]);
-
-        $role = Role::create(['name' => 'Replacement Staff: personal']);
-        $role->givePermissionTo([
-          'Replacement Staff: view requests'
-        ]);
-
-        $role = Role::create(['name' => 'Replacement Staff: personal sign']);
-        $role->givePermissionTo([
-          'Replacement Staff: view requests',
-          'Replacement Staff: personal sign'
-        ]);
->>>>>>> ebee989a8d9556bf2aeea9c2144eaf6c0c0197e7
     }
 }

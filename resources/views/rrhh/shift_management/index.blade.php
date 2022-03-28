@@ -57,14 +57,14 @@
         border-top: none;
         border-left: none;
         border-right: none;
- 
+
     }
 
     .bbn {
         border-top: none !important;
         border-left: none;
         border-right: solid 1px #454d55;
-   
+
     }
     .bg-red {background-color: #ff5133;}
     .bg-green {background-color: #00e63d;}
@@ -77,7 +77,7 @@
         color: #fff;
         padding: 3px 15px;
         border-radius: 50%;
-  
+
     }
     .only-icon {
         background-color: Transparent;
@@ -93,8 +93,8 @@
         filter:  alpha(opacity=50);
     }
 
-    .btn-light { 
-        border: 1px solid #ced4da; 
+    .btn-light {
+        border: 1px solid #ced4da;
     }
      td {
         overflow:hidden;
@@ -152,7 +152,7 @@
                             data-size="5" onchange="this.form.submit()">
                         @foreach($ouRoots as $ouRoot)
                             @if($ouRoot->name != 'Externos')
-                                <option value="{{ $ouRoot->id }}"  {{($ouRoot->id==$actuallyOrgUnit->id)?'selected':''}}> 
+                                <option value="{{ $ouRoot->id }}"  {{($ouRoot->id==$actuallyOrgUnit->id)?'selected':''}}>
                                 {{($ouRoot->id ?? '')}}-{{ $ouRoot->name }}
                                 </option>
                                 @foreach($ouRoot->childs as $child_level_1)
@@ -187,9 +187,9 @@
 
             <div class="form-group col-md-3">
                 <label for="for_name" class="input-group-addon">Series</label>
-              
 
-                               
+
+
                 <select class="form-control" id="for_turnFilter" name="turnFilter" onchange="this.form.submit()">
 
                     <option value="0">0 - Todos</option>
@@ -197,11 +197,11 @@
                         $index = 0;
                     @endphp
                     @foreach($sTypes as $st)
-                       
+
                         @foreach($actuallyShiftMonthsList  as $key =>  $shiftMonth)
                             @foreach($shiftMonth as $sMonth)
                                 @if($sMonth->shift_type_id == $st->id && $sMonth->user_id == auth()->user()->id && $sMonth->month == $actuallyMonth)
-                                
+
                                     <option value="{{$st->id}}" {{($st->id==$actuallyShift->id)?'selected':''}}>{{$index}} - Solo {{$st->name}}</option>
                                     {{--json_encode($sMonth)--}}
                                 @endif
@@ -215,13 +215,13 @@
                 </select>
             </div>
 
-            <div class="form-group col-md-4">	
+            <div class="form-group col-md-4">
                 <label for="for_name">Fecha</label>
                 <input type="month" class="form-control" onchange="this.form.submit()" name="monthYearFilter" value="{{ $actuallyYear."-".$actuallyMonth }}">
-              
+
             </div>
 
-           
+
 
         </div>
     </form>
@@ -234,14 +234,14 @@
     <form method="POST" action="{{ route('rrhh.shiftsTypes.assign') }}" class="mb-3">
         @csrf
         @method('POST')
-            
+
         <input hidden name="dateFrom" value="{{$actuallyYear}}-{{$actuallyMonth}}-01">
         <input hidden name="dateUp" value="{{$actuallyYear}}-{{$actuallyMonth}}-{{$days}}">
         <input hidden name="shiftId" value="{{$actuallyShift->id}}">
         <input hidden name="orgUnitId" value="{{$actuallyOrgUnit->id}}">
-        
-       
-        <div class="form-row"> 	
+
+
+        <div class="form-row">
             <div class="col-md-4">
                 <label>Personal de "{{$actuallyOrgUnit->name}}"</label>
                 <select class="selectpicker form-control"  data-live-search="true" name="slcStaff" required>
@@ -249,13 +249,13 @@
                     @foreach($staff as $user)
                         <option value="{{$user->id}}">
                             {{$user->runFormat() }} - {{ $user->fullName }}
-                        </option> 
+                        </option>
                     @endforeach
                 </select>
             </div>
             <div class="col-md-2">
                 <label>Grupo</label>
-                <input type="text" class="form-control" name="groupname" 
+                <input type="text" class="form-control" name="groupname"
                     value="{{strtoupper(html_entity_decode ($groupname))}}" placeholder="Sin grupo">
             </div>
             <div class="col-md-1">
@@ -264,22 +264,22 @@
                 @if(isset($actuallyShift->day_series))
                     @php $currentSeries =  explode(",", $actuallyShift->day_series); @endphp
                     @for(  $i=0;$i< sizeof($currentSeries);$i++  )
-                        
-                       @if($currentSeries[$i]!="") 
+
+                       @if($currentSeries[$i]!="")
                             <option value="{{$i}}">{{intval($i+1)}} - {{$currentSeries[$i]}}</option>
                         @endif
                     @endfor
-                 @endif 
+                 @endif
                 </select>
             </div>
             <div class="col-md-2">
                 <label>De</label>
-                <input type="date" class="form-control" name="dateFromAssign" 
+                <input type="date" class="form-control" name="dateFromAssign"
                     value="{{$actuallyYear}}-{{$actuallyMonth}}-01">
             </div>
             <div class="col-md-2 ">
                 <label>Hasta</label>
-                <input type="date" class="form-control" name="dateUpAssign" 
+                <input type="date" class="form-control" name="dateUpAssign"
                     value="{{$actuallyYear}}-{{$actuallyMonth}}-{{$days}}">
             </div>
             <div class="col-md-1">
@@ -291,7 +291,7 @@
         </div>
 
     </form>
-    
+
 
     @for( $i = 1 ; $i < (sizeof($shiftStatus)+1); $i++ )
 
@@ -301,7 +301,7 @@
     @endfor
     <div class="row" class="small" style=" overflow: auto;white-space: nowrap;">
         <div class="col-md-2">
-            
+
             @if($actuallyShift->id != 0)
                 <table class="table table-sm table-bordered">
                     <thead class="thead-dark">
@@ -316,28 +316,28 @@
                                 @endforeach
 
                                 {{$actuallyYear}}
-                                -  
+                                -
                                 {{$actuallyShift->name}}
 
-                                <a href=" {{route('rrhh.shiftManag.nextMonth')}}"  >-></a>        
-                            </th> 
+                                <a href=" {{route('rrhh.shiftManag.nextMonth')}}"  >-></a>
+                            </th>
                         </tr>
                         <tr>
-                            @for($i = 1; $i <= $days; $i++) 
+                            @for($i = 1; $i <= $days; $i++)
                                 @php
-                                    $dateFiltered = \Carbon\Carbon::createFromFormat('Y-m-d',  $actuallyYear."-".$actuallyMonth."-".$i, 'Europe/London');  
+                                    $dateFiltered = \Carbon\Carbon::createFromFormat('Y-m-d',  $actuallyYear."-".$actuallyMonth."-".$i, 'Europe/London');
                                 @endphp
-                                <th class="brless dia" 
+                                <th class="brless dia"
                                     style="color:{{ ( ($dateFiltered->isWeekend() )?'red':( ( sizeof($holidays->where('date',$actuallyYear.'-'.$actuallyMonth.'-'.$i)) > 0 ) ? 'red':'white' ))}}" >
                                     <p style="font-size: 8px">{{$i}}</p>
-                                </th>   
+                                </th>
                                 <!-- <th class="brless dia">🌞</th> -->
                                 <!-- <th class="noche">🌒</th> -->
                             @endfor
                         </tr>
                     </thead>
                     <tbody>
-                        <div>   
+                        <div>
                             @livewire('rrhh.list-of-shifts')
                         </div>
                     </tbody>
@@ -354,17 +354,17 @@
                                     @endforeach
 
                                     {{$actuallyYear}}
-                                    -  
+                                    -
                                     {{$st->name}}
                                 </th>
                             </tr>
                             <tr>
-                                @for($i = 1; $i <= $days; $i++) 
+                                @for($i = 1; $i <= $days; $i++)
                                     @php
-                                        $dateFiltered = \Carbon\Carbon::createFromFormat('Y-m-d',  $actuallyYear."-".$actuallyMonth."-".$i, 'Europe/London');  
+                                        $dateFiltered = \Carbon\Carbon::createFromFormat('Y-m-d',  $actuallyYear."-".$actuallyMonth."-".$i, 'Europe/London');
                                     @endphp
 
-                                    <th class="brless dia" 
+                                    <th class="brless dia"
                                         style="color:{{ ( ($dateFiltered->isWeekend() )?'red':( ($holidays->where('date',$dateFiltered)) ? 'red':'white')  )}}" >
                                        {{$i}}
                                     </th>
@@ -394,7 +394,7 @@
             </li>
 
         @endfor
-           
+
         </ul>
 
 </div>
@@ -402,11 +402,11 @@
 @livewire("rrhh.modal-edit-shift-user-day")
 
 
-<!-- TODO: Ve si puedes implementar algo así para la tabla, 
+<!-- TODO: Ve si puedes implementar algo así para la tabla,
     que al celda sea clickeable completamente
     abajo te dejé un ejemplo
     -->
-    
+
 <style>
     td {
         overflow:hidden;

@@ -2,28 +2,28 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header"  style="background-color:#006cb7;color:white   ">
-        <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-close"></i> Eliminar personal de turno actual</h5>
+        <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-times"></i> Eliminar personal de turno actual</h5>
         <button type="button" class="btn btn-close" data-dismiss="modal" aria-label="Close" wire:click.prevent="clearDeleteModal()">x</button>
       </div>
       <div class="modal-body">
-       
+
         <div class="row">
-            <div class="col-md-6" style="font-size:10px;">Rut: 
-                @if(isset($rutUser) && $rutUser!="") 
+            <div class="col-md-6" style="font-size:10px;">Rut:
+                @if(isset($rutUser) && $rutUser!="")
                     {{$rutUser}}
                 @else
                     <i class="fas fa-spinner fa-pulse"></i>
                 @endif
             </div>
-            <div class="col-md-6" style="font-size:10px;">Nombre: 
-            @if(isset($userName) && $userName!="") 
+            <div class="col-md-6" style="font-size:10px;">Nombre:
+            @if(isset($userName) && $userName!="")
                 {{$userName}}
             @else
                 <i class="fas fa-spinner fa-pulse"></i>
             @endif
              </div>
         </div>
-        
+
         <div class="row">
 
             <div class="col-md-6" style="font-size:10px;">Tipo de turno:
@@ -33,13 +33,13 @@
                 <i class="fas fa-spinner fa-pulse"></i>
             @endif
             </div>
-            <div class="col-md-6" style="font-size:10px;">grupo: 
+            <div class="col-md-6" style="font-size:10px;">grupo:
             @if(isset($actuallyGroup))
                 {{(isset($actuallyGroup) && $actuallyGroup !="")?$actuallyGroup:"Sin Grupo"}}
             @else
                 <i class="fas fa-spinner fa-pulse"></i>
-            @endif    
-            
+            @endif
+
             </div>
 
         </div>
@@ -47,12 +47,12 @@
         @if($deleteAll == 0)
         <div class="row">
             <div class="col-md-6">
-                Eliminar días desde:  
+                Eliminar días desde:
             </div>
             <div class="col-md-6">
                 <input type="date" wire:model="startdate" wire:change="changeDate" class="form-control">
             </div>
-           
+
         </div>
         <div class="row">
              <div class="col-md-6">
@@ -60,7 +60,7 @@
             </div>
             <div class="col-md-6">
                 <input type="date" wire:model="enddate" wire:change="changeDate" class="form-control">
-                
+
             </div>
         </div>
         @endif
