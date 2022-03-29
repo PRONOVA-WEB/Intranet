@@ -38,11 +38,11 @@ class ListOfShifts extends Component
     );
     protected $listeners = ['refreshListOfShifts' => '$refreh'];
 
-    public function ref()  {   
+    public function ref()  {
 
          // $this->reset();
         $this->emit("renderShiftDay");
-        // $this->statusx++;  
+        // $this->statusx++;
         // $this->render();
            // dd($id);
         // $this->mount($this->staffInShift,$this->actuallyYear,$this->actuallyMonth,$this->days);
@@ -86,7 +86,7 @@ class ListOfShifts extends Component
 
         if(Session::has('actuallyOrgUnit') && Session::get('actuallyOrgUnit') != "")
             $this->actuallyOrgUnit = Session::get('actuallyOrgUnit');
-        else    
+        else
             $this->actuallyOrgUnit = $cargos->first();
 
 
@@ -112,11 +112,11 @@ class ListOfShifts extends Component
     }
 
 
-   
+
     public function editShiftDay($id){
 
         // $this->emit('clearModal', $this->shiftDay->id);
-        $this->filered ="on"; 
+        $this->filered ="on";
         // $this->emit('setshiftUserDay', $this->shiftDay->id);
         // $this->emit('setshiftUserDay', $id);
 
@@ -131,5 +131,5 @@ class ListOfShifts extends Component
         // $this->emit("setDataToDeleteModal",[$actuallyShiftDay]);
 
     }
- 
+
 }

@@ -186,13 +186,14 @@
             </div>
 
             <div class="form-group col-md-3">
+
                 <label for="for_name" class="input-group-addon">Series</label>
 
 
 
                 <select class="form-control" id="for_turnFilter" name="turnFilter" onchange="this.form.submit()">
 
-                    <option value="0">0 - Todos</option>
+                    {{-- <option value="0">0 - Todas</option> --}}
                     @php
                         $index = 0;
                     @endphp
@@ -202,7 +203,7 @@
                             @foreach($shiftMonth as $sMonth)
                                 @if($sMonth->shift_type_id == $st->id && $sMonth->user_id == auth()->user()->id && $sMonth->month == $actuallyMonth)
 
-                                    <option value="{{$st->id}}" {{($st->id==$actuallyShift->id)?'selected':''}}>{{$index}} - Solo {{$st->name}}</option>
+                                    <option value="{{$st->id}}" {{($st->id==$actuallyShift->id)?'selected':''}}>{{$index}} - {{$st->name}}</option>
                                     {{--json_encode($sMonth)--}}
                                 @endif
                             @endforeach
@@ -292,13 +293,13 @@
 
     </form>
 
-
+    <h6>Leyenda:</h6>
     @for( $i = 1 ; $i < (sizeof($shiftStatus)+1); $i++ )
-
         <a href="#" class="badge badge-secondary" style="background-color:#{{$colorsRgb[$i]}}">{{ucfirst($shiftStatus[$i])}}</a>
-
-
     @endfor
+    <br>
+    <i class="	far fa-calendar-check"></i> Turno Confirmado
+    <i class="	far fa-calendar-times"></i> Turno Cerrado
     <div class="row" class="small" style=" overflow: auto;white-space: nowrap;">
         <div class="col-md-2">
 

@@ -21,7 +21,7 @@
                             data-size="5">
                         @foreach($ouRoots as $ouRoot)
                             @if($ouRoot->name != 'Externos')
-                                <option value="{{ $ouRoot->id }}"  {{($ouRoot->id==$actuallyOrgUnit->id)?'selected':''}}> 
+                                <option value="{{ $ouRoot->id }}"  {{($ouRoot->id==$actuallyOrgUnit->id)?'selected':''}}>
                                 {{($ouRoot->id ?? '')}}-{{ $ouRoot->name }}
                                 </option>
                                 @foreach($ouRoot->childs as $child_level_1)
@@ -53,22 +53,22 @@
                     </select>
             	</div> -->
 
-   				<div class="form-group col-md-2">	
+   				<div class="form-group col-md-2">
                 	<label for="for_name">Año</label>
                 	<select class="form-control" id="for_yearFilter" name="yearFilter">
                     	@for($i = (intval($actuallyYear)-2); $i< (intval($actuallyYear) + 4); $i++)
                         	<option value="{{$i}}" {{ ($i == $actuallyYear )?"selected":"" }}> {{$i}}</option>
-                    	@endfor	
+                    	@endfor
                 	</select>
             	</div>
 
-            	<div class="form-group col-md-2">    	
+            	<div class="form-group col-md-2">
                 	<label for="for_name">Mes</label>
                 	<select class="form-control" id="for_monthFilter" name="monthFilter">
                     	@foreach($months AS $index => $month)
                         	<option value="{{ $index }}" {{ ($index == $actuallyMonth )?"selected":"" }}>{{$loop->iteration}} - {{$month}} </option>
                     	@endforeach
-                	</select> 		
+                	</select>
             	</div>
 
             	<div class="form-group col-md-1">
@@ -91,7 +91,7 @@
     	<!-- 	<li class="list-group-item">
     			<b>Propietario</b>
     			<p>18.004.474-4 - Armando Barra Perez</p>
-    			
+
     			<b>Día</b>
     			<p> 05/07/2021, Jornada: L - Larga</p>
     			<button class="btn btn-success">Solicitar</button>
@@ -100,21 +100,21 @@
     		<li class="list-group-item">
     			<b>Propietario</b>
     			<p>18.004.474-4 - Armando Barra Perez</p>
-    			
+
     			<b>Día</b>
     			<p> 05/07/2021, Jornada: L - Larga</p>
     			<button class="btn btn-success">Solicitar</button>
 
-    		</li>  		
+    		</li>
     		<li class="list-group-item">
     			<b>Propietario</b>
     			<p>18.004.474-4 - Armando Barra Perez</p>
-    			
+
     			<b>Día</b>
     			<p> 05/07/2021, Jornada: L - Larga</p>
     			<button class="btn btn-success">Solicitar</button>
 
-    		</li> 
+    		</li>
     	-->
 
 			@php
@@ -130,11 +130,11 @@
     				$i++;
     			@endphp
     			@php
-                    $dayFormated = \Carbon\Carbon::createFromFormat('Y-m-d', $aDay->day, 'Europe/London');  
+                    $dayFormated = \Carbon\Carbon::createFromFormat('Y-m-d', $aDay->day, 'Europe/London');
                 @endphp
-    			
+
     			@php
-								
+
 					$dayWithCarbon = \Carbon\Carbon::createFromFormat('Y-m-d',  $aDay->day, 'Europe/London');
 				@endphp
     			<li class="list-group-item ">
@@ -144,25 +144,25 @@
 						<h2>{{ strtoupper ( substr ( $months [ $dayWithCarbon->month ], 0, 3 ) ) }} </h2>
 					</div>
 					<div class="col-10">
-						<h3 class="text-uppercase"><strong>Jornada: 
+						<h3 class="text-uppercase"><strong>Jornada:
 
-                        	@if ( substr( $aDay->working_day,0, 1) != "+" ) 
+                        	@if ( substr( $aDay->working_day,0, 1) != "+" )
 
                         		{{$aDay->working_day }}- {{ $tiposJornada[ $aDay->working_day ] }}
 
                         	@elseif( substr( $aDay->working_day,0, 1) == "+" )
 
                              	{{$aDay->working_day}}
-                       		
+
                         	@endif
                         </strong></h3>
 
 						<ul class="list-inline">
-							
-				    		<li class="list-inline-item"><i style="color:red" class="fa fa-calendar-o" aria-hidden="true"></i>  {{ $weekMap [ $dayWithCarbon->dayOfWeek ] }}</li>
-							<li class="list-inline-item"><i style="color:red" class="fa fa-clock-o" aria-hidden="true"></i> {{ $timePerDay [ $aDay->working_day  ] [ "from" ]}} - {{ $timePerDay [ $aDay->working_day  ] [ "to" ]}} </li>
-							<li class="list-inline-item"><i style="color:blue" class="fa fa-location-arrow info" aria-hidden="true"></i> Hospital Dr. Ernesto Torres Galdames</li>
-						
+
+				    		<li class="list-inline-item"><i class="fas fa-calendar" aria-hidden="true"></i>  {{ $weekMap [ $dayWithCarbon->dayOfWeek ] }}</li>
+							<li class="list-inline-item"><i class="fas fa-clock" aria-hidden="true"></i> {{ $timePerDay [ $aDay->working_day  ] [ "from" ]}} - {{ $timePerDay [ $aDay->working_day  ] [ "to" ]}} </li>
+							<li class="list-inline-item"><i class="fa fa-location-arrow info" aria-hidden="true"></i> Hospital General</li>
+
 						</ul>
 
 						<b>ID:<small># {{$aDay->id }}</small></b><br>
@@ -170,11 +170,11 @@
 						<p>{{$aDay->ShiftUser->user->runFormat()}} -  {{$aDay->ShiftUser->user->getFullNameAttribute()}} </p>
     					<b>Comentario</b>
 						<p>{{$aDay->commentary}}</p>
-						
+
 						@if( null !==  \App\Models\Rrhh\UserRequestOfDay::where("user_id",\Auth::id())->where("shift_user_day_id",$aDay->id)->first()     )
 							Solicitado el {{ \App\Models\Rrhh\UserRequestOfDay::where("user_id",\Auth::id())->first()->created_at}}
 							<small> <i class="fa fa-user"></i> {{ count( $aDay->Solicitudes ) }} Solicitudes.</small>
-								
+
 						@else
 							<form method="post" action="{{ route('rrhh.shiftManag.availableShifts.applyfor') }}" >
         						@csrf
@@ -190,7 +190,7 @@
     			</li>
 
     			@endif
-    			
+
 
     		@endforeach
     		@if( $i == 0 &&   sizeof (  $availableDays ) > 0 )
@@ -204,7 +204,7 @@
 
 	<h5><b>Mis solicitudes:</b></h5>
 	<br>
-	
+
 	{{--$misSolicitudes --}}
 	@if( count ( $misSolicitudes ) < 0)
 		<div class="alert alert-primary" role="alert">
@@ -219,11 +219,11 @@
   			 	<li class="list-group-item">
   			 		<div class="row row-striped">
     				<b>ID: # {{$solicitud->id}}</b><br>
-    				
+
 
     				<b>Propietario</b>
     				<p>{{$solicitud->ShiftUserDay->ShiftUser->user->runFormat()}} -  {{$solicitud->ShiftUserDay->ShiftUser->user->getFullNameAttribute()}} </p>
-    			
+
     				<b>Día</b>
     				<p> {{ $solicitud->ShiftUserDay->day }}, Jornada: {{ $solicitud->ShiftUserDay->working_day}} - {{ $tiposJornada [ $solicitud->ShiftUserDay->working_day ] }}</p>
 
@@ -247,7 +247,7 @@
     		<!-- <li class="list-group-item">
     			<b>Propietario</b>
     			<p>18.004.474-4 - Armando Barra Perez</p>
-    			
+
     			<b>Día</b>
     			<p> 05/07/2021, Jornada: L - Larga</p>
 
@@ -260,7 +260,7 @@
     			<li class="list-group-item">
     			<b>Propietario</b>
     			<p>18.004.474-4 - Armando Barra Perez</p>
-    			
+
     			<b>Día</b>
     			<p> 05/07/2021, Jornada: L - Larga</p>
 
@@ -272,7 +272,7 @@
     			<li class="list-group-item">
     			<b>Propietario</b>
     			<p>18.004.474-4 - Armando Barra Perez</p>
-    			
+
     			<b>Día</b>
     			<p> 05/07/2021, Jornada: L - Larga</p>
 
@@ -280,7 +280,7 @@
     			<p> Solicitado en 05/07/2021 20:30:00</p>
     			<b>Estado</b>
     			<p style="color:green"> Confirmado</p>
-    			</li> 
+    			</li>
     		-->
     			{{--json_encode($availableDays)--}}
   		</ul>
@@ -304,7 +304,7 @@
 				<br>
     			<b>Propietario</b>
     			<p>18.004.474-4 - Armando Barra Perez</p>
-    			
+
     			<b>Día</b>
     			<p> 05/07/2021, Jornada: L - Larga</p>
 
@@ -331,7 +331,7 @@
 					<br>
     				<b>Propietario</b>
     				<p>18.004.474-4 - Armando Barra Perez</p>
-    			
+
     				<b>Día</b>
     				<p> 05/07/2021, Jornada: L - Larga</p>
 

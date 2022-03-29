@@ -81,19 +81,34 @@ figure:focus .menu {
                         $date = \Carbon\Carbon::createFromFormat('Y-m-d',  $actuallyYear."-".$actuallyMonth."-".$j);
                         $date =explode(" ",$date);
                         $d = $sis->days()->where('day',$date[0])->get();
-
+                        $fontColor = '#fff';
                     @endphp
-                    <td class="bbd day "  style="text-align:center;width:54px;height:54px">
+                    <td class="bbd day "  style="text-align:center;width:54px;height:54px;">
                             @if( isset($d))
                                 @foreach($d as $dd)
-
+                                    @php
+                                        $iconDay = '';
+                                        if (isset($dd->closeStatus))
+                                        {
+                                            switch ($dd->closeStatus->status) {
+                                                case 1:
+                                                    $iconDay = '<i class="	far fa-calendar-check"></i>';
+                                                    break;
+                                                case 2:
+                                                    $iconDay = '<i class="far fa-calendar-times"></i>';
+                                                    break;
+                                                default:
+                                                    $iconDay = '';
+                                                    break;
+                                            }
+                                        }
+                                    @endphp
                                     @livewire('rrhh.change-shift-day-status',['shiftDay'=>$dd,'loop'=>$loop->index],key($dd->id) )
-
+                                    {!! $iconDay !!}
                                 @endforeach
                             @else
                                 @livewire('rrhh.add-day-of-shift-button',['shiftUser'=>$sis,'day'=>$date])
                             @endif
-
                     </td>
                 @endfor
             </tr>

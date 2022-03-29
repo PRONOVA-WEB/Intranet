@@ -112,7 +112,7 @@ class ShiftManagementController extends Controller
         'MN2' => array("from"=>"","to"=>"","time"=>0),
      );
     private $colorsRgb = array(
-            1 => "FFFFFF",
+            1 => "add8e6",
             2 => "2471a3",
             3 => "52be80 ",
             4 => "FFA500",
@@ -281,7 +281,6 @@ class ShiftManagementController extends Controller
 
  	public function indexfiltered(Request $r){
 
-
         // echo "filteresd";
         $months = (object) $this->months;
         $actuallyDay = Carbon::now()->format('d');
@@ -428,6 +427,11 @@ class ShiftManagementController extends Controller
     }
 
     public function assignStaff(Request $r){ // crea un shift user y le crea dias de acuerdo al sifttype
+
+        if($r->shiftId ==  0)
+        {
+            return redirect()->back()->with('warning','Seleccione un tipo de serie');
+        }
         $nShift = new ShiftUser;
         $nShift->date_from = $r->dateFromAssign;
         $nShift->date_up = $r->dateUpAssign;
@@ -840,7 +844,7 @@ class ShiftManagementController extends Controller
 
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="turnos20210413-113325.xlsx"');
+        header('Content-Disposition: attachment;filename="turnos.xlsx"');
         header('Cache-Control: max-age=0');
 
         $writer = new Xlsx($spreadsheet);
@@ -1240,9 +1244,9 @@ class ShiftManagementController extends Controller
         $name= Carbon::now()->format('Ymd-H:i');
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="reporte'.$name.'.xlsx"');
+        header('Content-Disposition: attachment;filename="reporte.xlsx"');
         header('Cache-Control: max-age=0');
- $sheet->getStyle('A1:AH1')->applyFromArray(
+        $sheet->getStyle('A1:AH1')->applyFromArray(
                     array(
                         'font' => array(
                         'bold' => true
@@ -1476,15 +1480,11 @@ class ShiftManagementController extends Controller
        return view('rrhh.shift_management.reports', compact('ouRoots','actuallyOrgUnit','actuallyYear','months','actuallyMonth','staffInShift','shiftDayPerStatus' , 'shiftDayPerJournalType','chartpeoplecant'));
     }
 
-    public function availableShifts(){
+    public function availableShifts(Request $request){
 
         $ouRoots = OrganizationalUnit::where('level', 1)->get();
         $cargos = OrganizationalUnit::all();
         $months = $this->months;
-        if(Session::has('actuallyYear') && Session::get('actuallyYear') != "")
-            $actuallyYear = Session::get('actuallyYear');
-        else
-            $actuallyYear = Carbon::now()->format('Y');
 
         if(Session::has('actuallyOrgUnit') && Session::get('actuallyOrgUnit') != "")
             $actuallyOrgUnit = Session::get('actuallyOrgUnit');
@@ -1493,15 +1493,30 @@ class ShiftManagementController extends Controller
 
         $actuallyOrgUnit =    Auth()->user()->organizationalUnit; // porque solo puedo ver los turnos disponibles de mi unidad (momentaneamente)
 
-        if(Session::has('actuallyMonth') && Session::get('actuallyMonth') != "")
-            $actuallyMonth = Session::get('actuallyMonth');
-        else
-            $actuallyMonth = Carbon::now()->format('m');
 
-        if(Session::has('days') && Session::get('days') != "")
-            $days = Session::get('days');
+        if($request->isMethod('post') && isset($request->monthFilter))
+        {
+            $actuallyMonth = $request->monthFilter;
+            $actuallyYear  = $request->yearFilter;
+            $days = Carbon::parse($actuallyYear.'-'.$actuallyMonth.'-01')->endOfMonth()->format('d');
+        }
         else
-           $days = Carbon::now()->daysInMonth;
+        {
+            if(Session::has('actuallyYear') && Session::get('actuallyYear') != "")
+            $actuallyYear = Session::get('actuallyYear');
+            else
+                $actuallyYear = Carbon::now()->format('Y');
+
+            if(Session::has('actuallyMonth') && Session::get('actuallyMonth') != "")
+                $actuallyMonth = Session::get('actuallyMonth');
+            else
+                $actuallyMonth = Carbon::now()->format('m');
+
+            if(Session::has('days') && Session::get('days') != "")
+                $days = Session::get('days');
+            else
+            $days = Carbon::now()->daysInMonth;
+        }
 
         $tiposJornada = $this->tiposJornada;
         $weekMap = $this->weekMap;
@@ -1804,7 +1819,7 @@ class ShiftManagementController extends Controller
        );
 
       $shiftStatus = array(
-          1=>"Asignado",
+             1=>"Asignado",
              2=>"Completado",
              3=>"Turno extra",
              4=>"Intercambio de turno con",
