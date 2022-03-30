@@ -20,36 +20,38 @@
 	<br>
 	<form method="post" action="{{ route('rrhh.shiftManag.closeShift.saveDate') }} ">
 		@csrf
-        {{ method_field('post') }} 
-		<div class="row"> 
+        {{ method_field('post') }}
+		<div class="row">
 			<div class="col-md-1">
 				<label for="for_name">ID:</label>
 				<div class="input-group mb-3">
 					# <b>{{$cierreDelMes->id}}</b>
-				</div>	
+				</div>
 			</div>
 
 			<div class="col-md-3">
 				<label for="for_name">Fecha de inicio</label>
 				<div class="input-group mb-3">
   					<input  type="date" class="form-control" name="initDate" value="{{ $cierreDelMes->init_date }}"  aria-describedby="basic-addon2">
-				</div>	
+				</div>
 			</div>
-  					
+
 			<div class="col-md-3">
 				<label for="for_name">Fecha de cierre</label>
 				<div class="input-group mb-3">
   					<input  type="date" class="form-control" value="{{ $cierreDelMes->close_date }}"  name="closeDate" aria-describedby="basic-addon2">
 					<input type="hidden" name="id" value="{{$cierreDelMes->id}}">
-  					
-				</div>	
+
+				</div>
 			</div>
 			<div class="col-md-3">
 
 				<label for="for_name" style="color:white">.</label>
 				<div class="input-group-append">
-    					<button class="btn btn-success" >{{ $cierreDelMes->id!=0? 'Modificar':'Crear' }}</button>
-    					<button class="btn btn-info" name="new" value="true">Crear</button>
+    					@if($cierreDelMes->id!=0)
+                        <button class="btn btn-success">Modificar</button>
+                        @endif
+    					<button class="btn btn-info ml-2" name="new" value="true">Crear</button>
   					</div>
 			</div>
 
@@ -58,14 +60,14 @@
 
 		<form method="post" action="{{ route('rrhh.shiftManag.closeShift') }}" name="menuFilters">
         	@csrf
-        	{{ method_field('post') }}  
+        	{{ method_field('post') }}
 
         	<!-- Menu de Filtros  -->
 			<div class="form-row">
 				<div class="col-md-3">
 					<label for="for_name">Cierre</label>
 					<div class="input-group mb-3">
-  				
+
   					<select class="form-control" name="idCierre">
   						<!-- <option value="1">De 2021-10-10 a 2021-10-10</option> -->
   						@foreach($cierres as $c)
@@ -74,7 +76,7 @@
 
   						@endforeach
   					</select>
-				</div>	
+				</div>
 			</div>
 
             	<div class="form-group col-md-4" >
@@ -83,7 +85,7 @@
                             data-size="5">
                         @foreach($ouRoots as $ouRoot)
                             @if($ouRoot->name != 'Externos')
-                                <option value="{{ $ouRoot->id }}"  {{($ouRoot->id==$actuallyOrgUnit->id)?'selected':''}}> 
+                                <option value="{{ $ouRoot->id }}"  {{($ouRoot->id==$actuallyOrgUnit->id)?'selected':''}}>
                                 {{($ouRoot->id ?? '')}}-{{ $ouRoot->name }}
                                 </option>
                                 @foreach($ouRoot->childs as $child_level_1)
@@ -115,22 +117,22 @@
                     </select>
             	</div>
 
-   				<div class="form-group col-md-1">	
+   				<div class="form-group col-md-1">
                 	<label for="for_name">Año</label>
                 	<select class="form-control" id="for_yearFilter" name="yearFilter">
                     	@for($i = (intval($actuallyYear)-2); $i< (intval($actuallyYear) + 4); $i++)
                         	<option value="{{$i}}" {{ ($i == $actuallyYear )?"selected":"" }}> {{$i}}</option>
-                    	@endfor	
+                    	@endfor
                 	</select>
             	</div>
 
-            	<div class="form-group col-md-2">    	
+            	<div class="form-group col-md-2">
                 	<label for="for_name">Mes</label>
                 	<select class="form-control" id="for_monthFilter" name="monthFilter">
                     	@foreach($months AS $index => $month)
                         	<option value="{{ $index }}" {{ ($index == $actuallyMonth )?"selected":"" }}>{{$loop->iteration}} - {{$month}} </option>
                     	@endforeach
-                	</select> 		
+                	</select>
             	</div>
             	<input type="hidden" name="filtrados" id="filtrados"  value="0,0,0">
             	<div class="form-group col-md-2">
@@ -174,16 +176,16 @@
 					<td>{{$c->close_user_id}}</td>
 					<td>{{$c->close_date}}</td>
 					<td>
-						
+
 						@livewire( 'rrhh.see-shift-control-form', ['usr'=>$c->user, 'actuallyYears'=>$actuallyYear,'actuallyMonth'=>$actuallyMonth,'close'=>$cierreDelMes->id], key($loop->index) )
-						
+
 					</td>
 				</tr>
 				@endforeach
 				@if( count( $closed ) < 1 )
 				<tr>
-					<td  colspan="6" style="text-align:center">	
-							
+					<td  colspan="6" style="text-align:center">
+
 						Sin registro de cerrados en este rango de fechas
 
 					</td>
@@ -214,7 +216,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				
+
 				@foreach($firstConfirmations as $f)
 					<tr>
 						<td>{{$loop->iteration}}</td>
@@ -242,8 +244,8 @@
 				@endforeach
 				@if( count( $firstConfirmations ) < 1 )
 				<tr>
-					<td  colspan="6" style="text-align:center">	
-							
+					<td  colspan="6" style="text-align:center">
+
 						Sin registro de confirmados en este rango de fechas
 
 					</td>
@@ -287,7 +289,7 @@
 
 							<!-- fin bug -->
 							 {{--json_encode($cierreDelMes--}}
-								
+
 							<button class="btn btn-success">Confirmar</button>
 							<!-- <button data-toggle="modal" data-target="#exampleModal" class="btn btn-success">Confirmar</button> -->
 
@@ -297,7 +299,7 @@
         				{{ method_field('post') }}
 
 						<input type="hidden" name="userId" value="{{$s->user&&$s->user->id? $s->user->id : ''}}">
-						
+
 						<!-- inicio bug -->
 						{{--json_encode($cierreDelMes--}}
 						<input type="hidden" name="cierreId" value="{{$cierreDelMes&&$cierreDelMes->id? $cierreDelMes->id : '' }}">
@@ -350,16 +352,16 @@
 					<td>{{$r->first_confirmation_user_id}}</td>
 					<td>{{$r->first_confirmation_date}}</td>
 					<td>
-						
+
 						@livewire( 'rrhh.see-shift-control-form', ['usr'=>$r->user, 'actuallyYears'=>$actuallyYear,'actuallyMonth'=>$actuallyMonth,'close'=>$cierreDelMes->id], key($loop->index) )
-						
+
 					</td>
 				</tr>
 				@endforeach
 				@if( count( $rejected ) < 1 )
 				<tr>
-					<td  colspan="6" style="text-align:center">	
-							
+					<td  colspan="6" style="text-align:center">
+
 						Sin registro de rechazados en este rango de fechas
 
 					</td>

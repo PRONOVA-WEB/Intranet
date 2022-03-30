@@ -40,23 +40,17 @@ figure:focus .menu {
 
 
     @if(isset($staffInShift)&&count($staffInShift)>0&&$staffInShift!="")
-        @foreach($staffInShift->sortBy('position') as $sis)
+        @foreach($staffInShift->sortBy(function($staffInShift) {
+            return $staffInShift->user->fathers_family;
+          }) as $sis)
         @if( $sis->days()->whereBetween('day',[$mInit[0],$mEnd[0]])->count() > 0  || $actuallyShift->id == 99 )
-
 
             <tr>
                 <td class="bless br cellbutton" >
 
                     @livewire( 'rrhh.delete-shift-button',['actuallyShiftUserDay'=>$sis])
 
-                    {{--@livewire( 'rrhh.see-shift-control-form', ['usr'=>$sis->user, 'actuallyYears'=>$actuallyYear,'actuallyMonth'=>$actuallyMonth], key($loop->index) )--}}
-                    <!-- <a href="{{ route('rrhh.shiftManag.seeShiftControlForm',['usr'=>$sis->user, 'actuallyYears'=>$actuallyYear,'actuallyMonth'=>$actuallyMonth]) }}">
-                      <button class="only-icon seeBtn"  >
-                        <i class="fa fa-eye seeBtn"></i>
-                      </button>
-  									</a> -->
-
-                    {{ $sis->user->runFormat()}} - {{$sis->user->name}} {{$sis->user->fathers_family}}
+                    {{$sis->user->name}} {{$sis->user->fathers_family}} {{ $sis->user->runFormat()}}
                     <small>
                         @if( $sis->esSuplencia() == "Suplente" )
                             {{$sis->esSuplencia()}}
@@ -81,19 +75,34 @@ figure:focus .menu {
                         $date = \Carbon\Carbon::createFromFormat('Y-m-d',  $actuallyYear."-".$actuallyMonth."-".$j);
                         $date =explode(" ",$date);
                         $d = $sis->days()->where('day',$date[0])->get();
-
+                        $fontColor = '#fff';
                     @endphp
-                    <td class="bbd day "  style="text-align:center;width:54px;height:54px">
+                    <td class="bbd day "  style="text-align:center;width:54px;height:54px;">
                             @if( isset($d))
                                 @foreach($d as $dd)
-
+                                    @php
+                                        $iconDay = '';
+                                        if (isset($dd->closeStatus))
+                                        {
+                                            switch ($dd->closeStatus->status) {
+                                                case 1:
+                                                    $iconDay = '<i class="	far fa-calendar-check"></i>';
+                                                    break;
+                                                case 2:
+                                                    $iconDay = '<i class="far fa-calendar-times"></i>';
+                                                    break;
+                                                default:
+                                                    $iconDay = '';
+                                                    break;
+                                            }
+                                        }
+                                    @endphp
                                     @livewire('rrhh.change-shift-day-status',['shiftDay'=>$dd,'loop'=>$loop->index],key($dd->id) )
-
+                                    {!! $iconDay !!}
                                 @endforeach
                             @else
                                 @livewire('rrhh.add-day-of-shift-button',['shiftUser'=>$sis,'day'=>$date])
                             @endif
-
                     </td>
                 @endfor
             </tr>

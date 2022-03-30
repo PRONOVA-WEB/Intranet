@@ -6,8 +6,24 @@
        <div class="modal-content" >
 
             <div class="modal-header" style="background-color:#006cb7;color:white   ">
-
-                <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-calendar"></i> Modificar día de personal </h5>
+                @php
+                    $turno = 'Abierto';
+                    if (isset($shiftUserDay->closeStatus))
+                    {
+                        switch ($shiftUserDay->closeStatus->status) {
+                            case 1:
+                                $turno = 'Confirmado';
+                                break;
+                            case 2:
+                                $turno = 'Cerrado';
+                                break;
+                            default:
+                                $turno = 'Abierto';
+                                break;
+                        }
+                    }
+                @endphp
+                <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-calendar"></i> {{ (isset($shiftUserDay->shift_close_id)) ? 'Ver' : 'Modificar' }} día de personal - {{  'Turno '.$turno }} </h5>
                 @if(isset($this->shiftUser))
                     {{--json_encode($this->shiftUser->where("day","2021-05-01"))--}}
                 @endif
@@ -29,7 +45,7 @@
 
                         <label for="exampleFormControlInput1"><i class="fa fa-info"></i> INFORMACIÓN {{--$varLog--}} ID <b>#</b>{{ ( isset($shiftUserDay) && $shiftUserDay->ShiftUser ) ? $shiftUserDay->id : '' }}</label>
                        <div  class="table-responsive">
-                           
+
 
                         <table class="table">
                         <thead>
@@ -107,7 +123,7 @@
 
                         </div>
                     </div>
-
+                    @if(!isset($shiftUserDay->shift_close_id))
                     <div class="form-group">
 
                         <input type="hidden" wire:model="user_id">
@@ -248,12 +264,10 @@
                             @endforeach
                         </select>
                     </div>
-
+                    @endif
 
                     <div class="form-group" style="overflow-y:auto;height: 200px;">
-
                         <input type="hidden" wire:model="user_id">
-
                         <label for="exampleFormControlInput1"><i class="fa fa-history "></i> HISTORIAL DE MODIFICACIONES </label>
                             @if( isset($shiftUserDay) && $shiftUserDay->ShiftUser )
                                 @if($shiftUserDay->derived_from != "" && $shiftUserDay->derived_from > 0)
@@ -276,24 +290,18 @@
                                  <p>         <i class="fas fa-spinner fa-pulse"></i>
                              </p>
                             @endif
-
-
                     </div>
                 </form>
-
             </div>
 
             <div class="modal-footer">
                 @if(   isset($shiftUserDay) && $shiftUserDay->ShiftUser && $shiftUserDay->status==3 && $shiftUserDay->confirmationStatus() == 0 )
-
-
-                        <button type="button" class="btn btn-success ml-auto" data-dismiss="modal" wire:click.prevent="confirmExtraDay()">Confirmar <i class="fa fa-check"></i></button>
-
+                <button type="button" class="btn btn-success ml-auto" data-dismiss="modal" wire:click.prevent="confirmExtraDay()">Confirmar <i class="fa fa-check"></i></button>
                 @endif
                 <button type="button" wire:click.prevent="cancel()" class="btn" data-dismiss="modal">Cerrar</button>
-
+                @if(!isset($shiftUserDay->shift_close_id))
                 <button type="button" wire:click.prevent="update()" class="btn btn-primary" data-dismiss="modal">Guardar </button>
-
+                @endif
             </div>
 
        </div>

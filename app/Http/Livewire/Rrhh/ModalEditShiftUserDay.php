@@ -107,7 +107,6 @@ class ModalEditShiftUserDay extends Component
 		// $this->emit('setshiftUserDay', $this->shiftDay->id);
     }
 	public function setshiftUserDay($sUDId){
-
     	// $this->reset();//
 		// echo "setshiftUserDay";
 		$this->shiftUserDay = ShiftUserDay::find($sUDId);
@@ -123,7 +122,7 @@ class ModalEditShiftUserDay extends Component
 		// $this->varLog ="Users Prev: ".json_encode($this->users)."<br>";
 		foreach ($this->users as $index => $u) {
 			// $this->varLog .= ">> foreach( Index:".$index."; U:".json_encode($u).")  <br>";
-			$shiftUser = ShiftUser::where("user_id",$u->id)->get();
+			//$shiftUser = ShiftUser::where("user_id",$u->id)->get();
 			// if( ShiftUser::where("user_id",$u->id)->get() ){
 			$this->varLog .=">> shiftUser day: " .$this->shiftUserDay->day."<br>";
 				if( isset($shiftUser) && count($shiftUser) > 0){
@@ -521,13 +520,16 @@ class ModalEditShiftUserDay extends Component
 
 					$actuallyShift = $this->shiftUserDay->ShiftUser;
 					$days = $actuallyShift->days;
-					$days = $this->shiftUser;
+					// $days = $this->shiftUser;
 					$ranges = CarbonPeriod::create($this->shiftUserDay->day, $this->repeatToDate ); // creo los rangos con los valores qe rescato de los input repetir hasta en el modal
+
 						foreach ($ranges as $date) {
 
-
-							$day = $this->shiftUser->where('day',$date->format('Y-m-d'))->first();
-							// $day = $day[0] ;
+							$day = $this->shiftUserDay->where('day',$date->format('Y-m-d'))
+                                ->where('shift_user_id',$this->shiftUserDay->ShiftUser->id)
+                                ->first();
+                            //dd($date->format('Y-m-d'),$this->shiftUserDay,$this->shiftUserDay->ShiftUser->user_id,$day);
+							// // $day = $day[0] ;
 							$day->status = $this->newStatus;
 							$day->update();
 

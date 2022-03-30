@@ -38,11 +38,11 @@ class ListOfShifts extends Component
     );
     protected $listeners = ['refreshListOfShifts' => '$refreh'];
 
-    public function ref()  {   
+    public function ref()  {
 
          // $this->reset();
         $this->emit("renderShiftDay");
-        // $this->statusx++;  
+        // $this->statusx++;
         // $this->render();
            // dd($id);
         // $this->mount($this->staffInShift,$this->actuallyYear,$this->actuallyMonth,$this->days);
@@ -65,7 +65,7 @@ class ListOfShifts extends Component
         // // $this->actuallyOrgUnit = $actuallyOrgUnit;
         // $this->days = $days;
         // $this->statusx=0;
-         $cargos = OrganizationalUnit::all();
+        $cargos = OrganizationalUnit::all();
 
         if(Session::has('actuallyYear') && Session::get('actuallyYear') != "")
             $this->actuallyYear = Session::get('actuallyYear');
@@ -86,7 +86,7 @@ class ListOfShifts extends Component
 
         if(Session::has('actuallyOrgUnit') && Session::get('actuallyOrgUnit') != "")
             $this->actuallyOrgUnit = Session::get('actuallyOrgUnit');
-        else    
+        else
             $this->actuallyOrgUnit = $cargos->first();
 
 
@@ -101,22 +101,19 @@ class ListOfShifts extends Component
         else
             $this->actuallyShift=$sTypes->first();
 
-        if($actuallyShift)
-            $this->actuallyShift = $actuallyShift;
-        if($this->actuallyShift->id != 0)
-            $this->staffInShift = ShiftUser::where('organizational_units_id', $this->actuallyOrgUnit->id )->where('shift_types_id',$this->actuallyShift->id)->where('date_up','>=',$this->actuallyYear."-".$this->actuallyMonth."-01")->where('date_from','<=',$this->actuallyYear."-".$this->actuallyMonth."-".$this->days)->where('groupname',htmlentities(Session::get('groupname')))->get();
-        if($staffInShift!=null)
-            $this->staffInShift = $staffInShift;
+            $this->staffInShift = ShiftUser::where('organizational_units_id', $this->actuallyOrgUnit->id )->where('shift_types_id',$this->actuallyShift->id)->where('date_up','>=',$this->actuallyYear."-".$this->actuallyMonth."-01")->where('date_from','<=',$this->actuallyYear."-".$this->actuallyMonth."-".$this->days)->get();
+
+            //dd($this->staffInShift, $this->actuallyOrgUnit->id, $this->actuallyShift->id);
         // else
         //     $this->staffInShift = ShiftUser::where('organizational_units_id', $this->actuallyOrgUnit->id )->where('date_up','>=',$this->actuallyYear."-".$this->actuallyMonth."-".$this->days)->where('date_from','<=',$this->actuallyYear."-".$this->actuallyMonth."-".$this->days)->get();
     }
 
 
-   
+
     public function editShiftDay($id){
 
         // $this->emit('clearModal', $this->shiftDay->id);
-        $this->filered ="on"; 
+        $this->filered ="on";
         // $this->emit('setshiftUserDay', $this->shiftDay->id);
         // $this->emit('setshiftUserDay', $id);
 
@@ -131,5 +128,5 @@ class ListOfShifts extends Component
         // $this->emit("setDataToDeleteModal",[$actuallyShiftDay]);
 
     }
- 
+
 }

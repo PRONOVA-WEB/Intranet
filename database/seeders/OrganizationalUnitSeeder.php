@@ -33,7 +33,7 @@ class OrganizationalUnitSeeder extends Seeder
                     $ou3 = OrganizationalUnit::create(['name' => 'Unidad de Planes y Programas', 'level' => 4 ,'organizational_unit_id' => $ou2->id,'establishment_id' => 1 ]);
                     $ou3 = OrganizationalUnit::create(['name' => 'Unidad de Gestión de Recursos e Inversiones', 'level' => 4 ,'organizational_unit_id' => $ou2->id,'establishment_id' => 1 ]);
 
-                $ou2 = OrganizationalUnit::create(['name' => 'Departamento de Red de urgencias','level' => 3 , 'organizational_unit_id' => $ou1->id,'establishment_id' => 1 ]);
+                $ou2 = OrganizationalUnit::create(['name' => 'Departamento de Red de Urgencias','level' => 3 , 'organizational_unit_id' => $ou1->id,'establishment_id' => 1 ]);
                     $ou3 = OrganizationalUnit::create(['name' => 'S.A.M.U.', 'level' => 4 ,'organizational_unit_id' => $ou2->id,'establishment_id' => 1 ]);
                     $ou3 = OrganizationalUnit::create(['name' => 'Establecimientos de Red de Urgencias', 'level' => 4 ,'organizational_unit_id' => $ou2->id,'establishment_id' => 1 ]);
 
