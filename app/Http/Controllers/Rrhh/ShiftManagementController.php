@@ -135,11 +135,6 @@ class ShiftManagementController extends Controller
         // echo "<h1>".$groupname."</h1>";
         $months = (object) $this->months;
 
-        if(Session::has('days') && Session::get('days') != "")
-            $days = Session::get('days');
-        else
-    	   $days = Carbon::now()->daysInMonth;
-
         if(Session::has('actuallyMonth') && Session::get('actuallyMonth') != "")
             $actuallyMonth = Session::get('actuallyMonth');
         else
@@ -154,6 +149,11 @@ class ShiftManagementController extends Controller
             $actuallyYear = Session::get('actuallyYear');
         else
             $actuallyYear = Carbon::now()->format('Y');
+
+        if(Session::has('days') && Session::get('days') != "")
+            $days = Session::get('days');
+        else
+    	   $days = Carbon::parse($actuallyYear.'-'.$actuallyMonth.'-01')->daysInMonth;
 
         if(Session::has('sTypes') && Session::get('sTypes') != "")
             $sTypes = Session::get('sTypes');
@@ -207,7 +207,6 @@ class ShiftManagementController extends Controller
             //     // echo json_encode($g->groupname);
             // }
 
-            $this->groupsnames = ShiftUser::where('organizational_units_id',141)->where('shift_types_id',8)->groupBy("groupname")->pluck('groupname');
 
             $staffInShift = $staffInShift->where('organizational_units_id', $actuallyOrgUnit->id )->where('shift_types_id',$actuallyShift->id)->where('date_up','>=',$actuallyYear."-".$actuallyMonth."-".$days)->where('date_from','<=',$actuallyYear."-".$actuallyMonth."-".$days)->where('groupname',htmlentities($groupname))->get();
 
@@ -291,16 +290,14 @@ class ShiftManagementController extends Controller
         // $dateFiltered = Carbon::createFromFormat('Y-m-d',  $r->yearFilter."-".$r->monthFilter."-".$actuallyDay, 'Europe/London');
 
         // dd(  $r->monthYearFilter );
-        $dateFiltered = Carbon::createFromFormat('Y-m-d',  $r->monthYearFilter."-".$actuallyDay, 'Europe/London');
+        $dateFiltered = Carbon::createFromFormat('Y-m-d',  $r->monthYearFilter."-01", 'Europe/London');
 
         // explode("delimiter", string)
 
         $days = $dateFiltered->daysInMonth;
+        // dd($r->monthYearFilter, $dateFiltered->format('d-m-Y'), $days);
         $actuallyMonth = $dateFiltered->format('m');
         $actuallyYear = $dateFiltered->format('Y');
-
-
-
 
         $actuallyOrgUnit =  OrganizationalUnit::find($r->orgunitFilter);
         $staff = User::where('organizational_unit_id', $actuallyOrgUnit->id )->get();
