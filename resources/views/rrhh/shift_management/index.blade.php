@@ -133,7 +133,7 @@
 
     <div class="row mb-3 mt-2">
         <div class="col-md-12">
-            <h3> Gestión de Turnos </h3>
+            <h3> Gestión de Turnos</h3>
         </div>
         {{-- <div class="col-md-6 text-right">
             <a href="{{route('rrhh.shiftsTypes.downloadShiftInXls')}}" class="btn btn-outline-success btn-xs">
