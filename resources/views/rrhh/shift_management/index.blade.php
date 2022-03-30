@@ -2,6 +2,10 @@
 
 @section('title', 'Gestion de Turnos')
 
+@push('css')
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+@endpush
 @section('content')
 
 <style type="text/css">
@@ -128,15 +132,15 @@
 <div id="shiftapp">
 
     <div class="row mb-3 mt-2">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <h3> Gestión de Turnos </h3>
         </div>
-        <div class="col-md-6 text-right">
+        {{-- <div class="col-md-6 text-right">
             <a href="{{route('rrhh.shiftsTypes.downloadShiftInXls')}}" class="btn btn-outline-success btn-xs">
                 <i class="fa fa-file-excel"></i>
             </a>
             <button type="button" class="btn btn-outline-danger btn-xs"><i class="fa fa-file-pdf"></i></button>
-        </div>
+        </div> --}}
     </div>
 
 
@@ -219,7 +223,6 @@
             <div class="form-group col-md-4">
                 <label for="for_name">Fecha</label>
                 <input type="month" class="form-control" onchange="this.form.submit()" name="monthYearFilter" value="{{ $actuallyYear."-".$actuallyMonth }}">
-
             </div>
 
 
@@ -230,7 +233,7 @@
 
 
     <!-- Select con personal de la unidad  -->
-    <h4 class="mt-2 mb-2">Agregar personal a turno</h4>
+    <h4 class="mt-2 mb-2">Agregar personal al <b>{{ $actuallyShift->name }}</b></h4>
 
     <form method="POST" action="{{ route('rrhh.shiftsTypes.assign') }}" class="mb-3">
         @csrf
@@ -243,7 +246,7 @@
 
 
         <div class="form-row">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <label>Personal de "{{$actuallyOrgUnit->name}}"</label>
                 <select class="selectpicker form-control"  data-live-search="true" name="slcStaff" required>
                     <option value=""> - </option>
@@ -254,11 +257,11 @@
                     @endforeach
                 </select>
             </div>
-            <div class="col-md-2">
+            {{-- <div class="col-md-2">
                 <label>Grupo</label>
                 <input type="text" class="form-control" name="groupname"
                     value="{{strtoupper(html_entity_decode ($groupname))}}" placeholder="Sin grupo">
-            </div>
+            </div> --}}
             <div class="col-md-1">
                 <label>Inicio</label>
                 <select class="form-control" name="initialSerie">
@@ -300,17 +303,22 @@
     <br>
     <i class="	far fa-calendar-check"></i> Turno Confirmado
     <i class="	far fa-calendar-times"></i> Turno Cerrado
-    <div class="row" class="small" style=" overflow: auto;white-space: nowrap;">
-        <div class="col-md-2">
-
+    <hr>
+    <div class="row" style=" overflow: auto;white-space: nowrap;">
+        <div class="col-md-12">
             @if($actuallyShift->id != 0)
-                <table class="table table-sm table-bordered">
-                    <thead class="thead-dark">
+                <table class="table table-sm table-bordered datatable">
+                    <thead class="card-header">
                         <tr>
-                            <th rowspan="2">Personal</th>
+                            {{-- <th rowspan="2">Personal</th> --}}
                             <th class="calendar-day" colspan="{{$days}}">
 
-                                <a href="{{route('rrhh.shiftManag.prevMonth')}}"><-</a>
+                                <a href="{{route('rrhh.shiftManag.prevMonth')}}" class="btn btn-sm btn-secondary btn-icon-split">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-arrow-left"></i>
+                                    </span>
+                                <span class="text">Anterior</span>
+                                </a>
 
                                 @foreach($months AS $index => $month)
                                     {{ ($index == $actuallyMonth )?$month:"" }}
@@ -320,10 +328,16 @@
                                 -
                                 {{$actuallyShift->name}}
 
-                                <a href=" {{route('rrhh.shiftManag.nextMonth')}}"  >-></a>
+                                <a href=" {{route('rrhh.shiftManag.nextMonth')}}" class="btn btn-sm btn-secondary btn-icon-split">
+                                    <span class="text">Siguiente</span>
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-arrow-right"></i>
+                                    </span>
+                                </a>
                             </th>
                         </tr>
-                        <tr>
+                        <tr class="thead-dark">
+                            <th>Personal</th>
                             @for($i = 1; $i <= $days; $i++)
                                 @php
                                     $dateFiltered = \Carbon\Carbon::createFromFormat('Y-m-d',  $actuallyYear."-".$actuallyMonth."-".$i, 'Europe/London');
@@ -332,8 +346,6 @@
                                     style="color:{{ ( ($dateFiltered->isWeekend() )?'red':( ( sizeof($holidays->where('date',$actuallyYear.'-'.$actuallyMonth.'-'.$i)) > 0 ) ? 'red':'white' ))}}" >
                                     <p style="font-size: 8px">{{$i}}</p>
                                 </th>
-                                <!-- <th class="brless dia">🌞</th> -->
-                                <!-- <th class="noche">🌒</th> -->
                             @endfor
                         </tr>
                     </thead>
@@ -345,7 +357,7 @@
                 </table>
             @else
                 @foreach($sTypes as $st)
-                    <table class="table table-sm">
+                    <table class="table table-sm table-bordered">
                         <thead class="thead-dark">
                             <tr>
                                 <th rowspan="2">Personal</th>
@@ -375,9 +387,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @livewire('rrhh.list-of-shifts',["actuallyShift"=>$st]
-                            )
-
+                            @livewire('rrhh.list-of-shifts',["actuallyShift"=>$st])
                         </tbody>
                     </table>
                 @endforeach
@@ -434,8 +444,55 @@
         /*font-size: 15px;*/
     }
 </style>
-
-
 @endsection
 
+@section('custom_js')
+<script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+<script>
+$(document).ready(function() {
+        $('.datatable').DataTable({
+        "order": [ 0, "asc" ],
+        "pageLength": 100,
+        "paging": false,
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'excel',
+                text: '<i class="fa fa-file-excel"></i>',
+                className: 'btn btn-info float-right',
+                messageTop: '{{ $actuallyOrgUnit->name }} - {{ $months[$actuallyMonth] }} {{ $actuallyYear }} - {{ $actuallyShift->name }}',
+                init: function(api, node, config) {
+                    $(node).removeClass('dt-button');
+                }
+            }
+        ],
+        language: {
+            "decimal": "",
+            "emptyTable": "No hay información",
+            //"info": "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+            "info": "_TOTAL_ Registros Encontrados",
+            "infoEmpty": "Mostrando 0 to 0 of 0 Registros",
+            "infoFiltered": "(Filtrado de _MAX_ total Registros)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ Registros",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "Sin resultados encontrados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        }
+    });
 
+});
+</script>
+@endsection

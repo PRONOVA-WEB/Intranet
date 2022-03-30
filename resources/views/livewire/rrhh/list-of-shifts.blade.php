@@ -40,23 +40,17 @@ figure:focus .menu {
 
 
     @if(isset($staffInShift)&&count($staffInShift)>0&&$staffInShift!="")
-        @foreach($staffInShift->sortBy('position') as $sis)
+        @foreach($staffInShift->sortBy(function($staffInShift) {
+            return $staffInShift->user->fathers_family;
+          }) as $sis)
         @if( $sis->days()->whereBetween('day',[$mInit[0],$mEnd[0]])->count() > 0  || $actuallyShift->id == 99 )
-
 
             <tr>
                 <td class="bless br cellbutton" >
 
                     @livewire( 'rrhh.delete-shift-button',['actuallyShiftUserDay'=>$sis])
 
-                    {{--@livewire( 'rrhh.see-shift-control-form', ['usr'=>$sis->user, 'actuallyYears'=>$actuallyYear,'actuallyMonth'=>$actuallyMonth], key($loop->index) )--}}
-                    <!-- <a href="{{ route('rrhh.shiftManag.seeShiftControlForm',['usr'=>$sis->user, 'actuallyYears'=>$actuallyYear,'actuallyMonth'=>$actuallyMonth]) }}">
-                      <button class="only-icon seeBtn"  >
-                        <i class="fa fa-eye seeBtn"></i>
-                      </button>
-  									</a> -->
-
-                    {{ $sis->user->runFormat()}} - {{$sis->user->name}} {{$sis->user->fathers_family}}
+                    {{$sis->user->name}} {{$sis->user->fathers_family}} {{ $sis->user->runFormat()}}
                     <small>
                         @if( $sis->esSuplencia() == "Suplente" )
                             {{$sis->esSuplencia()}}

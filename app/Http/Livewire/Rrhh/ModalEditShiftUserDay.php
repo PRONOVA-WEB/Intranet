@@ -520,12 +520,16 @@ class ModalEditShiftUserDay extends Component
 
 					$actuallyShift = $this->shiftUserDay->ShiftUser;
 					$days = $actuallyShift->days;
-					$days = $this->shiftUser;
+					// $days = $this->shiftUser;
 					$ranges = CarbonPeriod::create($this->shiftUserDay->day, $this->repeatToDate ); // creo los rangos con los valores qe rescato de los input repetir hasta en el modal
+
 						foreach ($ranges as $date) {
 
-							$day = $this->shiftUserDay->where('day',$date->format('Y-m-d'))->first();
-							// $day = $day[0] ;
+							$day = $this->shiftUserDay->where('day',$date->format('Y-m-d'))
+                                ->where('shift_user_id',$this->shiftUserDay->ShiftUser->id)
+                                ->first();
+                            //dd($date->format('Y-m-d'),$this->shiftUserDay,$this->shiftUserDay->ShiftUser->user_id,$day);
+							// // $day = $day[0] ;
 							$day->status = $this->newStatus;
 							$day->update();
 

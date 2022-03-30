@@ -65,7 +65,7 @@ class ListOfShifts extends Component
         // // $this->actuallyOrgUnit = $actuallyOrgUnit;
         // $this->days = $days;
         // $this->statusx=0;
-         $cargos = OrganizationalUnit::all();
+        $cargos = OrganizationalUnit::all();
 
         if(Session::has('actuallyYear') && Session::get('actuallyYear') != "")
             $this->actuallyYear = Session::get('actuallyYear');
@@ -101,12 +101,9 @@ class ListOfShifts extends Component
         else
             $this->actuallyShift=$sTypes->first();
 
-        if($actuallyShift)
-            $this->actuallyShift = $actuallyShift;
-        if($this->actuallyShift->id != 0)
-            $this->staffInShift = ShiftUser::where('organizational_units_id', $this->actuallyOrgUnit->id )->where('shift_types_id',$this->actuallyShift->id)->where('date_up','>=',$this->actuallyYear."-".$this->actuallyMonth."-01")->where('date_from','<=',$this->actuallyYear."-".$this->actuallyMonth."-".$this->days)->where('groupname',htmlentities(Session::get('groupname')))->get();
-        if($staffInShift!=null)
-            $this->staffInShift = $staffInShift;
+            $this->staffInShift = ShiftUser::where('organizational_units_id', $this->actuallyOrgUnit->id )->where('shift_types_id',$this->actuallyShift->id)->where('date_up','>=',$this->actuallyYear."-".$this->actuallyMonth."-01")->where('date_from','<=',$this->actuallyYear."-".$this->actuallyMonth."-".$this->days)->get();
+
+            //dd($this->staffInShift, $this->actuallyOrgUnit->id, $this->actuallyShift->id);
         // else
         //     $this->staffInShift = ShiftUser::where('organizational_units_id', $this->actuallyOrgUnit->id )->where('date_up','>=',$this->actuallyYear."-".$this->actuallyMonth."-".$this->days)->where('date_from','<=',$this->actuallyYear."-".$this->actuallyMonth."-".$this->days)->get();
     }

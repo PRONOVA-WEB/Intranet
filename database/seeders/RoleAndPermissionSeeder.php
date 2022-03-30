@@ -203,12 +203,6 @@ class RoleAndPermissionSeeder extends Seeder
         $role = Role::create(['name' => 'Resources: admin']);
         $role->givePermissionTo(['Resources: create', 'Resources: edit', 'Resources: delete']);
 
-        if(!env('APP_PRONOVA'))
-        {
-            $role = Role::create(['name' => 'Tickets: admin']);
-            $role->givePermissionTo(['Tickets: create', 'Tickets: manage','Tickets: TI']);
-        }
-
         $role = Role::create(['name' => 'Replacement Staff: admin']);
         $role->givePermissionTo(['Replacement Staff: manage', 'Replacement Staff: list rrhh','Replacement Staff: assign request','Replacement Staff: create request']);
 
