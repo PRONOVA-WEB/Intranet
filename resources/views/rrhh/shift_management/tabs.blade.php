@@ -1,7 +1,4 @@
 <ul class="nav nav-tabs">
-  <li class="nav-item ">
-    <a class="nav-link {{ ($actuallyMenu == 'dashboard')?'active':'' }}  " name="indexTab" aria-current="page" href="{{ route('rrhh.shiftManag.shiftReports') }}">Dashboard</a>
-  </li>
   <li class="nav-item">
     <a class="nav-link {{ ($actuallyMenu == 'indexTab')?'active':'' }}" name="indexTab" aria-current="page" href="{{ route('rrhh.shiftManag.index') }}">Gestión de Turnos</a>
   </li>

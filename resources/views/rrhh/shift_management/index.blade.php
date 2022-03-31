@@ -135,25 +135,16 @@
         <div class="col-md-12">
             <h3> Gestión de Turnos</h3>
         </div>
-        {{-- <div class="col-md-6 text-right">
-            <a href="{{route('rrhh.shiftsTypes.downloadShiftInXls')}}" class="btn btn-outline-success btn-xs">
-                <i class="fa fa-file-excel"></i>
-            </a>
-            <button type="button" class="btn btn-outline-danger btn-xs"><i class="fa fa-file-pdf"></i></button>
-        </div> --}}
     </div>
 
 
-    <form method="post" action="{{ route('rrhh.shiftManag.indexF') }}" >
-        @csrf
-        {{ method_field('post') }}  <!-- equivalente a: @method('POST') -->
-
+    <form method="get" action="{{ route('rrhh.shiftManag.index') }}" >
         <!-- Menu de Filtros  -->
         <div class="form-row">
-            <div class="form-group col-md-5" >
+            <div class="form-group col-md-7" >
                 <label for="for_name">Unidad organizacional</label>
                 <select class="form-control selectpicker"  id="for_orgunitFilter" name="orgunitFilter" data-live-search="true" required
-                            data-size="5" onchange="this.form.submit()">
+                            data-size="5">
                         @foreach($ouRoots as $ouRoot)
                             @if($ouRoot->name != 'Externos')
                                 <option value="{{ $ouRoot->id }}"  {{($ouRoot->id==$actuallyOrgUnit->id)?'selected':''}}>
@@ -189,20 +180,14 @@
                     </select>
             </div>
 
-            <div class="form-group col-md-3">
-
+            <div class="form-group col-md-2">
                 <label for="for_name" class="input-group-addon">Series</label>
-
-
-
-                <select class="form-control" id="for_turnFilter" name="turnFilter" onchange="this.form.submit()">
-
+                <select class="form-control" id="for_turnFilter" name="turnFilter">
                     {{-- <option value="0">0 - Todas</option> --}}
                     @php
                         $index = 0;
                     @endphp
                     @foreach($sTypes as $st)
-
                         @foreach($actuallyShiftMonthsList  as $key =>  $shiftMonth)
                             @foreach($shiftMonth as $sMonth)
                                 @if($sMonth->shift_type_id == $st->id && $sMonth->user_id == auth()->user()->id && $sMonth->month == $actuallyMonth)
@@ -220,18 +205,17 @@
                 </select>
             </div>
 
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-2">
                 <label for="for_name">Fecha</label>
-                <input type="month" class="form-control" onchange="this.form.submit()" name="monthYearFilter" value="{{ $actuallyYear."-".$actuallyMonth }}">
+                <input type="month" class="form-control" name="monthYearFilter" value="{{ $actuallyYear."-".$actuallyMonth }}">
             </div>
 
-
-
+            <div class="form-group col-md-1">
+                <label>&nbsp;</label>
+                <button class="btn btn-primary form-control">Filtrar</button>
+            </div>
         </div>
     </form>
-
-
-
     <!-- Select con personal de la unidad  -->
     <h4 class="mt-2 mb-2">Agregar personal al <b>{{ $actuallyShift->name }}</b></h4>
 
@@ -257,11 +241,6 @@
                     @endforeach
                 </select>
             </div>
-            {{-- <div class="col-md-2">
-                <label>Grupo</label>
-                <input type="text" class="form-control" name="groupname"
-                    value="{{strtoupper(html_entity_decode ($groupname))}}" placeholder="Sin grupo">
-            </div> --}}
             <div class="col-md-1">
                 <label>Inicio</label>
                 <select class="form-control" name="initialSerie">
@@ -298,7 +277,7 @@
 
     <h6>Leyenda:</h6>
     @for( $i = 1 ; $i < (sizeof($shiftStatus)+1); $i++ )
-        <a href="#" class="badge badge-secondary" style="background-color:#{{$colorsRgb[$i]}}">{{ucfirst($shiftStatus[$i])}}</a>
+        <span class="badge badge-secondary" style="background-color:#{{$colorsRgb[$i]}}">{{ucfirst($shiftStatus[$i])}}</span>
     @endfor
     <br>
     <i class="	far fa-calendar-check"></i> Turno Confirmado
@@ -313,7 +292,7 @@
                             {{-- <th rowspan="2">Personal</th> --}}
                             <th class="calendar-day" colspan="{{$days}}">
 
-                                <a href="{{route('rrhh.shiftManag.prevMonth')}}" class="btn btn-sm btn-secondary btn-icon-split">
+                                <a href="{{route('rrhh.shiftManag.index',['orgunitFilter'=>$actuallyOrgUnit->id,'turnFilter'=>$actuallyShift->id,'monthYearFilter'=>$actuallyYear.'-'.intval($actuallyMonth)-1])}}" class="btn btn-sm btn-secondary btn-icon-split">
                                     <span class="icon text-white-50">
                                         <i class="fas fa-arrow-left"></i>
                                     </span>
@@ -321,14 +300,14 @@
                                 </a>
 
                                 @foreach($months AS $index => $month)
-                                    {{ ($index == $actuallyMonth )?$month:"" }}
+                                    {{ ($index == $actuallyMonth )? $month : "" }}
                                 @endforeach
 
                                 {{$actuallyYear}}
                                 -
                                 {{$actuallyShift->name}}
 
-                                <a href=" {{route('rrhh.shiftManag.nextMonth')}}" class="btn btn-sm btn-secondary btn-icon-split">
+                                <a href="{{route('rrhh.shiftManag.index',['orgunitFilter'=>$actuallyOrgUnit->id,'turnFilter'=>$actuallyShift->id,'monthYearFilter'=>$actuallyYear.'-'.intval($actuallyMonth)+1])}}" class="btn btn-sm btn-secondary btn-icon-split">
                                     <span class="text">Siguiente</span>
                                     <span class="icon text-white-50">
                                         <i class="fas fa-arrow-right"></i>
@@ -351,7 +330,7 @@
                     </thead>
                     <tbody>
                         <div>
-                            @livewire('rrhh.list-of-shifts')
+                            @livewire('rrhh.list-of-shifts',['actuallyYear'=>$actuallyYear, 'actuallyMonth'=>$actuallyMonth,'days'=>$days,'actuallyOrgUnit'=>$actuallyOrgUnit,'actuallyOrgUnit'=>$actuallyOrgUnit,'actuallyDay'=>$actuallyDay,'actuallyShift'=>$actuallyShift])
                         </div>
                     </tbody>
                 </table>
@@ -395,55 +374,10 @@
         </div>
     </div>
 
-
-     <ul class="nav nav-pills justify-content-end">
-        @for($i=0;$i<sizeof($groupsnames);$i++)
-            <li class="nav-item">
-
-                    <a class="nav-link {{ (isset($groupname)  && $groupname == htmlentities($groupsnames[$i]))?'active':'' }}" aria-current="page" href="{{route('rrhh.shiftManag.index',htmlentities($groupsnames[$i]))}}">{{ ($groupsnames[$i]  == "")?"SIN GRUPO": strtoupper($groupsnames[$i] )}}</a>
-
-            </li>
-
-        @endfor
-
-        </ul>
-
 </div>
 
 @livewire("rrhh.modal-edit-shift-user-day")
 
-
-<!-- TODO: Ve si puedes implementar algo así para la tabla,
-    que al celda sea clickeable completamente
-    abajo te dejé un ejemplo
-    -->
-
-<style>
-    td {
-        overflow:hidden;
-    }
-    .cellbutton {
-         width: 30px;
-       font-size: 13px;
-    }
-    .btn-full {
-        display: inherit;
-        width: 100%;
-        height: 100%;
-        margin:-1000px;
-        padding: 1000px;
-        font-weight: bold;
-    }
-    .btn-full2 {
-        display: inline;
-        /*width: 100%;*/
-        height: 100%;
-        margin:-1000px;
-        /*padding: 10px;*/
-        font-weight: bold;
-        /*font-size: 15px;*/
-    }
-</style>
 @endsection
 
 @section('custom_js')
