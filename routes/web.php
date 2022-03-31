@@ -456,7 +456,7 @@ Route::prefix('rrhh')->as('rrhh.')->group(function () {
 
     Route::prefix('shift-management')->group(function () {
 
-        Route::get('/next', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'goToNextMonth'])->name('shiftManag.nextMonth')->middleware('auth');
+        Route::get('/{actuallyYear}/{actuallyMonth}/next', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'goToNextMonth'])->name('shiftManag.nextMonth')->middleware('auth');
         Route::get('/prev', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'goToPreviousMonth'])->name('shiftManag.prevMonth')->middleware('auth');
 
            Route::get('/myshift', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'myShift'])->name('shiftManag.myshift')->middleware('auth');
@@ -493,8 +493,6 @@ Route::prefix('rrhh')->as('rrhh.')->group(function () {
            Route::get('/reject/{day}', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'adminShiftConfirm'])->name('shiftManag.confirmDay')->middleware('auth');
 
 
-        Route::post('/myshift', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'myShift'])->name('shiftManag.myshiftfiltered')->middleware('auth');
-
 
 
         Route::post('/shift-control-form/download', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'downloadShiftControlInPdf'])->name('shiftManag.downloadform')->middleware('auth');
@@ -506,15 +504,13 @@ Route::prefix('rrhh')->as('rrhh.')->group(function () {
          Route::get('/downloadShiftInXls', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'downloadShiftInXls'])->name('shiftsTypes.downloadShiftInXls')->middleware('auth');
 
         Route::get('/shiftstypes', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'shiftstypesindex'])->name('shiftsTypes.index')->middleware('auth');
-        Route::get('/newshifttype', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'index'])->name('shiftsTypes.new')->middleware('auth');
+        // Route::get('/newshifttype', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'index'])->name('shiftsTypes.new')->middleware('auth');
         Route::get('/newshifttype/', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'newshifttype'])->name('shiftsTypes.create')->middleware('auth');
         Route::get('/editshifttype/{id}', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'editshifttype'])->name('shiftsTypes.edit')->middleware('auth');
         Route::post('/updateshifttype', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'updateshifttype'])->name('shiftsTypes.update')->middleware('auth');
         Route::post('/storeshifttype', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'storenewshift'])->name('shiftsTypes.store')->middleware('auth');
 
-
-
-        Route::get('/{groupname?}', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'index'])->name('shiftManag.index')->middleware('auth');
+        Route::match(['get', 'post'],'/', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'index'])->name('shiftManag.index')->middleware('auth');
     });
 
     Route::prefix('attendance')->name('attendance.')->middleware('auth')->group(function() {

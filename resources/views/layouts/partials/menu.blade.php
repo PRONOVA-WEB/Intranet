@@ -179,7 +179,7 @@
 
                     @canany(['Shift Management: view'])
                         <a class="collapse-item" href="{{ route('rrhh.shiftManag.index') }}">
-                            <i class="fa fa-calendar fa-fw"></i> Modulo Turnos
+                            <i class="fa fa-calendar fa-fw"></i> Módulo Turnos
                         </a>
                     @endcan
 

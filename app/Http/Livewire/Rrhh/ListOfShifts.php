@@ -7,6 +7,7 @@ use \Illuminate\Session\SessionManager;
 use App\Models\Rrhh\ShiftUser;
 use Carbon\Carbon;
 use App\Rrhh\OrganizationalUnit;
+use App\Models\Rrhh\ShiftTypes;
 use Session;
 
 class ListOfShifts extends Component
@@ -17,7 +18,8 @@ class ListOfShifts extends Component
     public $actuallyOrgUnit;
 	public $days;
     public $statusx;
-    private  $actuallyShift;
+    private $actuallyShift;
+    public  $sTypes;
     private $colors = array(
             1 => "lightblue",
             2 => "#2471a3",
@@ -59,53 +61,18 @@ class ListOfShifts extends Component
 
     public function mount($actuallyShift=null,$staffInShift=null)
     {
-        // $this->staffInShift = $staffInShift;
-        // $this->actuallyYear = $actuallyYear;
-        // $this->actuallyMonth = $actuallyMonth;
-        // // $this->actuallyOrgUnit = $actuallyOrgUnit;
-        // $this->days = $days;
-        // $this->statusx=0;
+
         $cargos = OrganizationalUnit::all();
+        $sTypes = ShiftTypes::all();
+        $actuallyYear = $this->actuallyYear ?? Carbon::now()->format('Y');
+        $actuallyMonth = $this->actuallyMonth ?? Carbon::now()->format('m');
+        $days = $this->days ?? Carbon::now()->daysInMonth;
+        $actuallyOrgUnit = $this->actuallyOrgUnit ?? $cargos->first();
 
-        if(Session::has('actuallyYear') && Session::get('actuallyYear') != "")
-            $this->actuallyYear = Session::get('actuallyYear');
-        else
-            $actuallyYear = Carbon::now()->format('Y');
+        $this->actuallyShift = $actuallyShift ?? $this->actuallyShift=$sTypes->first();
 
+        $this->staffInShift = $staffInShift ?? ShiftUser::where('organizational_units_id', $this->actuallyOrgUnit->id )->where('shift_types_id',$this->actuallyShift->id)->where('date_up','>=',$this->actuallyYear."-".$this->actuallyMonth."-01")->where('date_from','<=',$this->actuallyYear."-".$this->actuallyMonth."-".$this->days)->get();
 
-        if(Session::has('actuallyMonth') && Session::get('actuallyMonth') != "")
-            $this->actuallyMonth = Session::get('actuallyMonth');
-        else
-            $this->actuallyMonth = Carbon::now()->format('m');
-
-
-        if(Session::has('days') && Session::get('days') != "")
-            $this->days = Session::get('days');
-        else
-           $this->days = Carbon::now()->daysInMonth;
-
-        if(Session::has('actuallyOrgUnit') && Session::get('actuallyOrgUnit') != "")
-            $this->actuallyOrgUnit = Session::get('actuallyOrgUnit');
-        else
-            $this->actuallyOrgUnit = $cargos->first();
-
-
-        if(Session::has('actuallyDay') && Session::get('actuallyDay') != "")
-            $this->actuallyDay = Session::get('actuallyDay');
-        else
-            $this->actuallyDay = Carbon::now()->format('d');
-
-
-        if(Session::has('actuallyShift') && Session::get('actuallyShift') != "")
-            $this->actuallyShift = Session::get('actuallyShift');
-        else
-            $this->actuallyShift=$sTypes->first();
-
-            $this->staffInShift = ShiftUser::where('organizational_units_id', $this->actuallyOrgUnit->id )->where('shift_types_id',$this->actuallyShift->id)->where('date_up','>=',$this->actuallyYear."-".$this->actuallyMonth."-01")->where('date_from','<=',$this->actuallyYear."-".$this->actuallyMonth."-".$this->days)->get();
-
-            //dd($this->staffInShift, $this->actuallyOrgUnit->id, $this->actuallyShift->id);
-        // else
-        //     $this->staffInShift = ShiftUser::where('organizational_units_id', $this->actuallyOrgUnit->id )->where('date_up','>=',$this->actuallyYear."-".$this->actuallyMonth."-".$this->days)->where('date_from','<=',$this->actuallyYear."-".$this->actuallyMonth."-".$this->days)->get();
     }
 
 
