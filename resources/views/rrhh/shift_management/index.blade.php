@@ -329,7 +329,7 @@
                 </thead>
                 <tbody>
                     <div>
-                        @livewire('rrhh.list-of-shifts',['actuallyYear'=>$actuallyYear, 'actuallyMonth'=>$actuallyMonth,'days'=>$days,'actuallyOrgUnit'=>$actuallyOrgUnit,'actuallyOrgUnit'=>$actuallyOrgUnit,'actuallyDay'=>$actuallyDay,'actuallyShift'=>$actuallyShift])
+                        @livewire('rrhh.list-of-shifts',['actuallyYear'=>$actuallyYear, 'actuallyMonth'=>$actuallyMonth,'days'=>$days,'actuallyOrgUnit'=>$actuallyOrgUnit,'actuallyDay'=>$actuallyDay,'actuallyShift'=>$actuallyShift])
                     </div>
                 </tbody>
             </table>
@@ -338,7 +338,7 @@
 
 </div>
 
-@livewire("rrhh.modal-edit-shift-user-day")
+@livewire("rrhh.modal-edit-shift-user-day",['monthYearFilter'=>$actuallyYear."-".$actuallyMonth,'actuallyShift'=>$actuallyShift->id,'actuallyOrgUnit'=>$actuallyOrgUnit])
 
 @endsection
 

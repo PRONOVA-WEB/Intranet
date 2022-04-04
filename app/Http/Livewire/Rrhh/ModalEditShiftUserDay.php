@@ -88,10 +88,12 @@ class ModalEditShiftUserDay extends Component
             16  => "lightbrown",
             17  => "lightred",
     );
+    public $actuallyOrgUnit;
+    public $actuallyShift;
+    public $monthYearFilter;
     protected $listeners = ['setshiftUserDay','clearModal','ChangeWorkingDay'=>'enableChangeTypeOfWorkingDay','findAvailableOwnDaysToChange'];
     // public function mount(array $headers){
     public function mount(){
-
 		// $this->headers = old('http_client_headers', $headers);
 		$this->varLog = "mont";
 
@@ -560,10 +562,6 @@ class ModalEditShiftUserDay extends Component
 									$bTurno->user_id = $this->userIdtoChange2;
 									$bTurno->shift_types_id = $day->ShiftUser->shift_types_id;
 									$bTurno->organizational_units_id = $day->ShiftUser->organizational_units_id;
-									if(Session::has('groupname') && Session::get('groupname') != "")
-										$bTurno->groupname =Session::get('groupname');
-									else
-										$bTurno->groupname ="";
 
 									if($this->chkSuplente)
 										$bTurno->commentary = "Suplente:".$day->shift_user_id;
@@ -810,8 +808,9 @@ class ModalEditShiftUserDay extends Component
 		$this->emitUp('refreshListOfShifts');
 		// $this->emitSelf('renderShiftDay');
 		$this->emitSelf('changeColor',["color"=>$this->colors[$this->shiftUserDay->status]]);
-		 $this->reset();
-		    return redirect('/rrhh/shift-management/'.(( Session::has('groupname') && Session::get('groupname') != ""  )?Session::get('groupname'):""));
+		//$this->reset();
+
+		return redirect('/rrhh/shift-management?orgunitFilter='.$this->actuallyOrgUnit->id.'&turnFilter='.$this->actuallyShift.'&monthYearFilter='.$this->monthYearFilter.'');
 	}
 	public function confirmExtraDay(){
 
