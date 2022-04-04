@@ -283,94 +283,56 @@
     <i class="	far fa-calendar-check"></i> Turno Confirmado
     <i class="	far fa-calendar-times"></i> Turno Cerrado
     <hr>
-    <div class="row" style=" overflow: auto;white-space: nowrap;">
+    <div class="row">
         <div class="col-md-12">
-            @if($actuallyShift->id != 0)
-                <table class="table table-sm table-bordered datatable">
-                    <thead class="card-header">
-                        <tr>
-                            {{-- <th rowspan="2">Personal</th> --}}
-                            <th class="calendar-day" colspan="{{$days}}">
+            <table class="table table-sm table-bordered datatable">
+                <thead class="card-header">
+                    <tr>
+                        {{-- <th rowspan="2">Personal</th> --}}
+                        <th class="calendar-day" colspan="{{$days}}">
 
-                                <a href="{{route('rrhh.shiftManag.index',['orgunitFilter'=>$actuallyOrgUnit->id,'turnFilter'=>$actuallyShift->id,'monthYearFilter'=>$actuallyYear.'-'.intval($actuallyMonth)-1])}}" class="btn btn-sm btn-secondary btn-icon-split">
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-arrow-left"></i>
-                                    </span>
-                                <span class="text">Anterior</span>
-                                </a>
+                            <a href="{{route('rrhh.shiftManag.index',['orgunitFilter'=>$actuallyOrgUnit->id,'turnFilter'=>$actuallyShift->id,'monthYearFilter'=>$actuallyYear.'-'.intval($actuallyMonth)-1])}}" class="btn btn-sm btn-secondary btn-icon-split">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-arrow-left"></i>
+                                </span>
+                            <span class="text">Anterior</span>
+                            </a>
 
-                                @foreach($months AS $index => $month)
-                                    {{ ($index == $actuallyMonth )? $month : "" }}
-                                @endforeach
+                            @foreach($months AS $index => $month)
+                                {{ ($index == $actuallyMonth )? $month : "" }}
+                            @endforeach
 
-                                {{$actuallyYear}}
-                                -
-                                {{$actuallyShift->name}}
+                            {{$actuallyYear}}
+                            -
+                            {{$actuallyShift->name}}
 
-                                <a href="{{route('rrhh.shiftManag.index',['orgunitFilter'=>$actuallyOrgUnit->id,'turnFilter'=>$actuallyShift->id,'monthYearFilter'=>$actuallyYear.'-'.intval($actuallyMonth)+1])}}" class="btn btn-sm btn-secondary btn-icon-split">
-                                    <span class="text">Siguiente</span>
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-arrow-right"></i>
-                                    </span>
-                                </a>
+                            <a href="{{route('rrhh.shiftManag.index',['orgunitFilter'=>$actuallyOrgUnit->id,'turnFilter'=>$actuallyShift->id,'monthYearFilter'=>$actuallyYear.'-'.intval($actuallyMonth)+1])}}" class="btn btn-sm btn-secondary btn-icon-split">
+                                <span class="text">Siguiente</span>
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-arrow-right"></i>
+                                </span>
+                            </a>
+                        </th>
+                    </tr>
+                    <tr class="thead-dark">
+                        <th>Personal</th>
+                        @for($i = 1; $i <= $days; $i++)
+                            @php
+                                $dateFiltered = \Carbon\Carbon::createFromFormat('Y-m-d',  $actuallyYear."-".$actuallyMonth."-".$i, 'Europe/London');
+                            @endphp
+                            <th class="brless dia"
+                                style="color:{{ ( ($dateFiltered->isWeekend() )?'red':( ( sizeof($holidays->where('date',$actuallyYear.'-'.$actuallyMonth.'-'.$i)) > 0 ) ? 'red':'white' ))}}" >
+                                <p style="font-size: 8px">{{$i}}</p>
                             </th>
-                        </tr>
-                        <tr class="thead-dark">
-                            <th>Personal</th>
-                            @for($i = 1; $i <= $days; $i++)
-                                @php
-                                    $dateFiltered = \Carbon\Carbon::createFromFormat('Y-m-d',  $actuallyYear."-".$actuallyMonth."-".$i, 'Europe/London');
-                                @endphp
-                                <th class="brless dia"
-                                    style="color:{{ ( ($dateFiltered->isWeekend() )?'red':( ( sizeof($holidays->where('date',$actuallyYear.'-'.$actuallyMonth.'-'.$i)) > 0 ) ? 'red':'white' ))}}" >
-                                    <p style="font-size: 8px">{{$i}}</p>
-                                </th>
-                            @endfor
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <div>
-                            @livewire('rrhh.list-of-shifts',['actuallyYear'=>$actuallyYear, 'actuallyMonth'=>$actuallyMonth,'days'=>$days,'actuallyOrgUnit'=>$actuallyOrgUnit,'actuallyOrgUnit'=>$actuallyOrgUnit,'actuallyDay'=>$actuallyDay,'actuallyShift'=>$actuallyShift])
-                        </div>
-                    </tbody>
-                </table>
-            @else
-                @foreach($sTypes as $st)
-                    <table class="table table-sm table-bordered">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th rowspan="2">Personal</th>
-                                <th class="calendar-day" colspan="{{$days}}">
-                                    @foreach($months AS $index => $month)
-                                        {{ ($index == $actuallyMonth )?$month:"" }}
-                                    @endforeach
-
-                                    {{$actuallyYear}}
-                                    -
-                                    {{$st->name}}
-                                </th>
-                            </tr>
-                            <tr>
-                                @for($i = 1; $i <= $days; $i++)
-                                    @php
-                                        $dateFiltered = \Carbon\Carbon::createFromFormat('Y-m-d',  $actuallyYear."-".$actuallyMonth."-".$i, 'Europe/London');
-                                    @endphp
-
-                                    <th class="brless dia"
-                                        style="color:{{ ( ($dateFiltered->isWeekend() )?'red':( ($holidays->where('date',$dateFiltered)) ? 'red':'white')  )}}" >
-                                       {{$i}}
-                                    </th>
-                                    <!-- <th class="brless dia">🌞</th> -->
-                                    <!-- <th class="noche">🌒</th> -->
-                                @endfor
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @livewire('rrhh.list-of-shifts',["actuallyShift"=>$st])
-                        </tbody>
-                    </table>
-                @endforeach
-            @endif
+                        @endfor
+                    </tr>
+                </thead>
+                <tbody>
+                    <div>
+                        @livewire('rrhh.list-of-shifts',['actuallyYear'=>$actuallyYear, 'actuallyMonth'=>$actuallyMonth,'days'=>$days,'actuallyOrgUnit'=>$actuallyOrgUnit,'actuallyOrgUnit'=>$actuallyOrgUnit,'actuallyDay'=>$actuallyDay,'actuallyShift'=>$actuallyShift])
+                    </div>
+                </tbody>
+            </table>
         </div>
     </div>
 

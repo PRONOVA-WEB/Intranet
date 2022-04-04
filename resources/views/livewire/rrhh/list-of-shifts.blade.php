@@ -21,7 +21,7 @@ figure:focus .menu {
 
 </style>
 
-<div>
+<div wire:init="init">
    <div wire:loading>
               <i class="fas fa-spinner fa-pulse"></i>
         </div>
