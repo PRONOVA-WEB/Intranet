@@ -461,14 +461,9 @@ class PurchasingProcessController extends Controller
         //Registrar archivos en attached_files
         $now = Carbon::now()->format('Y_m_d_H_i_s');
         $files = ['resol_direct_deal_file' => 'Resolución de trato directo',
-<<<<<<< HEAD
-                  'resol_contract_file' => 'Resolución de contrato',
-                  'guarantee_ticket_file' => 'Boleta de garantía'];
-=======
                   'resol_contract_file' => 'Resolución de contrato',
                   'guarantee_ticket_file' => 'Boleta de garantía',
                   'oc_file' => 'Orden de compra'];
->>>>>>> ebee989a8d9556bf2aeea9c2144eaf6c0c0197e7
 
         foreach($files as $key => $file){
             if($request->hasFile($key)){

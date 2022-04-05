@@ -75,8 +75,11 @@ class ListOfShifts extends Component
 
         $this->actuallyShift = $actuallyShift ?? $this->actuallyShift=$sTypes->first();
 
-        $this->staffInShift = $staffInShift ?? ShiftUser::where('organizational_units_id', $this->actuallyOrgUnit->id )->where('shift_types_id',$this->actuallyShift->id)->where('date_up','>=',$this->actuallyYear."-".$this->actuallyMonth."-01")->where('date_from','<=',$this->actuallyYear."-".$this->actuallyMonth."-".$this->days)->get();
-
+        $this->staffInShift = $staffInShift ?? ShiftUser::where('organizational_units_id', $this->actuallyOrgUnit->id )
+                                                        ->where('shift_types_id',$this->actuallyShift->id)
+                                                        ->where('date_up','>=',$this->actuallyYear."-".$this->actuallyMonth."-01")
+                                                        ->where('date_from','<=',$this->actuallyYear."-".$this->actuallyMonth."-".$this->days)
+                                                        ->get();
     }
 
 

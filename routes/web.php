@@ -351,55 +351,55 @@ Route::prefix('resources')->name('resources.')->namespace('Resources')->middlewa
     });
 });
 
-Route::prefix('agreements')->as('agreements.')->middleware('auth')->group(function () {
-    Route::get('/{agreement}/accountability/create', 'Agreements\AccountabilityController@create')->name('accountability.create');
-    Route::post('/{agreement}/accountability', 'Agreements\AccountabilityController@store')->name('accountability.store');
-    Route::get('/{agreement}/accountability', 'Agreements\AccountabilityController@index')->name('accountability.index');
-    Route::get('/{agreement}/accountability/{accountability}/create', 'Agreements\AccountabilityDetailController@create')->name('accountability.detail.create');
-    Route::post('/{agreement}/accountability/{accountability}', 'Agreements\AccountabilityDetailController@store')->name('accountability.detail.store');
+// Route::prefix('agreements')->as('agreements.')->middleware('auth')->group(function () {
+//     Route::get('/{agreement}/accountability/create', 'Agreements\AccountabilityController@create')->name('accountability.create');
+//     Route::post('/{agreement}/accountability', 'Agreements\AccountabilityController@store')->name('accountability.store');
+//     Route::get('/{agreement}/accountability', 'Agreements\AccountabilityController@index')->name('accountability.index');
+//     Route::get('/{agreement}/accountability/{accountability}/create', 'Agreements\AccountabilityDetailController@create')->name('accountability.detail.create');
+//     Route::post('/{agreement}/accountability/{accountability}', 'Agreements\AccountabilityDetailController@store')->name('accountability.detail.store');
 
-    Route::delete('/agreements', 'Agreements\AgreementController@destroy')->name('destroy');
+//     Route::delete('/agreements', 'Agreements\AgreementController@destroy')->name('destroy');
 
 
-    Route::post('stage', 'Agreements\StageController@store')->name('stage.store');
-    Route::put('/stage/{agreement_stage}', 'Agreements\AgreementController@updateStage')->name('stage.update');
-    Route::get('/stage/download/{file}', 'Agreements\StageController@download')->name('stage.download');
+//     Route::post('stage', 'Agreements\StageController@store')->name('stage.store');
+//     Route::put('/stage/{agreement_stage}', 'Agreements\AgreementController@updateStage')->name('stage.update');
+//     Route::get('/stage/download/{file}', 'Agreements\StageController@download')->name('stage.download');
 
-    Route::get('/download/{file}', 'Agreements\AgreementController@download')->name('download');
-    Route::get('/downloadAgree/{file}', 'Agreements\AgreementController@downloadAgree')->name('downloadAgree');
-    Route::get('/downloadRes/{file}', 'Agreements\AgreementController@downloadRes')->name('downloadRes');
+//     Route::get('/download/{file}', 'Agreements\AgreementController@download')->name('download');
+//     Route::get('/downloadAgree/{file}', 'Agreements\AgreementController@downloadAgree')->name('downloadAgree');
+//     Route::get('/downloadRes/{file}', 'Agreements\AgreementController@downloadRes')->name('downloadRes');
 
-    Route::get('/preview/{agreement}', 'Agreements\AgreementController@preview')->name('preview');
+//     Route::get('/preview/{agreement}', 'Agreements\AgreementController@preview')->name('preview');
 
-    Route::resource('addendums', 'Agreements\AddendumController');
-    Route::post('/addendum/createWord/{addendum}/type/{type}', 'Agreements\WordTestController@createWordDocxAddendum')->name('addendum.createWord');
-    Route::get('/addendum/downloadRes/{addendum}', 'Agreements\AddendumController@downloadRes')->name('addendum.downloadRes');
-    Route::get('/addendum/sign/{addendum}/type/{type}', 'Agreements\AddendumController@sign')->name('addendum.sign');
-    Route::get('/addendum/preview/{addendum}', 'Agreements\AddendumController@preview')->name('addendum.preview');
-    Route::resource('programs', 'Agreements\ProgramController');
-    Route::prefix('programs')->name('programs.')->group(function () {
-        Route::resource('resolutions', 'Agreements\ProgramResolutionController');
-        Route::get('resolution/createWord/{program_resolution}', 'Agreements\WordTestController@createWordDocxResProgram')->name('resolution.createWord');
-        Route::get('resolution/download/{program_resolution}', 'Agreements\ProgramResolutionController@download')->name('resolution.download');
-        Route::post('resolution/amount/{program_resolution}', 'Agreements\ProgramResolutionController@storeAmount')->name('resolution.amount.store');
-        Route::put('resolution/amount/{resolution_amount}', 'Agreements\ProgramResolutionController@updateAmount')->name('resolution.amount.update');
-        Route::delete('resolution/amount/{resolution_amount}', 'Agreements\ProgramResolutionController@destroyAmount')->name('resolution.amount.destroy');
-    });
-    Route::resource('municipalities', 'MunicipalityController');
-    Route::resource('signers', 'Agreements\SignerController');
-    Route::put('/amount/{agreement_amount}', 'Agreements\AgreementController@updateAmount')->name('amount.update');
-    Route::delete('/amount/{agreement_amount}', 'Agreements\AgreementController@destroyAmount')->name('amount.destroy');
-    Route::put('/quota/{agreement_quota}', 'Agreements\AgreementController@updateQuota')->name('quota.update');
-    Route::put('/quotaAutomatic/{agreement_quota}', 'Agreements\AgreementController@updateAutomaticQuota')->name('quotaAutomatic.update');
+//     Route::resource('addendums', 'Agreements\AddendumController');
+//     Route::post('/addendum/createWord/{addendum}/type/{type}', 'Agreements\WordTestController@createWordDocxAddendum')->name('addendum.createWord');
+//     Route::get('/addendum/downloadRes/{addendum}', 'Agreements\AddendumController@downloadRes')->name('addendum.downloadRes');
+//     Route::get('/addendum/sign/{addendum}/type/{type}', 'Agreements\AddendumController@sign')->name('addendum.sign');
+//     Route::get('/addendum/preview/{addendum}', 'Agreements\AddendumController@preview')->name('addendum.preview');
+//     Route::resource('programs', 'Agreements\ProgramController');
+//     Route::prefix('programs')->name('programs.')->group(function () {
+//         Route::resource('resolutions', 'Agreements\ProgramResolutionController');
+//         Route::get('resolution/createWord/{program_resolution}', 'Agreements\WordTestController@createWordDocxResProgram')->name('resolution.createWord');
+//         Route::get('resolution/download/{program_resolution}', 'Agreements\ProgramResolutionController@download')->name('resolution.download');
+//         Route::post('resolution/amount/{program_resolution}', 'Agreements\ProgramResolutionController@storeAmount')->name('resolution.amount.store');
+//         Route::put('resolution/amount/{resolution_amount}', 'Agreements\ProgramResolutionController@updateAmount')->name('resolution.amount.update');
+//         Route::delete('resolution/amount/{resolution_amount}', 'Agreements\ProgramResolutionController@destroyAmount')->name('resolution.amount.destroy');
+//     });
+//     Route::resource('municipalities', 'MunicipalityController');
+//     Route::resource('signers', 'Agreements\SignerController');
+//     Route::put('/amount/{agreement_amount}', 'Agreements\AgreementController@updateAmount')->name('amount.update');
+//     Route::delete('/amount/{agreement_amount}', 'Agreements\AgreementController@destroyAmount')->name('amount.destroy');
+//     Route::put('/quota/{agreement_quota}', 'Agreements\AgreementController@updateQuota')->name('quota.update');
+//     Route::put('/quotaAutomatic/{agreement_quota}', 'Agreements\AgreementController@updateAutomaticQuota')->name('quotaAutomatic.update');
 
-    Route::get('tracking', 'Agreements\AgreementController@indexTracking')->name('tracking.index');
-    //Route::get('createWord','Agreements\WordTestController@createWordDocx')->name('createWord.index');
-    Route::get('/createWord/{agreement}', 'Agreements\WordTestController@createWordDocx')->name('createWord');
-    Route::post('/createWordRes/{agreement}', 'Agreements\WordTestController@createResWordDocx')->name('createWordRes');
-    Route::get('/createWordWithdrawal/{agreement}', 'Agreements\WordWithdrawalAgreeController@createWordDocx')->name('createWordWithdrawal');
-    Route::post('/createWordResWithdrawal/{agreement}', 'Agreements\WordWithdrawalAgreeController@createResWordDocx')->name('createWordResWithdrawal');
-    Route::get('/sign/{agreement}/type/{type}', 'Agreements\AgreementController@sign')->name('sign');
-});
+//     Route::get('tracking', 'Agreements\AgreementController@indexTracking')->name('tracking.index');
+//     //Route::get('createWord','Agreements\WordTestController@createWordDocx')->name('createWord.index');
+//     Route::get('/createWord/{agreement}', 'Agreements\WordTestController@createWordDocx')->name('createWord');
+//     Route::post('/createWordRes/{agreement}', 'Agreements\WordTestController@createResWordDocx')->name('createWordRes');
+//     Route::get('/createWordWithdrawal/{agreement}', 'Agreements\WordWithdrawalAgreeController@createWordDocx')->name('createWordWithdrawal');
+//     Route::post('/createWordResWithdrawal/{agreement}', 'Agreements\WordWithdrawalAgreeController@createResWordDocx')->name('createWordResWithdrawal');
+//     Route::get('/sign/{agreement}/type/{type}', 'Agreements\AgreementController@sign')->name('sign');
+// });
 
 //Programación Númerica APS
 Route::resource('programmings', 'Programmings\ProgrammingController')->middleware('auth');
@@ -487,7 +487,7 @@ Route::prefix('rrhh')->as('rrhh.')->group(function () {
             Route::post('/available-shifts/cancelDay', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'cancelShiftRequest'])->name('shiftManag.availableShifts.cancelRequest')->middleware('auth');
             Route::post('/available-shifts/approvalRequest', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'approveShiftRequest'])->name('shiftManag.availableShifts.approvalRequest')->middleware('auth');
            Route::post('/available-shifts/rejectRequest', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'rejectShiftRequest'])->name('shiftManag.availableShifts.rejectRequest')->middleware('auth');
-           Route::get('/myshift/confirm/{day}', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'myShiftConfirm'])->name('shiftManag.myshift.confirmDay')->middleware('auth');
+           Route::get('/myshift/confirm/{day}/{monthYearFilter}', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'myShiftConfirm'])->name('shiftManag.myshift.confirmDay')->middleware('auth');
            Route::get('/myshift/reject/{day}', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'myShiftReject'])->name('shiftManag.myshift.rejectDay')->middleware('auth');
 
            Route::get('/reject/{day}', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'adminShiftConfirm'])->name('shiftManag.confirmDay')->middleware('auth');
@@ -505,12 +505,13 @@ Route::prefix('rrhh')->as('rrhh.')->group(function () {
 
         Route::get('/shiftstypes', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'shiftstypesindex'])->name('shiftsTypes.index')->middleware('auth');
         // Route::get('/newshifttype', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'index'])->name('shiftsTypes.new')->middleware('auth');
-        Route::get('/newshifttype/', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'newshifttype'])->name('shiftsTypes.create')->middleware('auth');
+        Route::get('/newshifttype', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'newshifttype'])->name('shiftsTypes.create')->middleware('auth');
         Route::get('/editshifttype/{id}', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'editshifttype'])->name('shiftsTypes.edit')->middleware('auth');
         Route::post('/updateshifttype', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'updateshifttype'])->name('shiftsTypes.update')->middleware('auth');
         Route::post('/storeshifttype', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'storenewshift'])->name('shiftsTypes.store')->middleware('auth');
 
         Route::match(['get', 'post'],'/', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'index'])->name('shiftManag.index')->middleware('auth');
+        Route::get('/change-shift-day-status-form/{shiftUserDay}/{monthYearFilter}', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'changeShiftDayStatusForm'])->name('shiftManag.change-shift-day-status-form')->middleware('auth');
     });
 
     Route::prefix('attendance')->name('attendance.')->middleware('auth')->group(function() {

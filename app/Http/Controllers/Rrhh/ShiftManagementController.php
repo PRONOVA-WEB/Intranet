@@ -898,10 +898,13 @@ class ShiftManagementController extends Controller
         return view('rrhh.shift_management.my-shift', compact('actuallyShift','actuallyOrgUnit','days', 'actuallyMonth', 'actuallyDay', 'actuallyYear', 'sTypes', 'months', 'myConfirmationEarrings', 'tiposJornada', 'myShifts', 'holidays'));
     }
 
-    public function myShiftConfirm($day)
+    public function myShiftConfirm($day, $monthYearFilter)
     {
 
         $d = ShiftUserDay::find($day);
+        $orgunitFilter   = $d->ShiftUser->user->organizationalUnit->id;
+        $turnFilter      = $d->ShiftUser->shiftType->id;
+
         echo "R" . json_encode($d);
 
         $nHistory = new ShiftDayHistoryOfChanges;
@@ -915,7 +918,7 @@ class ShiftManagementController extends Controller
         $nHistory->save();
 
         session()->flash('success', 'Se ha confirmado el turno extra del dia ' . $d->day);
-        return redirect()->route('rrhh.shiftManag.myshift');
+        return redirect()->route('rrhh.shiftManag.myshift', ['orgunitFilter'=>$orgunitFilter,'turnFilter'=>$turnFilter,'monthYearFilter'=>$monthYearFilter]);
     }
 
     public function myShiftReject($day)
@@ -1695,4 +1698,10 @@ class ShiftManagementController extends Controller
             'months'
         ));
     }
+
+    public function changeShiftDayStatusForm(ShiftUserDay $shiftUserDay, $monthYearFilter)
+    {
+        return view('rrhh.shift_management.edit-shift-user-day',compact('shiftUserDay','monthYearFilter'));
+    }
+
 }
