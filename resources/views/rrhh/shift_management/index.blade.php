@@ -315,14 +315,14 @@
                         </th>
                     </tr>
                     <tr class="thead-dark">
-                        <th>Personal</th>
+                        <th style="150px">Personal</th>
                         @for($i = 1; $i <= $days; $i++)
                             @php
                                 $dateFiltered = \Carbon\Carbon::createFromFormat('Y-m-d',  $actuallyYear."-".$actuallyMonth."-".$i, 'Europe/London');
                             @endphp
                             <th class="brless dia"
                                 style="color:{{ ( ($dateFiltered->isWeekend() )?'red':( ( sizeof($holidays->where('date',$actuallyYear.'-'.$actuallyMonth.'-'.$i)) > 0 ) ? 'red':'white' ))}}" >
-                                <p style="font-size: 8px">{{$i}}</p>
+                                <p style="font-size: 10px">{{$i}}</p>
                             </th>
                         @endfor
                     </tr>

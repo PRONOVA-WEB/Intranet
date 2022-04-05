@@ -33,14 +33,6 @@
                 <i class="fas fa-spinner fa-pulse"></i>
             @endif
             </div>
-            <div class="col-md-6" style="font-size:10px;">grupo:
-            @if(isset($actuallyGroup))
-                {{(isset($actuallyGroup) && $actuallyGroup !="")?$actuallyGroup:"Sin Grupo"}}
-            @else
-                <i class="fas fa-spinner fa-pulse"></i>
-            @endif
-
-            </div>
 
         </div>
         <br>

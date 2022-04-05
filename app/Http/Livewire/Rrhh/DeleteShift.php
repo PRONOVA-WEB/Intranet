@@ -18,12 +18,13 @@ class DeleteShift extends Component
     public $ShiftUser;
     public $actuallyGroup = "Sin grupo";
     public $cantDaysToDelete = 0 ;
-    public   $actuallyShift;
+    public $actuallyShift;
     public $userName;
     public $deleteAll = 0 ;
     public $rutUser;
     public $daysList= array();
     public $actuallyShiftUserDay;
+
     public function render()
     {
         return view('livewire.rrhh.delete-shift');
@@ -41,13 +42,13 @@ class DeleteShift extends Component
        $this->userName = $this->ShiftUser->user->getFullNameAttribute();
        $this->rutUser =  $this->ShiftUser->user->runFormat();
         $this->actuallyGroup =  htmlentities(Session::get('groupname'));
-       $this->actuallyShift = Session::get('actuallyShift');
+       $this->actuallyShift = $this->ShiftUser->shiftType;
        $this->actuallyShiftUserDay = Session::get('actuallyShift');
 
-        $this->startdate =  Session::get('actuallyYear')."-". Session::get('actuallyMonth') ."-01" ;
+        $this->startdate =  $actuallyShiftDay[1]."-". $actuallyShiftDay[2] ."-01" ;
+        $lastDayofMonth =    \Carbon\Carbon::parse($actuallyShiftDay[1]."-". $actuallyShiftDay[2] ."-01")->endOfMonth()->toDateString();
 
-        $this->enddate =  Session::get('actuallyYear')
-        ."-". Session::get('actuallyMonth') ."-31";
+        $this->enddate =  $lastDayofMonth;
         $days =  (object) $this->ShiftUser->days;
         foreach ($days->where("day",">=",$this->startdate)->where("day","<=",$this->enddate) as $day) {
 // dd(   $days );
