@@ -2,130 +2,7 @@
 
 @section('title', 'Gestion de Turnos')
 
-@push('css')
-<link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap4.min.css">
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
-@endpush
 @section('content')
-
-<style type="text/css">
-	:root {
-        font-size: 16px;
-    }
-
-    .table {
-    white-space: nowrap;
-    }
-
-    .table thead th {
-    text-align: center;
-    vertical-align: middle;
-    border-bottom: none;
-    border: none;
-    }
-
-    .brless {
-        /* border-right: solid 1px transparent !important; */
-    }
-
-    .bless {border: none !important;}
-    .br {border-right: solid 1px #454d55 !important;}
-    .dia {
-        opacity: 0.8;
-    }
-
-    .day {
-        background-color: white;
-        text-align: center;
-    }
-
-    .night {
-        background-color: rgba(0, 0, 0, 0.2);
-        text-align: center;
-        border-right-color: black !important;
-    }
-
-    .calendar-day {
-        font-size: 2rem;
-        text-align: center;
-        padding: 0!important;
-    }
-
-    .table th, .table td {padding: 0.5rem !important;}
-
-    .borderBottom {
-        border-bottom: solid 2px #454d55 !important;
-    }
-
-    .bbd {
-        border-top: none;
-        border-left: none;
-        border-right: none;
-
-    }
-
-    .bbn {
-        border-top: none !important;
-        border-left: none;
-        border-right: solid 1px #454d55;
-
-    }
-    .bg-red {background-color: #ff5133;}
-    .bg-green {background-color: #00e63d;}
-    .bg-purple {background-color: #d57aff;}
-    .bg-red, .bg-green, .bg-purple {color: white;}
-
-
-    .turn-selected {
-        background: #ff0000;
-        color: #fff;
-        padding: 3px 15px;
-        border-radius: 50%;
-
-    }
-    .only-icon {
-        background-color: Transparent;
-        background-repeat:no-repeat;
-        border: none;
-        cursor:pointer;
-        overflow: hidden;
-        outline:none;
-    }
-
-    .btnShiftDay:hover {
-        opacity: 0.5;
-        filter:  alpha(opacity=50);
-    }
-
-    .btn-light {
-        border: 1px solid #ced4da;
-    }
-     td {
-        overflow:hidden;
-    }
-    .cellbutton {
-        width: 30px;
-       font-size: 13px;
-    }
-    .btn-full {
-        display: block;
-        width: 100%;
-        height: 100%;
-        margin:-1000px;
-        padding: 1000px;
-        font-weight: bold;
-    }
-  .deleteButton {
-    color: red;
-  }
-  .deleteButton:hover {
-        opacity: 0.5;
-        filter:  alpha(opacity=50);
-  }
-</style>
-
-
-<!--Menu de Filtros  -->
 
 @include("rrhh.shift_management.tabs", array('actuallyMenu' => 'indexTab'))
 <!-- TODO: Que hace este div? -->
@@ -282,49 +159,50 @@
     <br>
     <i class="	far fa-calendar-check"></i> Turno Confirmado
     <i class="	far fa-calendar-times"></i> Turno Cerrado
-    <hr>
     <div class="row">
         <div class="col-md-12">
+            <table class="table table-sm table-bordered text-center">
+            <tr>
+                <th class="calendar-day" colspan="{{$days}}">
+                    <a href="{{route('rrhh.shiftManag.index',['orgunitFilter'=>$actuallyOrgUnit->id,'turnFilter'=>$actuallyShift->id,'monthYearFilter'=>$actuallyYear.'-'.intval($actuallyMonth)-1])}}" class="btn btn-sm btn-secondary btn-icon-split">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-arrow-left"></i>
+                        </span>
+                    <span class="text">Anterior</span>
+                    </a>
+                    <span style="font-size: 1.5rem">
+                    @foreach($months AS $index => $month)
+                        {{ ($index == $actuallyMonth )? $month : "" }}
+                    @endforeach
+
+                    {{$actuallyYear}}
+                    -
+                    {{$actuallyShift->name}}
+                    </span>
+                    <a href="{{route('rrhh.shiftManag.index',['orgunitFilter'=>$actuallyOrgUnit->id,'turnFilter'=>$actuallyShift->id,'monthYearFilter'=>$actuallyYear.'-'.intval($actuallyMonth)+1])}}" class="btn btn-sm btn-secondary btn-icon-split">
+                        <span class="text">Siguiente</span>
+                        <span class="icon text-white-50">
+                            <i class="fas fa-arrow-right"></i>
+                        </span>
+                    </a>
+                </th>
+            </tr>
+            </table>
             <table class="table table-sm table-bordered datatable">
-                <thead class="card-header">
-                    <tr>
-                        {{-- <th rowspan="2">Personal</th> --}}
-                        <th class="calendar-day" colspan="{{$days}}">
-
-                            <a href="{{route('rrhh.shiftManag.index',['orgunitFilter'=>$actuallyOrgUnit->id,'turnFilter'=>$actuallyShift->id,'monthYearFilter'=>$actuallyYear.'-'.intval($actuallyMonth)-1])}}" class="btn btn-sm btn-secondary btn-icon-split">
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-arrow-left"></i>
-                                </span>
-                            <span class="text">Anterior</span>
-                            </a>
-
-                            @foreach($months AS $index => $month)
-                                {{ ($index == $actuallyMonth )? $month : "" }}
-                            @endforeach
-
-                            {{$actuallyYear}}
-                            -
-                            {{$actuallyShift->name}}
-
-                            <a href="{{route('rrhh.shiftManag.index',['orgunitFilter'=>$actuallyOrgUnit->id,'turnFilter'=>$actuallyShift->id,'monthYearFilter'=>$actuallyYear.'-'.intval($actuallyMonth)+1])}}" class="btn btn-sm btn-secondary btn-icon-split">
-                                <span class="text">Siguiente</span>
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-arrow-right"></i>
-                                </span>
-                            </a>
-                        </th>
-                    </tr>
-                    <tr class="thead-dark">
-                        <th style="150px">Personal</th>
+                <thead>
+                    <tr class="thead-dark text-center">
+                        <th style="150px;">Personal</th>
                         @for($i = 1; $i <= $days; $i++)
                             @php
                                 $dateFiltered = \Carbon\Carbon::createFromFormat('Y-m-d',  $actuallyYear."-".$actuallyMonth."-".$i, 'Europe/London');
                             @endphp
-                            <th class="brless dia"
-                                style="color:{{ ( ($dateFiltered->isWeekend() )?'red':( ( sizeof($holidays->where('date',$actuallyYear.'-'.$actuallyMonth.'-'.$i)) > 0 ) ? 'red':'white' ))}}" >
+                            <th style="color:{{ ( ($dateFiltered->isWeekend() )?'red':( ( sizeof($holidays->where('date',$actuallyYear.'-'.$actuallyMonth.'-'.$i)) > 0 ) ? 'red':'white' ))}}" >
                                 <p style="font-size: 10px">{{$i}}</p>
                             </th>
                         @endfor
+                        <th>
+                           <i class="fas fa-trash"></i>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>

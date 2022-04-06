@@ -46,11 +46,8 @@ figure:focus .menu {
         @if( $sis->days()->whereBetween('day',[$mInit[0],$mEnd[0]])->count() > 0  || $actuallyShift->id == 99 )
 
             <tr>
-                <td class="br cellbutton">
-
-                    @livewire( 'rrhh.delete-shift-button',['actuallyShiftUserDay'=>$sis,'actuallyYear'=>$actuallyYear,'actuallyMonth'=>$actuallyMonth])
-
-                    {{$sis->user->name}} {{$sis->user->fathers_family}} {{ $sis->user->runFormat()}}
+                <td class="bg-gray-300">
+                    {{$sis->user->name}} {{$sis->user->fathers_family}} <br>{{ $sis->user->runFormat()}}
                     <small>
                         @if( $sis->esSuplencia() == "Suplente" )
                             {{$sis->esSuplencia()}}
@@ -75,7 +72,7 @@ figure:focus .menu {
                         $d = $sis->days()->where('day',$date[0])->get();
                         $fontColor = '#fff';
                     @endphp
-                    <td class="bbd day"  style="text-align:center;">
+                    <td style="text-align:center;">
                             @if(isset($d))
                                 @foreach($d as $dd)
                                     @php
@@ -116,6 +113,9 @@ figure:focus .menu {
                             @endif
                     </td>
                 @endfor
+                <td>
+                    @livewire( 'rrhh.delete-shift-button',['actuallyShiftUserDay'=>$sis,'actuallyYear'=>$actuallyYear,'actuallyMonth'=>$actuallyMonth])
+                </td>
             </tr>
         @endif
         @endforeach
