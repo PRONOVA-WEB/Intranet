@@ -4,7 +4,9 @@
 
 @section('custom_css')
 <style>
-
+.table td, .table th {
+    vertical-align: middle !important;
+}
 </style>
 @endsection
 @section('content')
@@ -158,28 +160,11 @@
             </div>
 
         </form>
-
-        <h6>Leyenda:</h6>
-        @for ($i = 1; $i < sizeof($shiftStatus) + 1; $i++)
-            <span class="badge badge-secondary"
-                style="background-color:#{{ $colorsRgb[$i] }}">{{ ucfirst($shiftStatus[$i]) }}</span>
-        @endfor
-        <br>
-        <i class="	far fa-calendar-check"></i> Turno Confirmado
-        <i class="	far fa-calendar-times"></i> Turno Cerrado
         <div class="row">
             <div class="col-md-12">
-                <table class="table table-sm table-bordered text-center">
-                    <tr>
-                        <th class="calendar-day" colspan="{{ $days }}">
-                            <a href="{{ route('rrhh.shiftManag.index', ['orgunitFilter' => $actuallyOrgUnit->id,'turnFilter' => $actuallyShift->id,'monthYearFilter' => $actuallyYear . '-' . intval($actuallyMonth) - 1]) }}"
-                                class="btn btn-sm btn-secondary btn-icon-split">
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-arrow-left"></i>
-                                </span>
-                                <span class="text">Anterior</span>
-                            </a>
-                            <span style="font-size: 1.5rem">
+                <div class="card mb-4 py-3 border-left-primary">
+                    <div class="card-body">
+                            <h4>
                                 @foreach ($months as $index => $month)
                                     {{ $index == $actuallyMonth ? $month : '' }}
                                 @endforeach
@@ -187,7 +172,14 @@
                                 {{ $actuallyYear }}
                                 -
                                 {{ $actuallyShift->name }}
-                            </span>
+                            </h4>
+                            <a href="{{ route('rrhh.shiftManag.index', ['orgunitFilter' => $actuallyOrgUnit->id,'turnFilter' => $actuallyShift->id,'monthYearFilter' => $actuallyYear . '-' . intval($actuallyMonth) - 1]) }}"
+                                class="btn btn-sm btn-secondary btn-icon-split">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-arrow-left"></i>
+                                </span>
+                                <span class="text">Anterior</span>
+                            </a>
                             <a href="{{ route('rrhh.shiftManag.index', ['orgunitFilter' => $actuallyOrgUnit->id,'turnFilter' => $actuallyShift->id,'monthYearFilter' => $actuallyYear . '-' . intval($actuallyMonth) + 1]) }}"
                                 class="btn btn-sm btn-secondary btn-icon-split">
                                 <span class="text">Siguiente</span>
@@ -195,13 +187,22 @@
                                     <i class="fas fa-arrow-right"></i>
                                 </span>
                             </a>
-                        </th>
-                    </tr>
-                </table>
+                        <br>
+                        <br>
+                        <h6>Leyenda:</h6>
+                        @for ($i = 1; $i < sizeof($shiftStatus) + 1; $i++)
+                            <span class="badge badge-secondary"
+                                style="background-color:#{{ $colorsRgb[$i] }}">{{ ucfirst($shiftStatus[$i]) }}</span>
+                        @endfor
+                        <br>
+                        <i class="	far fa-calendar-check"></i> Turno Confirmado
+                        <i class="	far fa-calendar-times"></i> Turno Cerrado
+                    </div>
+                </div>
                 <table class="table table-sm table-bordered datatable">
                     <thead>
-                        <tr class="thead-dark text-center">
-                            <th style="150px;">Personal</th>
+                        <tr class="bg-gray-600 text-gray-100 text-center">
+                            <th>Personal</th>
                             @for ($i = 1; $i <= $days; $i++)
                                 @php
                                     $dateFiltered = \Carbon\Carbon::createFromFormat('Y-m-d', $actuallyYear . '-' . $actuallyMonth . '-' . $i, 'Europe/London');
@@ -226,7 +227,7 @@
             </div>
         </div>
     </div>
-    @livewire("rrhh.modal-edit-shift-user-day",['monthYearFilter'=>$actuallyYear."-".$actuallyMonth,'actuallyShift'=>$actuallyShift->id,'actuallyOrgUnit'=>$actuallyOrgUnit])
+    {{-- @livewire("rrhh.modal-edit-shift-user-day",['monthYearFilter'=>$actuallyYear."-".$actuallyMonth,'actuallyShift'=>$actuallyShift->id,'actuallyOrgUnit'=>$actuallyOrgUnit]) --}}
 
 @endsection
 
