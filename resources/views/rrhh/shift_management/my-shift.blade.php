@@ -14,128 +14,127 @@
 
     @include('rrhh.shift_management.tabs', ['actuallyMenu' => 'MyShiftTab'])
 
-    <div>
-        <div class="col-md-6">
-            <h3> Mi Turno </h3>
+    <div class="row mb-3 mt-2">
+        <div class="col-md-12">
+            <h3> Mi turno</h3>
         </div>
-        <div class="scroll">
-            @if ($myConfirmationEarrings && json_encode($myConfirmationEarrings) == '{}')
+    </div>
+    <div class="scroll">
+        @if ($myConfirmationEarrings && json_encode($myConfirmationEarrings) == '{}')
 
-                <div class="alert alert-info">
-                    <strong>Ninguna</strong> confirmación de día extra pendiente!.
-                </div>
-            @else
-                {{-- json_encode($myConfirmationEarrings) --}}
-                @foreach ($myConfirmationEarrings as $day)
-                    <div class="card ">
-                        <div class="card-body">
-                            <h5 class="card-title">Día Agregado</h5>
-                            <p class="card-text" style="margin-left: 101px">
-                                <i>
-                                    <i class="fa fa-user"></i> <i class="fa fa-arrow-right"></i>
-                                    <i class="fa fa-user"></i>
-                                    El usuario
-                                    {{ $day->derived_from && $day->derived_from != '' ? $day->DerivatedShift->ShiftUser->user->id : '' }}
-                                    te asigno el día {{ $day->day }}
-                                    <b style="background-color: yellow;color:gray"> {{ $day->working_day }} </b> .
-                                    @if (App\Models\Rrhh\ShiftUserDay::where('id', '<>', $day->id)->where('day', $day->day)->whereHas('ShiftUser', function ($q) {
-                                            $q->where('user_id', Auth::user()->id);
-                                        })->get())
-                                        @php
+            <div class="alert alert-info">
+                <strong>Ninguna</strong> confirmación de día extra pendiente!.
+            </div>
+        @else
+            {{-- json_encode($myConfirmationEarrings) --}}
+            @foreach ($myConfirmationEarrings as $day)
+                <div class="card ">
+                    <div class="card-body">
+                        <h5 class="card-title">Día Agregado</h5>
+                        <p class="card-text" style="margin-left: 101px">
+                            <i>
+                                <i class="fa fa-user"></i> <i class="fa fa-arrow-right"></i>
+                                <i class="fa fa-user"></i>
+                                El usuario
+                                {{ $day->derived_from && $day->derived_from != '' ? $day->DerivatedShift->ShiftUser->user->id : '' }}
+                                te asigno el día {{ $day->day }}
+                                <b style="background-color: yellow;color:gray"> {{ $day->working_day }} </b> .
+                                @if (App\Models\Rrhh\ShiftUserDay::where('id', '<>', $day->id)->where('day', $day->day)->whereHas('ShiftUser', function ($q) {
+                                        $q->where('user_id', Auth::user()->id);
+                                    })->get())
+                                    @php
 
-                                            $dayInTheSame = App\Models\Rrhh\ShiftUserDay::where('day', $day->day)
-                                                ->whereHas('ShiftUser', function ($q) {
-                                                    $q->where('user_id', Auth::user()->id);
-                                                })
-                                                ->get();
-                                            $dayInTheSame = $dayInTheSame[0];
-                                        @endphp
-                                        <i style="color:{{ $dayInTheSame->working_day == 'F' ? 'green' : 'red' }}"> Ese
-                                            día tienes asignado {{ $dayInTheSame->working_day }} -
-                                            {{ $tiposJornada[$dayInTheSame->working_day] }} </i>
-                                    @else
-                                        Ese día tienes asignado N/A
-                                    @endif
-                            </p>
-                            </i>
-                            <div class="pull-right">
-                                <form action="{{ route('rrhh.shiftManag.myshift.confirmDay', [$day]) }}">
-                                    @csrf
-                                    <button class="btn btn-success ">Confirmar <i class="fa fa-check"></i></button>
-                                </form>
-                            </div>
-                            <div class="pull-right">
-                                <form action="{{ route('rrhh.shiftManag.myshift.rejectDay', [$day]) }}">
-                                    @csrf
-                                    <button class="btn btn-danger pull-right"><b>X</b> </button>
-                                </form>
-                            </div>
+                                        $dayInTheSame = App\Models\Rrhh\ShiftUserDay::where('day', $day->day)
+                                            ->whereHas('ShiftUser', function ($q) {
+                                                $q->where('user_id', Auth::user()->id);
+                                            })
+                                            ->get();
+                                        $dayInTheSame = $dayInTheSame[0];
+                                    @endphp
+                                    <i style="color:{{ $dayInTheSame->working_day == 'F' ? 'green' : 'red' }}"> Ese
+                                        día tienes asignado {{ $dayInTheSame->working_day }} -
+                                        {{ $tiposJornada[$dayInTheSame->working_day] }} </i>
+                                @else
+                                    Ese día tienes asignado N/A
+                                @endif
+                        </p>
+                        </i>
+                        <div class="pull-right">
+                            <form action="{{ route('rrhh.shiftManag.myshift.confirmDay', [$day]) }}">
+                                @csrf
+                                <button class="btn btn-success ">Confirmar <i class="fa fa-check"></i></button>
+                            </form>
+                        </div>
+                        <div class="pull-right">
+                            <form action="{{ route('rrhh.shiftManag.myshift.rejectDay', [$day]) }}">
+                                @csrf
+                                <button class="btn btn-danger pull-right"><b>X</b> </button>
+                            </form>
                         </div>
                     </div>
-                @endforeach
-            @endif
-        </div>
-
-        <br>
-        <br>
-        <form method="get" action="{{ route('rrhh.shiftManag.myshift') }}">
-            <!-- Menu de Filtros  -->
-            <div class="form-row">
-                <div class="form-group col-md-2">
-                    <label for="for_name" class="input-group-addon">Series</label>
-                    <select class="form-control" id="for_turnFilter" name="turnFilter">
-                        @foreach ($sTypes as $st)
-                            <option value="{{ $st->id }}" {{ $st->id == $actuallyShift->id ? 'selected' : '' }}>
-                                {{ $loop->iteration }} - {{ $st->name }}</option>
-                        @endforeach
-                    </select>
                 </div>
-
-                <div class="form-group col-md-2">
-                    <label for="for_name">Fecha</label>
-                    <input type="month" class="form-control" name="monthYearFilter"
-                        value="{{ $actuallyYear . '-' . $actuallyMonth }}">
-                </div>
-
-                <div class="form-group col-md-1">
-                    <label for="for_submit">&nbsp;</label>
-                    <button type="submit" class="btn btn-primary form-control">Filtrar</button>
-                </div>
-            </div>
-        </form>
-        <hr>
-        <h4>
-            @foreach ($months as $index => $month)
-            {{ $index == $actuallyMonth ? $month : '' }}
             @endforeach
-
-            {{ $actuallyYear }}
-            -
-            {{ $actuallyShift->name }}
-        </h4>
-        <table class="table table-sm table-bordered datatable">
-            <thead>
-                <tr class="bg-gray-600 text-gray-100 text-center">
-                    <th>Personal</th>
-                    @for ($i = 1; $i <= $days; $i++)
-                        @php
-                            $dateFiltered = \Carbon\Carbon::createFromFormat('Y-m-d', $actuallyYear . '-' . $actuallyMonth . '-' . $i, 'Europe/London');
-                        @endphp
-                        <th style="color:{{ $dateFiltered->isWeekend()? 'red': (sizeof($holidays->where('date', $actuallyYear . '-' . $actuallyMonth . '-' . $i)) > 0? 'red': 'white') }}">
-                            <p style="font-size: 10px">{{ $i }}</p>
-                        </th>
-                    @endfor
-                    <th><i class="fas fa-trash"></i></th>
-                </tr>
-            </thead>
-            <tbody>
-                <div>
-                    @livewire('rrhh.list-of-shifts', ["staffInShift"=>$myShifts,'actuallyYear'=>$actuallyYear,
-                    'actuallyMonth'=>$actuallyMonth,'days'=>$days,'actuallyOrgUnit'=>$actuallyOrgUnit,'actuallyShift'=>$actuallyShift])
-                </div>
-            </tbody>
-        </table>
+        @endif
     </div>
+    <br>
+    <br>
+    <form method="get" action="{{ route('rrhh.shiftManag.myshift') }}">
+        <!-- Menu de Filtros  -->
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                <label for="for_name" class="input-group-addon">Series</label>
+                <select class="form-control" id="for_turnFilter" name="turnFilter">
+                    @foreach ($sTypes as $st)
+                        <option value="{{ $st->id }}" {{ $st->id == $actuallyShift->id ? 'selected' : '' }}>
+                            {{ $loop->iteration }} - {{ $st->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="form-group col-md-2">
+                <label for="for_name">Fecha</label>
+                <input type="month" class="form-control" name="monthYearFilter"
+                    value="{{ $actuallyYear . '-' . $actuallyMonth }}">
+            </div>
+
+            <div class="form-group col-md-1">
+                <label for="for_submit">&nbsp;</label>
+                <button type="submit" class="btn btn-primary form-control">Filtrar</button>
+            </div>
+        </div>
+    </form>
+    <hr>
+    <h4>
+        @foreach ($months as $index => $month)
+        {{ $index == $actuallyMonth ? $month : '' }}
+        @endforeach
+
+        {{ $actuallyYear }}
+        -
+        {{ $actuallyShift->name }}
+    </h4>
+    <table class="table table-sm table-bordered datatable">
+        <thead>
+            <tr class="bg-gray-600 text-gray-100 text-center">
+                <th>Personal</th>
+                @for ($i = 1; $i <= $days; $i++)
+                    @php
+                        $dateFiltered = \Carbon\Carbon::createFromFormat('Y-m-d', $actuallyYear . '-' . $actuallyMonth . '-' . $i, 'Europe/London');
+                    @endphp
+                    <th style="color:{{ $dateFiltered->isWeekend()? 'red': (sizeof($holidays->where('date', $actuallyYear . '-' . $actuallyMonth . '-' . $i)) > 0? 'red': 'white') }}">
+                        <p style="font-size: 10px">{{ $i }}</p>
+                    </th>
+                @endfor
+                <th><i class="fas fa-trash"></i></th>
+            </tr>
+        </thead>
+        <tbody>
+            <div>
+                @livewire('rrhh.list-of-shifts', ["staffInShift"=>$myShifts,'actuallyYear'=>$actuallyYear,
+                'actuallyMonth'=>$actuallyMonth,'days'=>$days,'actuallyOrgUnit'=>$actuallyOrgUnit,'actuallyShift'=>$actuallyShift])
+            </div>
+        </tbody>
+    </table>
 
 @endsection
 {{-- @livewire("rrhh.modal-edit-shift-user-day") --}}

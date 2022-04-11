@@ -50,3 +50,13 @@ if (!function_exists('settings')) {
         return $ceros.$value;
     }
 }
+
+function dateCustomFormat($date)
+{
+    return \Carbon\Carbon::parse($date)->format('d-m-Y');
+}
+
+function dateCustomFormatHms($date)
+{
+    return \Carbon\Carbon::parse($date)->format('d-m-Y h:i:s');
+}

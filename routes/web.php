@@ -468,9 +468,12 @@ Route::prefix('rrhh')->as('rrhh.')->group(function () {
            Route::get('/closeshift/download/{id}', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'downloadCloseInXls'])->name('shiftManag.closeShift.download')->middleware('auth');
 
            Route::post('/closeshift/first', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'firstConfirmation'])->name('shiftManag.closeShift.firstConfirmation')->middleware('auth');
+           Route::post('/closeshift/firstMass', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'massFirstConfirmation'])->name('shiftManag.closeShift.massFirstConfirmation')->middleware('auth');
            Route::post('/closeshift/close', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'closeDaysConfirmation'])->name('shiftManag.closeShift.closeConfirmation')->middleware('auth');
+           Route::post('/closeshift/closeMass', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'massCloseDaysConfirmation'])->name('shiftManag.closeShift.massCloseConfirmation')->middleware('auth');
 
            Route::post('/closeshift/saveclosedate/{new?}', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'saveClose'])->name('shiftManag.closeShift.saveDate')->middleware('auth');
+           Route::post('/closeshift/delete', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'delete'])->name('shiftManag.closeShift.delete')->middleware('auth');
 
            Route::post('/shiftupdate', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'changeShiftUserCommentary'])->name('shiftManag.shiftupdate')->middleware('auth');
 

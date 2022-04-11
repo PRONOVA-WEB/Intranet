@@ -2,6 +2,7 @@
 
 namespace App\Models\Rrhh;
 
+use App\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,14 +18,14 @@ class ShiftClose extends Model
     }
 
     public function status()
-    {   
+    {
         $name = "";
         if( $this->status == 1 ){
             $name = "Confirmado";
-        
+
         }elseif ($this->status == 2) {
             $name = "Cerrado";
-            
+
         }elseif ($this->status == 3){
             $name = "Rechazado";
 
@@ -35,6 +36,13 @@ class ShiftClose extends Model
 
         return  array("id"=>$this->status,"name"=>$name);
     }
+
+    public function shiftUserDays(){
+		return $this->hasMany(ShiftUserDay::class,'shift_close_id');
+	}
+    public function ownerUser(){
+		return $this->belongTo(User::class,'owner_of_the_days_id');
+	}
 
 
 }

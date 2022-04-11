@@ -101,10 +101,9 @@ class ShiftManagementController extends Controller
 
     );
     public $timePerDay = array(
-
         'L' => array("from" => "08:00", "to" => "20:00", "time" => 12),
         'N' => array("from" => "20:00", "to" => "08:00", "time" => 12),
-        'D' => array("from" => "08:00", "to" => "17:00", "time" => 8),
+        'D' => array("from" => "08:00", "to" => "17:00", "time" => 9),
         'F' => array("from" => "", "to" => "", "time" => 0),
         'MD' => array("from" => "", "to" => "", "time" => 0),
         'MN' => array("from" => "", "to" => "", "time" => 0),
@@ -960,7 +959,6 @@ class ShiftManagementController extends Controller
 
     public function closeShift(Request $r)
     { // direcciona a vista para cerrar los turnos, utilizado por rrhh del hospital.
-
         $onlyClosedByMe = 0;
         $onlyConfirmedByMe = 0;
         $onlyRejectedForMe = 0;
@@ -992,10 +990,7 @@ class ShiftManagementController extends Controller
         else
             $actuallyMonth = Carbon::now()->format('m');
 
-        if (Session::has('days') && Session::get('days') != "")
-            $days = Session::get('days');
-        else
-            $days = Carbon::now()->daysInMonth;
+        $days = Carbon::parse($actuallyYear.'-'.$actuallyMonth.'-01')->daysInMonth;
 
         $staffInShift = ShiftUser::where('organizational_units_id', $actuallyOrgUnit->id)->where('date_up', '>=', $actuallyYear . "-" . $actuallyMonth . "-01")->where('date_from', '<=', $actuallyYear . "-" . $actuallyMonth . "-" . $days)->get();
 
@@ -1027,37 +1022,44 @@ class ShiftManagementController extends Controller
 
         }
         // hacer foreach y revisar quien se cierra
+        $arraUserOrganitation = User::select('id')->where('organizational_unit_id',$actuallyOrgUnit->id)->get();
+
+        $firstConfirmations = ShiftClose::whereNotNull("first_confirmation_date")
+                                        ->whereNull("close_date")
+                                        ->where("first_confirmation_status", ">", 0)
+                                        ->whereIn('owner_of_the_days_id',$arraUserOrganitation)
+                                        ->whereHas('shiftUserDays', function($q) use($cierreDelMes) {
+                                            $q->where('day', '<=', $cierreDelMes->close_date)->where('day', '>=', $cierreDelMes->init_date);
+                                        });
         if ($onlyConfirmedByMe == 0)
-            $firstConfirmations = ShiftClose::whereNotNull("first_confirmation_date")->whereNull("close_date")->where("first_confirmation_status", ">", 0)->get();
+            {
+                $firstConfirmations = $firstConfirmations->get();
+            }
         else
-            $firstConfirmations = ShiftClose::whereNotNull("first_confirmation_date")->whereNull("close_date")->where("first_confirmation_user_id", Auth()->user()->id)->where("first_confirmation_status", ">", 0)->get();
+        {
+            $firstConfirmations = $firstConfirmations = $firstConfirmations->where("first_confirmation_user_id", Auth()->user()->id)->where("first_confirmation_status", ">", 0)->get();
+        }
 
+        $closed = ShiftClose::whereIn('owner_of_the_days_id',$arraUserOrganitation);
 
+        $closed = $closed->whereHas('shiftUserDays', function($q) use($cierreDelMes) {
+            $q->where('day', '<=', $cierreDelMes->close_date)->where('day', '>=', $cierreDelMes->init_date);
+        });
         if ($onlyClosedByMe == 0)
-            $closed = ShiftClose::whereNotNull("close_date")->get();
+            $closed = $closed->whereNotNull("close_date")->get();
         else
-            $closed = ShiftClose::whereNotNull("close_date")->where("close_user_id", Auth()->user()->id)->get();
+            $closed = $closed->whereNotNull("close_date")->where("close_user_id", Auth()->user()->id)->get();
+
+        $rejected = ShiftClose::query();
+        $rejected = $rejected->whereHas('shiftUserDays', function($q) use($cierreDelMes) {
+            $q->where('day', '<=', $cierreDelMes->close_date)->where('day', '>=', $cierreDelMes->init_date);
+        });
         if ($onlyRejectedForMe == 0)
-            $rejected = ShiftClose::whereNotNull("first_confirmation_date")->whereNull("close_date")->where("first_confirmation_status", "-1")->get();
+            $rejected = $rejected->whereNotNull("first_confirmation_date")->whereNull("close_date")->where("first_confirmation_status", "-1")->get();
         else
-            $rejected = ShiftClose::whereNotNull("first_confirmation_date")->whereNull("close_date")->where("first_confirmation_user_id", Auth()->user()->id)->where("first_confirmation_status", "-1")->get();
+            $rejected = $rejected->whereNotNull("first_confirmation_date")->whereNull("close_date")->where("first_confirmation_user_id", Auth()->user()->id)->where("first_confirmation_status", "-1")->get();
 
         $cierres = ShiftDateOfClosing::all();
-        // if(isset( $cierres ))
-        //     $cierres = (object) array("id"=>0,"user_id"=>1,"commentary"=>"","init_date"=>$actuallyYear."-".$actuallyMonth."-01","close_date"=>$actuallyYear."-".$actuallyMonth."-".$days);
-
-        // foreach ($staffInShift as $s ) {
-        //     if( $s->shift_close_id != 0 && $s->shift_close_id != ""){
-        //         if( $s->closeStatus->close_status != "" && $s->closeStatus->close_status == 1 )
-        //             array_push($closed,$s);
-        //         else
-        //             array_push($firstConfirmations,$s);
-        //     }
-        // }
-        Session::put('staffInShift_close', $staffInShift);
-        Session::put('firstConfirmations_close', $firstConfirmations);
-        Session::put('closed_close', $closed);
-        Session::put('rejected_close', $rejected);
 
         return view('rrhh.shift_management.close-shift', compact('ouRoots', 'actuallyOrgUnit', 'actuallyYear', 'months', 'actuallyMonth', 'staffInShift', 'closed', 'cierreDelMes', 'firstConfirmations', "cierres", "onlyConfirmedByMe", "onlyClosedByMe", "onlyRejectedForMe", "rejected"));
     }
@@ -1496,25 +1498,22 @@ class ShiftManagementController extends Controller
         // dd($r->input("comment"));
         $total_hours = 0;
         $cierreDelMes = ShiftDateOfClosing::find($r->input("cierreId"));
-        $idUser = $r->input("userId");
-        $daysForClose = ShiftUserDay::where('day', '>=', $cierreDelMes->init_date)->where('day', '<=', $cierreDelMes->close_date)->whereNull('shift_close_id')->whereHas("ShiftUser",  function ($q) use ($idUser) {
 
+        $idUser = $r->input("userId");
+        $actuallyOrgUnit = User::find($idUser)->organizationalUnit;
+        $daysForClose = ShiftUserDay::where('day', '>=', $cierreDelMes->init_date)->where('day', '<=', $cierreDelMes->close_date)->whereNull('shift_close_id')->whereHas("ShiftUser",  function ($q) use ($idUser) {
             $q->where('user_id', $idUser); // Para filtrar solo los dias de la unidad organizacional del usuario
         })->get();
 
-
         foreach ($daysForClose as $dd) {
-
             $date = Carbon::createFromFormat('Y-m-d',  $dd->day, 'Europe/London');
-            if ($date->isPast()) { // aqui comparar la fecha con que fue  cerrado con la fecha del dia
-
+            if ($date->isPast()) { // aqui comparar la fecha con que fue  cerrado con la fecha del dia;
                 if (substr($dd->working_day, 0, 1) != "+")
                     $total_hours +=   (isset($this->timePerDay[$dd->working_day])) ? $this->timePerDay[$dd->working_day]["time"] : 0;
                 else
                     $total_hours += intval(substr($dd->working_day, 1, 2));
             }
         }
-
 
         $n = new ShiftClose;
         $n->status = 1;
@@ -1539,7 +1538,57 @@ class ShiftManagementController extends Controller
         }
 
         session()->flash('success', 'Se han confirmado los días ');
-        return redirect()->route('rrhh.shiftManag.closeShift');
+        return redirect()->route('rrhh.shiftManag.closeShift',['idCierre'=>$cierreDelMes,'orgunitFilter'=>$actuallyOrgUnit]);
+    }
+
+    public function massFirstConfirmation(Request $request)
+    {
+        if($request->arrayPendingShift)
+        {
+            foreach (json_decode($request->arrayPendingShift) as $pending)
+            {
+                $total_hours = 0;
+                $cierreDelMes = ShiftDateOfClosing::find($request->cierreId);
+                $r = ShiftUser::find($pending);
+                $idUser = $r->user->id;
+                $actuallyOrgUnit = User::find($r->user->id)->organizationalUnit;
+                $daysForClose = ShiftUserDay::where('day', '>=', $cierreDelMes->init_date)
+                    ->where('day', '<=', $cierreDelMes->close_date)->whereNull('shift_close_id')
+                    ->whereHas("ShiftUser",  function ($q) use ($idUser) {
+                        $q->where('user_id', $idUser); // Para filtrar solo los dias de la unidad organizacional del usuario
+                    })->get();
+
+                foreach ($daysForClose as $dd) {
+                    $date = Carbon::createFromFormat('Y-m-d',  $dd->day, 'Europe/London');
+                    if ($date->isPast()) { // aqui comparar la fecha con que fue  cerrado con la fecha del dia;
+                        if (substr($dd->working_day, 0, 1) != "+")
+                            $total_hours +=   (isset($this->timePerDay[$dd->working_day])) ? $this->timePerDay[$dd->working_day]["time"] : 0;
+                        else
+                            $total_hours += intval(substr($dd->working_day, 1, 2));
+                    }
+                }
+
+                $n = new ShiftClose;
+                $n->status = 1;
+                $n->total_hours = $total_hours;
+                $n->first_confirmation_commentary = $request->pendingComentary;
+                $n->first_confirmation_status = 1;
+                $n->first_confirmation_date =  Carbon::now();
+                $n->first_confirmation_user_id = Auth()->user()->id;
+                $n->date_of_closing_id = $request->cierreId;
+                $n->owner_of_the_days_id = $idUser;
+                $n->save();
+
+                foreach ($daysForClose as $d) {
+                    $d->shift_close_id = $n->id;
+                    $d->save();
+                }
+            }
+            session()->flash('success', 'Se han confirmado los días ');
+            return redirect()->route('rrhh.shiftManag.closeShift',['idCierre'=>$cierreDelMes,'orgunitFilter'=>$actuallyOrgUnit]);
+
+        }
+        return redirect()->back();
     }
 
     public function closeDaysConfirmation(Request $r)
@@ -1550,12 +1599,34 @@ class ShiftManagementController extends Controller
         $f->close_commentary = "";
         $f->close_status = 1;
         $f->close_date = Carbon::now();
-        $f->close_user_id =  Auth()->user()->id;;
+        $f->close_user_id =  Auth()->user()->id;
         $f->save();
+        $actuallyOrgUnit = User::find($f->owner_of_the_days_id)->organizationalUnit->id;
         session()->flash('success', 'Se han cerrado los días ');
-        return redirect()->route('rrhh.shiftManag.closeShift');
+        return redirect()->route('rrhh.shiftManag.closeShift',['idCierre'=>$f->date_of_closing_id,'orgunitFilter'=>$actuallyOrgUnit]);
     }
 
+    public function massCloseDaysConfirmation(Request $request)
+    {
+        if($request->arrayClosedShift)
+        {
+            foreach(json_decode($request->arrayClosedShift) as $closed)
+            {
+                $f =  ShiftClose::find($closed);
+                $f->status = 2;
+                $f->close_commentary = $request->closedComentary;
+                $f->close_status = 1;
+                $f->close_date = Carbon::now();
+                $f->close_user_id =  Auth()->user()->id;
+                $f->save();
+                $actuallyOrgUnit = User::find($f->owner_of_the_days_id)->organizationalUnit->id;
+            }
+            session()->flash('success', 'Se han cerrado los días ');
+            return redirect()->route('rrhh.shiftManag.closeShift',['idCierre'=>$f->date_of_closing_id,'orgunitFilter'=>$actuallyOrgUnit]);
+        }
+        return redirect()->back();
+
+    }
     public function rejectedDays(Request $r)
     {
 
@@ -1702,6 +1773,10 @@ class ShiftManagementController extends Controller
     public function changeShiftDayStatusForm(ShiftUserDay $shiftUserDay, $monthYearFilter)
     {
         return view('rrhh.shift_management.edit-shift-user-day',compact('shiftUserDay','monthYearFilter'));
+    }
+
+    public function delete(Request $request){
+        dd($request->all());
     }
 
 }
