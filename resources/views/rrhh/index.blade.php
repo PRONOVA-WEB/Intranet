@@ -17,36 +17,22 @@
 	/* OPTIONAL pointer-events setting above blocks cursor setting, so set it here */
 	cursor: not-allowed;
 	}
+    .dataTables_filter {
+        float:right;
+    }
 </style>
 @endsection
 
 @section('content')
-<div>
-	<div class="float-left">
+<div class="row">
 		<h3>Usuarios
 			@can('Users: create')
 				<a href="{{ route('rrhh.users.create') }}" class="btn btn-primary">Crear</a>
 			@endcan
-		</h3><br>
-	</div>
-
-	<div>
-		<form class="form-inline float-right" method="GET" action="{{ route('rrhh.users.index') }}">
-			<div class="input-group mb-3">
-				<input type="text" name="name" class="form-control" placeholder="Nombres, Apellidos o RUN sin DV" autofocus>
-				<div class="input-group-append">
-					<button class="btn btn-outline-secondary" type="submit">
-						<i class="fas fa-search" aria-hidden="true"></i>
-					</button>
-				</div>
-			</div>
-		</form>
-	</div>
+		</h3>
 </div>
-
-<br>
-
-<table class="table table-responsive-xl table-striped table-sm">
+<hr>
+<table class="table table-responsive-xl table-striped table-sm datatable">
 	<thead class="thead-dark">
 		<tr>
 			<th scope="col">RUN</th>
@@ -100,14 +86,42 @@
 
 </table>
 
-{{ $users->links() }}
-
 @endsection
 
 @section('custom_js')
+<script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap4.min.js"></script>
 <script>
 $(function() {
 	$('.tooltip-wrapper').tooltip({position: "bottom"});
 });
+$(document).ready(function() {
+    $('.datatable').DataTable({
+        "order": [2, "asc"],
+        "pageLength": 25,
+        "paging": true,
+        language: {
+            "decimal": "",
+            "emptyTable": "No hay información",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+            "infoEmpty": "Mostrando 0 to 0 of 0 Registros",
+            "infoFiltered": "(Filtrado de _MAX_ total Registros)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ Registros",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "Sin resultados encontrados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        }
+    });
+});
 </script>
+
 @endsection

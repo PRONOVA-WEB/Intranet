@@ -43,7 +43,7 @@
 
     <div class="row mb-3 mt-2">
         <div class="col-md-12">
-            <h3> Dashboard</h3>
+            <h3> Reportes</h3>
         </div>
     </div>
     <form method="post" action="{{ route('rrhh.shiftManag.shiftReports') }}">
@@ -199,9 +199,9 @@
 $(document).ready(function() {
 
         $('.datatable').DataTable({
-        "order": [ 0, "asc" ],
+        "order": [ 1, "asc" ],
         "pageLength": 100,
-        "paging": false,
+        "paging": true,
         dom: 'Bfrtip',
         buttons: [
             {
@@ -217,8 +217,8 @@ $(document).ready(function() {
         language: {
             "decimal": "",
             "emptyTable": "No hay información",
-            //"info": "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-            "info": "_TOTAL_ Registros Encontrados",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+            //"info": "_TOTAL_ Registros Encontrados",
             "infoEmpty": "Mostrando 0 to 0 of 0 Registros",
             "infoFiltered": "(Filtrado de _MAX_ total Registros)",
             "infoPostFix": "",
