@@ -72,6 +72,7 @@ class SeeShiftControlForm extends Component
 		$dateFiltered = Carbon::createFromFormat('Y-m-d',  $this->actuallyYears."-".$this->actuallyMonth."-01", 'Europe/London');
 		$this->usr2 = User::find($this->usr->id);
         $this->days = $dateFiltered->daysInMonth;
+
         $this->shifsUsr = ShiftUser::where('date_up','>=',$this->actuallyYears."-".$this->actuallyMonth."-".$this->days)->where('date_from','<=',$this->actuallyYears."-".$this->actuallyMonth."-".$this->days)->where("user_id",$this->usr->id)->first();
         $id = $this->usr->id ;
 
@@ -95,7 +96,7 @@ class SeeShiftControlForm extends Component
 	}
 	public function downloadShiftControlForm(){
 		$this->log ="brn";
-        return redirect('/rrhh/shift-management/shift-control-form/download');
+         return redirect('/rrhh/shift-management/shift-control-form/download');
 	}
 
     public function render()
@@ -114,6 +115,6 @@ class SeeShiftControlForm extends Component
                                             })
                                             ->get();
         }
-        return view('livewire.rrhh.see-shift-control-form',['cierreDelMes' => $cierreDelMes,'turno'=>$turno]);
+        return view('livewire.rrhh.see-shift-control-form',['cierreDelMes' => $cierreDelMes]);
     }
 }

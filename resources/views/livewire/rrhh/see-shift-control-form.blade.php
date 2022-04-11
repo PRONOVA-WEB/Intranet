@@ -21,7 +21,7 @@
 </style>
 <div style=" display: inline;">
     @if (isset($usr) && $usr != '')
-        <button class="btn btn-sm btn-warning mt-2" data-toggle="modal" data-target="#shiftcontrolformmodal{{ $usr->id }}"
+        <button class="btn btn-sm btn-info mt-2" data-toggle="modal" data-target="#shiftcontrolformmodal{{ $usr->id }}"
             data-backdrop="static">
             <i class="fa fa-eye " wire:click.prevent="setValues({{ $usr->id }})"></i> Ver
         </button>
