@@ -330,7 +330,7 @@
                 </label>
             </small>
             <br>
-            <table class="table table-sm">
+            <table class="table table-sm" id="tblRechazados">
                 <thead class="thead-dark">
                     <tr>
                         <th>#</th>
@@ -352,7 +352,7 @@
                             <td>{{ $r->first_confirmation_commentary }}</td>
                             <td>{{ $r->total_hours }}</td>
                             <td>{{ $r->first_confirmation_user_id }}</td>
-                            <td>{{ $r->first_confirmation_date }}</td>
+                            <td>{{ dateCustomFormatHms($r->first_confirmation_date) }}</td>
                             <td>
                                 @livewire( 'rrhh.see-shift-control-form', ['usr'=>$r->user,
                                 'actuallyYears'=>$actuallyYear,'actuallyMonth'=>$actuallyMonth,'close'=>$cierreDelMes->id],
@@ -374,7 +374,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    {{-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -402,7 +402,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 @endsection
 
 @section('custom_js')
@@ -536,6 +536,35 @@
                     text: '<i class="fa fa-file-excel"></i>',
                     className: 'btn btn-info float-right',
                     messageTop: 'Cerrados del {{ dateCustomFormat(App\Models\Rrhh\ShiftDateOfClosing::find($cierreDelMes->id)->init_date) }} al {{ dateCustomFormat(App\Models\Rrhh\ShiftDateOfClosing::find($cierreDelMes->id)->close_date) }} - {{ App\Rrhh\OrganizationalUnit::find($actuallyOrgUnit->id)->name }}',
+                    init: function(api, node, config) {
+                        $(node).removeClass('dt-button');
+                    }
+                }],
+                language: {
+                    "decimal": "",
+                    "emptyTable": "No hay información",
+                    "info": "_TOTAL_ Registros Encontrados",
+                    "infoEmpty": "Mostrando 0 to 0 of 0 Registros",
+                    "infoFiltered": "(Filtrado de _MAX_ total Registros)",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                }
+            });
+            @endif
+
+            @if (count($rejected) > 0)
+            $('#tblRechazados').DataTable({
+                "order": [2, "asc"],
+                "paging": false,
+                dom: 'Bfrtip',
+                buttons: [{
+                    extend: 'excel',
+                    exportOptions: {
+                       columns: [ 1, 2, 3, 4, 5, 6 ]
+                    },
+                    text: '<i class="fa fa-file-excel"></i>',
+                    className: 'btn btn-info float-right',
+                    messageTop: 'Rechazados del {{ dateCustomFormat(App\Models\Rrhh\ShiftDateOfClosing::find($cierreDelMes->id)->init_date) }} al {{ dateCustomFormat(App\Models\Rrhh\ShiftDateOfClosing::find($cierreDelMes->id)->close_date) }} - {{ App\Rrhh\OrganizationalUnit::find($actuallyOrgUnit->id)->name }}',
                     init: function(api, node, config) {
                         $(node).removeClass('dt-button');
                     }

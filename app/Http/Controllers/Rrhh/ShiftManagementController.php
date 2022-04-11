@@ -1520,10 +1520,10 @@ class ShiftManagementController extends Controller
         $n->first_confirmation_commentary = $r->input("comment");
         if (isset($r->rechazar) && $r->rechazar == 1) {
             $n->first_confirmation_status = -1;
-            $msg = "se han rechazado los días";
+            $msg = "Se han rechazado los días";
         } else {
             $n->first_confirmation_status = 1;
-            $msg = "se han confirmado los días";
+            $msg = "Se han confirmado los días";
         }
         $n->first_confirmation_date =  Carbon::now();
         $n->first_confirmation_user_id = Auth()->user()->id;
@@ -1536,7 +1536,7 @@ class ShiftManagementController extends Controller
             $d->save();
         }
 
-        session()->flash('success', 'Se han confirmado los días ');
+        session()->flash('success', $msg);
         return redirect()->route('rrhh.shiftManag.closeShift',['idCierre'=>$cierreDelMes,'orgunitFilter'=>$actuallyOrgUnit]);
     }
 

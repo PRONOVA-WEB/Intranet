@@ -35,7 +35,7 @@
 				    <h5 class="card-title">Cant. de personal</h5>
 				    <h6 class="card-subtitle mb-2 text-muted">Por día de la semana, en el mes actual</h6>
 				    <div id="chartpeoplecantX"></div>
-				  	
+
 				  </div>
 				</div>
 			</div>
@@ -46,20 +46,20 @@
 				    <h5 class="card-title">Días por Jornada</h5>
 				    <h6 class="card-subtitle mb-2 text-muted">En el mes actual</h6>
 				    <div id="chartdayperjournaltype"></div>
-				   
+
 				  </div>
 				</div>
 			</div>
 
-			
+
 		</div>
 				    <div id="chartpeoplecant"></div>
-	
+
 	@endsection
 	@section('custom_js')
 
 		<script>
-			
+
 			//Dias por estado
 			am4core.ready(function() {
 				// Themes begin
@@ -76,7 +76,7 @@
 
 				// Let's cut a hole in our Pie chart the size of 30% the radius
 				chart.innerRadius = am4core.percent(30);
-				
+
 				// Put a thick white border around each Slice
 				pieSeries.slices.template.stroke = am4core.color("#fff");
 				pieSeries.slices.template.strokeWidth = 2;
@@ -120,10 +120,10 @@
 						},
 
 					@endforeach
-						
+
 				];
 			}); // end Dias por estado
-						
+
 			//Dias por tipo de jornada
 			am4core.ready(function() {
 				// Themes begin
@@ -140,7 +140,7 @@
 
 				// Let's cut a hole in our Pie chart the size of 30% the radius
 				chart.innerRadius = am4core.percent(30);
-				
+
 				// Put a thick white border around each Slice
 				pieSeries.slices.template.stroke = am4core.color("#fff");
 				pieSeries.slices.template.strokeWidth = 2;
@@ -184,10 +184,10 @@
 						},
 
 					@endforeach
-						
+
 				];
 			}); // end Dias tipo de jornada
-			
+
 			am4core.ready(function() {
 
 				// Themes begin
@@ -213,9 +213,9 @@
 						},
 
 					@endforeach
-						
+
 				];
-					
+
 
 				var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
 				dateAxis.renderer.minGridDistance = 50;
@@ -242,7 +242,7 @@
 				chart.cursor.xAxis = dateAxis;
 				chart.cursor.snapToSeries = series;
 
-				// function use in example page 
+				// function use in example page
 				function generateChartData() {
     				var chartData = [];
     				var firstDate = new Date();
@@ -254,7 +254,7 @@
         				// however when possible, use date objects, as this will speed up chart rendering.
         				var newDate = new Date(firstDate);
         				newDate.setDate(newDate.getDate() + i);
-        
+
         				visits += Math.round((Math.random()<0.5?1:-1)*Math.random()*10);
 
         				chartData.push({
@@ -272,12 +272,12 @@
 				am4core.useTheme(am4themes_frozen);
 				am4core.useTheme(am4themes_animated);
 				// Themes end
-			
+
 				// Create chart instance
 				var chart = am4core.create("chartdiv", am4charts.XYChart);
-			
+
 				// Add data
-				chart.data = 
+				chart.data =
 
 				// Create axes
 
@@ -285,7 +285,7 @@
 				categoryAxis.dataFields.category = "country";
 				categoryAxis.renderer.grid.template.location = 0;
 				categoryAxis.renderer.minGridDistance = 30;
-			
+
 			categoryAxis.renderer.labels.template.adapter.add("dy", function(dy, target) {
 			  if (target.dataItem && target.dataItem.index & 2 == 2) {
 			    return dy + 25;
@@ -306,7 +306,7 @@
 			var columnTemplate = series.columns.template;
 			columnTemplate.strokeWidth = 2;
 			columnTemplate.strokeOpacity = 1;
-			
+
 		}); // end am4core.ready()
 		</script>
 	@endsection
