@@ -1495,7 +1495,6 @@ class ShiftManagementController extends Controller
 
     public function firstConfirmation(Request $r)
     {
-        // dd($r->input("comment"));
         $total_hours = 0;
         $cierreDelMes = ShiftDateOfClosing::find($r->input("cierreId"));
 
@@ -1538,6 +1537,26 @@ class ShiftManagementController extends Controller
         }
 
         session()->flash('success', 'Se han confirmado los días ');
+        return redirect()->route('rrhh.shiftManag.closeShift',['idCierre'=>$cierreDelMes,'orgunitFilter'=>$actuallyOrgUnit]);
+    }
+
+    public function sendToPending(Request $request)
+    {
+        $ShiftClose = ShiftClose::find($request->ShiftCloseId);
+        $actuallyOrgUnit = User::find($ShiftClose->owner_of_the_days_id)->organizationalUnit;
+        $cierreDelMes = $ShiftClose->date_of_closing_id;
+        if($ShiftClose->first_confirmation_status)
+        {
+            foreach ($ShiftClose->shiftUserDays as $userday)
+            {
+                $userday->shift_close_id = null;
+                $userday->save();
+            }
+
+            $ShiftClose->delete();
+        }
+
+        session()->flash('success', 'Se han cambiado a pendiente los días ');
         return redirect()->route('rrhh.shiftManag.closeShift',['idCierre'=>$cierreDelMes,'orgunitFilter'=>$actuallyOrgUnit]);
     }
 

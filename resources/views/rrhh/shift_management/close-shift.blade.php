@@ -43,7 +43,6 @@
     <h4>Filtros</h4>
     <form method="post" action="{{ route('rrhh.shiftManag.closeShift') }}" name="menuFilters">
         @csrf
-        {{ method_field('post') }}
         <!-- Menu de Filtros  -->
         <div class="form-row">
             <div class="col-md-4">
@@ -99,19 +98,19 @@
                 </select>
             </div>
             <input type="hidden" name="filtrados" id="filtrados" value="0,0,0">
-            <div class="form-group col-md-1">
+            <div class="form-group col-md-2">
                 <label for="for_submit">&nbsp;</label>
                 <button type="submit" class="btn btn-primary form-control">Filtrar <i class="fa fa-filter"></i></button>
             </div>
             </form>
-            <div class="form-group col-md-1">
+            {{-- <div class="form-group col-md-1">
             <form action="{{ route('rrhh.shiftManag.closeShift.delete') }}" method="post">
                 @csrf
                 <label for="for_submit">&nbsp;</label>
                 <input type="hidden" name="idCierreDelete" id="idCierreDelete" value="{{ $cierreDelMes->id }}">
                 <button type="submit" class="btn btn-danger form-control">Borrar <i class="fas fa-times"></i></button>
             </form>
-            </div>
+            </div> --}}
         </div>
     @endif
     <div class="card border-left-primary shadow h-100 py-2 mb-4">
@@ -122,7 +121,7 @@
                     <input class="form-check-input" type="checkbox" value="1" id="onlyClosedByMe" name="onlyClosedByMe"
                         onchange="setValueToFiltrados()" {{ $onlyClosedByMe != 0 ? 'checked' : '' }}>
                     <label class="form-check-label" for="flexCheckIndeterminate">
-                        Solo cerrados por mi
+                        Sólo mis turnos cerrados
                     </label>
                 </small>
                 <br>
@@ -189,7 +188,7 @@
                 <input class="form-check-input" type="checkbox" value="1" id="onlyConfirmedByMe" name="onlyConfirmedByMe"
                     onchange="setValueToFiltrados()" {{ $onlyConfirmedByMe != 0 ? 'checked' : '' }}>
                 <label class="form-check-label" for="flexCheckIndeterminate">
-                    Solo confirmados por mi
+                    Sólo confirmados por mí
                 </label>
             </small>
             <br>
@@ -221,14 +220,16 @@
                                 @livewire( 'rrhh.see-shift-control-form', ['usr'=>$f->user,
                                 'actuallyYears'=>$actuallyYear,'actuallyMonth'=>$actuallyMonth,'close'=>$cierreDelMes->id],
                                 key($loop->index) )
-
                                 <form method="post" action="{{ route('rrhh.shiftManag.closeShift.closeConfirmation') }}">
                                     @csrf
-                                    {{ method_field('post') }}
-
                                     <input type="hidden" name="ShiftCloseId" value="{{ $f ? $f->id : '' }}">
                                     <button class="btn btn-success btn-sm mt-2"><i class="fas fa-check"></i> Cerrar</button>
-                                    <!-- <button data-toggle="modal" data-target="#exampleModal" class="btn btn-success">Confirmar</button> -->
+                                </form>
+
+                                <form method="post" action="{{ route('rrhh.shiftManag.closeShift.sendToPending') }}">
+                                    @csrf
+                                    <input type="hidden" name="ShiftCloseId" value="{{ $f ? $f->id : '' }}">
+                                    <button class="btn btn-warning btn-sm mt-2"><i class="fas fa-arrow-down"></i> Pendiente</button>
                                 </form>
                             </td>
                         </tr>
@@ -262,6 +263,7 @@
                     </div>
                 </div>
             </form>
+            <br>
             @endif
             <table class="table table-sm" id="tblPendientes">
                 <thead class="thead-dark">
@@ -324,7 +326,7 @@
                 <input class="form-check-input" type="checkbox" value="1" id="onlyRejectedForMe" name="onlyRejectedForMe"
                     onchange="setValueToFiltrados()" {{ $onlyRejectedForMe != 0 ? 'checked' : '' }}>
                 <label class="form-check-label" for="flexCheckIndeterminate">
-                    Solo rechazados por mi
+                    Sólo rechazados por mí
                 </label>
             </small>
             <br>

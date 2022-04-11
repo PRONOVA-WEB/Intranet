@@ -468,6 +468,7 @@ Route::prefix('rrhh')->as('rrhh.')->group(function () {
            Route::get('/closeshift/download/{id}', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'downloadCloseInXls'])->name('shiftManag.closeShift.download')->middleware('auth');
 
            Route::post('/closeshift/first', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'firstConfirmation'])->name('shiftManag.closeShift.firstConfirmation')->middleware('auth');
+           Route::post('/closeshift/sendtopending', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'sendToPending'])->name('shiftManag.closeShift.sendToPending')->middleware('auth');
            Route::post('/closeshift/firstMass', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'massFirstConfirmation'])->name('shiftManag.closeShift.massFirstConfirmation')->middleware('auth');
            Route::post('/closeshift/close', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'closeDaysConfirmation'])->name('shiftManag.closeShift.closeConfirmation')->middleware('auth');
            Route::post('/closeshift/closeMass', [App\Http\Controllers\Rrhh\ShiftManagementController::class,'massCloseDaysConfirmation'])->name('shiftManag.closeShift.massCloseConfirmation')->middleware('auth');
