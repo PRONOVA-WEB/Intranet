@@ -15,7 +15,7 @@ class ShiftUserSeeder extends Seeder
     public function run()
     {
 
-        User::factory()->count(20)->create()->each(function($user) {
+        User::factory()->count(50)->create()->each(function($user) {
             $userFirst = User::find(12345678);
             for ($i=1; $i < 13 ; $i++) {
                 $endOfMonth = \Carbon\Carbon::parse('2022-'.$i.'-01')->endOfMonth()->format('d');
