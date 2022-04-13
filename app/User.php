@@ -10,6 +10,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Suitability\Result;
 use App\Models\RequestForms\RequestForm;
+use App\Models\Rrhh\ShiftUser;
 use App\Models\ServiceRequests\ServiceRequest;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -368,6 +369,11 @@ class User extends Authenticatable implements Auditable
             return "Run no Válido";
           }
     }
+
+    public function ShiftUser()
+	{
+    	return $this->hasMany(ShiftUser::class, 'user_id');
+	}
 
     /**
      * Route notifications for the mail channel.

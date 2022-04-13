@@ -1,40 +1,19 @@
-<style type="text/css">
-    .seeBtn {
-        color: blue;
-    }
-
-    .seeBtn:hover {
-        color: lightblue;
-    }
-
-    .tblShiftControlForm td,
-    .tblShiftControlForm th {
-        font-size: 10px;
-    }
-
-    .table-wrapper {
-        max-height: 150px;
-        overflow: auto;
-        display: inline-block;
-    }
-
-</style>
-<div style=" display: inline;">
+{{-- <div style=" display: inline;">
     @if (isset($usr) && $usr != '')
         <button class="btn btn-sm btn-info mt-2" data-toggle="modal" data-target="#shiftcontrolformmodal{{ $usr->id }}"
             data-backdrop="static">
             <i class="fa fa-eye " wire:click.prevent="setValues({{ $usr->id }})"></i> Ver
         </button>
     @endif
-</div>
+</div> --}}
 <div wire:ignore.self class="modal fade1" id="shiftcontrolformmodal{{ $usr->id }}" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header" style="background-color:#006cb7;color:white   ">
                 <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-clock"></i> Planilla de control de
                     Turnos <small><b>#ID Cierre {{ $cierreDelMes->id }}</b> </small></h5>
-                <button type="button" class="close" data-dismiss="modal" wire:click.prevent="cancel()"
+                <button type="button" class="close" data-dismiss="modal"
                     aria-label="Close">
                     <span aria-hidden="true">x</span>
                 </button>
@@ -53,47 +32,31 @@
                             </td>
                         </tr>
                         <tr>
-                            <th style="text-align: left;">APELLIDOS </th>
+                            <th style="text-align: left;">Nombre y Apellido </th>
                             <td>
                                 @if (isset($usr))
-                                    {{ strtoupper($usr->fathers_family) }}
-                                    {{ strtoupper($usr->mothers_family) }}
+                                    {{ strtoupper($usr->full_name_upper) }}
                                 @else
                                     <i class="fas fa-spinner fa-pulse"></i>
                                 @endif
                             </td>
-                            <th style="text-align: left;">NOMBRES</th>
-                            <td>
-                                @if (isset($usr))
-                                    {{ $usr->getFirstNameAttribute() }}
-                                @else
-                                    <i class="fas fa-spinner fa-pulse"></i>
-                                @endif
-
-                            </td>
-                        </tr>
                         <tr>
-                            <th style="text-align: left;">MES</th>
+                            <th style="text-align: left;">Rango de Cierre</th>
                             <td>
                                 @if (isset($usr))
-                                    {{ strtoupper($months[$actuallyMonth]) }}
+                                    {{ dateCustomFormat($cierreDelMes->init_date).' AL '.dateCustomFormat($cierreDelMes->close_date) }}
                                 @else
                                     <i class="fas fa-spinner fa-pulse"></i>
                                 @endif
-                            </td>
-                            <th style="text-align: left;">TURNO</th>
-                            <td>
-                                TURNO 1
                             </td>
                         </tr>
                     </thead>
-                    <tbody>
-                    </tbody>
                 </table>
                 <div class="table-responsive table-wrapper">
                     <table class="table tblShiftControlForm">
                         <thead>
                             <tr>
+                                <th>TURNO</th>
                                 <th>FECHA</th>
                                 <th>DÍA</th>
                                 <th colspan="2">HORARIO</th>
@@ -114,14 +77,29 @@
                             @if ($close != 0)
                                 @php
                                     $ranges = \Carbon\CarbonPeriod::create($cierreDelMes->init_date, $cierreDelMes->close_date);
-
                                 @endphp
                                 @foreach ($ranges as $date)
                                     @php
                                         $d = $daysForClose->where('day', $date->format('Y-m-d'));
                                     @endphp
                                     @foreach ($d as $dd)
+                                        @php
+                                            // $userDay = App\Models\Rrhh\ShiftUserDay::where('day',$dd->day)
+                                            //                                         ->whereHas('ShiftUser', function($q) use($usr) {
+                                            //                                             $q->where('user_id',$usr->id);
+                                            //                                         })
+                                            //                                         ->first();
+                                            $turno = \DB::table('rrhh_shift_user_days')
+                                                        ->select('rrhh_shift_types.shortname')
+                                                        ->join('rrhh_shift_users', 'shift_user_id', '=', 'rrhh_shift_users.id')
+                                                        ->join('rrhh_shift_types', 'rrhh_shift_types.id', '=', 'rrhh_shift_users.shift_types_id')
+                                                        ->where('rrhh_shift_user_days.day', $dd->day)
+                                                        ->where('rrhh_shift_users.user_id',$usr->id)
+                                                        ->first();
+                                            // dd($turno->shortname);
+                                        @endphp
                                         <tr>
+                                            <td>{{ $turno->shortname }}</td>
                                             <td>{{ $date->format('d/m') }} </td>
                                             <td> {{ $dd->working_day != 'F' ? $dd->working_day : '-' }} </td>
                                             @if ($date->isPast())
@@ -220,7 +198,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" wire:click.prevent="cancel()" class="btn"
+                <button type="button" class="btn"
                     data-dismiss="modal">Cerrar</button>
                 <form method="post" action="{{ route('rrhh.shiftManag.downloadform') }}" target="_blank">
                     @csrf
