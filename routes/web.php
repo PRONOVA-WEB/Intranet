@@ -945,6 +945,7 @@ Route::prefix('documents')->as('documents.')->middleware('auth')->group(function
 
     Route::prefix('summaries')->as('summaries.')->group(function () {
       Route::get('/{summary}/download', [SummaryController::class, 'download'])->name('download');
+      Route::get('/export', [SummaryController::class, 'export'])->name('export');
 
       Route::get('/', [SummaryController::class, 'index'])->name('index');
       Route::get('/create', [SummaryController::class, 'create'])->name('create');
