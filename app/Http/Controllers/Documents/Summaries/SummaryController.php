@@ -10,6 +10,9 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
+use App\Exports\SummaryExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 use App\Models\Documents\Summaries\Summary;
 use App\Models\Documents\Summaries\SummaryEvent;
 use App\Models\Documents\Summaries\SummaryStatus;
@@ -148,5 +151,9 @@ class SummaryController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function export(){
+      return Excel::download(new SummaryExport, 'sumarios.xlsx');
     }
 }
