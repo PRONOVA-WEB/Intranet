@@ -453,7 +453,7 @@
                        columns: [ 1, 2, 3 ]
                     },
                     text: '<i class="fa fa-file-excel"></i>',
-                    className: 'btn btn-info float-right',
+                    className: 'btn btn-outline-success float-right',
                     messageTop: 'Pendientes del {{ dateCustomFormat(App\Models\Rrhh\ShiftDateOfClosing::find($cierreDelMes->id)->init_date) }} al {{ dateCustomFormat(App\Models\Rrhh\ShiftDateOfClosing::find($cierreDelMes->id)->close_date) }} - {{ App\Rrhh\OrganizationalUnit::find($actuallyOrgUnit->id)->name }}',
                     init: function(api, node, config) {
                         $(node).removeClass('dt-button');
@@ -505,7 +505,7 @@
                        columns: [ 1, 2, 3, 4, 5, 6 ]
                     },
                     text: '<i class="fa fa-file-excel"></i>',
-                    className: 'btn btn-info float-right',
+                    className: 'btn btn-outline-success float-right',
                     messageTop: 'Confirmados del {{ dateCustomFormat(App\Models\Rrhh\ShiftDateOfClosing::find($cierreDelMes->id)->init_date) }} al {{ dateCustomFormat(App\Models\Rrhh\ShiftDateOfClosing::find($cierreDelMes->id)->close_date) }} - {{ App\Rrhh\OrganizationalUnit::find($actuallyOrgUnit->id)->name }}',
                     init: function(api, node, config) {
                         $(node).removeClass('dt-button');
@@ -534,7 +534,7 @@
                        columns: [ 1, 2, 3, 4, 5, 6 ]
                     },
                     text: '<i class="fa fa-file-excel"></i>',
-                    className: 'btn btn-info float-right',
+                    className: 'btn btn-outline-success float-right',
                     messageTop: 'Cerrados del {{ dateCustomFormat(App\Models\Rrhh\ShiftDateOfClosing::find($cierreDelMes->id)->init_date) }} al {{ dateCustomFormat(App\Models\Rrhh\ShiftDateOfClosing::find($cierreDelMes->id)->close_date) }} - {{ App\Rrhh\OrganizationalUnit::find($actuallyOrgUnit->id)->name }}',
                     init: function(api, node, config) {
                         $(node).removeClass('dt-button');
@@ -563,7 +563,7 @@
                        columns: [ 1, 2, 3, 4, 5, 6 ]
                     },
                     text: '<i class="fa fa-file-excel"></i>',
-                    className: 'btn btn-info float-right',
+                    className: 'btn btn-outline-success float-right',
                     messageTop: 'Rechazados del {{ dateCustomFormat(App\Models\Rrhh\ShiftDateOfClosing::find($cierreDelMes->id)->init_date) }} al {{ dateCustomFormat(App\Models\Rrhh\ShiftDateOfClosing::find($cierreDelMes->id)->close_date) }} - {{ App\Rrhh\OrganizationalUnit::find($actuallyOrgUnit->id)->name }}',
                     init: function(api, node, config) {
                         $(node).removeClass('dt-button');

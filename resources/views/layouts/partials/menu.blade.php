@@ -85,7 +85,7 @@
                 @endcan
 
                 <a class="collapse-item" href="{{ route('documents.summaries.index') }}">
-                    <i class="fas fa-file-import"></i> Sumarios
+                    <i class="fas fa-balance-scale"></i> Sumarios
                 </a>
 
                 @can('Agreement: view')

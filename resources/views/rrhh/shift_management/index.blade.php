@@ -249,7 +249,7 @@
                 buttons: [{
                     extend: 'excel',
                     text: '<i class="fa fa-file-excel"></i>',
-                    className: 'btn btn-info float-right',
+                    className: 'btn btn-outline-success float-right',
                     messageTop: '{{ $actuallyOrgUnit->name }} - {{ $months[$actuallyMonth] }} {{ $actuallyYear }} - {{ $actuallyShift->name }}',
                     init: function(api, node, config) {
                         $(node).removeClass('dt-button');

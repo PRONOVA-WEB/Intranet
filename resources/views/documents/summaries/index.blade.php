@@ -9,7 +9,7 @@
 <div class="mb-3">
 	<a class="btn btn-primary"
 		href="{{ route('documents.summaries.create') }}">
-		<i class="fas fa-shopping-cart"></i> Nuevo sumario
+		<i class="fas fa-balance-scale"></i> Nuevo sumario
 	</a>
 
 	<!-- <button type="button" class="btn btn-outline-success" onclick="#">
