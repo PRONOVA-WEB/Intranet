@@ -16,6 +16,7 @@ class ListOfShifts extends Component
 	public $actuallyYear;
 	public $actuallyMonth;
     public $actuallyOrgUnit;
+    public $position;
 	public $days;
     public $statusx;
     private $actuallyShift;
@@ -75,11 +76,20 @@ class ListOfShifts extends Component
 
         $this->actuallyShift = $actuallyShift ?? $this->actuallyShift=$sTypes->first();
 
-        $this->staffInShift = $staffInShift ?? ShiftUser::where('organizational_units_id', $this->actuallyOrgUnit->id )
-                                                        ->where('shift_types_id',$this->actuallyShift->id)
-                                                        ->where('date_up','>=',$this->actuallyYear."-".$this->actuallyMonth."-01")
-                                                        ->where('date_from','<=',$this->actuallyYear."-".$this->actuallyMonth."-".$this->days)
-                                                        ->get();
+        $position = $this->position;
+
+        $staffInShiftLocal = ShiftUser::where('organizational_units_id', $this->actuallyOrgUnit->id )
+                    ->where('shift_types_id',$this->actuallyShift->id)
+                    ->where('date_up','>=',$this->actuallyYear."-".$this->actuallyMonth."-01")
+                    ->where('date_from','<=',$this->actuallyYear."-".$this->actuallyMonth."-".$this->days);
+
+        if(!is_null($position)) {
+            $staffInShiftLocal->whereHas('user', function ($q) use ($position) {
+                $q->where('position',$position);
+            });
+        }
+        $this->staffInShift = $staffInShift ?? $staffInShiftLocal->get();
+
     }
 
 

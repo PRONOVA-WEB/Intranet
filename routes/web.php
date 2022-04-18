@@ -811,6 +811,8 @@ Route::prefix('parameters')->as('parameters.')->middleware('auth')->group(functi
     Route::prefix('holidays')->as('holidays.')->group(function () {
         Route::get('/', 'Parameters\HolidayController@index')->name('index');
         Route::put('/{holiday}', 'Parameters\HolidayController@update')->name('update');
+        Route::post('/store', 'Parameters\HolidayController@store')->name('store');
+        Route::get('/create', 'Parameters\HolidayController@create')->name('create');
     });
 
     Route::prefix('locations')->as('locations.')->group(function () {

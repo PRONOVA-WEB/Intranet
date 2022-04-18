@@ -58,8 +58,18 @@
     </div>
     <div class="form-row" >
         <fieldset class="form-group col-lg-12">
-            <label for="forPosition">Cargo/Funcion*</label>
-            <input type="text" class="form-control" id="forPosition" placeholder="Subdirector(S), Enfermera, Referente..., Jefe." name="position">
+            <label for="forPosition">Estamento*</label>
+            <select name="position" class="form-control" required>
+                <option value="Médico">Médico</option>
+                <option value="TENS">TENS</option>
+                <option value="Enfermero(a)">Enfermero(a)</option>
+                <option value="Técnico">Técnico</option>
+                <option value="Auxiliar">Auxiliar</option>
+                <option value="Directivo">Directivo</option>
+                <option value="Profesional">Profesional</option>
+                <option value="Administrativo">Administrativo</option>
+            </select>
+            {{-- <input type="text" class="form-control" id="forPosition" placeholder="Subdirector(S), Enfermera, Referente..., Jefe." name="position"> --}}
         </fieldset>
     </div>
 

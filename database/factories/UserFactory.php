@@ -33,7 +33,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => Hash::make('admin'),
             'remember_token' => Str::random(10),
-            'position' => 'Médico',
+            'position' => $this->faker->randomElement(['Médico' ,'TENS', 'Enfermero(a)','Técnico','Auxiliar']),
             'organizational_unit_id' => '16'
         ];
     }

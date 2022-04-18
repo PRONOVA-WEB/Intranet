@@ -36,7 +36,7 @@ figure:focus .menu {
     @endphp
 
     @livewire( 'rrhh.delete-shift',['startdate'=>$mInit[0],'enddate'=> $mEnd[0] ] )
-    @livewire('rrhh.add-day-of-shift-modal')
+    {{-- @livewire('rrhh.add-day-of-shift-modal') --}}
 
 
     @if(isset($staffInShift) && count($staffInShift)>0 && $staffInShift!="" )
