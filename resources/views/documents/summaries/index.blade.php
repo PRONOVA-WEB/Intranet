@@ -9,12 +9,15 @@
 <div class="mb-3">
 	<a class="btn btn-primary"
 		href="{{ route('documents.summaries.create') }}">
-		<i class="fas fa-shopping-cart"></i> Nuevo sumario
+		<i class="fas fa-balance-scale"></i> Nuevo sumario
 	</a>
 
-	<button type="button" class="btn btn-outline-primary" onclick="#">
+	<!-- <button type="button" class="btn btn-outline-success" onclick="#">
 		<i class="fas fa-download"></i>
-	</button>
+	</button> -->
+	<a class="btn btn-outline-success" href="{{ route('documents.summaries.export') }}">
+		<i class="fas fa-download"></i>
+	</a>
 </div>
 
 <h3>Sumarios activos</h3>

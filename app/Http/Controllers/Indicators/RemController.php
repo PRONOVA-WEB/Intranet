@@ -81,7 +81,7 @@ class RemController extends Controller
                                             ->whereIn('codigo_prestacion', $seccion->cods)->orderBy('id_prestacion')->get();
             }
         }
-        
+
         return view('indicators.rem.show', compact('year', 'establecimientos', 'prestacion', 'establecimiento', 'periodo', 'secciones'));
     }
 

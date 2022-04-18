@@ -27,7 +27,7 @@ class HolidayController extends Controller
      */
     public function create()
     {
-        //
+        return view('parameters.holidays.create');
     }
 
     /**
@@ -38,7 +38,12 @@ class HolidayController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $holiday = new Holiday($request->All());
+        $holiday->save();
+
+        session()->flash('info', 'El feriado '.$holiday->name.' ha sido cread.');
+
+        return redirect()->route('parameters.holidays.index');
     }
 
     /**

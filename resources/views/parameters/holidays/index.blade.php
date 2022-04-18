@@ -7,7 +7,7 @@
 @include('parameters.nav')
 
 <h3 class="mb-3">Lista de Feriados</h3>
-
+<a class="btn btn-primary mb-3" href="{{ route('parameters.holidays.create') }}">Crear</a></h3>
 <table class="table">
     <thead>
         <tr>
@@ -21,7 +21,7 @@
         @foreach($holidays as $holiday)
             <tr>
                 <td>{{ $holiday->id }}</td>
-                <td>{{ $holiday->date }}</td>
+                <td>{{ dateCustomFormat($holiday->date) }}</td>
                 <td>{{ $holiday->name }}</td>
                 <td>
                     <button class="btn btn-outline-secondary" data-toggle="modal"

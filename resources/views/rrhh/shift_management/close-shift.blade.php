@@ -150,9 +150,16 @@
                             <td>{{ \App\User::find($c->close_user_id)->getFullNameAttribute() }}</td>
                             <td>{{ dateCustomFormatHms($c->close_date) }}</td>
                             <td>
+                                <div style=" display: inline;">
+                                    @if (isset($c->user))
+                                        <button class="btn btn-sm btn-info mt-2" data-toggle="modal" data-target="#shiftcontrolformmodal{{ $c->user->id }}"
+                                            data-backdrop="static">
+                                            <i class="fa fa-eye " wire:click.prevent="setValues({{ $c->user->id }})"  wire:key="$loop->index"></i> Ver
+                                        </button>
+                                    @endif
+                                </div>
                                 @livewire( 'rrhh.see-shift-control-form', ['usr'=>$c->user,
-                                'actuallyYears'=>$actuallyYear,'actuallyMonth'=>$actuallyMonth,'close'=>$cierreDelMes->id],
-                                key($loop->index) )
+                                'actuallyYears'=>$actuallyYear,'actuallyMonth'=>$actuallyMonth,'close'=>$cierreDelMes->id])
                             </td>
                         </tr>
                     @endforeach
@@ -217,9 +224,16 @@
                             <td>{{ \App\User::find($f->first_confirmation_user_id)->getFullNameAttribute() }}</td>
                             <td>{{ dateCustomFormatHms($f->first_confirmation_date) }}</td>
                             <td>
+                                <div style=" display: inline;">
+                                    @if (isset($f->user))
+                                        <button class="btn btn-sm btn-info mt-2" data-toggle="modal" data-target="#shiftcontrolformmodal{{ $f->user->id }}"
+                                            data-backdrop="static">
+                                            <i class="fa fa-eye " wire:click.prevent="setValues({{ $f->user->id }})"  wire:key="$loop->index"></i> Ver
+                                        </button>
+                                    @endif
+                                </div>
                                 @livewire( 'rrhh.see-shift-control-form', ['usr'=>$f->user,
-                                'actuallyYears'=>$actuallyYear,'actuallyMonth'=>$actuallyMonth,'close'=>$cierreDelMes->id],
-                                key($loop->index) )
+                                'actuallyYears'=>$actuallyYear,'actuallyMonth'=>$actuallyMonth,'close'=>$cierreDelMes->id])
                                 <form method="post" action="{{ route('rrhh.shiftManag.closeShift.closeConfirmation') }}">
                                     @csrf
                                     <input type="hidden" name="ShiftCloseId" value="{{ $f ? $f->id : '' }}">
@@ -309,9 +323,16 @@
                                 <button type="button" onclick="rejectForm({{ $s->id }});"
                                     class="btn btn-danger btn-sm mt-2"><i class="fas fa-ban"></i> Rechazar</button>
                             </form>
+                            <div style=" display: inline;">
+                                @if (isset($s->user))
+                                    <button class="btn btn-sm btn-info mt-2" data-toggle="modal" data-target="#shiftcontrolformmodal{{ $s->user->id }}"
+                                        data-backdrop="static">
+                                        <i class="fa fa-eye " wire:click.prevent="setValues({{ $s->user->id }})"  wire:key="$loop->index"></i> Ver
+                                    </button>
+                                @endif
+                            </div>
                             @livewire( 'rrhh.see-shift-control-form', ['usr'=>$s->user,
-                            'actuallyYears'=>$actuallyYear,'actuallyMonth'=>$actuallyMonth,'close'=>$cierreDelMes->id],
-                            key($loop->index) )
+                            'actuallyYears'=>$actuallyYear,'actuallyMonth'=>$actuallyMonth,'close'=>$cierreDelMes->id])
                             </td>
                         </tr>
                     @endforeach
@@ -354,9 +375,16 @@
                             <td>{{ $r->first_confirmation_user_id }}</td>
                             <td>{{ dateCustomFormatHms($r->first_confirmation_date) }}</td>
                             <td>
-                                @livewire( 'rrhh.see-shift-control-form', ['usr'=>$r->user,
-                                'actuallyYears'=>$actuallyYear,'actuallyMonth'=>$actuallyMonth,'close'=>$cierreDelMes->id],
-                                key($loop->index) )
+                                <div style=" display: inline;">
+                                    @if (isset($s->user))
+                                        <button class="btn btn-sm btn-info mt-2" data-toggle="modal" data-target="#shiftcontrolformmodal{{ $s->user->id }}"
+                                            data-backdrop="static">
+                                            <i class="fa fa-eye " wire:click.prevent="setValues({{ $s->user->id }})"  wire:key="$loop->index"></i> Ver
+                                        </button>
+                                    @endif
+                                </div>
+                                @livewire( 'rrhh.see-shift-control-form', ['usr'=>$s->user,
+                                'actuallyYears'=>$actuallyYear,'actuallyMonth'=>$actuallyMonth,'close'=>$cierreDelMes->id])
                             </td>
                         </tr>
                     @endforeach
@@ -453,7 +481,7 @@
                        columns: [ 1, 2, 3 ]
                     },
                     text: '<i class="fa fa-file-excel"></i>',
-                    className: 'btn btn-info float-right',
+                    className: 'btn btn-outline-success float-right',
                     messageTop: 'Pendientes del {{ dateCustomFormat(App\Models\Rrhh\ShiftDateOfClosing::find($cierreDelMes->id)->init_date) }} al {{ dateCustomFormat(App\Models\Rrhh\ShiftDateOfClosing::find($cierreDelMes->id)->close_date) }} - {{ App\Rrhh\OrganizationalUnit::find($actuallyOrgUnit->id)->name }}',
                     init: function(api, node, config) {
                         $(node).removeClass('dt-button');
@@ -505,7 +533,7 @@
                        columns: [ 1, 2, 3, 4, 5, 6 ]
                     },
                     text: '<i class="fa fa-file-excel"></i>',
-                    className: 'btn btn-info float-right',
+                    className: 'btn btn-outline-success float-right',
                     messageTop: 'Confirmados del {{ dateCustomFormat(App\Models\Rrhh\ShiftDateOfClosing::find($cierreDelMes->id)->init_date) }} al {{ dateCustomFormat(App\Models\Rrhh\ShiftDateOfClosing::find($cierreDelMes->id)->close_date) }} - {{ App\Rrhh\OrganizationalUnit::find($actuallyOrgUnit->id)->name }}',
                     init: function(api, node, config) {
                         $(node).removeClass('dt-button');
@@ -534,7 +562,7 @@
                        columns: [ 1, 2, 3, 4, 5, 6 ]
                     },
                     text: '<i class="fa fa-file-excel"></i>',
-                    className: 'btn btn-info float-right',
+                    className: 'btn btn-outline-success float-right',
                     messageTop: 'Cerrados del {{ dateCustomFormat(App\Models\Rrhh\ShiftDateOfClosing::find($cierreDelMes->id)->init_date) }} al {{ dateCustomFormat(App\Models\Rrhh\ShiftDateOfClosing::find($cierreDelMes->id)->close_date) }} - {{ App\Rrhh\OrganizationalUnit::find($actuallyOrgUnit->id)->name }}',
                     init: function(api, node, config) {
                         $(node).removeClass('dt-button');
@@ -563,7 +591,7 @@
                        columns: [ 1, 2, 3, 4, 5, 6 ]
                     },
                     text: '<i class="fa fa-file-excel"></i>',
-                    className: 'btn btn-info float-right',
+                    className: 'btn btn-outline-success float-right',
                     messageTop: 'Rechazados del {{ dateCustomFormat(App\Models\Rrhh\ShiftDateOfClosing::find($cierreDelMes->id)->init_date) }} al {{ dateCustomFormat(App\Models\Rrhh\ShiftDateOfClosing::find($cierreDelMes->id)->close_date) }} - {{ App\Rrhh\OrganizationalUnit::find($actuallyOrgUnit->id)->name }}',
                     init: function(api, node, config) {
                         $(node).removeClass('dt-button');

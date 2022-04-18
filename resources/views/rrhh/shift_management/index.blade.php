@@ -23,7 +23,7 @@
     <form method="get" action="{{ route('rrhh.shiftManag.index') }}">
         <!-- Menu de Filtros  -->
         <div class="form-row">
-            <div class="form-group col-md-7">
+            <div class="form-group col-md-4">
                 <label for="for_name">Unidad organizacional</label>
                 <select class="form-control selectpicker" id="for_orgunitFilter" name="orgunitFilter" data-live-search="true"
                     required data-size="5">
@@ -65,7 +65,15 @@
                     @endforeach
                 </select>
             </div>
-
+            <div class="form-group col-md-3">
+                <label for="estamento">Estamento</label>
+                <select class="form-control" name="position">
+                    <option value="">Todos</option>
+                    @foreach ($staff->groupBy('position') as $key => $position_name)
+                        <option {{ ($position == $key) ? 'selected' : '' }}>{{ $key }}</option>
+                    @endforeach
+                </select>
+            </div>
             <div class="form-group col-md-2">
                 <label for="for_name" class="input-group-addon">Series</label>
                 <select class="form-control" id="for_turnFilter" name="turnFilter">
@@ -219,7 +227,7 @@
                 <tbody>
                     <div>
                         @livewire('rrhh.list-of-shifts',['actuallyYear'=>$actuallyYear,
-                        'actuallyMonth'=>$actuallyMonth,'days'=>$days,'actuallyOrgUnit'=>$actuallyOrgUnit,'actuallyDay'=>$actuallyDay,'actuallyShift'=>$actuallyShift])
+                        'actuallyMonth'=>$actuallyMonth,'days'=>$days,'actuallyOrgUnit'=>$actuallyOrgUnit,'actuallyDay'=>$actuallyDay,'actuallyShift'=>$actuallyShift,'position'=>$position])
                     </div>
                 </tbody>
             </table>
@@ -249,8 +257,8 @@
                 buttons: [{
                     extend: 'excel',
                     text: '<i class="fa fa-file-excel"></i>',
-                    className: 'btn btn-info float-right',
-                    messageTop: '{{ $actuallyOrgUnit->name }} - {{ $months[$actuallyMonth] }} {{ $actuallyYear }} - {{ $actuallyShift->name }}',
+                    className: 'btn btn-outline-success float-right',
+                    messageTop: '{{ $actuallyOrgUnit->name }} - {{ $months[$actuallyMonth] }} {{ $actuallyYear }} - {{ $actuallyShift->name }} - {{ $position }}',
                     init: function(api, node, config) {
                         $(node).removeClass('dt-button');
                     }

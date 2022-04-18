@@ -811,6 +811,8 @@ Route::prefix('parameters')->as('parameters.')->middleware('auth')->group(functi
     Route::prefix('holidays')->as('holidays.')->group(function () {
         Route::get('/', 'Parameters\HolidayController@index')->name('index');
         Route::put('/{holiday}', 'Parameters\HolidayController@update')->name('update');
+        Route::post('/store', 'Parameters\HolidayController@store')->name('store');
+        Route::get('/create', 'Parameters\HolidayController@create')->name('create');
     });
 
     Route::prefix('locations')->as('locations.')->group(function () {
@@ -948,6 +950,7 @@ Route::prefix('documents')->as('documents.')->middleware('auth')->group(function
 
     Route::prefix('summaries')->as('summaries.')->group(function () {
       Route::get('/{summary}/download', [SummaryController::class, 'download'])->name('download');
+      Route::get('/export', [SummaryController::class, 'export'])->name('export');
 
       Route::get('/', [SummaryController::class, 'index'])->name('index');
       Route::get('/create', [SummaryController::class, 'create'])->name('create');
