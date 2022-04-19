@@ -47,7 +47,10 @@ return [
             'driver' => 'local',
             'root' => storage_path('app'),
         ],
-
+        'tmp-for-tests' => [
+            'driver' => 'local',
+            'root' => storage_path('app/livewire-tmp'),
+        ],
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
