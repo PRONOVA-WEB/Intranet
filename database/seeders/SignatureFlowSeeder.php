@@ -38,6 +38,7 @@ class SignatureFlowSeeder extends Seeder
             'type' => 'Supervisor',
             'employee' => 'Administrator',
             'user_id' => '12345678',
+            'status' => '1',
             'created_at' => carbon::now(),
             'updated_at' => carbon::now()
         ]);
@@ -50,54 +51,7 @@ class SignatureFlowSeeder extends Seeder
             'type' => 'visador',
             'employee' => 'Director',
             'user_id' => '12345678',
-            'created_at' => carbon::now(),
-            'updated_at' => carbon::now()
-        ]);
-
-        SignatureFlow::create([
-            'ou_id' => '1',
-            'responsable_id' => '12345678',
-            'service_request_id' => '1',
-            'sign_position' => '4',
-            'type' => 'visador',
-            'employee' => 'Director',
-            'user_id' => '12345678',
-            'created_at' => carbon::now(),
-            'updated_at' => carbon::now()
-        ]);
-
-        SignatureFlow::create([
-            'ou_id' => '1',
-            'responsable_id' => '12345678',
-            'service_request_id' => '1',
-            'sign_position' => '5',
-            'type' => 'visador',
-            'employee' => 'Director',
-            'user_id' => '12345678',
-            'created_at' => carbon::now(),
-            'updated_at' => carbon::now()
-        ]);
-
-        SignatureFlow::create([
-            'ou_id' => '1',
-            'responsable_id' => '12345678',
-            'service_request_id' => '1',
-            'sign_position' => '6',
-            'type' => 'visador',
-            'employee' => 'Director',
-            'user_id' => '12345678',
-            'created_at' => carbon::now(),
-            'updated_at' => carbon::now()
-        ]);
-
-        SignatureFlow::create([
-            'ou_id' => '1',
-            'responsable_id' => '12345678',
-            'service_request_id' => '1',
-            'sign_position' => '7',
-            'type' => 'visador',
-            'employee' => 'Director',
-            'user_id' => '12345678',
+            'status' => '1',
             'created_at' => carbon::now(),
             'updated_at' => carbon::now()
         ]);

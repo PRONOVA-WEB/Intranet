@@ -75,11 +75,11 @@ class UserSeeder extends Seeder
         $user->givePermissionTo(Permission::all());
 
         $user = new User();
-        $user->id = 88888888;
-        $user->dv = 1;
-        $user->name = "Candidato";
-        $user->fathers_family = "Contratación";
-        $user->mothers_family = "Honorarios";
+        $user->id = 27005646;
+        $user->dv = 6;
+        $user->name = "Ana Paula";
+        $user->fathers_family = "López";
+        $user->mothers_family = "Mendoza";
         $user->password = bcrypt('admin');
         $user->position = "Profesional";
         $user->email = "candidato@pronova.cl";

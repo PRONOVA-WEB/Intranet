@@ -91,7 +91,7 @@ class LoginController extends Controller
         {
             Auth::guard('external')->logout();
 
-            return redirect()->route('welcome');
+            return redirect()->route('invoice.welcome');
         }
 
 		return redirect('/');

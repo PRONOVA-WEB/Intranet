@@ -520,11 +520,12 @@ class ServiceRequestController extends Controller
     }
 
     //guarda control de turnos
-    if ($request->shift_start_date) {
+    if (is_array($request->shift_start_date)) {
       if ($request->shift_start_date != null) {
+
         foreach ($request->shift_start_date as $key => $shift_start_date) {
           $shiftControl = new ShiftControl($request->All());
-          // $shiftControl->service_request_id = $serviceRequest->id;
+          $shiftControl->service_request_id = $serviceRequest->id;
           $shiftControl->fulfillment_id = $fulfillment->id;
           $shiftControl->start_date = $shift_start_date . " " . $request->shift_start_hour[$key];
           $shiftControl->end_date = $request->shift_end_date[$key] . " " . $request->shift_end_hour[$key];
