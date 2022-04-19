@@ -1625,9 +1625,9 @@ Route::prefix('invoice')->as('invoice.')->group(function () {
     Route::get('/welcome',[InvoiceController::class,'welcome'])->name('welcome');
     //Route::get('/login/{access_token}',[InvoiceController::class,'login'])->name('login');
     Route::post('/login',[InvoiceController::class,'login'])->name('login');
-    Route::post('/show',[InvoiceController::class,'show'])->name('show')->middleware('auth:external');
-    Route::get('/download-invoice/{fulfillment}/{timestamp?}', [InvoiceController::class, 'downloadInvoice'])->name('download_invoice')->middleware('auth:external');
-    Route::get('/download-resolution/{serviceRequest}', [InvoiceController::class, 'downloadResolution'])->name('download_resolution')->middleware('auth:external');
+    Route::get('/show',[InvoiceController::class,'show'])->name('show');
+    Route::get('/download-invoice/{fulfillment}/{timestamp?}', [InvoiceController::class, 'downloadInvoice'])->name('download_invoice');
+    Route::get('/download-resolution/{serviceRequest}', [InvoiceController::class, 'downloadResolution'])->name('download_resolution');
 });
 
 
