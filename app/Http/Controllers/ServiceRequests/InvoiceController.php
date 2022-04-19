@@ -22,7 +22,7 @@ class InvoiceController extends Controller
     {
         if (Auth::guard('external')->check())
         {
-            return $this->show(Auth::guard('external')->user()->id);
+            return redirect()->route('invoice.show');
         }
         return view('service_requests.invoice.welcome');
     }
@@ -60,7 +60,8 @@ class InvoiceController extends Controller
 
         if (Auth::guard('external')->attempt($credentials, $request->filled('remember'))) {
             // Authentication passed...
-            return $this->show(Auth::guard('external')->user()->id);
+            //return $this->show(Auth::guard('external')->user()->id);
+            return redirect()->route('invoice.show');
         }
         $errors = new MessageBag(['id' => ['Estas credenciales no coinciden con nuestros registros..']]); // if Auth::attempt fails (wrong credentials) create a new message bag instance.
 
@@ -68,12 +69,12 @@ class InvoiceController extends Controller
     }
 
 
-    public function show($user_id)
+    public function show()
     {
         //$serviceRequests = ServiceRequest::where('user_id',$user_id)->get();
 
         //$fulfillment = Fulfillment::whereHas('ServiceRequest', function($query, use $user_id) { $query->where('user_id',$user_id);})->orderBy('payment_date')->get();
-
+        $user_id = Auth::guard('external')->user()->id;
         $fulfillments = Fulfillment::whereHas('ServiceRequest', function($query) use ($user_id) {
             $query->where('user_id',$user_id);}
             )->orderBy('year', 'DESC')->orderBy('month', 'DESC')->get();
