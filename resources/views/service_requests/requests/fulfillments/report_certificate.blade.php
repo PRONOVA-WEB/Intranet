@@ -211,7 +211,7 @@
                 Servicio Salud Iquique
               @endif
             @else
-              Hospital Dr.Ernesto Torres Galdames
+              Hospital General
             @endif
             durante el periodo
             @if($fulfillment->serviceRequest->type == 'Covid')
@@ -296,7 +296,7 @@
                 Servicio Salud Iquique
               @endif
             @else
-              Hospital Dr.Ernesto Torres Galdames
+              Hospital General
             @endif
 
             @if($fulfillment->serviceRequest->type == 'Covid')
@@ -442,7 +442,7 @@
             SERVICIO SALUD IQUIQUE<br>
           @endif
         @else
-          HOSPITAL DR ERNESTO TORRES GALDÁMEZ<br>
+          HOSPITAL GENERAL<br>
         @endif
         </strong>
     </div>

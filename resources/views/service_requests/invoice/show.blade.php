@@ -17,8 +17,8 @@
 		<hr>
 
 		<h4 class="mt-3 mb-3">Información de sus contratos de honorarios</h4>
-		<p>Si tiene alguna duda, respecto a algún contrato, puedes ponerte en contacto con el área de RRHH a través de  
-		<a href="https://wa.me/message/IBHMJ3XRQZA3P1" data-toggle="tooltip" title="<img src='{{ asset('images/qr_wp_rrhh.svg') }}' />">WhatsApp</a>. El horario de atención es de 8:30 a 14:00.</p>
+		<p>Si tiene alguna duda, respecto a algún contrato, puedes ponerte en contacto con el área de RRHH a través de
+		<a href="#" data-toggle="tooltip" title="<img src='{{ asset('images/qr_wp_rrhh.svg') }}' />">WhatsApp</a>. El horario de atención es de 8:30 a 14:00.</p>
 
 
 
@@ -73,7 +73,7 @@
 									<tr class="bg-warning">
 										@endif
 										<td>{{ optional($SignatureFlow->signature_date)->format('Y-m-d H:i')}}</td>
-										<td>{{ $SignatureFlow->user->getShortNameAttribute() }}</td>
+										<td>{{ $SignatureFlow->user->full_name_upper }} | {{ App\Rrhh\Authority::where('user_id',$SignatureFlow->user->id)->first()->position->name }}</td>
 									</tr>
 									@endforeach
 								</tbody>
@@ -84,7 +84,7 @@
 					<li class="list-group-item">
 						@if($fullfillment->serviceRequest->has_resolution_file)
 						<i class="fas fa-circle text-success"></i>
-						<a href="{{route('rrhh.service-request.fulfillment.download_resolution', $fullfillment->serviceRequest->id)}}" target="_blank" title="Resolución"> Resolución. <i class="fas fa-paperclip"></i></a>
+						<a href="{{route('invoice.download_resolution', $fullfillment->serviceRequest->id)}}" target="_blank" title="Resolución"> Resolución. <i class="fas fa-paperclip"></i></a>
 						@else
 						<i class="fas fa-circle text-secondary"></i>
 						No se ha cargado resolución.
@@ -129,7 +129,7 @@
 						<i class="fas fa-circle text-secondary"></i>
 						Pago pendiente.
 						@if($fullfillment->payment_rejection_detail)
-						<a href="#" data-toggle="collapse" data-target="#rechazo{{$fullfillment->id}}"> 
+						<a href="#" data-toggle="collapse" data-target="#rechazo{{$fullfillment->id}}">
 							<i class="fas fa-chevron-down"></i> </a>
 						<div id="rechazo{{$fullfillment->id}}" class="collapse" aria-labelledby="headingOne">
 							{!! $fullfillment->payment_rejection_detail !!}
@@ -141,7 +141,7 @@
 				@if($fullfillment->payment_date)
 			</div>
 			@endif
-			
+
 
 		</div>
 
@@ -152,7 +152,7 @@
 @else
 	<div class="alert alert-danger">
 		<h4 class="alert-heading">No existe un usuario con este run en nuestros registros. </h4>
-		<p>Si tiene alguna duda respecto a algún contrato, puede ponerse en contacto con el área de RRHH a través de del anexo 57 9819 o bién a través de 
+		<p>Si tiene alguna duda respecto a algún contrato, puede ponerse en contacto con el área de RRHH a través de del anexo 57 9819 o bién a través de
 		<a href="https://wa.me/message/IBHMJ3XRQZA3P1" data-toggle="tooltip" title="<img src='{{ asset('images/qr_wp_rrhh.svg') }}' />">WhatsApp</a>. <br>
 		El horario de atención es de 8:30 a 16:00.</p>
 	</div>

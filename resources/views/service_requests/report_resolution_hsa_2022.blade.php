@@ -130,19 +130,19 @@
 <body>
     <div class="content">
 
-        <img style="padding-bottom: 4px;" src="images/logo_pluma.jpg" width="120" alt="Logo Servicio de Salud"><br>
+        <img style="padding-bottom: 4px;" src="{{ asset('images/logo_pronova.jpg') }}" width="120" alt="Logo Servicio de Salud"><br>
 
 
         <div class="siete" style="padding-top: 3px;">
             @if($ServiceRequest->responsabilityCenter->establishment_id == 1)
-            HOSPITAL DR. ERNESTO TORRES GALDÁMEZ<br>
+            HOSPITAL GENERAL<br>
             @else
 
             @endif
             SUBDIRECCIÓN DE GESTIÓN Y DESARROLLO DE LAS PERSONAS
         </div>
         <div class="seis" style="padding-top: 4px;">
-            N.I.PHUQHAÑA. {{$ServiceRequest->id}} - {{\Carbon\Carbon::now()->format('d/m/Y')}} -
+            CONTRATACIÓN HONORARIOS {{$ServiceRequest->id}} - {{\Carbon\Carbon::now()->format('d/m/Y')}} -
             @foreach($ServiceRequest->SignatureFlows as $SignatureFlow)
             {{$SignatureFlow->user->Initials}},
             @endforeach
@@ -154,7 +154,7 @@
                 <strong>RESOLUCIÓN N°: {{$ServiceRequest->resolution_number}}</strong>
             </div>
             <div class="left" style="padding-bottom: 2px;">
-                <strong>IQUIQUE,</strong>
+                <strong>SANTIAGO,</strong>
             </div>
         </div>
 
@@ -172,7 +172,7 @@
             Ley N° 19.880 de Bases de Procedimiento Administrativo, Art. 23° letra f) del Decreto N° 38, de 2005 que
             Aprueba Reglamento Orgánico de los Establecimientos de Salud de Menor Complejidad y de los Establecimientos
             de Autogestión en Red todas del Ministerio de Salud;
-            {{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->decree}},
+            {{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->decree}},
             del Servicio de Salud Iquique, Gabinete Presidencial N° 02, de 2018 de la Presidencia de la República,
             Ley N° 21.395, de 2021 del Ministerio de Hacienda, que Aprueba Presupuesto del Sector Público año 2022; Resoluciones N° 18, de 2017 ; N° 6, de 2019 y
             Oficio E173171 de 2022, todos de la Contraloría General de la República.<br>
@@ -185,7 +185,7 @@
             fija texto refundido, coordinado y sistematizado de la Ley 18.834/89 sobre Estatuto Administrativo,
             Ley Nº 21.395/2021 de Presupuesto del Sector Público para el año 2022
             D.F.L. Nº01/05 que fija texto refundido,
-            coordinado y sistematizado, Dto. Ley Nº 2763/79 y de las leyes 18.933 y 18469 del Ministerio de Salud;
+            coordinado y sistematizado, Dto. Ley Nº 2763/79 y de las leyes 18.933 y 1169 del Ministerio de Salud;
             Art. 8° III letra d) del Dto. Nº 140/04 del Ministerio de Salud que aprobó el Reglamento Orgánico de
             los Servicios de Salud, {{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->decree}},
             Resolución Nº6/2019, Resolución N° 18/2017, Resol N° 2/2022; Dictamen Nº 21.900/98 y Dictamen N°E173171/2022
@@ -203,14 +203,14 @@
 
             <b>- Que</b>, por la índole del servicio que debe realizarse es más recomendable fijar un honorario consistente en una suma alzada.<br>
 
-            <b>- Que</b>, el @if($ServiceRequest->responsabilityCenter->establishment_id == 1) Hospital Ernesto Torres Galdames @else Servicio de Salud Iquique @endif, cuenta con las disponibilidades presupuestarias suficientes para solventar tal convenio.<br>
+            <b>- Que</b>, el @if($ServiceRequest->responsabilityCenter->establishment_id == 1) Hospital General @else Servicio de Salud Iquique @endif, cuenta con las disponibilidades presupuestarias suficientes para solventar tal convenio.<br>
         </p>
 
         <p class="justify">
             <strong>RESUELVO:</strong><br>
             <!-- {{$ServiceRequest->resolve}}<br><br> -->
 
-            <strong>1.CONTRÁTESE</strong> a honorarios a suma alzada en el @if($ServiceRequest->responsabilityCenter->establishment_id == 1) Hospital Ernesto Torres Galdames, @else Servicio de Salud Iquique, @endif a la persona que más abajo se individualiza de acuerdo a su área de competencia,
+            <strong>1.CONTRÁTESE</strong> a honorarios a suma alzada en el @if($ServiceRequest->responsabilityCenter->establishment_id == 1) Hospital General, @else Servicio de Salud Iquique, @endif a la persona que más abajo se individualiza de acuerdo a su área de competencia,
 
         </p>
 
@@ -242,10 +242,10 @@
 
         @if($ServiceRequest->responsabilityCenter->establishment_id == 1)
         <p class="justify">
-            En Iquique, a {{$inputs['Fecha']}}, comparece por una parte el <b>HOSPITAL ERNESTO TORRES GALDAMES</b>, persona jurídica de derecho público, RUT. 62.000.530-4 , con domicilio en calle Av.héroes de la concepcion N 502 de la ciudad de Iquique, representado por su {{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->position}}
-            <b>{{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->user->FullNameUpper}}</b>,
-            chileno, Cédula Nacional de Identidad N°{{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->user->runFormat()}}, del mismo domicilio del servicio público que representa, en
-            adelante , "El Director del Hospital Ernesto Torres Galdames", y por la otra don <b>{{$ServiceRequest->employee->getFullNameAttribute()}}</b>@if($ServiceRequest->profession), {{$ServiceRequest->profession->name}}@endif, RUT:{{$ServiceRequest->employee->id}}-{{$ServiceRequest->employee->dv}}, chileno,
+            En Iquique, a {{$inputs['Fecha']}}, comparece por una parte el <b>HOSPITAL General</b>, persona jurídica de derecho público, RUT. 62.000.530-4 , con domicilio en calle Av.héroes de la concepcion N 502 de la ciudad de Iquique, representado por su {{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->position}}
+            <b>{{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->user->FullNameUpper}}</b>,
+            chileno, Cédula Nacional de Identidad N°{{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->user->runFormat()}}, del mismo domicilio del servicio público que representa, en
+            adelante , "El Director del Hospital General", y por la otra don <b>{{$ServiceRequest->employee->getFullNameAttribute()}}</b>@if($ServiceRequest->profession), {{$ServiceRequest->profession->name}}@endif, RUT:{{$ServiceRequest->employee->id}}-{{$ServiceRequest->employee->dv}}, chileno,
             con domicilio en {{$ServiceRequest->address}}, de la ciudad de Iquique, en adelante “El Profesional” y exponen lo siguiente:
         </p>
         @else
@@ -259,12 +259,12 @@
         @endif
         @if($ServiceRequest->responsabilityCenter->establishment_id == 1)
         <strong>PRIMERO:</strong>
-        Don {{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->user->FullNameUpper}}, en su calidad de {{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->position}} del Hospital Ernesto Torres Galdames, contrata los servicios a honorarios a suma alzada de {{$ServiceRequest->employee->getFullNameAttribute()}},
-        @if($ServiceRequest->profession){{$ServiceRequest->profession->name}},@endif apoyo a {{$ServiceRequest->responsabilityCenter->name}} de la Dirección del Hospital Ernesto Torres Galdames.
+        Don {{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->user->FullNameUpper}}, en su calidad de {{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->position->name}} del Hospital General, contrata los servicios a honorarios a suma alzada de {{$ServiceRequest->employee->getFullNameAttribute()}},
+        @if($ServiceRequest->profession){{$ServiceRequest->profession->name}},@endif apoyo a {{$ServiceRequest->responsabilityCenter->name}} de la Dirección del Hospital General.
         @else
         <p class="justify">
             <strong>PRIMERO:</strong>
-            D. {{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->user->FullNameUpper}}, en su calidad de {{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->user->position}} del Servicio de Salud Iquique, contrata los servicios a honorarios a suma alzada de {{$ServiceRequest->employee->getFullNameAttribute()}},
+            D. {{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->user->FullNameUpper}}, en su calidad de {{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->user->position->name}} del Servicio de Salud Iquique, contrata los servicios a honorarios a suma alzada de {{$ServiceRequest->employee->getFullNameAttribute()}},
             @if($ServiceRequest->profession){{$ServiceRequest->profession->name}},@endif apoyo a {{$ServiceRequest->responsabilityCenter->name}} de la Dirección del Servicio Salud Iquique.
         </p>
         @endif
@@ -280,7 +280,7 @@
         <p class="justify">
             <strong>TERCERO:</strong> El prestador recibirá los lineamientos por parte del Jefe del {{$ServiceRequest->responsabilityCenter->name}}, del
             @if($ServiceRequest->responsabilityCenter->establishment_id == 1)
-            Hospital Regional de Iquique,
+            Hospital General,
             @else
             Servicio de Salud Iquique,
             @endif
@@ -306,7 +306,7 @@
         <p class="justify">
             <strong>SEXTO:</strong>
             @if($ServiceRequest->responsabilityCenter->establishment_id == 1)
-            El Hospital “Dr. Ernesto Torres Galdames” de Iquique podrá poner término anticipadamente a este convenio en el evento que el prestador incumpla los servicios por los cuales fue contratado, sea que esto no se entreguen en la forma estipulada, o se califiquen de deficientes. Asimismo el Hospital podrá poner término a los servicios de forma anticipada si estos se dejaren de necesitar o por otras causales debidamente fundadas. En estos casos, se dará aviso del desahucio, con a lo menos 7 días corridos al término efectivo de los servicios.
+            El Hospital “Dr. General” de Iquique podrá poner término anticipadamente a este convenio en el evento que el prestador incumpla los servicios por los cuales fue contratado, sea que esto no se entreguen en la forma estipulada, o se califiquen de deficientes. Asimismo el Hospital podrá poner término a los servicios de forma anticipada si estos se dejaren de necesitar o por otras causales debidamente fundadas. En estos casos, se dará aviso del desahucio, con a lo menos 7 días corridos al término efectivo de los servicios.
             @else
             El Servicio de Salud Iquique podrá poner término anticipadamente a este convenio sin expresión de causa, previo aviso por escrito a la afectada con a lo menos 1 mes de anticipación.
             @endif
@@ -316,7 +316,7 @@
         <p class="justify">
             <strong>SÉPTIMO:</strong>
             @if($ServiceRequest->responsabilityCenter->establishment_id == 1)
-            En este caso, el Hospital “Dr. Ernesto Torres Galdames” de Iquique, pagará a la persona en referencia sólo hasta el porcentaje de la mensualidad correspondiente al período efectivamente prestado.
+            En este caso, el Hospital “Dr. General” de Iquique, pagará a la persona en referencia sólo hasta el porcentaje de la mensualidad correspondiente al período efectivamente prestado.
             @else
             El Servicio de Salud Iquique, cancelará a la persona en referencia sólo hasta la mensualidad correspondiente al período efectivamente prestado.
             @endif
@@ -329,7 +329,7 @@
         <p class="justify">
             <strong>OCTAVO:</strong> La presente contratación se efectuará sobre la base de honorarios, por una suma alzada de ${{number_format($ServiceRequest->gross_amount)}}.- ({{$ServiceRequest->gross_amount_description}}), impuesto incluido, en conformidad a lo dispuesto en el inciso segundo del Art. 2º del Decreto Nº 98 de 1991 del Ministerio de Hacienda y se cancelará en @livewire('service-request.monthly-quotes', ['serviceRequest' => $ServiceRequest]) se deberá acreditar contra presentación de certificado extendido por el Jefe del {{$ServiceRequest->responsabilityCenter->name}}, dependiente del
             @if($ServiceRequest->responsabilityCenter->establishment_id == 1)
-            Hospital Regional de Iquique,
+            Hospital General,
             @else
             Servicio de Salud Iquique,
             @endif
@@ -342,7 +342,7 @@
             del mes siguiente una vez que el establecimiento dé su conformidad a la prestación realizada y previa presentación de la boleta de honorario respectiva. El Servicio retendrá y pagará el impuesto correspondiente por los honorarios pactados.<br><br>
             <b>Asimismo, el prestador deberá entregar dentro de los primeros 5 días del mes siguiente el certificado de servicios prestados realizados, a la Subdirección de Gestión y Desarrollo de las Personas del
                 @if($ServiceRequest->responsabilityCenter->establishment_id == 1)
-                Hospital Dr. Ernesto Torres Galdames de Iquique,
+                Hospital Dr. General de Iquique,
                 @else
                 Servicio de salud Iquique,
                 @endif
@@ -360,7 +360,7 @@
             @endif
             será por la suma de ${{number_format($ServiceRequest->gross_amount)}}.- ({{$ServiceRequest->gross_amount_description}}), para efectos del pago
             @if($ServiceRequest->responsabilityCenter->establishment_id == 1)
-            Hospital Regional de Iquique,
+            Hospital General,
             @else
             Servicio de Salud Iquique,
             @endif
@@ -373,7 +373,7 @@
             del mes siguiente, y si este cae en día inhábil, se efectuará el día hábil más cercano una vez que el establecimiento dé su conformidad a la prestación realizada y previa presentación de la boleta de honorario respectiva. La entidad retendrá y pagará el impuesto correspondiente por los honorarios pactados.<br><br>
             <b>Asimismo, el prestador deberá entregar dentro de los primeros 5 días del mes siguiente el certificado de servicios prestados realizados, a la Subdirección de Gestión y Desarrollo de las Personas del
                 @if($ServiceRequest->responsabilityCenter->establishment_id == 1)
-                Hospital Dr. Ernesto Torres Galdames de Iquique,
+                Hospital Dr. General de Iquique,
                 @else
                 Servicio de salud Iquique,
                 @endif
@@ -497,7 +497,7 @@
             @elseif($ServiceRequest->programm_name == "SUBT.31")
             El gasto corresponde al ítem 31-02-001 SUBT.21 ( Consultorías) Honorario Suma Alzada.
             @elseif($ServiceRequest->programm_name == "OTROS PROGRAMAS HETG")
-            21-03-001-001-02 Honorarios a Suma Alzada del presupuesto del Hospital “Dr. Ernesto Torres Galdames” de Iquique. )
+            21-03-001-001-02 Honorarios a Suma Alzada del presupuesto del Hospital “Dr. General” de Iquique. )
             @elseif($ServiceRequest->programm_name == "33 MIL HORAS")
             21-03-001-001-06 Honorarios Suma Alzada “Programa Cierres de Brechas 33.000 horas” dispuestos por el Ministerio de Salud, Subtítulo 21.
             @endif
@@ -518,12 +518,12 @@
                 @if($ServiceRequest->responsabilityCenter->establishment_id == 1)
                 <strong>
                     <span class="uppercase">
-                        {{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->user->FullNameUpper}}
+                        {{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->user->FullNameUpper}}
                     </span>
                     <br>
-                    <span style="text-transform:uppercase">{{App\Rrhh\Authority::getAuthorityFromDate(84,now(),['manager'])->position}}</span>
+                    <span style="text-transform:uppercase">{{App\Rrhh\Authority::getAuthorityFromDate(1,now(),['manager'])->position->name}}</span>
                     <br>
-                    HOSPITAL DR ERNESTO TORRES GALDÁMEZ<br>
+                    HOSPITAL GENERAL<br>
                 </strong>
 
                 <br style="padding-bottom: 4px;">

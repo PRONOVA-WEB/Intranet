@@ -21,8 +21,8 @@
             </a>
         </li> --}}
         <div class="topbar-divider d-none d-sm-block"></div>
-
         <!-- Nav Item - User Information -->
+        @auth
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -64,7 +64,7 @@
 
             </div>
         </li>
-
+        @endauth
     </ul>
 
 </nav>

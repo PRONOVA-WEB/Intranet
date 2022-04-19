@@ -13,7 +13,7 @@ class UploadResolution extends Component
 
     public $resolutionFile;
     public $serviceRequest;
-    public $storage_path = '/ionline/service_request/resolutions/';
+    public $storage_path = '/service_request/resolutions/';
 
     public function save()
     {
@@ -22,21 +22,21 @@ class UploadResolution extends Component
         ]);
 
         $this->resolutionFile->storeAs(
-            $this->storage_path, 
+            $this->storage_path,
             $this->serviceRequest->id.'.pdf',
             'gcs'
         );
-        
+
         /* Para google storage agregar al final 'gcs'
-        
+
         $this->resolutionFile->storeAs(
-            $this->storage_path, 
+            $this->storage_path,
             $this->serviceRequest->id.'.pdf',
             'gcs'
         );
-        
+
         */
-        
+
 
         $this->serviceRequest->update(['has_resolution_file' => true]);
     }
@@ -48,7 +48,7 @@ class UploadResolution extends Component
 
     public function render()
     {
-        return view('livewire.service-request.upload-resolution', 
+        return view('livewire.service-request.upload-resolution',
             ['has_resolution_file' => $this->serviceRequest->has_resolution_file]);
     }
 }

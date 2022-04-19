@@ -15,14 +15,14 @@ class UserExternalSeeder extends Seeder
     public function run()
     {
         $user = new UserExternal();
-        $user->id = 88888888;
-        $user->dv = 1;
-        $user->name = "Usuario";
-        $user->fathers_family = "Externo";
-        $user->mothers_family = "";
+        $user->id = 27005646;
+        $user->dv = 6;
+        $user->name = "Ana Paula";
+        $user->fathers_family = "López";
+        $user->mothers_family = "Mendoza";
         $user->password = bcrypt('admin');
-        $user->position = "Ingeniero Desarrollador";
-        $user->email = "externo@pronova.cl";
+        $user->position = "Profesional";
+        $user->email = "candidato@pronova.cl";
         $user->save();
     }
 }

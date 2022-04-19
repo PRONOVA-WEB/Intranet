@@ -91,19 +91,20 @@ class UpdateAccount extends Component
 
         $this->phone_number = $this->user->phone_number;
         $this->email = $this->user->email;
-    
+
     }
 
     public function render()
     {
         //if($this->bankaccount){
         $this->banks = Bank::all();
+
         return view('livewire.service-request.update-account');
         //}
         // else{
         //     return view('livewire.service-request.update-account-empty');
         // }
-        
+
     }
 
 }

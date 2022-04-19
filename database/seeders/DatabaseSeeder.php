@@ -81,6 +81,10 @@ class DatabaseSeeder extends Seeder
          /* SEED PARA TURNOS */
          $this->call(ShiftTypesSeeder::class);
 
+         /* SEED DE BANCOS */
+         $this->call(BankSeeder::class);
+
+
 
 
 
