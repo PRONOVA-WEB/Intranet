@@ -38,66 +38,69 @@
         @php
             $i=0;
         @endphp
-        @foreach($availableDays as $aDay )
-            @php
-                $i++;
-            @endphp
-            @php
-                $dayFormated = \Carbon\Carbon::createFromFormat('Y-m-d', $aDay->day, 'Europe/London');
-            @endphp
+        @foreach($availableDays as $aDay)
+        @if(count($aDay->Solicitudes) > 0 && $aDay->Solicitudes->last()->status == 'confirmado')
 
-            @php
-
-                $dayWithCarbon = \Carbon\Carbon::createFromFormat('Y-m-d',  $aDay->day, 'Europe/London');
-            @endphp
-            <li class="list-group-item ">
-            <div class="row row-striped">
-                <div class="col-2 text-right">
-                    <h1 class="display-4"><span class="badge badge-secondary">{{ $dayWithCarbon->day }}</span></h1>
-                    <h2>{{ strtoupper ( substr ( $months [ $dayWithCarbon->month ], 0, 3 ) ) }} </h2>
-                </div>
-                <div class="col-10">
-                    <h3 class="text-uppercase"><strong>Jornada:
-
-                        @if ( substr( $aDay->working_day,0, 1) != "+" )
-
-                            {{$aDay->working_day }}- {{ $tiposJornada[ $aDay->working_day ] }}
-
-                        @elseif( substr( $aDay->working_day,0, 1) == "+" )
-
-                            {{$aDay->working_day}}
-
-                        @endif
-                    </strong></h3>
-
-                    <ul class="list-inline">
-
-                        <li class="list-inline-item"><i class="fas fa-calendar" aria-hidden="true"></i>  {{ $weekMap [ $dayWithCarbon->dayOfWeek ] }}</li>
-                        <li class="list-inline-item"><i class="fas fa-clock" aria-hidden="true"></i> {{ $timePerDay [ $aDay->working_day  ] [ "from" ]}} - {{ $timePerDay [ $aDay->working_day  ] [ "to" ]}} </li>
-                        <li class="list-inline-item"><i class="fa fa-location-arrow info" aria-hidden="true"></i> Hospital General</li>
-
-                    </ul>
-
-                    <b>ID:<small># {{$aDay->id }}</small></b><br>
-                    <b>Propietario</b>
-                    <p>{{$aDay->ShiftUser->user->runFormat()}} -  {{$aDay->ShiftUser->user->getFullNameAttribute()}} </p>
-                    <b>Comentario</b>
-                    <p>{{$aDay->commentary}}</p>
-                    @if($aDay->Solicitudes->last()->status != 'pendiente')
-                        <form method="post" action="{{ route('rrhh.shiftManag.availableShifts.applyfor') }}" >
-                            @csrf
-                            {{ method_field('post') }}
-                            <input type="hidden" name="idShiftUserDay" value="{{$aDay->id}}">
-                            <button class="btn btn-success">Solicitar</button>
-                            <small> <i class="fa fa-user"></i> {{ count( $aDay->Solicitudes ) }} Solicitudes.</small>
-                        </form>
-                    @else
-                    <b>Solicitud pendiente de aprobación</b>
-                    @endif
-                </div>
+        @else
+        @php
+        $i++;
+        @endphp
+        @php
+            $dayFormated = \Carbon\Carbon::createFromFormat('Y-m-d', $aDay->day, 'Europe/London');
+        @endphp
+        @php
+            $dayWithCarbon = \Carbon\Carbon::createFromFormat('Y-m-d',  $aDay->day, 'Europe/London');
+        @endphp
+        <li class="list-group-item ">
+        <div class="row row-striped">
+            <div class="col-2 text-right">
+                <h1 class="display-4"><span class="badge badge-secondary">{{ $dayWithCarbon->day }}</span></h1>
+                <h2>{{ strtoupper ( substr ( $months [ $dayWithCarbon->month ], 0, 3 ) ) }} </h2>
             </div>
-            </li>
+            <div class="col-10">
+                <h3 class="text-uppercase"><strong>Jornada:
 
+                    @if ( substr( $aDay->working_day,0, 1) != "+" )
+
+                        {{$aDay->working_day }}- {{ $tiposJornada[ $aDay->working_day ] }}
+
+                    @elseif( substr( $aDay->working_day,0, 1) == "+" )
+
+                        {{$aDay->working_day}}
+
+                    @endif
+                </strong></h3>
+
+                <ul class="list-inline">
+
+                    <li class="list-inline-item"><i class="fas fa-calendar" aria-hidden="true"></i>  {{ $weekMap [ $dayWithCarbon->dayOfWeek ] }}</li>
+                    <li class="list-inline-item"><i class="fas fa-clock" aria-hidden="true"></i> {{ $timePerDay [ $aDay->working_day  ] [ "from" ]}} - {{ $timePerDay [ $aDay->working_day  ] [ "to" ]}} </li>
+                    <li class="list-inline-item"><i class="fa fa-location-arrow info" aria-hidden="true"></i> Hospital General</li>
+
+                </ul>
+
+                <b>ID:<small># {{$aDay->id }}</small></b><br>
+                <b>Propietario</b>
+                <p>{{$aDay->ShiftUser->user->runFormat()}} -  {{$aDay->ShiftUser->user->getFullNameAttribute()}} </p>
+                <b>Comentario</b>
+                <p>{{$aDay->commentary}}</p>
+
+                @if(count($aDay->Solicitudes) > 0 && $aDay->Solicitudes->last()->status == 'pendiente')
+                <b>Solicitud pendiente de aprobación</b>
+                @else
+                <form method="post" action="{{ route('rrhh.shiftManag.availableShifts.applyfor') }}" >
+                    @csrf
+                    {{ method_field('post') }}
+                    <input type="hidden" name="idShiftUserDay" value="{{$aDay->id}}">
+                    <button class="btn btn-success">Solicitar</button>
+                    <small> <i class="fa fa-user"></i> {{ count( $aDay->Solicitudes ) }} Solicitudes.</small>
+                </form>
+                @endif
+
+            </div>
+        </div>
+        </li>
+        @endif
         @endforeach
         @if( $i == 0 &&   sizeof (  $availableDays ) > 0 )
             <div class="alert alert-primary" role="alert">

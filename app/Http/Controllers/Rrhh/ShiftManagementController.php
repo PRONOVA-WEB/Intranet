@@ -1359,13 +1359,13 @@ class ShiftManagementController extends Controller
         //aora
         $availableDays = ShiftUserDay::where('day', '>=', $actuallyYear . "-" . $actuallyMonth . "-01")
             ->where('day', '<=', $actuallyYear . "-" . $actuallyMonth . "-" . $days)
-            ->whereHas('Solicitudes', function ($q) {
-                $q->where('status','pendiente')->orwhere('status','rechazado');
-            })
-            // ->whereHas("shiftUserDayLog",  function ($q) use ($dummyVar) {
-            // // Busco todos los dias que esten en estado 4 que cambio turno con,
-            //     $q->where('change_type', 7); // este mismo cambiar  el change type y agregarle una "nuevo salto de linea" para escribir un nuevo mensaje qe ya fue confirmado
+            // ->whereHas('Solicitudes', function ($q) {
+            //     $q->where('status','pendiente')->orwhere('status','rechazado');
             // })
+            ->whereHas("shiftUserDayLog",  function ($q) use ($dummyVar) {
+            // Busco todos los dias que esten en estado 4 que cambio turno con,
+                $q->where('change_type', 7); // este mismo cambiar  el change type y agregarle una "nuevo salto de linea" para escribir un nuevo mensaje qe ya fue confirmado
+            })
             ->whereHas("ShiftUser",  function ($q) use ($actuallyOrgUnit) {
                 $q->where('organizational_units_id', $actuallyOrgUnit->id) // Para filtrar solo los dias de la unidad organizacional del usuario
                 ->where('user_id','!=',Auth()->user()->id);
