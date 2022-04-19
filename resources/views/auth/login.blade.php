@@ -177,10 +177,10 @@
             $("#local_login").toggleClass('d-none');
             $("#login_botones").toggleClass('offset-lg-3');
         });
-        // $('.identificacion').mask('00000000-A', {
-        //     onKeyPress: function (value, event) {
-        //         event.currentTarget.value = value.toUpperCase();
-        // }});
+        $('.identificacion').mask('00000000-A', {
+            onKeyPress: function (value, event) {
+                event.currentTarget.value = value.toUpperCase();
+        }});
     </script>
 </body>
 

@@ -25,7 +25,7 @@
         Menú
     </div>
     <!-- Nav Item -  Estadísticas -->
-    <li class="nav-item {{ active(['indicators.*']) }}">
+    {{-- <li class="nav-item {{ active(['indicators.*']) }}">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEstadisticas"
             aria-expanded="true" aria-controls="collapseEstadisticas">
             <i class="fas fa-chart-line"></i>
@@ -36,7 +36,7 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ route('indicators.index') }}">
                     <i class="fas fa-desktop fa-fw"></i> Indicadores - REM
-                </a>
+                </a> --}}
 
                 {{-- <a class="collapse-item" href="{{ route('indicators.population') }}">
                     <i class="fas fa-globe-americas"></i> Dashboard de población
@@ -52,9 +52,9 @@
                     </a>
                 @endcan --}}
 
-            </div>
+            {{-- </div>
         </div>
-    </li>
+    </li> --}}
     <!-- Nav Item - Documentos -->
     @canany(['Documents: create', 'Documents: edit', 'Documents: add number', 'Documents: dev','Documents: signatures and distribution'])
     <li class="nav-item {{ active(['documents.*']) }}">
