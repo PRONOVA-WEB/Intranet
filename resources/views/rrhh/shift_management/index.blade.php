@@ -216,7 +216,7 @@
                             @endphp
                             <th
                                 style="color:{{ $dateFiltered->isWeekend()? 'red': (sizeof($holidays->where('date', $actuallyYear . '-' . $actuallyMonth . '-' . $i)) > 0? 'red': 'white') }}">
-                                <p style="font-size: 10px">{{ $i }}</p>
+                                <p style="font-size: 10px">{{ $i }}<br> {!! nl2br(strtoupper(substr($dateFiltered->isoFormat('dddd'),0,1))) !!}</p>
                             </th>
                         @endfor
                         <th>
@@ -243,7 +243,10 @@
     <script src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap4.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
     <script src="https://cdn.datatables.net/fixedheader/3.2.2/js/dataTables.fixedHeader.min.js"></script>
 
     <script>
@@ -254,14 +257,51 @@
                 "paging": false,
                 fixedHeader: true,
                 dom: 'Bfrtip',
-                buttons: [{
+                buttons: [
+                // 'print',
+                {
+                    extend: 'pdfHtml5',
+                    orientation: 'landscape',
+                    pageSize: 'LEGAL',
+                    exportOptions: {
+						columns: ':visible',
+						search: 'applied',
+						order: 'applied'
+					},
+                    text: '<i class="fa fa-file-pdf"></i>',
+                    className: 'btn btn-outline-success float-right',
+                    title: 'Gestión de turnos',
+                    messageTop: '{{ $actuallyOrgUnit->name }} - {{ $months[$actuallyMonth] }} {{ $actuallyYear }} - {{ $actuallyShift->name }} - {{ $position }}',
+                     init: function(api, node, config) {
+                        $(node).removeClass('dt-button');
+                    },
+                    customize: function (doc) {
+						// Change dataTable layout (Table styling)
+						// To use predefined layouts uncomment the line below and comment the custom lines below
+						//doc.content[0].layout = 'lightHorizontalLines'; // noBorders , headerLineOnly
+						var objLayout = {};
+						objLayout['hLineWidth'] = function(i) { return .5; };
+						objLayout['vLineWidth'] = function(i) { return .5; };
+						objLayout['hLineColor'] = function(i) { return '#333'; };
+						objLayout['vLineColor'] = function(i) { return '#333'; };
+						objLayout['paddingLeft'] = function(i) { return 4; };
+						objLayout['paddingRight'] = function(i) { return 4; };
+						doc.content[0].layout = objLayout;
+				    }
+                },
+                {
                     extend: 'excel',
                     text: '<i class="fa fa-file-excel"></i>',
                     className: 'btn btn-outline-success float-right',
+                    exportOptions: {
+						columns: ':visible',
+						search: 'applied',
+						order: 'applied'
+					},
                     messageTop: '{{ $actuallyOrgUnit->name }} - {{ $months[$actuallyMonth] }} {{ $actuallyYear }} - {{ $actuallyShift->name }} - {{ $position }}',
                     init: function(api, node, config) {
                         $(node).removeClass('dt-button');
-                    }
+                    },
                 }],
                 language: {
                     "decimal": "",
@@ -287,5 +327,13 @@
             });
 
         });
+        $('.buttonId').on('click', function () {
+            displayTheData();
+        })
+        function displayTheData() {
+            $(document).ready(function () {
+                $("#datatable").html($("#datatable").html());
+            });
+        }
     </script>
 @endsection

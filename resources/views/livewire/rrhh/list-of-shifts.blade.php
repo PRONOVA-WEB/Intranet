@@ -48,7 +48,7 @@ figure:focus .menu {
             <tr>
                 <td class="bg-gray-300">
                     {{$sis->user->name}} {{$sis->user->fathers_family}} <br>{{ $sis->user->runFormat()}}
-                    <small>
+                    {{-- <small>
                         @if( $sis->esSuplencia() == "Suplente" )
                             {{$sis->esSuplencia()}}
                         @else
@@ -63,7 +63,7 @@ figure:focus .menu {
                             <input name="id" hidden value="{{$sis->id}}">
                         </form>
                         @endif
-                    </small>
+                    </small> --}}
                 </td>
                 @for($j = 1; $j <= $days; $j++)
                     @php
