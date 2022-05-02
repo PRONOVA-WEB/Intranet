@@ -15,7 +15,6 @@ class FiscalSeeder extends Seeder
      */
     public function run()
     {
-        $fiscal = Fiscal::Create(['user_id'=>32323232]);
-        $fiscal = Fiscal::Create(['user_id'=>98989898]);
+        $fiscal = Fiscal::Create(['user_id'=>12345678]);
     }
 }

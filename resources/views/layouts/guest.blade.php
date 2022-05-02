@@ -83,13 +83,13 @@
                         </span>
                     </a>
                 </li>
-                <li class="nav-item {{ active('replacement_staff.*') }}">
+                {{-- <li class="nav-item {{ active('replacement_staff.*') }}">
                     <a class="nav-link" href="{{ route('replacement_staff.create') }}">
                         <i class="fa fa-address-book" aria-hidden="true"></i>
                         <span>Staff de Reemplazo
                         </span>
                     </a>
-                </li>
+                </li> --}}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('logout') }}">
                         <i class="fa fa-window-close" aria-hidden="true"></i>

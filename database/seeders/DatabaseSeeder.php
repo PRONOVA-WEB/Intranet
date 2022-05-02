@@ -35,9 +35,9 @@ class DatabaseSeeder extends Seeder
         $this->call(AuthoritySeeder::class);
 
         /* Honorarios Service Request */
-        $this->call(ServiceRequestSeeder::class);
-        $this->call(FulfillmentSeeder::class);
-        $this->call(SignatureFlowSeeder::class);
+        //$this->call(ServiceRequestSeeder::class);
+        //$this->call(FulfillmentSeeder::class);
+        //$this->call(SignatureFlowSeeder::class);
         $this->call(ProfessionalSeeder::class);
 
         /* SEED PARA MANTENEDORES DE REPLACEMENT STAFF */

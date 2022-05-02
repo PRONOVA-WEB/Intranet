@@ -25,7 +25,7 @@ class ShiftUserSeeder extends Seeder
                     'asigned_by' => '12345678',
                     'user_id' => $user->id,
                     'shift_types_id' => rand(1,4),
-                    'organizational_units_id'=> '16'
+                    'organizational_units_id'=> '2'
                ]);
                $nUser = User::find($ShiftUser->user_id);
                $s = 0;

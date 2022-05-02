@@ -211,5 +211,8 @@ class RoleAndPermissionSeeder extends Seeder
 
         $role = Role::create(['name' => 'Replacement Staff: user rys']);
 
+        $role = Role::create(['name' => 'RRHH: shift admin']);
+        $role->givePermissionTo(['Shift Management: view','OrganizationalUnits: create','OrganizationalUnits: edit','Users: assign permission','Users: create','Users: edit']);
+
     }
 }
