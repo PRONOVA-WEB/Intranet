@@ -14,7 +14,6 @@ class EstablishmentSeeder extends Seeder
      */
     public function run()
     {
-        Establishment::Create(['name'=>'Servicio de Salud','type'=>'Hospital','deis'=>'002','commune_id' => 1]);
-        Establishment::Create(['name'=>'Hospital Independiente','type'=>'Hospital','deis'=>'002','commune_id' => 1]);
+        Establishment::Create(['name'=>'Hospital El Pino','type'=>'Hospital','deis'=>'002','commune_id' => 1]);
     }
 }

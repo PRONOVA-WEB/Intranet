@@ -35,10 +35,10 @@ class UserSeeder extends Seeder
         $user = new User();
         $user->id = 98765432;
         $user->dv = 1;
-        $user->name = "Juan";
-        $user->fathers_family = "Soto";
+        $user->name = "Marcela";
+        $user->fathers_family = "Escudero";
         $user->mothers_family = "";
-        $user->email = "director@pronova.cl";
+        $user->email = "marcela.escudero@redsalud.gob.cl";
         $user->password = bcrypt('admin');
         $user->position = "Directivo";
         $user->organizationalUnit()->associate(OrganizationalUnit::find(2));
