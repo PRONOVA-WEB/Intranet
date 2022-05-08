@@ -25,7 +25,7 @@
         Menú
     </div>
     <!-- Nav Item -  Estadísticas -->
-    <li class="nav-item {{ active(['indicators.*']) }}">
+    {{-- <li class="nav-item {{ active(['indicators.*']) }}">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEstadisticas"
             aria-expanded="true" aria-controls="collapseEstadisticas">
             <i class="fas fa-chart-line"></i>
@@ -36,7 +36,7 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ route('indicators.index') }}">
                     <i class="fas fa-desktop fa-fw"></i> Indicadores - REM
-                </a>
+                </a> --}}
 
                 {{-- <a class="collapse-item" href="{{ route('indicators.population') }}">
                     <i class="fas fa-globe-americas"></i> Dashboard de población
@@ -51,10 +51,10 @@
                         <i class="fas fa-file-alt"></i> Documentos Comunales
                     </a>
                 @endcan --}}
-
+{{--
             </div>
         </div>
-    </li>
+    </li> --}}
     <!-- Nav Item - Documentos -->
     @canany(['Documents: create', 'Documents: edit', 'Documents: add number', 'Documents: dev','Documents: signatures and distribution'])
     <li class="nav-item {{ active(['documents.*']) }}">
@@ -183,13 +183,13 @@
                         </a>
                     @endcan
 
-                    @canany(['Users: service requests'])
+                    {{-- @canany(['Users: service requests'])
                         <a class="collapse-item" href="{{ route('rrhh.users.service_requests.index') }}">
                             <i class="fas fa-user fa-fw"></i> Usuarios -<br> Contrat. de Servicios
                         </a>
-                    @endcan
+                    @endcan --}}
 
-                    @if (Auth::user()->hasRole('Replacement Staff: admin'))
+                    {{-- @if (Auth::user()->hasRole('Replacement Staff: admin'))
                         <a class="collapse-item" href="{{ route('replacement_staff.request.index') }}">
                             <i class="far fa-id-card"></i> Solicitudes de<br> Contratación
                         </a>
@@ -199,9 +199,9 @@
                         <a class="collapse-item" href="{{ route('replacement_staff.request.assign_index') }}">
                             <i class="far fa-id-card"></i> Solicitudes de<br> Contratación
                         </a>
-                    @endif
+                    @endif --}}
 
-                    @if (Auth::user()->hasRole('Replacement Staff: user') || App\Rrhh\Authority::getAmIAuthorityFromOu(Carbon\Carbon::now(), 'manager', Auth::user()->id))
+                    {{-- @if (Auth::user()->hasRole('Replacement Staff: user') || App\Rrhh\Authority::getAmIAuthorityFromOu(Carbon\Carbon::now(), 'manager', Auth::user()->id))
                         <a class="collapse-item" href="{{ route('replacement_staff.request.own_index') }}">
                             <i class="far fa-id-card"></i> Solicitudes de<br> Contratación
                             @if (App\Models\ReplacementStaff\RequestReplacementStaff::getPendingRequestToSign() > 0)
@@ -210,13 +210,13 @@
                                 </span>
                             @endif
                         </a>
-                    @endif
+                    @endif --}}
 
-                    @if (Auth::user()->hasRole('Replacement Staff: personal'))
+                    {{-- @if (Auth::user()->hasRole('Replacement Staff: personal'))
                         <a class="collapse-item" href="{{ route('replacement_staff.request.personal_index') }}">
                             <i class="far fa-id-card"></i> Solicitudes de Contratación
                         </a>
-                    @endif
+                    @endif --}}
                 </div>
             </div>
         </li>
