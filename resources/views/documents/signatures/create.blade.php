@@ -105,7 +105,7 @@
             </fieldset>
         </div>
 
-        @if(isset($signature) && isset($signature->type))
+        {{-- @if(isset($signature) && isset($signature->type))
             <hr>
             @if($signature->type == 'visators')
                 @livewire('signatures.visators', ['signature' => $signature])
@@ -119,7 +119,43 @@
             <hr>
             @livewire('signatures.signer')
             <hr>
+        @endif --}}
+
+        <hr>
+        @if(isset($signature) && isset($signature->type))
+            @if($signature->type == 'visators')
+                @livewire('signatures.visators', ['signature' => $signature])
+            @endif
+        @else
+            @livewire('signatures.visators')
         @endif
+        <hr>
+
+        <!-- <div class="form-row">
+            <fieldset class="form-group col-lg">
+                <label for="for_url"></label>
+                <input type="radio" id="firmante" name="signature_type" value="firmante" checked>
+                <label for="firmante">Firmantes</label>
+                <input type="radio" id="flujo" name="signature_type" value="flujo">
+                <label for="flujo">Flujo de firmas</label>
+            </fieldset>
+        </div> -->
+        <input type="radio" id="firmante" name="tipo_firma" value="firmante" checked>
+        <label for="firmante">Firmante</label>
+        <input type="radio" id="flujo_firmas" name="tipo_firma" value="flujo_firmas">
+        <label for="flujo_firmas">Flujo de firmas</label><br>
+        @if(isset($signature) && isset($signature->type))
+            @if($signature->type == 'visators')
+
+            @else
+                <div id="div_firmante">@livewire('signatures.signer', ['signaturesFlowSigner' => $signature->signaturesFlowSigner])</div>
+                <div id="div_flujo" style="display: none">@livewire('documents.custom-signature-flows',['customSignatureFlows'=>$customSignatureFlows])</div>
+            @endif
+        @else
+            <div id="div_firmante">@livewire('signatures.signer')</div>
+            <div id="div_flujo" style="display: none">@livewire('documents.custom-signature-flows',['customSignatureFlows'=>$customSignatureFlows])</div>
+        @endif
+        <hr>
 
         @livewire('documents.add-email-text-area-list', ['document'=>$document ?? '','signature'=>$signature ?? ''])
 
@@ -137,6 +173,32 @@
 @section('custom_js')
 
     <script type="text/javascript">
+
+        $(document).ready(function(){ 
+            $("#firmante").change(function() {
+                $("#div_firmante").show();
+                $("#div_flujo").hide();
+                $("#for_ou_id_signer").prop('required',true);
+                $("#customSignatureFlow_id").prop('required',false);
+            }); 
+            $("#flujo_firmas").change(function() {
+                $("#div_firmante").hide();
+                $("#div_flujo").show();
+                $("#for_ou_id_signer").prop('required',false);
+                $("#customSignatureFlow_id").prop('required',true);
+            }); 
+        });
+
+        $(document).ready(function() {
+            $("input[name$='cars']").click(function() {
+                alert("");
+                var test = $(this).val();
+
+                $("div.desc").hide();
+                $("#Cars" + test).show();
+            });
+        });
+
         $( document ).ready(function() {
             $('#for_ou_id_signer').val('');
         });

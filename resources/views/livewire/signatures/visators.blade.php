@@ -97,14 +97,13 @@
         </div>
     @endforeach
 </div>
-@section('custom_js')
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            Livewire.hook('message.processed', (message, component) => {
-                if (message.updateQueue[0].method === 'add') {
-                    $('.selectpicker').selectpicker('refresh');
-                }
-            })
-        });
-    </script>
-@endsection
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        Livewire.hook('message.processed', (message, component) => {
+            if (message.updateQueue[0].method === 'add') {
+                $('.selectpicker').selectpicker('refresh');
+            }
+        })
+    });
+</script>
