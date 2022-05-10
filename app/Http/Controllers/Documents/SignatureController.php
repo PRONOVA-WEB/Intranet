@@ -220,7 +220,7 @@ class SignatureController extends Controller
                     $signaturesFlow->custom_y_axis = $request->custom_y_axis;
                     $signaturesFlow->save();
                 }
-    
+
                 if ($request->has('ou_id_visator') && count((array)$request->ou_id_visator) > 0 ) {
                     foreach ($request->ou_id_visator as $key => $ou_id_visator) {
                         $signaturesFlow = new SignaturesFlow();
@@ -236,6 +236,7 @@ class SignatureController extends Controller
             }else{
 
                 $signature->visatorAsSignature = true;
+                $signature->endorse_type = 'Visación en cadena de responsabilidad';
                 $signature->save();
 
                 $customSignatureFlow = CustomSignatureFlow::find($request->customSignatureFlow_id);
@@ -247,14 +248,14 @@ class SignatureController extends Controller
                     }else{
                         $signaturesFlow->type = 'visador';
                     }
-                    
+
                     $signaturesFlow->ou_id = $signatory->signator->organizationalUnit->id;
                     $signaturesFlow->user_id = $signatory->signator_id;
                     $signaturesFlow->sign_position = $key + 1;
                     $signaturesFlow->save();
                 }
             }
-            
+
 
             if ($request->has('document_id')) {
                 $document = Document::find($request->document_id);

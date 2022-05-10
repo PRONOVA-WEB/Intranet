@@ -113,10 +113,10 @@
         <br>
         @if(isset($signature) && isset($signature->type))
             @if($signature->type == 'visators')
-            <div id="div_visators">@livewire('signatures.visators', ['signature' => $signature])</div>
+            @livewire('signatures.visators', ['signature' => $signature])
             @endif
         @else
-        <div id="div_visators">@livewire('signatures.visators')</div>
+            @livewire('signatures.visators')
         @endif
         <hr>
 
@@ -151,16 +151,19 @@
 
         $(document).ready(function(){
             $("#firmante").change(function() {
-                $("#div_firmante,#div_visators").show();
+                $("#div_firmante").show();
                 $("#div_flujo").hide();
                 $("#for_ou_id_signer").prop('required',true);
                 $("#customSignatureFlow_id").prop('required',false);
+
             });
             $("#flujo_firmas").change(function() {
-                $("#div_firmante,#div_visators").hide();
+                $("#div_firmante").hide();
                 $("#div_flujo").show();
                 $("#for_ou_id_signer").prop('required',false);
                 $("#customSignatureFlow_id").prop('required',true);
+                $("#addVisatorBtn").addClass('d-none');
+                $("[name='endorse_type']").val('Visación en cadena de responsabilidad').prop('disabled',true);
             });
             $('#for_ou_id_signer').val('');
         });
