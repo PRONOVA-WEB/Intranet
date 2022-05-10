@@ -67,6 +67,9 @@ use App\Http\Controllers\Documents\Summaries\SummaryEventController;
 use App\Http\Controllers\Documents\Summaries\SummaryStatusController;
 use App\Http\Controllers\Documents\Summaries\FiscalController;
 
+use App\Http\Controllers\Documents\CustomSignatureFlows\CustomSignatureFlowController;
+use App\Http\Controllers\Documents\CustomSignatureFlows\CustomSignatureFlowSignatoryController;
+
 use App\Http\Controllers\Parameters\ProfessionController;
 use App\Http\Controllers\Pharmacies\PurchaseController;
 use App\Http\Controllers\Pharmacies\PharmacyController;
@@ -988,6 +991,23 @@ Route::prefix('documents')->as('documents.')->middleware('auth')->group(function
         Route::delete('{summaryStatus}/destroy', [SummaryStatusController::class, 'destroy'])->name('destroy');
       });
 
+    });
+
+    Route::prefix('custom_signature_flows')->as('custom_signature_flows.')->group(function () {
+        Route::get('/', [CustomSignatureFlowController::class, 'index'])->name('index');
+        Route::get('/create', [CustomSignatureFlowController::class, 'create'])->name('create');
+        Route::post('/store', [CustomSignatureFlowController::class, 'store'])->name('store');
+        Route::get('/{customSignatureFlow}/edit', [CustomSignatureFlowController::class, 'edit'])->name('edit');
+        Route::put('/{customSignatureFlow}/update', [CustomSignatureFlowController::class, 'update'])->name('update');
+        Route::delete('{customSignatureFlow}/destroy', [CustomSignatureFlowController::class, 'destroy'])->name('destroy');
+
+        Route::prefix('signatories')->as('signatories.')->group(function () {
+            Route::get('/{customSignatureFlow}/create', [CustomSignatureFlowSignatoryController::class, 'create'])->name('create');
+            Route::post('/store', [CustomSignatureFlowSignatoryController::class, 'store'])->name('store');
+            Route::get('{customSignatureFlowSignatory}/destroy', [CustomSignatureFlowSignatoryController::class, 'destroy'])->name('destroy');
+            Route::get('{customSignatureFlowSignatory}/move_up', [CustomSignatureFlowSignatoryController::class, 'move_up'])->name('move_up');
+            Route::get('{customSignatureFlowSignatory}/move_down', [CustomSignatureFlowSignatoryController::class, 'move_down'])->name('move_down');
+        });
     });
     // Route::resource('summaries', 'Documents\Summaries\SummaryController');
 

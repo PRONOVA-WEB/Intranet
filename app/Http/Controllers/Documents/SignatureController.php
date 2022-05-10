@@ -33,6 +33,8 @@ use App\Documents\Parte;
 use App\Documents\ParteFile;
 use Carbon\Carbon;
 use App\Models\Parameters\DocTemplate;
+use App\Models\Documents\CustomSignatureFlows\CustomSignatureFlow;
+
 class SignatureController extends Controller
 {
     /**
@@ -135,7 +137,8 @@ class SignatureController extends Controller
     public function create($xAxis = null, $yAxis = null)
     {
         $docTypes = DocTemplate::active()->pluck('type');
-        return view('documents.signatures.create', compact('xAxis', 'yAxis','docTypes'));
+        $customSignatureFlows = CustomSignatureFlow::where('ou_id',Auth::user()->organizational_unit_id)->get();
+        return view('documents.signatures.create', compact('xAxis', 'yAxis','docTypes','customSignatureFlows'));
     }
 
     /**
@@ -148,14 +151,14 @@ class SignatureController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'user_signer' => 'bail|required',
+            // 'user_signer' => 'bail|required',
             'document'     => 'required_if:file_base_64,==,null|max:5000|mimes:pdf',
             'request_date' => 'required',
             'document_type'=> 'required_if:file_base_64,==,null',
             'subject'      => 'required',
             'description'  => 'required'
         ],[
-            'user_signer.required' => 'Debe asignar un firmante.',
+            // 'user_signer.required' => 'Debe asignar un firmante.',
             'document.mimes' => 'El documento a distribuir debe ser tipo .PDF',
             'document.size'  => 'El documento a distribuir no debe exeder los 5 MB',
         ]);
@@ -204,28 +207,54 @@ class SignatureController extends Controller
                 }
             }
 
-            if ($request->ou_id_signer != null) {
-                $signaturesFlow = new SignaturesFlow();
-                $signaturesFlow->signatures_file_id = $signaturesFileDocumentId;
-                $signaturesFlow->type = 'firmante';
-                $signaturesFlow->ou_id = $request->ou_id_signer;
-                $signaturesFlow->user_id = $request->user_signer;
-                $signaturesFlow->custom_x_axis = $request->custom_x_axis;
-                $signaturesFlow->custom_y_axis = $request->custom_y_axis;
-                $signaturesFlow->save();
-            }
+            //erg: se agrega cuando sea firmante o cuando sea a través de flujo de firmas
+            if($request->tipo_firma == "firmante"){
 
-            if ($request->has('ou_id_visator') && count((array)$request->ou_id_visator) > 0 ) {
-                foreach ($request->ou_id_visator as $key => $ou_id_visator) {
+                if ($request->ou_id_signer != null) {
                     $signaturesFlow = new SignaturesFlow();
                     $signaturesFlow->signatures_file_id = $signaturesFileDocumentId;
-                    $signaturesFlow->type = 'visador';
-                    $signaturesFlow->ou_id = $ou_id_visator;
-                    $signaturesFlow->user_id = $request->user_visator[$key];
+                    $signaturesFlow->type = 'firmante';
+                    $signaturesFlow->ou_id = $request->ou_id_signer;
+                    $signaturesFlow->user_id = $request->user_signer;
+                    $signaturesFlow->custom_x_axis = $request->custom_x_axis;
+                    $signaturesFlow->custom_y_axis = $request->custom_y_axis;
+                    $signaturesFlow->save();
+                }
+    
+                if ($request->has('ou_id_visator') && count((array)$request->ou_id_visator) > 0 ) {
+                    foreach ($request->ou_id_visator as $key => $ou_id_visator) {
+                        $signaturesFlow = new SignaturesFlow();
+                        $signaturesFlow->signatures_file_id = $signaturesFileDocumentId;
+                        $signaturesFlow->type = 'visador';
+                        $signaturesFlow->ou_id = $ou_id_visator;
+                        $signaturesFlow->user_id = $request->user_visator[$key];
+                        $signaturesFlow->sign_position = $key + 1;
+                        $signaturesFlow->save();
+                    }
+                }
+
+            }else{
+
+                $signature->visatorAsSignature = true;
+                $signature->save();
+
+                $customSignatureFlow = CustomSignatureFlow::find($request->customSignatureFlow_id);
+                foreach($customSignatureFlow->signatories->sortBy('order') as $key => $signatory){
+                    $signaturesFlow = new SignaturesFlow();
+                    $signaturesFlow->signatures_file_id = $signaturesFileDocumentId;
+                    if($signatory->order == 1){
+                        $signaturesFlow->type = 'firmante';
+                    }else{
+                        $signaturesFlow->type = 'visador';
+                    }
+                    
+                    $signaturesFlow->ou_id = $signatory->signator->organizationalUnit->id;
+                    $signaturesFlow->user_id = $signatory->signator_id;
                     $signaturesFlow->sign_position = $key + 1;
                     $signaturesFlow->save();
                 }
             }
+            
 
             if ($request->has('document_id')) {
                 $document = Document::find($request->document_id);

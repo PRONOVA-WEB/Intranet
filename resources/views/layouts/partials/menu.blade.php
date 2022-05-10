@@ -360,6 +360,8 @@
                         <i class="fa fa-file"></i> Plantillas<br> de Documentos</a>
                     <a class="collapse-item" href="{{ route('parameters.holidays.index') }}">
                         <i class="fas fa-calendar-times"></i> Feriados</a>
+                    <a class="collapse-item" href="{{ route('documents.custom_signature_flows.index') }}">
+                        <i class="fas fa-external-link-alt"></i> Flujo de Firmas</a>
                 </div>
             </div>
         </li>
