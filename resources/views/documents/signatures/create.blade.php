@@ -149,23 +149,21 @@
 
     <script type="text/javascript">
 
-        $(document).ready(function(){
-            $("#firmante").change(function() {
-                $("#div_firmante").show();
-                $("#div_flujo").hide();
-                $("#for_ou_id_signer").prop('required',true);
-                $("#customSignatureFlow_id").prop('required',false);
-
-            });
-            $("#flujo_firmas").change(function() {
-                $("#div_firmante").hide();
-                $("#div_flujo").show();
-                $("#for_ou_id_signer").prop('required',false);
-                $("#customSignatureFlow_id").prop('required',true);
-                $("#addVisatorBtn").addClass('d-none');
-                $("[name='endorse_type']").val('Visación en cadena de responsabilidad').prop('disabled',true);
-            });
-            $('#for_ou_id_signer').val('');
+$("#firmante").change(function() {
+            $("#div_firmante").show();
+            $("#div_flujo").hide();
+            $("#for_ou_id_signer").prop('required',true);
+            $("#customSignatureFlow_id").prop('required',false);
+            $("#addVisatorBtn").removeClass('d-none');
+            $("[name='endorse_type']").val('Visación en cadena de responsabilidad').prop('disabled',false);
+        });
+        $("#flujo_firmas").change(function() {
+            $("#div_firmante").hide();
+            $("#div_flujo").show();
+            $("#for_ou_id_signer").prop('required',false);
+            $("#customSignatureFlow_id").prop('required',true);
+            $("#addVisatorBtn").addClass('d-none');
+            $("[name='endorse_type']").val('Visación en cadena de responsabilidad').prop('disabled',true);
         });
         function disableButton(form) {
             form.submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Creando...';
