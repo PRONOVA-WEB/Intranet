@@ -2,24 +2,25 @@
 
 namespace App\Http\Controllers\Documents;
 
-use App\Documents\Document;
-use App\Models\Documents\Signature;
-use App\Models\Documents\SignaturesFile;
+use App\User;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
+use App\Mail\SendDocument;
+use App\Documents\Document;
 use Illuminate\Http\Request;
+use App\Documents\Correlative;
+use App\Rrhh\OrganizationalUnit;
+use App\Models\Documents\Signature;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
-use App\Mail\SendDocument;
 use Illuminate\Support\Facades\Mail;
-use App\Rrhh\OrganizationalUnit;
-use App\User;
-use App\Documents\Correlative;
-use App\Models\Documents\DocUrlGenerate;
 use App\Models\Parameters\DocTemplate;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use App\Models\Documents\DocUrlGenerate;
+use App\Models\Documents\SignaturesFile;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Documents\CustomSignatureFlows\CustomSignatureFlow;
 
 class DocumentController extends Controller
 {
@@ -339,8 +340,9 @@ class DocumentController extends Controller
         $signaturesFile->md5_file = md5($documentFile->output());
 
         $signature->signaturesFiles->add($signaturesFile);
+        $customSignatureFlows = CustomSignatureFlow::where('ou_id',Auth::user()->organizational_unit_id)->get();
 
-        return view('documents.signatures.create', compact('signature', 'document'));
+        return view('documents.signatures.create', compact('signature', 'document','customSignatureFlows'));
     }
 
     public function signedDocumentPdf($id)

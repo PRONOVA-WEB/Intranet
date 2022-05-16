@@ -99,27 +99,39 @@
 
         <div class="form-row">
             <fieldset class="form-group col-lg-12">
-                <label for="for_url">Link o Url asociado</label>
+                <label for="for_url">Link o URL asociado</label>
                 <input type="url" class="form-control" id="for_url" name="url"
                        value="{{isset($signature) ? $signature->url : ''}}" >
             </fieldset>
         </div>
 
+        <h6>Gestión de Firmas</h6>
+        <input type="radio" id="firmante" name="tipo_firma" value="firmante" checked>
+        <label for="firmante">Firmante</label>
+        <input type="radio" id="flujo_firmas" name="tipo_firma" value="flujo_firmas">
+        <label for="flujo_firmas">Flujo de firmas</label><br>
+        <br>
         @if(isset($signature) && isset($signature->type))
-            <hr>
             @if($signature->type == 'visators')
-                @livewire('signatures.visators', ['signature' => $signature])
-            @else
-                @livewire('signatures.signer', ['signaturesFlowSigner' => $signature->signaturesFlowSigner])
+            @livewire('signatures.visators', ['signature' => $signature])
             @endif
-            <hr>
         @else
-            <hr>
             @livewire('signatures.visators')
-            <hr>
-            @livewire('signatures.signer')
-            <hr>
         @endif
+        <hr>
+
+        @if(isset($signature) && isset($signature->type))
+            @if($signature->type == 'visators')
+
+            @else
+                <div id="div_firmante">@livewire('signatures.signer', ['signaturesFlowSigner' => $signature->signaturesFlowSigner])</div>
+                <div id="div_flujo" style="display: none">@livewire('documents.custom-signature-flows',['customSignatureFlows'=>$customSignatureFlows])</div>
+            @endif
+        @else
+            <div id="div_firmante">@livewire('signatures.signer')</div>
+            <div id="div_flujo" style="display: none">@livewire('documents.custom-signature-flows',['customSignatureFlows'=>$customSignatureFlows])</div>
+        @endif
+        <hr>
 
         @livewire('documents.add-email-text-area-list', ['document'=>$document ?? '','signature'=>$signature ?? ''])
 
@@ -129,7 +141,6 @@
 
     <form method="POST" id="showPdf" name="showPdf" action="{{ route('documents.signatures.showPdfFromFile')}}">
         @csrf
-
     </form>
 
 @endsection
@@ -137,8 +148,22 @@
 @section('custom_js')
 
     <script type="text/javascript">
-        $( document ).ready(function() {
-            $('#for_ou_id_signer').val('');
+
+$("#firmante").change(function() {
+            $("#div_firmante").show();
+            $("#div_flujo").hide();
+            $("#for_ou_id_signer").prop('required',true);
+            $("#customSignatureFlow_id").prop('required',false);
+            $("#addVisatorBtn").removeClass('d-none');
+            $("[name='endorse_type']").val('Visación en cadena de responsabilidad').prop('disabled',false);
+        });
+        $("#flujo_firmas").change(function() {
+            $("#div_firmante").hide();
+            $("#div_flujo").show();
+            $("#for_ou_id_signer").prop('required',false);
+            $("#customSignatureFlow_id").prop('required',true);
+            $("#addVisatorBtn").addClass('d-none');
+            $("[name='endorse_type']").val('Visación en cadena de responsabilidad').prop('disabled',true);
         });
         function disableButton(form) {
             form.submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Creando...';

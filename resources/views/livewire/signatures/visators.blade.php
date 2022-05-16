@@ -14,7 +14,7 @@
         </fieldset>
         <fieldset class="form-group col-lg-2">
             <label for="">&nbsp;</label>
-            <button class="btn text-white btn-info btn-block" wire:click.prevent="add({{ $i }})"> <i
+            <button id="addVisatorBtn" class="btn text-white btn-info btn-block" wire:click.prevent="add({{ $i }})"> <i
                     class="fa fa-user-plus"></i> Agregar Visador</button>
         </fieldset>
 
@@ -97,14 +97,14 @@
         </div>
     @endforeach
 </div>
-@section('custom_js')
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            Livewire.hook('message.processed', (message, component) => {
-                if (message.updateQueue[0].method === 'add') {
-                    $('.selectpicker').selectpicker('refresh');
-                }
-            })
-        });
-    </script>
-@endsection
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        Livewire.hook('message.processed', (message, component) => {
+            if (message.updateQueue[0].method === 'add') {
+                $('.selectpicker').selectpicker('refresh');
+            }
+        })
+    });
+</script>
+

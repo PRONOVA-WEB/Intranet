@@ -110,5 +110,10 @@
             href="{{ route('parameters.values.index') }}">
             <i class="fas fa-money-bill-alt"></i> Valor Hora/Jornada</a>
     </li> -->
+    <li class="nav-item">
+        <a class="nav-link"
+            href="{{ route('documents.custom_signature_flows.index') }}">
+            <i class="fas fa-external-link-alt"></i> Flujo de Firmas</a>
+    </li>
 </ul>
 @endrole

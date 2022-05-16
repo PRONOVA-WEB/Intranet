@@ -51,8 +51,8 @@
                         <i class="fas fa-file-alt"></i> Documentos Comunales
                     </a>
                 @endcan --}}
-
-            {{-- </div>
+{{--
+            </div>
         </div>
     </li> --}}
     <!-- Nav Item - Documentos -->
@@ -183,13 +183,13 @@
                         </a>
                     @endcan
 
-                    @canany(['Users: service requests'])
+                    {{-- @canany(['Users: service requests'])
                         <a class="collapse-item" href="{{ route('rrhh.users.service_requests.index') }}">
                             <i class="fas fa-user fa-fw"></i> Usuarios -<br> Contrat. de Servicios
                         </a>
-                    @endcan
+                    @endcan --}}
 
-                    @if (Auth::user()->hasRole('Replacement Staff: admin'))
+                    {{-- @if (Auth::user()->hasRole('Replacement Staff: admin'))
                         <a class="collapse-item" href="{{ route('replacement_staff.request.index') }}">
                             <i class="far fa-id-card"></i> Solicitudes de<br> Contratación
                         </a>
@@ -199,9 +199,9 @@
                         <a class="collapse-item" href="{{ route('replacement_staff.request.assign_index') }}">
                             <i class="far fa-id-card"></i> Solicitudes de<br> Contratación
                         </a>
-                    @endif
+                    @endif --}}
 
-                    @if (Auth::user()->hasRole('Replacement Staff: user') || App\Rrhh\Authority::getAmIAuthorityFromOu(Carbon\Carbon::now(), 'manager', Auth::user()->id))
+                    {{-- @if (Auth::user()->hasRole('Replacement Staff: user') || App\Rrhh\Authority::getAmIAuthorityFromOu(Carbon\Carbon::now(), 'manager', Auth::user()->id))
                         <a class="collapse-item" href="{{ route('replacement_staff.request.own_index') }}">
                             <i class="far fa-id-card"></i> Solicitudes de<br> Contratación
                             @if (App\Models\ReplacementStaff\RequestReplacementStaff::getPendingRequestToSign() > 0)
@@ -210,13 +210,13 @@
                                 </span>
                             @endif
                         </a>
-                    @endif
+                    @endif --}}
 
-                    @if (Auth::user()->hasRole('Replacement Staff: personal'))
+                    {{-- @if (Auth::user()->hasRole('Replacement Staff: personal'))
                         <a class="collapse-item" href="{{ route('replacement_staff.request.personal_index') }}">
                             <i class="far fa-id-card"></i> Solicitudes de Contratación
                         </a>
-                    @endif
+                    @endif --}}
                 </div>
             </div>
         </li>
@@ -360,6 +360,8 @@
                         <i class="fa fa-file"></i> Plantillas<br> de Documentos</a>
                     <a class="collapse-item" href="{{ route('parameters.holidays.index') }}">
                         <i class="fas fa-calendar-times"></i> Feriados</a>
+                    <a class="collapse-item" href="{{ route('documents.custom_signature_flows.index') }}">
+                        <i class="fas fa-external-link-alt"></i> Flujo de Firmas</a>
                 </div>
             </div>
         </li>
