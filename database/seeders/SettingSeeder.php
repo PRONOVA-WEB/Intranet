@@ -21,7 +21,7 @@ class SettingSeeder extends Seeder
                 'id' => 1,
                 'key' => 'site.title',
                 'display_name' => 'Título del sitio',
-                'value' => 'Control de Turnos HEP',
+                'value' => 'Control de Turnos',
                 'details' => '',
                 'type' => 'text',
                 'order' => 1,

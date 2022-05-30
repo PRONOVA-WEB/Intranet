@@ -56,7 +56,7 @@
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; {{ settings('site.title') }} {{ date('Y') }}</span>
+                    <span>Copyright &copy; {{ settings('site.title') }} | {{ settings('site.organization') }} {{ date('Y') }}</span>
                 </div>
             </div>
         </footer>
