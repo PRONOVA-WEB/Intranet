@@ -31,7 +31,7 @@ class SettingSeeder extends Seeder
                 'id' => 2,
                 'key' => 'site.logo',
                 'display_name' => 'Logo del sitio',
-                'value' => '/images/logo_pronova.jpg',
+                'value' => asset('/images/gob_hep_2011.jpg'),
                 'details' => '',
                 'type' => 'image',
                 'order' => 2,
