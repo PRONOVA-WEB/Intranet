@@ -41,7 +41,7 @@ class SettingSeeder extends Seeder
                 'id' => 3,
                 'key' => 'site.description',
                 'display_name' => 'Descripción del sitio',
-                'value' => '<h2>Control de Turnos HEP</h2>
+                'value' => '<h2>Control de Turnos</h2>
                 <p>Sistema para gesti&oacute;n de actividades propias de una organizaci&oacute;n de salud. Permite la compartici&oacute;n de recursos digitales entre los miembros de la organizaci&oacute;n, todo bajo un<strong>&nbsp;esquema de seguridad y control</strong> <strong>de acceso</strong>&nbsp;que asegura que cada persona puede ver &uacute;nicamente lo que le corresponde.</p>',
                 'details' => '',
                 'type' => 'rich_text_box',

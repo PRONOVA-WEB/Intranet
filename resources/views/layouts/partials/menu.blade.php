@@ -149,7 +149,7 @@
         <li class="nav-item {{ active(['rrhh.*']) }}">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseRRHH" aria-expanded="true"
                 aria-controls="collapseRRHH">
-                <i class="fas fa-fw fa-wrench"></i>
+                <i class="fas fa-address-book"></i>
                 <span>RRHH</span>
             </a>
             <div id="collapseRRHH" class="collapse" aria-labelledby="headingRRHH" data-parent="#accordionSidebar">
@@ -178,8 +178,8 @@
                         </a>
                     @endcan
 
-                    @canany(['Shift Management: view'])
-                        <a class="collapse-item" href="{{ route('rrhh.shiftManag.index') }}">
+                    @canany(['Shift Management: view', 'Shift Management: admin'])
+                        <a class="collapse-item" href="{{ (Auth::user()->hasRole('RRHH: shift admin')) ? route('rrhh.shiftManag.index') : route('rrhh.shiftManag.myshift') }}">
                             <i class="fa fa-calendar fa-fw"></i> Módulo Turnos
                         </a>
                     @endcan

@@ -121,6 +121,7 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'Service Request: export sirh']);
 
         Permission::create(['name' => 'Shift Management: view']);
+        Permission::create(['name' => 'Shift Management: admin']);
 
         Permission::create(['name' => 'Suitability: admin']);
         Permission::create(['name' => 'Suitability: test']);
@@ -212,7 +213,10 @@ class RoleAndPermissionSeeder extends Seeder
         $role = Role::create(['name' => 'Replacement Staff: user rys']);
 
         $role = Role::create(['name' => 'RRHH: shift admin']);
-        $role->givePermissionTo(['Shift Management: view','OrganizationalUnits: create','OrganizationalUnits: edit','Users: assign permission','Users: create','Users: edit']);
+        $role->givePermissionTo(['Shift Management: view','Shift Management: admin','OrganizationalUnits: create','OrganizationalUnits: edit','Users: assign permission','Users: create','Users: edit']);
+
+        $role = Role::create(['name' => 'RRHH: shift view']);
+        $role->givePermissionTo(['Shift Management: view']);
 
     }
 }
