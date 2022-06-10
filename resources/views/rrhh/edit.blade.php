@@ -93,9 +93,9 @@
 		</fieldset>
 	</div>
 
-		<div class="form-group d-inline">
+		{{-- <div class="form-group d-inline">
 			@livewire('rrhh.update-user-bank-account' , ['bankaccount' => $bankaccount->last(), 'user'=>$user])
-		</div>
+		</div> --}}
 
 	<div class="form-group d-inline">
 		<button type="submit" class="btn btn-sm btn-primary">
