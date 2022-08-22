@@ -8,7 +8,9 @@
         .table th {
             vertical-align: middle !important;
         }
-
+        .table-bordered td, .table-bordered th {
+            border: 1px solid #5a5c69;
+        }
     </style>
 @endsection
 @section('content')
@@ -77,7 +79,7 @@
             <div class="form-group col-md-2">
                 <label for="for_name" class="input-group-addon">Series</label>
                 <select class="form-control" id="for_turnFilter" name="turnFilter">
-                    {{-- <option value="0">0 - Todas</option> --}}
+                    <option value="" {{ ($actuallyShift) ? '' : 'selected' }}>Todas</option>
                     @php
                         $index = 0;
                     @endphp
@@ -86,7 +88,7 @@
                             @foreach ($shiftMonth as $sMonth)
                                 @if ($sMonth->shift_type_id == $st->id && $sMonth->user_id == auth()->user()->id && $sMonth->month == $actuallyMonth)
                                     <option value="{{ $st->id }}"
-                                        {{ $st->id == $actuallyShift->id ? 'selected' : '' }}>{{ $index }} -
+                                        @if($actuallyShift) {{ $st->id == $actuallyShift->id ? 'selected' : '' }}@endif>{{ $index }} -
                                         {{ $st->name }}</option>
                                     {{-- json_encode($sMonth) --}}
                                 @endif
@@ -113,14 +115,15 @@
         </div>
     </form>
     <!-- Select con personal de la unidad  -->
-    <h4 class="mt-2 mb-2">Agregar personal al <b>{{ $actuallyShift->name }}</b></h4>
-
+    @if($actuallyShift)
+    <h4 class="mt-2 mb-2">Agregar personal</h4>
+    <h6><b>{{ ($actuallyShift) ? $actuallyShift->name : "" }}</b></h6>
     <form method="POST" action="{{ route('rrhh.shiftsTypes.assign') }}" class="mb-3">
         @csrf
         @method('POST')
         <input hidden name="dateFrom" value="{{ $actuallyYear }}-{{ $actuallyMonth }}-01">
         <input hidden name="dateUp" value="{{ $actuallyYear }}-{{ $actuallyMonth }}-{{ $days }}">
-        <input hidden name="shiftId" value="{{ $actuallyShift->id }}">
+        <input hidden name="shiftId" value="{{ ($actuallyShift) ? $actuallyShift->id : "Todos" }}">
         <input hidden name="orgUnitId" value="{{ $actuallyOrgUnit->id }}">
         <div class="form-row">
             <div class="col-md-6">
@@ -167,6 +170,7 @@
         </div>
 
     </form>
+    @endif
     <div class="row">
         <div class="col-md-12">
             <div class="card mb-4 py-3 border-left-primary">
@@ -178,16 +182,16 @@
 
                         {{ $actuallyYear }}
                         -
-                        {{ $actuallyShift->name }}
+                        {{ ($actuallyShift) ? $actuallyShift->name : "Todos" }}
                     </h4>
-                    <a href="{{ route('rrhh.shiftManag.index', ['orgunitFilter' => $actuallyOrgUnit->id,'turnFilter' => $actuallyShift->id,'monthYearFilter' => $actuallyYear . '-' . intval($actuallyMonth) - 1]) }}"
+                    <a href="{{ route('rrhh.shiftManag.index', ['orgunitFilter' => $actuallyOrgUnit->id,'turnFilter' => ($actuallyShift) ? $actuallyShift->id : null,'monthYearFilter' => $actuallyYear . '-' . intval($actuallyMonth) - 1]) }}"
                         class="btn btn-sm btn-secondary btn-icon-split">
                         <span class="icon text-white-50">
                             <i class="fas fa-arrow-left"></i>
                         </span>
                         <span class="text">Anterior</span>
                     </a>
-                    <a href="{{ route('rrhh.shiftManag.index', ['orgunitFilter' => $actuallyOrgUnit->id,'turnFilter' => $actuallyShift->id,'monthYearFilter' => $actuallyYear . '-' . intval($actuallyMonth) + 1]) }}"
+                    <a href="{{ route('rrhh.shiftManag.index', ['orgunitFilter' => $actuallyOrgUnit->id,'turnFilter' => ($actuallyShift) ? $actuallyShift->id : null,'monthYearFilter' => $actuallyYear . '-' . intval($actuallyMonth) + 1]) }}"
                         class="btn btn-sm btn-secondary btn-icon-split">
                         <span class="text">Siguiente</span>
                         <span class="icon text-white-50">
@@ -209,6 +213,7 @@
             <table class="table table-sm table-bordered datatable">
                 <thead>
                     <tr class="bg-gray-600 text-gray-100 text-center">
+                        <th>Estamento</th>
                         <th>Personal</th>
                         @for ($i = 1; $i <= $days; $i++)
                             @php
@@ -233,9 +238,6 @@
             </table>
         </div>
     </div>
-
-    {{-- @livewire("rrhh.modal-edit-shift-user-day",['monthYearFilter'=>$actuallyYear."-".$actuallyMonth,'actuallyShift'=>$actuallyShift->id,'actuallyOrgUnit'=>$actuallyOrgUnit]) --}}
-
 @endsection
 
 @section('custom_js')
@@ -248,13 +250,23 @@
     <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
     <script src="https://cdn.datatables.net/fixedheader/3.2.2/js/dataTables.fixedHeader.min.js"></script>
-
+    <script src="https://cdn.datatables.net/rowgroup/1.2.0/js/dataTables.rowGroup.min.js"></script>
     <script>
         $(document).ready(function() {
             $('.datatable').DataTable({
                 "order": [0, "asc"],
                 "pageLength": 100,
                 "paging": false,
+                "columnDefs" : [
+                    //hide the second & fourth column
+                    { 'visible': false, 'targets': [0] }
+                ],
+                rowGroup: {
+                    dataSrc: 0,
+                    startRender: function ( rows, group ) {
+                        return group +' ('+rows.count()+')';
+                    },
+                },
                 fixedHeader: true,
                 dom: 'Bfrtip',
                 buttons: [
@@ -271,7 +283,7 @@
                     text: '<i class="fa fa-file-pdf"></i>',
                     className: 'btn btn-outline-success float-right',
                     title: 'Gestión de turnos',
-                    messageTop: '{{ $actuallyOrgUnit->name }} - {{ $months[$actuallyMonth] }} {{ $actuallyYear }} - {{ $actuallyShift->name }} - {{ $position }}',
+                    messageTop: '{{ $actuallyOrgUnit->name }} - {{ $months[$actuallyMonth] }} {{ $actuallyYear }} - {{ ($actuallyShift) ? $actuallyShift->id : "Todos" }} - {{ $position }}',
                      init: function(api, node, config) {
                         $(node).removeClass('dt-button');
                     },
@@ -298,7 +310,7 @@
 						search: 'applied',
 						order: 'applied'
 					},
-                    messageTop: '{{ $actuallyOrgUnit->name }} - {{ $months[$actuallyMonth] }} {{ $actuallyYear }} - {{ $actuallyShift->name }} - {{ $position }}',
+                    messageTop: '{{ $actuallyOrgUnit->name }} - {{ $months[$actuallyMonth] }} {{ $actuallyYear }} - {{ ($actuallyShift) ? $actuallyShift->name : "Todos" }} - {{ $position }}',
                     init: function(api, node, config) {
                         $(node).removeClass('dt-button');
                     },

@@ -58,12 +58,6 @@ class ListOfShifts extends Component
         // $this->$refresh;/
     }
 
-
-    public function render()
-    {
-        return view('livewire.rrhh.list-of-shifts',["statusColors"=>$this->colors,"actuallyShift"=>$this->actuallyShift]);
-    }
-
     public function mount($actuallyShift=null,$staffInShift=null)
     {
 
@@ -74,14 +68,19 @@ class ListOfShifts extends Component
         $days = $this->days ?? Carbon::now()->daysInMonth;
         $actuallyOrgUnit = $this->actuallyOrgUnit ?? $cargos->first();
 
-        $this->actuallyShift = $actuallyShift ?? $this->actuallyShift=$sTypes->first();
-
         $position = $this->position;
 
         $staffInShiftLocal = ShiftUser::where('organizational_units_id', $this->actuallyOrgUnit->id )
-                    ->where('shift_types_id',$this->actuallyShift->id)
                     ->where('date_up','>=',$this->actuallyYear."-".$this->actuallyMonth."-01")
                     ->where('date_from','<=',$this->actuallyYear."-".$this->actuallyMonth."-".$this->days);
+
+        if(!is_null($actuallyShift))
+        {
+
+            $this->actuallyShift = $actuallyShift ?? $this->actuallyShift=$sTypes->first();
+
+            $staffInShiftLocal = $staffInShiftLocal->where('shift_types_id',$this->actuallyShift->id);
+        }
 
         if(!is_null($position)) {
             $staffInShiftLocal->whereHas('user', function ($q) use ($position) {
@@ -91,8 +90,6 @@ class ListOfShifts extends Component
         $this->staffInShift = $staffInShift ?? $staffInShiftLocal->get();
 
     }
-
-
 
     public function editShiftDay($id){
 
@@ -107,10 +104,9 @@ class ListOfShifts extends Component
         // dd($this->shiftDay);
     }
 
-    public function deleteActually($actuallyShiftDay){
-        dd($actuallyShiftDay);
-        // $this->emit("setDataToDeleteModal",[$actuallyShiftDay]);
-
+    public function render()
+    {
+        return view('livewire.rrhh.list-of-shifts',["statusColors"=>$this->colors,"actuallyShift"=>$this->actuallyShift]);
     }
 
 }

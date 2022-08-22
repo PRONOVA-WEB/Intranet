@@ -137,7 +137,7 @@ class ShiftManagementController extends Controller
         $sTypes = ShiftTypes::all();
         $cargos = OrganizationalUnit::all();
         $actuallyOrgUnit = $cargos->first();
-        $actuallyShift = $sTypes->first();
+        $actuallyShift = null;
         if (count($request->all())) {
             $dateFiltered = Carbon::createFromFormat('Y-m-d',  $request->monthYearFilter . "-01", 'Europe/London');
             $days = $dateFiltered->daysInMonth;
@@ -152,17 +152,15 @@ class ShiftManagementController extends Controller
         $position = $request->position;
 
         $staff = User::query();
-        // if (!is_null($position)){ //dd($position);
-        //     $staff = $staff->where('position',$position);
-        // }
+
         $staff = $staff->where('organizational_unit_id', $actuallyOrgUnit->id)->get();
         $staffInShift = ShiftUser::query();
-        if ($actuallyShift->id != 0) { // un turno en especifico
-            if (!is_null($position)){
-                $staffInShift = $staffInShift->whereHas('user', function ($q) use ($position) {
-                    $q->where('position',$position);
-                });
-            }
+        if (!is_null($position)){
+            $staffInShift = $staffInShift->whereHas('user', function ($q) use ($position) {
+                $q->where('position',$position);
+            });
+        }
+        if ($request->turnFilter != null) { // un turno en especifico
             $staffInShift = $staffInShift->where('organizational_units_id', $actuallyOrgUnit->id)
                                         ->where('shift_types_id', $actuallyShift->id)
                                         ->where('date_up', '>=', $actuallyYear . "-" . $actuallyMonth . "-" . $days)
@@ -170,6 +168,7 @@ class ShiftManagementController extends Controller
                                         ->get();
 
         } else { // Todos los turnos
+
             $staffInShift = $staffInShift->where('organizational_units_id', $actuallyOrgUnit->id)
                 ->where('date_up', '>=', $actuallyYear . "-" . $actuallyMonth . "-" . $days)
                 ->where('date_from', '<=', $actuallyYear . "-" . $actuallyMonth . "-" . $days)
