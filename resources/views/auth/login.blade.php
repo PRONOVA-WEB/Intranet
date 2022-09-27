@@ -43,11 +43,11 @@
             <div class="col-xl-10 col-lg-12 col-md-9">
                 <div class="card o-hidden border-0 shadow-lg my-5">
                     <div class="card-header">
-                        @isset($url)
+                        {{-- @isset($url)
                             <a href="{{ route('login') }}"><i class="fa fa-undo" aria-hidden="true"></i> Intranet</a>
                         @else
                             <a href="{{ route('login.external') }}"><i class="fa fa-repeat" aria-hidden="true"></i> Portal externos</a>
-                        @endif
+                        @endif --}}
                     </div>
                     <div class="card-body p-0">
                         <div class="row">
@@ -177,10 +177,12 @@
             $("#local_login").toggleClass('d-none');
             $("#login_botones").toggleClass('offset-lg-3');
         });
-        $('.identificacion').mask('00000000-A', {
+        $('.identificacion').mask('0000000#-A',  {
+            reverse: true,
             onKeyPress: function (value, event) {
                 event.currentTarget.value = value.toUpperCase();
-        }});
+            }
+        });
     </script>
 </body>
 

@@ -107,14 +107,14 @@
     </li>
     @endcan
     <!-- Nav Item - abastecimiento -->
-    @if (env('APP_ENV') == 'local' || env('APP_ENV') == 'testing')
+    {{-- @if (env('APP_ENV') == 'local' || env('APP_ENV') == 'testing')
         <li class="nav-item {{ active(['request_forms.*']) }}">
             <a class="nav-link" href="{{ route('request_forms.my_forms') }}">
                 <i class="fas fa-shopping-cart"></i>
                 <span>Abastecimiento</span>
             </a>
         </li>
-    @endif
+    @endif --}}
     <!-- Nav Item - SGR -->
     @can('Requirements: create')
         <li class="nav-item {{ active('requirements.*') }}">
@@ -235,7 +235,7 @@
         </li>
     @endcan --}}
 
-    {{-- @can('Pharmacy: manager')
+    @can('Pharmacy: manager')
         <li class="nav-item {{ active('pharmacies.*') }}">
             <a class="nav-link" href="{{ route('pharmacies.index') }}">
                 <i class="fas fa-prescription-bottle-alt fa-fw "></i>
@@ -244,7 +244,7 @@
                 </span>
             </a>
         </li>
-    @endcan --}}
+    @endcan
 
     <!-- Nav Item - Recursos Collapse Menu -->
     {{-- @canany(['Resources: create', 'Resources: edit', 'Resources: delete'])

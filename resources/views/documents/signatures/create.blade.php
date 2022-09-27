@@ -149,7 +149,7 @@
 
     <script type="text/javascript">
 
-$("#firmante").change(function() {
+        $("#firmante").change(function() {
             $("#div_firmante").show();
             $("#div_flujo").hide();
             $("#for_ou_id_signer").prop('required',true);
